@@ -4,3 +4,6 @@
 [submodule "nexss-language/languages/NodeJS"]
 	path = nexss-language/languages/NodeJS
 	url = git@github.com:nexssp/language_nodejs.git
+[submodule "nexss-project/templates/default"]
+	path = nexss-project/templates/default
+	url = https://github.com/nexssp/template_default.git
