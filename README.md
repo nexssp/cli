@@ -12,12 +12,18 @@
 
 **Nexss PROGRAMMER** allows you to run code in many languages EASY and SAVES A LOT OF TIME on **Windows**, **Linux** _(Soon)_ and **MacOS** _(Soon)_.
 
+## Video Tutorials (WIP)
+
+[25 programming languages in the Nexss Programmer 2.0](https://youtu.be/u5up3eRjWto)  
+[How to compile your program EASY](https://youtu.be/zdgEM26VOOw)  
+[Easy Programming - How to compile multiple languages FAST & EASY](https://youtu.be/YZGPPTRLjZk)
+
 ## WHY
 
 - You can combine now **as many languages you want** easy eg for prototyping
 - You can use libraries which was written on old machines and combine with modern solutions
 - Save time on written automation tools **by you**!
-- Write reusable modules **EASY**
+- Write reusable modules **EASY** in as many languages you like.
 
 Please go to the [USER_HOME_PATH]/.nexss/packages folder to grasp the idea.
 
