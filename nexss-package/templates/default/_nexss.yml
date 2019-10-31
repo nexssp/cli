@@ -1,0 +1,6 @@
+name: Default Nexss PROGRAMMER 2.0 Project
+debug: true
+input: null
+data: null
+files:
+  - name: src/index.js

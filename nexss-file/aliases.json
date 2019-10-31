@@ -1,0 +1,7 @@
+{
+  "a": "add",
+  "del": "delete",
+  "rm": "delete",
+  "l": "list",
+  "s": "set"
+}

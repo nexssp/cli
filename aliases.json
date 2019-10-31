@@ -1,0 +1,12 @@
+{
+  "h": "help",
+  "l": "language",
+  "t": "template",
+  "f": "file",
+  "p": "project",
+  "ps": "process",
+  "i": "install",
+  "c": "command",
+  "s": "start",
+  "pkg": "package"
+}

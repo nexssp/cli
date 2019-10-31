@@ -1,0 +1,6 @@
+[submodule "nexss-language/languages/HTML"]
+	path = nexss-language/languages/HTML
+	url = git@github.com:nexssp/language_html.git
+[submodule "nexss-language/languages/NodeJS"]
+	path = nexss-language/languages/NodeJS
+	url = git@github.com:nexssp/language_nodejs.git
