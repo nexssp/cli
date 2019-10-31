@@ -33,6 +33,7 @@ Please go to the [USER_HOME_PATH]/.nexss/packages folder to grasp the idea.
 git clone --recurse-submodules -j8 https://github.com/nexssp/cli.git
 cd cli
 npm install
+npm link
 # npm i nexss -g # WIP/SOON
 ```
 
