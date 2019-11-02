@@ -42,7 +42,9 @@ Please go to the [USER_HOME_PATH]/.nexss/packages folder to grasp the idea. Ther
 **WINDOWS USERS:** Nexss Programmer is using Scoop for installing language related compilers, builders etc. If you have issues with older system(s) please use **Powershell** with Powershell Core and .NET Framework 4.5. More inforamtion please see:
 [Scoop Website](https://scoop.sh/)
 
-notice: if you have an issue like: "execution of this script is disabled" OR "get-help about_signig" you may want to run `Set-ExecutionPolicy RemoteSigned -scope CurrentUser` on your **PowerShell** terminal.
+**Windows 7** Please install [Poweshell Core](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-core-on-windows?view=powershell-6)
+
+**notice:** if you have an issue like: "execution of this script is disabled" OR "get-help about_signig" you may want to run **`Set-ExecutionPolicy RemoteSigned -scope CurrentUser`** on your **PowerShell** terminal.
 
 ```sh
 git clone --recurse-submodules -j8 https://github.com/nexssp/cli.git
