@@ -69,18 +69,21 @@ try {
 
   if (!existsSync(NEXSS_PACKAGES_PATH)) {
     // TODO: Double try fix later
-    console.log("Creating ..");
-    try {
-      require("child_process").execSync(
-        `git clone --recurse-submodules -j8 ${nexssPackagesRepo} ${NEXSS_PACKAGES_PATH}`,
-        {
-          stdio: "inherit"
-        }
-      );
+    console.log("Downloading nexss packages (Only once).. Please wait..");
 
-      success(`Nexss Packages has been installed.`);
-    } catch (error) {
-      if ((error + "").indexOf("Command failed: git clone") > -1) {
+    try {
+      const repos = require("../nexss-package/repos.dev.json");
+      // console.log(repos);
+      for (var key in repos) {
+        const command = `git clone --recurse-submodules -j8 ${repos[key]} ${NEXSS_PACKAGES_PATH}/${key}`;
+        require("child_process").execSync(command, {
+          stdio: "inherit"
+        });
+      }
+
+      console.log(`Nexss Packages has been installed.`);
+    } catch (err) {
+      if ((err + "").indexOf("Command failed: git clone") > -1) {
         console.error(`Issue with the repository: ${nexssPackagesRepo}`);
       } else {
         // TODO: Better handling of update etc.
@@ -97,6 +100,7 @@ try {
         //   console.error(error);
         //   process.exit(1);
         // }
+        console.error(err);
       }
     }
   }

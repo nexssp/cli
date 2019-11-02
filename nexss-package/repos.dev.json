@@ -1,0 +1,16 @@
+{
+  "3rdPartyLibraries": "https://github.com/nexssp/package_3rdpartylibraries.git",
+  "Blender": "https://github.com/nexssp/package_blender.git",
+  "Clipboard": "https://github.com/nexssp/package_clipboard.git",
+  "Convert": "https://github.com/nexssp/package_convert.git",
+  "Id": "https://github.com/nexssp/package_id.git",
+  "Input": "https://github.com/nexssp/package_input.git",
+  "Keyboard": "https://github.com/nexssp/package_keyboard.git",
+  "Mouse": "https://github.com/nexssp/package_mouse.git",
+  "Nexss": "https://github.com/nexssp/package_nexss.git",
+  "Output": "https://github.com/nexssp/package_output.git",
+  "Screen": "https://github.com/nexssp/package_screen.git",
+  "Select": "https://github.com/nexssp/package_select.git",
+  "Template": "https://github.com/nexssp/package_template.git",
+  "Web": "https://github.com/nexssp/package_web.git"
+}
