@@ -40,9 +40,7 @@ Please go to the [USER_HOME_PATH]/.nexss/packages folder to grasp the idea. Ther
 **For beginners**: Please install [Git](https://git-scm.com/) and [NodeJS v12](https://nodejs.org/) first.
 
 **WINDOWS USERS:** Nexss Programmer is using Scoop for installing language related compilers, builders etc. If you have issues with older system(s) please use **Powershell** with Powershell Core and .NET Framework 4.5. More inforamtion please see:
-[Scoop Website](https://scoop.sh/)
-
-**Windows 7** Please install [Poweshell Core](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-core-on-windows?view=powershell-6)
+[Scoop Website](https://scoop.sh/) or [Scoop Quick Start](https://github.com/lukesampson/scoop/wiki/Quick-Start)
 
 **notice:** if you have an issue like: "execution of this script is disabled" OR "get-help about_signig" you may want to run **`Set-ExecutionPolicy RemoteSigned -scope CurrentUser`** on your **PowerShell** terminal.
 
@@ -255,22 +253,13 @@ For Stdin, Stdout, Stderr in Nexss PROGRAMMER is JSON for default templates howe
 
 ## Troubleshooting
 
-### Sometimes when you pass variable through different cells there might be an error if you won't pass JSON or data which is expected on the next file/cell.
+### Powershell Issues
 
-### Redis, Connection problem
+if you have an issue like: "execution of this script is disabled" OR "get-help about_signig" you may want to run **`Set-ExecutionPolicy RemoteSigned -scope CurrentUser`** on your **PowerShell** terminal.
 
-On errors
+### Connection
 
-```yml
-communication:
-  server1:
-    host: 127.0.0.1
-    port: 6379
-    type: redis
-    channels:
-      - x
-      - y
-```
+if you have an issue like: "execution of this script is disabled" OR "get-help about_signig" you may want to run **`Set-ExecutionPolicy RemoteSigned -scope CurrentUser`** on your **PowerShell** terminal.
 
 ## Future
 
