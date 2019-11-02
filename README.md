@@ -2,7 +2,7 @@
 
 # Nexss PROGRAMMER 2.0
 
-- Safe time by using as many languages you like for solution,
+- Save time by using as many languages you like for the solution,
 - 25 programming languages on one project and increasing with provided templates for each language,
 - Predefined/customisable solutions,
 - Configurable Error handling with suggested solutions,
