@@ -2,15 +2,17 @@
 
 # Nexss PROGRAMMER 2.0
 
-- 25 programming languages on one project and increasing with provided templates for each language.
-- Predefined/customisable solutions while error appeares during development
-- Easy to develop reusable modules and code
+- Safe time by using as many languages you like for solution,
+- 25 programming languages on one project and increasing with provided templates for each language,
+- Predefined/customisable solutions,
+- Configurable Error handling with suggested solutions,
+- Easy to develop reusable modules and code.
 
 **SAVE TIME** on learning any programming language with NEXSS PROGRAMMER.
 
 ## Introduction
 
-**Nexss PROGRAMMER** allows you to run code in many languages EASY and SAVES A LOT OF TIME on **Windows**, **Linux** _(Soon)_ and **MacOS** _(Soon)_.
+**Nexss PROGRAMMER** allows you to run code in many languages (together or separately) EASY and SAVES A LOT OF TIME on **Windows**, **Linux** _(Soon)_ and **MacOS** _(Soon)_.
 
 ## Video Tutorials (WIP)
 
@@ -25,7 +27,7 @@
 - Save time on written automation tools **by you**!
 - Write reusable modules **EASY** in as many languages you like.
 
-Please go to the [USER_HOME_PATH]/.nexss/packages folder to grasp the idea.
+Please go to the [USER_HOME_PATH]/.nexss/packages folder to grasp the idea. There are examples of the modules you can use.
 
 ## Nexss PROGRAMMER Examples
 
@@ -33,7 +35,14 @@ Please go to the [USER_HOME_PATH]/.nexss/packages folder to grasp the idea.
 
 ## Installation & First Run
 
-### Install
+### Installation
+
+**For beginners**: Please install [Git](https://git-scm.com/) and [NodeJS v12](https://nodejs.org/) first.
+
+**WINDOWS USERS:** Nexss Programmer is using Scoop for installing language related compilers, builders etc. If you have issues with older system(s) please use **Powershell** with Powershell Core and .NET Framework 4.5. More inforamtion please see:
+[Scoop Website](https://scoop.sh/)
+
+notice: if you have an issue like: "execution of this script is disabled" OR "get-help about_signig" you may want to run `Set-ExecutionPolicy RemoteSigned -scope CurrentUser` on your **PowerShell** terminal.
 
 ```sh
 git clone --recurse-submodules -j8 https://github.com/nexssp/cli.git
@@ -52,10 +61,8 @@ nexss project new myproject # or nexss p new myproject
 cd myproject
 nexss start # or nexss s      - run the project
 nexss s --server # if you have specified server, this will start the server
-nexss s -q # this will remove all debug information
+nexss s --verbose # this will display all extra information during run
 nexss project # or nexss p    - display info about project
-nexss pp # or nexss projects  - displays all attached projects in the system
-
 # Nexss Packages Examples
 nexss pkg list --json # list of available packages
 nexss id --fields=cuid
@@ -71,6 +78,25 @@ nexss js errors # displays errors and supports available for particular language
 nexss config --json
 nexss config --select sequences
 nexss config --configPath c:\Users\mapoart\.nexss\packages\Demos/Start --select sequences
+```
+
+## Packages Examples
+
+```sh
+nexss Id # returns id
+nexss Blender
+nexss Clipboard # receive clipboard value nexss Clipboard help for more
+nexss Convert/VideoToGif --file=myfile.mp4
+nexss Input/OCR --file=myimage.jpg
+nexss Keyboard --type="#s" # WIN + s
+nexss Keyboard --type="#d" # WIN + d / Show Desktop
+nexss Keyboard --type="#b" # WIN + b / Show Taskbar
+nexss Mouse/Move --x=1 --y=20
+nexss Mouse/MoveToImage --image=1
+nexss Nexss/PackageBrowser
+nexss Select/Area
+nexss Screen/Capture --file=123123.png # OR as below PIPE
+echo {"file":"myfile.jpg"} | nexss Mouse/MoveToImage
 ```
 
 ## Project structure
@@ -222,7 +248,7 @@ nexss ps stop 1234 # stop process (windows kill as there is only emulation) with
 
 ## Useful links
 
-For Stdin, Stdout, Stder in Nexss PROGRAMMER is JSON for default templates however you can use the format as you like XML, etc.
+For Stdin, Stdout, Stderr in Nexss PROGRAMMER is JSON for default templates however you can use the format as you like XML, etc.
 (http://json.org/) - Examples of many implementations of JSON
 
 ## Troubleshooting
@@ -250,6 +276,6 @@ We are working now on the Graphical User Interface and many improvements so pack
 
 ## Donate [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RP72WY9S6CM4L&source=url)
 
-It is a great pleasure to work on the tools for everyone however the donations are always part of motivation which helps to move forward.
+It is a great pleasure to work on the tools for everyone however the donations are always part of motivation which helps to move forward. There is still a lot of work to implement this on the **Linux** and **MacOS**.
 
-Please consider donating to the Nexss Paypal Account. [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RP72WY9S6CM4L&source=url) [![Donate](nexss_kod_qr.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RP72WY9S6CM4L&source=url)
+Please consider donating to the Nexss Paypal Account [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RP72WY9S6CM4L&source=url) [![Donate](nexss_kod_qr.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RP72WY9S6CM4L&source=url)
