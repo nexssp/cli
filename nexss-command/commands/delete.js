@@ -1,4 +1,3 @@
-console.log("delete command!!!");
 const { searchData } = require("../../lib/search");
 const { loadConfigContent, saveConfigContent } = require("../../lib/config");
 const { success, warn, info } = require("../../lib/log");

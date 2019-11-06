@@ -266,6 +266,8 @@ if (
           //   "# ",
           //   `${PROCESS_CWD}/${fileName}`
           // );
+          // console.log(PROCESS_CWD);
+
           if (!(await Exists(`${fileName}`))) {
             if (cliArgs.verbose)
               error(
@@ -337,9 +339,10 @@ if (
 
           // dg(`COMPILER IN`, compiler);
           let spawnOptions = { detached: true };
-
+          let compilerAdded = false;
           if (compiler && compiler.args && !cliArgs.build) {
             // We make sure compiler is installed
+            compilerAdded = true;
             if (compiler.command) {
               ensureInstalled(compiler.command, compiler.install);
 
@@ -374,11 +377,17 @@ if (
             });
           }
 
-          let exeFile = path.resolve(
-            `../_nexss/${path.basename(fileName)}.exe`
-          );
-          // TODO: implement copy of language file to the repo
-          if (cliArgs.build && builder && builder.build) {
+          if (builder && builder.build && (!compilerAdded || cliArgs.build)) {
+            if (!fs.existsSync(`_nexss`)) {
+              try {
+                fs.mkdirSync(`_nexss`, { recursive: true });
+              } catch (err) {
+                if (err.code !== "EEXIST") throw err;
+              }
+            }
+
+            let exeFile = path.resolve(`_nexss/${path.basename(fileName)}.exe`);
+
             let cmd;
             if (await is("Function", builder.build)) {
               cmd = builder.build();
@@ -405,15 +414,20 @@ if (
               options: spawnOptions,
               fileName
             });
+
             nexssBuild.push({
               stream: "transformError",
               cmd: "BUILD RESULTS:",
               options: spawnOptions,
               fileName
             });
-            console.log(
-              `Build Command ${cmd} ${builderArgs ? builderArgs.join(" ") : ""}`
-            );
+            if (cliArgs.verbose) {
+              console.log(
+                `Build Command ${cmd} ${
+                  builderArgs ? builderArgs.join(" ") : ""
+                }`
+              );
+            }
 
             nexssResult.push({
               stream: "transformNexss",
@@ -446,7 +460,8 @@ if (
       // options: spawnOptions
     });
 
-    if (cliArgs.build) {
+    // This needs to be changed so only build if is necessary
+    if (nexssBuild.length > 0 && cliArgs.build) {
       dy(`Building..`, nexssBuild);
       await run(nexssBuild, { quiet: !cliArgs.verbose, build: true }).catch(e =>
         console.error(e)

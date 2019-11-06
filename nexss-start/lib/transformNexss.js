@@ -60,6 +60,10 @@ module.exports.transformNexss = (
           JSON.stringify(options)
         );
 
+      // options.env = {
+      //   PATH: process.env.PATH
+      // };
+
       this.worker = spawn(cmd, args, options);
       this.worker.cmd = `${cmd} ${args.join(" ")} `;
 

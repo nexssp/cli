@@ -1,12 +1,12 @@
 {
   "name": "@nexssp/cli",
-  "author": "Marcin Polak",
+  "author": "Marcin Polak mapoart@gmail.com",
   "version": "2.0.0",
   "description": "Nexss PROGRAMMER 2.0.0",
   "main": "nexss.js",
   "scripts": {
     "test": "",
-    "prepublish": "npm test",
+    "prepare": "npm test",
     "postinstall": "",
     "postuninstall": ""
   },

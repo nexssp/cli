@@ -1,13 +1,23 @@
 const { NEXSS_PROJECT_CONFIG_PATH } = require("../../config/config");
 
 const { loadConfigContent, saveConfigContent } = require("../../lib/config");
-const { success, warn, info } = require("../../lib/log");
+const { success, warn, error, info } = require("../../lib/log");
 let configContent = loadConfigContent(NEXSS_PROJECT_CONFIG_PATH);
 
 const commandName = process.argv[4];
 const commandToAdd = process.argv.slice(5).join(" ");
 
 const { green } = require("../../lib/color");
+
+if (!process.argv[4]) {
+  error("Please enter command name.");
+  process.exit(1);
+}
+
+if (!commandToAdd) {
+  error("Please enter command body eg. nexss c add listFiles ls -la.");
+  process.exit(1);
+}
 
 console.log(green(`Adding command '${process.argv[3]}' as '${commandToAdd}'`));
 
@@ -26,3 +36,5 @@ if (configContent.findByProp("commands", "name", commandName)) {
   saveConfigContent(configContent, NEXSS_PROJECT_CONFIG_PATH);
   success("Done..");
 }
+
+process.exit(0);

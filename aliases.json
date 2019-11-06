@@ -6,6 +6,7 @@
   "p": "project",
   "ps": "process",
   "i": "install",
+  "cmd": "command",
   "c": "command",
   "s": "start",
   "pkg": "package"

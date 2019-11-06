@@ -5,15 +5,16 @@ const { red, yellow, bold, blue } = require("../../lib/color");
 
 function listCommands() {
   const commands = configContent.commands;
-  if (!commands) {
+
+  if (!commands || (commands && commands.length == 0)) {
     console.log(
-      red(`No available commands. (use eg. nexss cmd add *name* ls -l)`)
+      red(`No available commands. (use eg. nexss c add *name* ls -l)`)
     );
     process.exit(0);
   }
   console.log(
     blue(
-      `Available predefined commands in _nexss.yml: (usage: nexss cmd *name*)`
+      `Available predefined commands in _nexss.yml: (usage: nexss command *name*)`
     )
   );
   commands.map(e =>

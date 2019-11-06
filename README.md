@@ -246,6 +246,10 @@ nexss ps clean # removes stopped processes from the queue
 nexss ps stop 1234 # stop process (windows kill as there is only emulation) with id (you can kill any process you like on OS. Be careful)
 ```
 
+### Known Issues
+
+When you use nexss PROGRAMMER project, there is an issue with execute file in the src/ folder. It will not work: nexss file.php, you need to run it from main folder eg. nexss src/file.php
+
 ## Useful links
 
 For Stdin, Stdout, Stderr in Nexss PROGRAMMER is JSON for default templates however you can use the format as you like XML, etc.
@@ -264,6 +268,12 @@ if you have an issue like: "execution of this script is disabled" OR "get-help a
 ## Future
 
 We are working now on the Graphical User Interface and many improvements so package can be use not only by programmers. We are working hard to get it ready in November 2019.
+
+### TODO List
+
+- MacOS finish implementation (packages, configurations for all languages) **Work in progress**
+- Linux finish implementation (packages, configurations for all languages) **Work in progress**
+- Write Tests
 
 ## Donate [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RP72WY9S6CM4L&source=url)
 

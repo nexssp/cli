@@ -1,4 +1,5 @@
 {
   "a": "add",
-  "l": "list"
+  "l": "list",
+  "d": "delete"
 }

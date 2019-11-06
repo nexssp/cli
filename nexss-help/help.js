@@ -4,7 +4,7 @@ const { NEXSS_SRC_PATH } = require("../config/config.js");
 const { bold } = require("../lib/color");
 const { invert } = require("../lib/helper");
 const aliases = invert(require("../aliases.json"));
-
+const os = require("os");
 // console.log(path.dirname(path.dirname(process.execPath)));
 (async () => {
   const EOL = require("os").EOL;
@@ -64,6 +64,11 @@ const aliases = invert(require("../aliases.json"));
             if (aliases[plugin]) {
               pluginDisplay = `${plugin}|${aliases[plugin]}`;
             }
+
+            if (cmdDisplay === ".gitkeep") {
+              cmdDisplay = "";
+            }
+
             let commandHelp =
               cmd !== plugin
                 ? `nexss ${pluginDisplay} ${cmdDisplay}` //[args]
@@ -74,13 +79,16 @@ const aliases = invert(require("../aliases.json"));
       );
     })
   );
+
   console.log(
     `                ____                                                              
 |..          | |             \`\`..      ..''             ..''''             ..'''' 
 |  \`\`..      | |______           \`\`..''              .''                .''       
 |      \`\`..  | |                 ..'\`..           ..'                ..'          
 |          \`\`| |___________  ..''      \`\`.. ....''             ....''             
-Programmer ${require("../package.json").version}  `
+Programmer ${require("../package.json").version}, NodeJS ${
+      process.version
+    }, OS: ${process.platform} ${os.release()}  `
   );
   console.log(commandsHelp.flat());
 
