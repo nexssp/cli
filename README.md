@@ -1,18 +1,23 @@
-> \*\* **Everybody in this country should learn to program a computer, because it teaches you how to think**. Steve Jobs
-
 # Nexss PROGRAMMER 2.0
 
+## How to start learning computer programming?
+
+- Start PROGRAMMING within minutes with Nexss PROGRAMMER 2.0 eg. `nexss myprogram.r` OR `nexss myanotherprogram.py` and will download automatically compiler and run Your program,
 - Save time by using as many languages you like for the solution,
-- 25 programming languages on one project and increasing with provided templates for each language,
-- Predefined/customisable solutions,
+- At the moment **28 programming languages** can be used in one project (and increasing) with provided templates for each language,
+- Predefined/customisable solutions (nexss allow to predefine solutions for errors to fix them quickly),
 - Configurable Error handling with suggested solutions,
 - Easy to develop reusable modules and code.
 
 **SAVE TIME** on learning any programming language with NEXSS PROGRAMMER.
 
+NOTE: **Java**, **Scala**, **C**, **C#**, **Haskell**, **VBScript**, **Windows Scripting Hosts**, **PureData** need some manual adjustments to make to work (languages related).
+
+NOTE2: **Linux** _(Soon)_ and **MacOS** _(Soon)_ - **Work In Progress**
+
 ## Introduction
 
-**Nexss PROGRAMMER** allows you to run code in many languages (together or separately) EASY and SAVES A LOT OF TIME on **Windows**, **Linux** _(Soon)_ and **MacOS** _(Soon)_.
+**Nexss PROGRAMMER** allows you to run code in many languages (together or separately) EASY and SAVES A LOT OF TIME.
 
 ## Video Tutorials (WIP)
 
@@ -22,6 +27,7 @@
 
 ## WHY
 
+- You can start programming in minutes,
 - You can combine now **as many languages you want** easy eg for prototyping
 - You can use libraries which was written on old machines and combine with modern solutions
 - Save time on written automation tools **by you**!
@@ -210,7 +216,7 @@ You can use `all`, but also `win32`, `linux`,`darwin` accordingly.
 
 ## Languages Supported
 
-To check the list of languages supported please use command `nexss list`
+To check if the language is supported, just write `nexss myfile.js` and then you will n
 
 ### Language specific commands
 

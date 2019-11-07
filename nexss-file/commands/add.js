@@ -168,7 +168,7 @@ const execute = options => {
         if (err) throw err;
       });
 
-      ok(`File '${options.fileName}' has been created.`);
+      ok(`File '${filePath}' has been created.`);
 
       // cliArgs.noconfig - no config modification
       if (!cliArgs.noconfig && NEXSS_PROJECT_CONFIG_PATH) {
