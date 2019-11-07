@@ -26,9 +26,6 @@ module.exports.transformFile = file => {
       });
       let self = this;
       streamRead.on("end", () => {
-        console.log(
-          "EEEEEEEEEEEEEEEEEEENNNNNNNNNNNNNNNNNNNDDDDDDDDDDDDDDDDDDD TRANFORM FILE SRC/EXE/"
-        );
         self.end();
         this.end();
         // callback(1, null);

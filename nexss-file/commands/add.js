@@ -237,15 +237,13 @@ ${
 
       if (commands) {
         // FIXME: to check this part!!
-        commands = commands[process.platform] || commands.all;
-        if (commands)
-          commands.forEach(cmd => {
-            // TODO: better error handling
-            // console.log(cmd);
-            const cp = require("child_process").execSync(`${cmd}`, {
-              stdio: "inherit"
-            });
+        commands.forEach(cmd => {
+          // TODO: better error handling
+          // console.log(cmd);
+          const cp = require("child_process").execSync(`${cmd}`, {
+            stdio: "inherit"
           });
+        });
       }
     } else {
       // info(`No extra operations file ${templatePath}.js found.`);

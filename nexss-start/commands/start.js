@@ -1,12 +1,12 @@
 const PROCESS_CWD = process.cwd();
 const path = require("path");
-const { info, error, warn, db, di, dg, dy, trace } = require("../../lib/log");
+const { info, error, warn, di, dg, dy } = require("../../lib/log");
 const dotenv = require("dotenv");
-const { promisify, inspect } = require("util"),
-  { blue, red, yellow, bold, green } = require("../../lib/color"),
+const { inspect } = require("util"),
+  { blue, bold, green } = require("../../lib/color"),
   { startServer } = require("../../lib/server"),
   { getLangByFilename } = require("../../nexss-language/lib/language");
-const { is, isOlder, Exists } = require("../../lib/data/guard");
+const { is, Exists } = require("../../lib/data/guard");
 const { ensureInstalled } = require("../../lib/terminal");
 const fs = require("fs");
 const { readFileSync, existsSync, lstatSync } = require("fs");
@@ -34,26 +34,21 @@ if (fileOrDirectory) {
   //replace only first occurance
   const platformDir = `${fileOrDirectory}/${process.platform}`;
   const platformExists = existsSync(platformDir);
-  // We check if the platformDir
 
+  // In the Package you can create folder eg win32, darwin OR linux.
+  // We check if the platformDir
   if (platformExists && lstatSync(`${platformDir}`).isDirectory()) {
     process.chdir(platformDir);
-    // console.log("chaning dir PLATFORM SPECIFIC", fileOrDirectory);
     fileOrDirectory = null;
   } else if (
     existsSync(`${fileOrDirectory}`) &&
     lstatSync(`${fileOrDirectory}`).isDirectory()
   ) {
-    // console.log("chaning dir =-=============================", fileOrDirectory);
-    // console.log("PROCESS CWD!!!!!!!!!!!!! start.js / fileORDir", process.cwd());
     process.chdir(fileOrDirectory);
-
     fileOrDirectory = null;
   } else {
+    // We get config for the selected file
     const nexssConfig = require("../../lib/config").loadConfigContent();
-    //We check if there is config already
-
-    // console.log("not is url", fileOrDirectory);
     if (
       nexssConfig &&
       nexssConfig.findByProp("files", "name", fileOrDirectory)
@@ -67,12 +62,8 @@ if (fileOrDirectory) {
     }
   }
 }
-
+//  ???????
 const nexssConfig = require("../../lib/config").loadConfigContent();
-
-// if (nexssConfig.env) {
-//   //set environment variables
-// }
 
 let projectPath;
 if (nexssConfig) {
@@ -89,8 +80,7 @@ if (nexssConfig) {
 
 let files;
 
-// console.log(nexssConfig.sequences[cliArgs.seq], cliArgs.seq);
-
+// if you put -seq=myseq it will run sequence more on Demos
 if (
   cliArgs.seq &&
   nexssConfig.sequences &&
@@ -129,7 +119,6 @@ if (
   startData.debug = nexssConfig && nexssConfig.debug;
 
   const { run } = require("../lib/pipe");
-  // console.log("!!!!!!!!!!!!!!!cli args!!!!!!", cliArgs);
 
   Object.assign(startData, cliArgs);
 
@@ -138,11 +127,9 @@ if (
     Object.assign(startData, {
       number: 369369,
       string: "This is string",
-      pilishSigns: "óęśćźżÓŚĆŹŻ"
+      Unicode: "óęśćźżÓŚĆŹŻäöüß€яшдфгчйкльж" // For testing purposes
     });
   }
-  // console.log(startData);
-  // TODO: Later to handle stdin as a stream!!!!
 
   const stdin = () => {
     var chunks = [];
@@ -159,7 +146,6 @@ if (
   };
 
   const stdinRead = stdin();
-  // console.log("STDIN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", stdinRead);
   let dataStdin = {};
   if (stdinRead) {
     try {
@@ -230,11 +216,11 @@ if (
 
       let fileArgs = file.name.split(" ");
       let fileName = fileArgs.shift();
+
       let stream = "transformNexss";
       //we check protocol
 
       const parsed = url.parse(fileName);
-
       // for check if exists
       // let physical = true;
       switch (parsed.protocol) {
@@ -248,63 +234,62 @@ if (
         //   stream = "transformFile";
         default:
           if (parsed.protocol) {
-            fileName = fileName.substring(parsed.protocol.length + 2);
-            if (parsed.protocol === "file:") {
-              stream = "transformFile";
+            if (!path.isAbsolute(fileName)) {
+              fileName = fileName.substring(parsed.protocol.length + 2);
+              if (parsed.protocol === "file:") {
+                stream = "transformFile";
+              }
             }
           }
 
-          // When this is not module..
-          // if (!(await Exists(fileName))) {
-          //   process.chdir(PROCESS_CWD);
-          // }
-          // console.log(
-          //   "####1",
-          //   fileName,
-          //   "#",
-          //   PROCESS_CWD,
-          //   "# ",
-          //   `${PROCESS_CWD}/${fileName}`
-          // );
-          // console.log(PROCESS_CWD);
-
-          if (!(await Exists(`${fileName}`))) {
-            if (cliArgs.verbose)
-              error(
-                `File ${fileName} has not been found. Trying Packages folder`
-              );
-
-            fileName = `${NEXSS_PACKAGES_PATH}/${fileName}`;
-            // console.log("####2", fileName);
-            if (!(await Exists(fileName))) {
-              error(`Nexss: ${fileName} has not been found.`);
-              info(
-                "Possible solution: remove file from files entry in the nexss.yml file."
-              );
-              return 0;
-            } else {
-              if (fs.lstatSync(fileName).isDirectory()) {
-                process.chdir(fileName);
+          if (await Exists(`${fileName}`)) {
+            const oldFileName = fileName;
+            fileName = `${fileName}`;
+            // Below there is the same code - to modify later.
+            if (fs.existsSync(fileName)) {
+              if (!fs.lstatSync(fileName).isDirectory()) {
+                fileName = oldFileName;
               } else {
-                process.chdir(path.dirname(fileName));
+                process.chdir(fileName);
               }
             }
           } else {
-            //We change the directory to the file is in.
-            //console.log(path.dirname(fileName));
-            const oldFileName = fileName;
-            fileName = `${fileName}`;
-            // console.log(fileName);
-            if (fs.existsSync(fileName)) {
-              if (!fs.lstatSync(fileName).isDirectory()) {
-                // console.log("xxxxxxxxxxx!!!!!!!!!!!!!!!!!!!!!", fileName);
-                fileName = oldFileName;
-                // process.chdir(PROCESS_CWD);
-                // console.log("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
+            if (!(await Exists(`${fileName}`))) {
+              fileName = `src/${fileName}`;
+
+              if (await Exists(`${fileName}`)) {
+                const oldFileName = fileName;
+                fileName = `${fileName}`;
+
+                if (fs.existsSync(fileName)) {
+                  if (!fs.lstatSync(fileName).isDirectory()) {
+                    fileName = oldFileName;
+                  } else {
+                    process.chdir(fileName);
+                  }
+                }
               } else {
-                process.chdir(fileName);
+                if (cliArgs.verbose)
+                  error(
+                    `File ${fileName} has not been found. Trying Packages folder`
+                  );
+
+                fileName = `${NEXSS_PACKAGES_PATH}/${fileName}`;
+
+                if (!(await Exists(fileName))) {
+                  error(`Nexss: ${fileName} has not been found.`);
+                  info(
+                    "Possible solution: remove file from files entry in the nexss.yml file."
+                  );
+                  return 0;
+                } else {
+                  if (fs.lstatSync(fileName).isDirectory()) {
+                    process.chdir(fileName);
+                  } else {
+                    process.chdir(path.dirname(fileName));
+                  }
+                }
               }
-              // console.log("xxxxxxxxxFILENAME: ", fileName);
             }
           }
 
@@ -314,10 +299,9 @@ if (
           compiler = languageDefinition.compilers;
           if (file.compiler) {
             fileCompilerSplit = file.compiler.split(" ");
-            // console.log(fileCompilerSplit[0]);
+
             if (compiler[fileCompilerSplit[0]]) {
               compiler = compiler[fileCompilerSplit[0]];
-              // compiler.command = compiler[fileCompilerSplit[0]].command;
 
               fileCompilerSplit.shift();
               compiler.args = fileCompilerSplit.concat(compiler.args).join(" ");

@@ -11,6 +11,7 @@
   ".rs": "https://github.com/nexssp/language_rust.git",
   ".lua": "https://github.com/nexssp/language_lua.git",
   ".jl": "https://github.com/nexssp/language_julia.git",
+  ".pd": "https://github.com/nexssp/language_puredata.git",
   ".ps1": "https://github.com/nexssp/language_powershell.git",
   ".r": "https://github.com/nexssp/language_r.git",
   ".sh": "https://github.com/nexssp/language_bash.git",
