@@ -279,7 +279,8 @@ We are working now on the Graphical User Interface and many improvements so pack
 
 - MacOS finish implementation (packages, configurations for all languages) **Work in progress**
 - Linux finish implementation (packages, configurations for all languages) **Work in progress**
-- Write Tests
+- More Packages related to the current needs
+- Write Automatic Tests
 
 ## Donate [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RP72WY9S6CM4L&source=url)
 
