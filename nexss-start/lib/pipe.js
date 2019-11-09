@@ -48,6 +48,9 @@ async function run(operations, options = {}) {
         //   element.cmd,
         //   args
         // );
+
+        runOptions.inputData = element.fileArgs;
+        // console.log(streamName, element.cmd, args, runOptions);
         return eval(streamName)(element.cmd, args, runOptions);
       } else {
         if (typeof element === "function") {

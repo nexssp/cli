@@ -114,10 +114,10 @@ if (
   }
 
   let startData = (nexssConfig && nexssConfig.data) || {};
+
   startData.start = Date.now();
   startData.cwd = PROCESS_CWD;
   startData.debug = nexssConfig && nexssConfig.debug;
-
   const { run } = require("../lib/pipe");
 
   Object.assign(startData, cliArgs);
@@ -127,7 +127,7 @@ if (
     Object.assign(startData, {
       number: 369369,
       string: "This is string",
-      Unicode: "óęśćźżÓŚĆŹŻäöüß€яшдфгчйкльж" // For testing purposes
+      Unicode: "½¼¾¿®¢£¤¥§óęśćźżÓŚĆŹŻäöüß€яшдфгчйкльжѠ" // For testing purposes
     });
   }
 
@@ -200,6 +200,7 @@ if (
 
   (async () => {
     for await (let file of files) {
+      let compiler = null;
       // TODO: check this below
       //if (paramNumber === 3) {
       //this is nexss start or s so we change each time to the root of the project
@@ -212,6 +213,13 @@ if (
       if (globalDisabled && file.disabled) {
         dy(`file ${file.name} is disabled or Global disabled. Going next..`);
         return;
+      }
+
+      if (!file.name) {
+        error(
+          "file needs to have `name` field in the `files` section of the _nexss.yml config file. Please see examples/packages to grasp the idea."
+        );
+        process.exit(1);
       }
 
       let fileArgs = file.name.split(" ");
@@ -274,6 +282,10 @@ if (
                     `File ${fileName} has not been found. Trying Packages folder`
                   );
 
+                if (fileName.substring(0, 3) === "src") {
+                  fileName = fileName.substring(4);
+                }
+
                 fileName = `${NEXSS_PACKAGES_PATH}/${fileName}`;
 
                 if (!(await Exists(fileName))) {
@@ -293,26 +305,30 @@ if (
             }
           }
 
-          const languageDefinition = getLangByFilename(fileName);
+          let languageDefinition = getLangByFilename(fileName);
 
-          let compiler;
-          compiler = languageDefinition.compilers;
+          ld_compiler = languageDefinition.compilers;
+
           if (file.compiler) {
             fileCompilerSplit = file.compiler.split(" ");
 
-            if (compiler[fileCompilerSplit[0]]) {
-              compiler = compiler[fileCompilerSplit[0]];
+            if (ld_compiler[fileCompilerSplit[0]]) {
+              compiler = ld_compiler[fileCompilerSplit[0]];
 
               fileCompilerSplit.shift();
               compiler.args = fileCompilerSplit.concat(compiler.args).join(" ");
             }
           } else {
             if (languageDefinition) {
-              compiler = languageDefinition.getFirst("compilers");
+              // !?@#$%
+              compiler = Object.assign(
+                {},
+                languageDefinition.getFirst("compilers")
+              );
             } else {
               compiler = {};
               compiler.command = "nexss";
-              compiler.args = `${fileName} ${fileArgs}`;
+              compiler.args = `${fileName} ${fileArgs.join(" ")}`;
             }
           }
 
@@ -324,6 +340,7 @@ if (
           // dg(`COMPILER IN`, compiler);
           let spawnOptions = { detached: true };
           let compilerAdded = false;
+
           if (compiler && compiler.args && !cliArgs.build) {
             // We make sure compiler is installed
             compilerAdded = true;
@@ -349,7 +366,10 @@ if (
                 .slice(0, -1)
                 .join(".")
             );
-            let args = compiler.args.split(" ");
+
+            args = compiler.args.split(" ");
+
+            let fileArgsObj = require("minimist")(fileArgs);
 
             nexssResult.push({
               stream,
@@ -357,6 +377,7 @@ if (
               args,
               options: spawnOptions,
               fileName,
+              fileArgs: fileArgsObj,
               cwd: PROCESS_CWD
             });
           }
@@ -451,6 +472,7 @@ if (
         console.error(e)
       );
     }
+
     if (cliArgs.verbose) dg(`Executing..`);
     await run(nexssResult, { quiet: !cliArgs.verbose }).catch(e =>
       console.error(e)

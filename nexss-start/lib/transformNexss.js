@@ -10,7 +10,7 @@ const { parseError } = require("./error");
 module.exports.transformNexss = (
   cmd, // cmd = ls, node, php or whatever
   args = [], // arguments eg. ["--help", "myfile.php"]
-  { quiet = false, fileName = undefined } = defaultExecuteOptions
+  { quiet = false, fileName = undefined, inputData } = defaultExecuteOptions
 ) => {
   if (!is("Array", args)) {
     throw Error("args needs to be an Array");
@@ -27,8 +27,8 @@ module.exports.transformNexss = (
         throw "User exited CTRL+C.";
       }
 
-      let options = {};
-      options.input = chunk;
+      let options = Object.assign({});
+
       options.stdio = "pipe";
       options.detached = false;
       options.shell = true;
@@ -38,7 +38,7 @@ module.exports.transformNexss = (
           `Spawning ${cmd} ${args ? args.join(" ") : ""} options: `,
           JSON.stringify(options)
         );
-
+      // console.log("!!!!!!!!!!!!!!!!!!!!!!", options);
       this.worker = spawn(cmd, args, options);
       this.worker.cmd = `${cmd} ${args.join(" ")} `;
 
@@ -62,6 +62,10 @@ module.exports.transformNexss = (
       });
 
       this.worker.stdout.on("data", function(data) {
+        if (!quiet) {
+          console.log("OUTPUT: ", data.toString());
+        }
+
         self.push(data.toString());
       });
 
@@ -74,7 +78,15 @@ module.exports.transformNexss = (
         callback();
       });
 
-      this.worker.stdin.write(chunk);
+      if (inputData) {
+        // Later to review
+        let j = JSON.parse(chunk.toString());
+        const FinalData = Object.assign({}, j, inputData);
+        this.worker.stdin.write(Buffer.from(JSON.stringify(FinalData)));
+      } else {
+        this.worker.stdin.write(chunk);
+      }
+
       //BElow maybe is in wrong placa but AutoIt doesn;t work if is not here!!!!!
       this.worker.stdin.end();
       // if (process.stdout.clearLine) {

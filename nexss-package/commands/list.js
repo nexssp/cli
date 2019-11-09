@@ -1,16 +1,9 @@
-const { warn, info } = require("../../lib/log");
-const { bold, blue, green } = require("../../lib/color");
-const { existsSync, writeFileSync } = require("fs");
 const fs = require("fs");
 // const dirTree = require("directory-tree");
-const path = require("path");
-const { NEXSS_HOME_PATH, NEXSS_PACKAGES_PATH } = require("../../config/config");
-
+const { NEXSS_PACKAGES_PATH } = require("../../config/config");
 const packagesPath = `${NEXSS_PACKAGES_PATH}`;
-
-const authors = fs.readdirSync(packagesPath);
-
 const cliArgs = require("minimist")(process.argv);
+const authors = fs.readdirSync(packagesPath);
 
 let pkgs = [];
 // TODO: To fix below syntac - make more efficient! works for now
@@ -72,6 +65,24 @@ authors.forEach(author => {
 });
 
 if (pkgs.length > 0) {
+  if (cliArgs._.slice(4).length > 0) {
+    var options = {
+      // pre: "<",
+      // post: ">",
+      extract: function(el) {
+        return `${el.path} ${el.type}`;
+      }
+    };
+    let fuzzy = require("fuzzy");
+    let fuzzyResult = fuzzy.filter(cliArgs._.slice(4).join(" "), pkgs, options);
+    pkgs = fuzzyResult.map(function(el) {
+      return el.original;
+    });
+    // const pkgs = new FuzzySearch(pkgs, ["type", "path"], {
+    //   caseSensitive: false
+    // });
+  }
+
   if (cliArgs.json) {
     console.log(JSON.stringify(pkgs.flat()));
   } else {

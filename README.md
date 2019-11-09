@@ -55,6 +55,7 @@ git clone --recurse-submodules -j8 https://github.com/nexssp/cli.git
 cd cli
 npm install
 npm link
+cd ..
 # npm i nexss -g # WIP/SOON
 ```
 
@@ -68,10 +69,16 @@ cd myproject
 nexss start # or nexss s      - run the project
 nexss s --server # if you have specified server, this will start the server
 nexss s --verbose # this will display all extra information during run
-nexss project # or nexss p    - display info about project
-# Nexss Packages Examples
+nexss project info # or nexss p i    - display info about project
+
+# Packages (nexss packages)
 nexss pkg list --json # list of available packages
-nexss id --fields=cuid
+nexss pkg l ocr --json # Search for OCR packages with json output
+nexss package list video # List Video related packages
+
+# Add Packages/Actions
+# Adds Show Desktop to the package
+nexss pkg add Keyboard --type="#d" --copyPackage --saveNexss  --forceNexss
 
 # Specific language commands
 nexss js # display all available specific language commands
@@ -79,17 +86,17 @@ nexss js pm # displays package managers available for JavaScript/NodeJS (select 
 nexss js compilers # displays compilers
 nexss js errors # displays errors and supports available for particular language and
 
-# json
-
-nexss config --json
-nexss config --select sequences
-nexss config --configPath c:\Users\mapoart\.nexss\packages\Demos/Start --select sequences
+# Config (nexss config)
+nexss config get --json
+nexss config get --select sequences
+nexss config get --configPath c:/Users/mapoart/.nexss/packages/Demos/Start --select sequences
 ```
 
 ## Packages Examples
 
 ```sh
 nexss Id # returns id
+nexss Id --fields=cuid
 nexss Blender
 nexss Clipboard # receive clipboard value nexss Clipboard help for more
 nexss Convert/VideoToGif --file=myfile.mp4
@@ -138,6 +145,9 @@ MYENV1=myvar
 # data: ???
 # build: 3 types of values undefined (default is build for all), true, false
 files:
+  - data:
+  x: 1000
+  y: 1000
   - name: file1.js
     build: true
   - name: file2.r trala --blue sky
@@ -280,6 +290,7 @@ We are working now on the Graphical User Interface and many improvements so pack
 - MacOS finish implementation (packages, configurations for all languages) **Work in progress**
 - Linux finish implementation (packages, configurations for all languages) **Work in progress**
 - More Packages related to the current needs
+-
 - Write Automatic Tests
 
 ## Donate [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RP72WY9S6CM4L&source=url)
