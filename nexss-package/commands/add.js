@@ -47,7 +47,7 @@ delete cliArgs["forceNexss"];
 delete cliArgs["copyPackage"];
 let params = "";
 Object.keys(cliArgs).forEach(element => {
-  params += ` -${element}=${cliArgs[element]}`;
+  params += ` --${element}=${cliArgs[element]}`;
 });
 
 if (copyPackage) {

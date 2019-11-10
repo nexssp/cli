@@ -23,7 +23,9 @@ NOTE2: **Linux** _(Soon)_ and **MacOS** _(Soon)_ - **Work In Progress**
 
 [25 programming languages in the Nexss Programmer 2.0](https://youtu.be/u5up3eRjWto)  
 [How to compile your program EASY](https://youtu.be/zdgEM26VOOw)  
-[Easy Programming - How to compile multiple languages FAST & EASY](https://youtu.be/YZGPPTRLjZk)
+[Easy Programming - How to compile multiple languages FAST & EASY](https://youtu.be/YZGPPTRLjZk)  
+[How To Record Desktop Area as Video in 1 minute (Python + AutoIt3 + NodeJS)](https://youtu.be/OedxuTRBR7c)  
+[Convert Recorded Desktop Area Video To Gif (moviepy, imageio)](https://www.youtube.com/watch?v=02jVlJz-qnI)
 
 ## WHY
 
@@ -209,7 +211,7 @@ nexss c delete #it will display selection of commands to delete one.
 ### Stdin
 
 ```ps1
-echo {"works":"1"} | nexss start default.php
+echo {"works":"1"} | nexss default.php
 ```
 
 ### Errors
@@ -226,7 +228,7 @@ You can use `all`, but also `win32`, `linux`,`darwin` accordingly.
 
 ## Languages Supported
 
-To check if the language is supported, just write `nexss myfile.js` and then you will n
+To check if the language is supported, just write `nexss myfile.js` and then compiler will be automatically installed.
 
 ### Language specific commands
 
