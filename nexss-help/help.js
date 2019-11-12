@@ -47,7 +47,7 @@ const os = require("os");
                 )}`
               )
               .toString()
-              .split(EOL);
+              .split("\n");
 
             // const helpContent = require(`${NEXSS_SRC_PATH}/${entry.name}/nexssPlugin.js`)
             //   .description;
