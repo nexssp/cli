@@ -80,9 +80,14 @@ module.exports.transformNexss = (
 
       if (inputData) {
         // Later to review
-        let j = JSON.parse(chunk.toString());
-        const FinalData = Object.assign({}, j, inputData);
-        this.worker.stdin.write(Buffer.from(JSON.stringify(FinalData)));
+        try {
+          let j = JSON.parse(chunk.toString());
+          const FinalData = Object.assign({}, j, inputData);
+          this.worker.stdin.write(Buffer.from(JSON.stringify(FinalData)));
+        } catch (error) {
+          inputData.nexssStdin = chunk.toString();
+          this.worker.stdin.write(Buffer.from(JSON.stringify(inputData)));
+        }
       } else {
         this.worker.stdin.write(chunk);
       }

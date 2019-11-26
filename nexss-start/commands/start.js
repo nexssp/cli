@@ -104,7 +104,8 @@ if (
 
 if (
   nexssConfig &&
-  (nexssConfig.server && (cliArgs.server || files.length === 0))
+  nexssConfig.server &&
+  (cliArgs.server || files.length === 0)
 ) {
   startServer(nexssConfig.server, nexssConfig.router || {});
 } else {
@@ -371,12 +372,18 @@ if (
 
             let fileArgsObj = require("minimist")(fileArgs);
 
+            const cmd = compiler.command ? compiler.command : args.shift();
+
+            if (compiler.stream) {
+              stream = compiler.stream;
+            }
+
             nexssResult.push({
               stream,
-              cmd: compiler.command ? compiler.command : args.shift(),
+              cmd: path.normalize(cmd),
               args,
               options: spawnOptions,
-              fileName,
+              fileName: path.normalize(fileName),
               fileArgs: fileArgsObj,
               cwd: PROCESS_CWD
             });
