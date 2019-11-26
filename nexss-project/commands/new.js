@@ -47,21 +47,32 @@ nexss.fullforce = cliArgs.ff;
 
 if (nexss.template) {
   const templatePath = path.join(__dirname, "../templates/", nexss.template);
-
-  // console.log(templatePath);
-
   if (!fs.existsSync(templatePath)) {
     error(`Template ${bold(nexss.template)} does not exist.`);
-
     fs.rmdirSync(projectPath);
     process.exit(1);
   } else {
     success(`Using ${bold(nexss.template)} template. Copying files...`);
 
     options = {};
-
     options.cover = false;
     if (!fs.existsSync(`${projectPath}/_nexss.yml`)) {
+      // We check if there is default template already (first run?)
+      if (!fs.existsSync(`${templatePath}/_nexss.yml`)) {
+        //We clone the default template
+        try {
+          require("child_process").execSync(
+            `git clone https://github.com/nexssp/template_default.git ${templatePath}`,
+            {
+              stdio: "inherit"
+            }
+          );
+          success(`Default template cloned.`);
+        } catch (er) {
+          console.error(er);
+          process.exit(1);
+        }
+      }
       copydir.sync(templatePath, projectPath, options);
     } else {
       console.log("This is already nexss project.");
