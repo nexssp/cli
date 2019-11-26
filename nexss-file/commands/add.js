@@ -240,9 +240,11 @@ ${
         commands.forEach(cmd => {
           // TODO: better error handling
           // console.log(cmd);
-          const cp = require("child_process").execSync(`${cmd}`, {
-            stdio: "inherit"
-          });
+          if (cmd) {
+            const cp = require("child_process").execSync(`${cmd}`, {
+              stdio: "inherit"
+            });
+          }
         });
       }
     } else {
