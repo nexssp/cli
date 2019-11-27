@@ -1,19 +1,29 @@
 # Nexss PROGRAMMER 2.0
 
+```sh
+                ____
+|..          | |             ``..      ..''             ..''''             ..''''
+|  ``..      | |______           ``..''              .''                .''
+|      ``..  | |                 ..'`..           ..'                ..'
+|          ``| |___________  ..''      ``.. ....''             ....''
+Programmer 2.0.2, NodeJS v13.0.1, OS: win32 10.0.18362
+```
+
 ## How to start learning computer programming?
 
-- Start PROGRAMMING within minutes with Nexss PROGRAMMER 2.0 eg. `nexss myprogram.r` OR `nexss myanotherprogram.py` and will download automatically compiler and run Your program,
-- Save time by using as many languages you like for the solution,
+- Start **learning PROGRAMMING** within minutes with Nexss PROGRAMMER 2.0 eg. `nexss myprogram.r` OR `nexss myanotherprogram.py` **(nexss file.ext)** and it will download automatically compiler and run Your program,
+- Build your own tools that other people can use,
+- Configurable Error handling with suggested solutions,
+- Save time by using as many languages you like for the solution (combined),
 - At the moment **28 programming languages** can be used in one project (and increasing) with provided templates for each language,
 - Predefined/customisable solutions (nexss allow to predefine solutions for errors to fix them quickly),
-- Configurable Error handling with suggested solutions,
 - Easy to develop reusable modules and code.
 
 **SAVE TIME** on learning any programming language with NEXSS PROGRAMMER.
 
-NOTE: **Java**, **Scala**, **C**, **C#**, **Haskell**, **VBScript**, **Windows Scripting Hosts**, **PureData** need some manual adjustments to make to work (languages related).
+NOTE: **Java**, **Scala**, **C**, **C#**, **Haskell**, **VBScript**, **Erlang**, **Windows Scripting Hosts**, **PureData** need some manual adjustments to make to work (languages related).
 
-NOTE2: **Linux** _(Soon)_ and **MacOS** _(Soon)_ - **Work In Progress**
+NOTE2: **Linux** _(Soon)_ and **MacOS** + Swift language _(Soon)_ - **Work In Progress**
 
 ## Introduction
 
@@ -29,9 +39,9 @@ NOTE2: **Linux** _(Soon)_ and **MacOS** _(Soon)_ - **Work In Progress**
 
 ## WHY
 
-- You can start programming in minutes,
-- You can combine now **as many languages you want** easy eg for prototyping
-- You can use libraries which was written on old machines and combine with modern solutions
+- You can start any program in seconds without anything,
+- You can combine now **as many languages you want** easy eg for prototyping,
+- You can use libraries which was written on old machines and combine with modern solutions,
 - Save time on written automation tools **by you**!
 - Write reusable modules **EASY** in as many languages you like.
 
@@ -40,6 +50,8 @@ Please go to the [USER_HOME_PATH]/.nexss/packages folder to grasp the idea. Ther
 ## Nexss PROGRAMMER Examples
 
 **[USER_HOME_PATH]/.nexss/packages** or `nexss pkg list`
+
+Note: Packages will be installed with the very first run of `nexss` command in your terminal.
 
 ## Installation & First Run
 
@@ -53,17 +65,26 @@ Please go to the [USER_HOME_PATH]/.nexss/packages folder to grasp the idea. Ther
 **notice:** if you have an issue like: "execution of this script is disabled" OR "get-help about_signig" you may want to run **`Set-ExecutionPolicy RemoteSigned -scope CurrentUser`** on your **PowerShell** terminal.
 
 ```sh
+# npm i nexss -g #WIP/SOON
+# For now:
 git clone --recurse-submodules -j8 https://github.com/nexssp/cli.git
 cd cli
-npm install
 npm link
 cd ..
-# npm i nexss -g # WIP/SOON
+nexss
+                ____
+|..          | |             ``..      ..''             ..''''             ..''''
+|  ``..      | |______           ``..''              .''                .''
+|      ``..  | |                 ..'`..           ..'                ..'
+|          ``| |___________  ..''      ``.. ....''             ....''
+Programmer 2.0.2, NodeJS v13.0.1, OS: win32 10.0.18362
+...
+Here will be menu displayed with your options.
 ```
 
 ### New Project
 
-**Nexss PROGRAMMER** will be installed in the global scope so you can run it from anyplace in the system.
+**Nexss PROGRAMMER** is installed in the global scope so you can run it from anyplace in the system.
 
 ```sh
 nexss project new myproject # or nexss p new myproject
@@ -141,43 +162,40 @@ MYENV1=myvar
 ### Config file
 
 ```yaml
-# name: this is name of the project
-# debug:
-# input: global input - first data, like parameters
-# data: ???
-# build: 3 types of values undefined (default is build for all), true, false
+name: myproject
+debug: true
+author: Marcin Polak mapoart@gmail.com
 files:
-  - data:
-  x: 1000
-  y: 1000
-  - name: file1.js
-    build: true
-  - name: file2.r trala --blue sky
-    disabled: true
-    build: false #the same as global undefined, not needed.
-    cache: 20s # will be cached by 20 seconds
-  - name: anotherfile.pl
-    args: z
-      55
+  - name: myfile.tcl # You can use files
+  - name: 'Keyboard --type="{LWin}"' # packages (global and local)
+  - name: Screen/Capture
+  - name: src/speechRecognition.py
+  - name: myfile.php
+  - name: thisisatest.exs
+commands:
+  - name: lll
+    command: ls -la
 ```
 
-## Installing Packages
+## Installing Packages (languages related)
 
 ```sh
 nexss js install nanomsg # if npm is not initialized it will automatically initialize the project
 nexss js # displays commands for package panager for in this case JavaScript
-nexss php install zeromq
+nexss php install zeromq # for php will use composer
+nexss exs install elixir # for elixir uses hexpm/mix
+nexss pl install something # for perl using cpan and so on.. for other languages
 ```
 
 ## Files
 
 ```sh
-nexss file list
-nexss file add
-nexss file add myfile --template notdefault.js
+nexss file list # list files for actual project (the same as nexss f l)
+nexss file add # add file with selection
+nexss file add myfile.js --template notdefault.js
 ```
 
-When file has additonal file like abc.ahk has abc.ahk.js extra operations will be performed like: files - copy files, commands execure commands.
+When file has additonal file like abc.ahk has abc.ahk.js extra operations will be performed like: copy files, shell commands
 
 ```js
 // additional info for templates like copy extra libraries.
@@ -220,15 +238,8 @@ Nexss PROGRAMMER parsing also compiler outputs to show possible solutions to the
 
 ```yml
 errors:
-  "address already in use :::(.*?)\r\n":
-    all: "Find process and kill it by: nexss ps find port <found1> && nexss ps stop <founded pid>"
+  "address already in use :::(.*?)\r\n": "Find process and kill it by: nexss ps find port <found1> && nexss ps stop <founded pid>"
 ```
-
-You can use `all`, but also `win32`, `linux`,`darwin` accordingly.
-
-## Languages Supported
-
-To check if the language is supported, just write `nexss myfile.js` and then compiler will be automatically installed.
 
 ### Language specific commands
 
@@ -266,12 +277,13 @@ nexss ps stop 1234 # stop process (windows kill as there is only emulation) with
 
 ### Known Issues
 
-When you use nexss PROGRAMMER project, there is an issue with execute file in the src/ folder. It will not work: nexss file.php, you need to run it from main folder eg. nexss src/file.php
+~~When you use nexss PROGRAMMER project, there is an issue with execute file in the src/ folder. It will not work: nexss file.php, you need to run it from main folder eg. nexss src/file.php~~ **FIXED**
 
 ## Useful links
 
 For Stdin, Stdout, Stderr in Nexss PROGRAMMER is JSON for default templates however you can use the format as you like XML, etc.
-(http://json.org/) - Examples of many implementations of JSON
+
+<http://json.org/> - Examples of many implementations of JSON
 
 ## Troubleshooting
 
@@ -279,24 +291,22 @@ For Stdin, Stdout, Stderr in Nexss PROGRAMMER is JSON for default templates howe
 
 if you have an issue like: "execution of this script is disabled" OR "get-help about_signig" you may want to run **`Set-ExecutionPolicy RemoteSigned -scope CurrentUser`** on your **PowerShell** terminal.
 
-### Connection
-
-if you have an issue like: "execution of this script is disabled" OR "get-help about_signig" you may want to run **`Set-ExecutionPolicy RemoteSigned -scope CurrentUser`** on your **PowerShell** terminal.
-
 ## Future
 
-We are working now on the Graphical User Interface and many improvements so package can be use not only by programmers. We are working hard to get it ready in November 2019.
+We are working now on the Graphical User Interface and many improvements so package can be use not only by programmers. We are working hard to get it ready in ~~November 2019~~ -> **Q1 or Q2 2020**.
 
 ### TODO List
 
-- MacOS finish implementation (packages, configurations for all languages) **Work in progress**
-- Linux finish implementation (packages, configurations for all languages) **Work in progress**
-- More Packages related to the current needs
--
-- Write Automatic Tests
+- **MacOS** finish implementation (packages, configurations for all languages) **Work in progress**,
+- **Linux** finish implementation (packages, configurations for all languages) **Work in progress**,
+- More packages related to the current needs of the users,
+- More tutorials and practical examples,
+- Write Automatic Tests.
 
 ## Donate [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RP72WY9S6CM4L&source=url)
 
-It is a great pleasure to work on the tools for everyone however the donations are always part of motivation which helps to move forward. There is still a lot of work to implement this on the **Linux** and **MacOS**.
+It is a great pleasure to work on the tools for everyone however it is huge amount of work and the donations are always part of motivation which helps to move forward. There is still a lot of work to implement this on the **Linux** and **MacOS**.
 
-Please consider donating to the Nexss Paypal Account [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RP72WY9S6CM4L&source=url) [![Donate](nexss_kod_qr.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RP72WY9S6CM4L&source=url)
+Please consider donating to the Nexss Paypal Account
+
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RP72WY9S6CM4L&source=url) [![Donate](nexss_kod_qr.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RP72WY9S6CM4L&source=url)
