@@ -4,6 +4,7 @@
   "Blender": "https://github.com/nexssp/package_blender.git",
   "Clipboard": "https://github.com/nexssp/package_clipboard.git",
   "Convert": "https://github.com/nexssp/package_convert.git",
+  "Data": "https://github.com/nexssp/package_data.git",
   "Id": "https://github.com/nexssp/package_id.git",
   "Input": "https://github.com/nexssp/package_input.git",
   "Keyboard": "https://github.com/nexssp/package_keyboard.git",

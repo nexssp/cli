@@ -235,7 +235,7 @@ ${
       }
       let commands = extraOptions.commands;
 
-      if (commands) {
+      if (commands && commands.forEach) {
         // FIXME: to check this part!!
         commands.forEach(cmd => {
           // TODO: better error handling

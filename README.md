@@ -92,7 +92,7 @@ cd myproject
 nexss start # or nexss s      - run the project
 nexss s --server # if you have specified server, this will start the server
 nexss s --verbose # this will display all extra information during run
-nexss project info # or nexss p i    - display info about project
+nexss project info # or nexss p i - display info about project
 
 # Packages (nexss packages)
 nexss pkg list --json # list of available packages
@@ -101,18 +101,18 @@ nexss package list video # List Video related packages
 
 # Add Packages/Actions
 # Adds Show Desktop to the package
-nexss pkg add Keyboard --type="#d" --copyPackage --saveNexss  --forceNexss
+nexss pkg add Keyboard --type="#d" --copyPackage --saveNexss --forceNexss # copyPackage will copy Nexss Package to your project (and you can modify it).
 
 # Specific language commands
 nexss js # display all available specific language commands
 nexss js pm # displays package managers available for JavaScript/NodeJS (select your language).
 nexss js compilers # displays compilers
-nexss js errors # displays errors and supports available for particular language and
+nexss js errors # displays errors and supports available for particular language
 
 # Config (nexss config)
 nexss config get --json
-nexss config get --select sequences
-nexss config get --configPath c:/Users/mapoart/.nexss/packages/Demos/Start --select sequences
+nexss config get --json --select sequences # for now the select only works with --json flag
+nexss config get --configPath c:/Users/mapoart/.nexss/packages/Demos/Start --select sequences --json # for --select only JSON works.
 ```
 
 ## Packages Examples
@@ -258,6 +258,7 @@ For specific language
 `nexss java`
 `nexss tcl`
 `nexss php`
+ etc.
 
 ## Debuging and Development
 
@@ -273,6 +274,8 @@ You can manage processes from nexss by commands
 nexss ps # list of processes
 nexss ps clean # removes stopped processes from the queue
 nexss ps stop 1234 # stop process (windows kill as there is only emulation) with id (you can kill any process you like on OS. Be careful)
+nexss ps find 123 # finds proces with id
+nexss ps find name node # finds process with name node
 ```
 
 ### Known Issues
@@ -295,17 +298,20 @@ if you have an issue like: "execution of this script is disabled" OR "get-help a
 
 We are working now on the Graphical User Interface and many improvements so package can be use not only by programmers. We are working hard to get it ready in ~~November 2019~~ -> **Q1 or Q2 2020**.
 
-### TODO List
+### TODO List (New Features)
 
 - **MacOS** finish implementation (packages, configurations for all languages) **Work in progress**,
 - **Linux** finish implementation (packages, configurations for all languages) **Work in progress**,
 - More packages related to the current needs of the users,
 - More tutorials and practical examples,
+- Sequences/Applications with voice control,
+- Global packages versioning, updates,
+- Setup builders (Done on C++, C, Python) to make binaries (much faster ! even 1000x) + Compile Nexss PROGRAMMER packages to binary,
 - Write Automatic Tests.
 
 ## Donate [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RP72WY9S6CM4L&source=url)
 
-It is a great pleasure to work on the tools for everyone however it is huge amount of work and the donations are always part of motivation which helps to move forward. There is still a lot of work to implement this on the **Linux** and **MacOS**.
+It is a great pleasure to work on the tools for everyone however it is a huge amount of work and the donations are always part of motivation which helps to move forward. There is still a lot of work to implement **Nexss PROGRAMMER** on the **Linux** and **MacOS**.
 
 Please consider donating to the Nexss Paypal Account
 

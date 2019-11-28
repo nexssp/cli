@@ -22,6 +22,12 @@ module.exports.transformNexss = (
       if (encoding === "buffer") {
         chunk = chunk.toString();
       }
+
+      if (!quiet)
+        console.log(
+          `Chunk size: ${chunk.length}, trimmed: ${chunk.trim().length}`
+        );
+
       if (chunk === "\u0003") {
         // process.exit();
         throw "User exited CTRL+C.";
@@ -38,7 +44,7 @@ module.exports.transformNexss = (
           `Spawning ${cmd} ${args ? args.join(" ") : ""} options: `,
           JSON.stringify(options)
         );
-      // console.log("!!!!!!!!!!!!!!!!!!!!!!", options);
+
       this.worker = spawn(cmd, args, options);
       this.worker.cmd = `${cmd} ${args.join(" ")} `;
 
@@ -63,10 +69,10 @@ module.exports.transformNexss = (
 
       this.worker.stdout.on("data", function(data) {
         if (!quiet) {
-          console.log("OUTPUT: ", data.toString());
+          console.log("OUTPUT: ", data.toString().trim());
         }
-
-        self.push(data.toString());
+        // TODO: Check if trim is ok here
+        self.push(data.toString().trim());
       });
 
       this.worker.stdout.on("end", () => {

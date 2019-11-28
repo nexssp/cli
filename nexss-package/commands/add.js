@@ -47,8 +47,14 @@ delete cliArgs["forceNexss"];
 delete cliArgs["copyPackage"];
 let params = "";
 Object.keys(cliArgs).forEach(element => {
+  if (cliArgs[element].indexOf(" ") > -1 || cliArgs[element] === "\n") {
+    cliArgs[element] = `"${cliArgs[element]}"`;
+  }
+  cliArgs[element] = `"${cliArgs[element]}"`;
   params += ` --${element}=${cliArgs[element]}`;
 });
+
+params = params.replace(/""/g, '"');
 
 if (copyPackage) {
   const fse = require("fs-extra");
@@ -68,6 +74,7 @@ if (copyPackage) {
 if (saveNexss) {
   let configContent = loadConfigContent(NEXSS_PROJECT_CONFIG_PATH);
   if (configContent) {
+    console.log(params);
     configContent.push("files", { name: destinationName + params });
     saveConfigContent(configContent, NEXSS_PROJECT_CONFIG_PATH);
     success("Configuration saved.");

@@ -24,10 +24,12 @@ async function run(operations, options = {}) {
       // }
       let streamName = element.stream || "nexssTransform";
       let args = element.args || [];
-      // if (element.cwd) {
-      //   process.chdir(element.cwd);
-      //   console.log("CHANGED DIR", element.cwd);
-      // }
+      if (element.cwd && element.fileName.indexOf(".nexss") > -1) {
+        process.chdir(element.cwd);
+        if (!options.quiet) {
+          console.log("CHANGED DIR", element.cwd);
+        }
+      }
 
       // Arguments from command line on run
       let paramsNumber = 4;
@@ -39,22 +41,12 @@ async function run(operations, options = {}) {
       const runOptions = Object.assign({}, options, {
         fileName: element.fileName
       });
-      // console.log("eeeeeeeeeeeeeeeeeeeeeee", element);
-      if (element.cmd) {
-        // Why eval?
-        // console.log(
-        //   "command!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
-        //   streamName,
-        //   element.cmd,
-        //   args
-        // );
 
+      if (element.cmd) {
         runOptions.inputData = element.fileArgs;
-        // console.log(streamName, element.cmd, args, runOptions);
         return eval(streamName)(element.cmd, args, runOptions);
       } else {
         if (typeof element === "function") {
-          // console.log("FUUUUUUUUUUUUNNNCCTTTIONN", util.inspect(element));
           return eval(element(runOptions));
         }
         return element;
@@ -77,12 +69,9 @@ async function run(operations, options = {}) {
     });
 
   // console.timeEnd("nexss");
-  // process.exit(0);
   // WARNING!!!!! here was process.exit(0)
   // but didn't show the whole error so return (should be return not process.exit)
   return;
-  // spin.succeed("Completed Nexss Sequence.");
-  // spin.stop();
 }
 
 // const operations = [
