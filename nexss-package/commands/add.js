@@ -50,7 +50,7 @@ Object.keys(cliArgs).forEach(element => {
   if (cliArgs[element].indexOf(" ") > -1 || cliArgs[element] === "\n") {
     cliArgs[element] = `"${cliArgs[element]}"`;
   }
-  cliArgs[element] = `"${cliArgs[element]}"`;
+  cliArgs[element] = `${cliArgs[element]}`;
   params += ` --${element}=${cliArgs[element]}`;
 });
 
