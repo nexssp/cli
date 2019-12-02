@@ -36,6 +36,7 @@ NOTE2: **Linux** _(Soon)_ and **MacOS** + Swift language _(Soon)_ - **Work In Pr
 [Easy Programming - How to compile multiple languages FAST & EASY](https://youtu.be/YZGPPTRLjZk)  
 [How To Record Desktop Area as Video in 1 minute (Python + AutoIt3 + NodeJS)](https://youtu.be/OedxuTRBR7c)  
 [Convert Recorded Desktop Area Video To Gif (moviepy, imageio)](https://www.youtube.com/watch?v=02jVlJz-qnI)
+[Render in Blender results from almost 30 programming languages (Lua, Rust, R example)](https://youtu.be/1lT_chj4_2Y)
 
 ## WHY
 
@@ -258,7 +259,7 @@ For specific language
 `nexss java`
 `nexss tcl`
 `nexss php`
- etc.
+etc.
 
 ## Debuging and Development
 
