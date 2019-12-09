@@ -7,7 +7,8 @@ const aliases = invert(require("../aliases.json"));
 const os = require("os");
 // console.log(path.dirname(path.dirname(process.execPath)));
 (async () => {
-  const EOL = require("os").EOL;
+  // const EOL = require("os").EOL;
+  const EOL = "\n";
   let entries = await fs.promises.readdir(NEXSS_SRC_PATH, {
     withFileTypes: true
   });
@@ -47,7 +48,7 @@ const os = require("os");
                 )}`
               )
               .toString()
-              .split("\n");
+              .split(EOL);
 
             // const helpContent = require(`${NEXSS_SRC_PATH}/${entry.name}/nexssPlugin.js`)
             //   .description;
