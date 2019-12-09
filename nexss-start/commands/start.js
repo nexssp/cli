@@ -133,6 +133,10 @@ if (
   }
 
   const stdin = () => {
+    if (process.platform !== "win32") {
+      // Linux fix
+      process.stdin.resume();
+    }
     var chunks = [];
     try {
       do {
@@ -142,7 +146,11 @@ if (
     } catch (error) {
       // console.error(`STDIN Error: ${error}`);
       // console.trace();
+      if (process.platform !== "win32") {
+        process.stdin.destroy();
+      }
     }
+
     return chunks.join("");
   };
 
