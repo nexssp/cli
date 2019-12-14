@@ -102,11 +102,7 @@ if (
   files = fileOrDirectory || (nexssConfig && nexssConfig.files) || [];
 }
 
-if (
-  nexssConfig &&
-  nexssConfig.server &&
-  (cliArgs.server || files.length === 0)
-) {
+if (nexssConfig && (cliArgs.server || files.length === 0)) {
   startServer(nexssConfig.server, nexssConfig.router || {});
 } else {
   if (files.length === 0) {
@@ -177,9 +173,12 @@ if (
       s.push(JSON.stringify(startData));
       s.push(null);
       return s;
-    },
-    { stream: "transformError", cmd: "Builder Started." }
+    }
   ];
+  if (cliArgs.verbose) {
+    nexssBuild.push({ stream: "transformError", cmd: "Builder Started." });
+  }
+
   // let nexssResult = [() => "process.stdin"];
   let nexssResult = [
     () => {
@@ -220,7 +219,8 @@ if (
       if (cliArgs.verbose) dg(`Parsing ${file.name}..`);
 
       if (globalDisabled && file.disabled) {
-        dy(`file ${file.name} is disabled or Global disabled. Going next..`);
+        if (cliArgs.verbose)
+          dy(`file ${file.name} is disabled or Global disabled. Going next..`);
         return;
       }
 
@@ -350,7 +350,7 @@ if (
           let spawnOptions = { detached: true };
           let compilerAdded = false;
 
-          if (compiler && compiler.args && !cliArgs.build) {
+          if (!builder || (compiler && compiler.args && !cliArgs.build)) {
             // We make sure compiler is installed
             compilerAdded = true;
             if (compiler.command) {
@@ -397,7 +397,9 @@ if (
             });
           }
 
+          // BUILDING
           if (builder && builder.build && (!compilerAdded || cliArgs.build)) {
+            // We create folder for builds..
             if (!fs.existsSync(`_nexss`)) {
               try {
                 fs.mkdirSync(`_nexss`, { recursive: true });
@@ -405,7 +407,7 @@ if (
                 if (err.code !== "EEXIST") throw err;
               }
             }
-
+            // We add exe to the file name as build file.
             let exeFile = path.resolve(`_nexss/${path.basename(fileName)}.exe`);
 
             let cmd;
@@ -416,9 +418,6 @@ if (
             }
 
             if (!cmd) cmd = builder.cmd;
-
-            // console.log(builder);
-
             ensureInstalled(cmd, builder.install);
 
             const builderArgs = builder.args
@@ -427,6 +426,7 @@ if (
               .replace(/<destinationFile>/g, exeFile)
               .replace(/<destinationDirectory>/g, path.dirname(exeFile))
               .split(" ");
+
             nexssBuild.push({
               stream: "transformNexss",
               cmd,
@@ -482,7 +482,7 @@ if (
 
     // This needs to be changed so only build if is necessary
     if (nexssBuild.length > 0 && cliArgs.build) {
-      dy(`Building..`, nexssBuild);
+      if (cliArgs.verbose) dy(`Building..`, nexssBuild);
       await run(nexssBuild, { quiet: !cliArgs.verbose, build: true }).catch(e =>
         console.error(e)
       );
