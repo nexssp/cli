@@ -1,12 +1,14 @@
 # Nexss PROGRAMMER 2.0
 
+## This is OPEN SOURCE/FREE VERSION. We are looking for developers (at any level) who would like to help others and move this project forward, emailto: mapoart [at] gmail [dot] com
+
 ```sh
                 ____
 |..          | |             ``..      ..''             ..''''             ..''''
 |  ``..      | |______           ``..''              .''                .''
 |      ``..  | |                 ..'`..           ..'                ..'
 |          ``| |___________  ..''      ``.. ....''             ....''
-Programmer 2.0.2, NodeJS v13.0.1, OS: win32 10.0.18362
+Programmer 2.0.4, NodeJS v13.0.1, OS: win32 10.0.18362
 ```
 
 ## How to start learning computer programming?
@@ -23,7 +25,7 @@ Programmer 2.0.2, NodeJS v13.0.1, OS: win32 10.0.18362
 
 NOTE: **Java**, **Scala**, **C**, **C#**, **Haskell**, **VBScript**, **Erlang**, **Windows Scripting Hosts**, **PureData** need some manual adjustments to make to work (languages related).
 
-NOTE2: **Linux** _(Soon)_ and **MacOS** + Swift language _(Soon)_ - **Work In Progress**
+NOTE2: **Linux** _(Soon - FOR NOW ONLY WORKS NODEJS)_ and **MacOS** + Swift language _(Soon)_ - **Work In Progress**
 
 ## Introduction
 
@@ -59,7 +61,7 @@ Note: Packages will be installed with the very first run of `nexss` command in y
 
 ### Installation
 
-**For beginners**: Please install [Git](https://git-scm.com/) and [NodeJS v12](https://nodejs.org/) first.
+**For beginners**: Please install [Git](https://git-scm.com/) and [NodeJS](https://nodejs.org/) first.
 
 **WINDOWS USERS:** Nexss Programmer is using Scoop for installing language related compilers, builders etc. If you have issues with older system(s) please use **Powershell** with Powershell Core and .NET Framework 4.5. More inforamtion please see:
 [Scoop Website](https://scoop.sh/) or [Scoop Quick Start](https://github.com/lukesampson/scoop/wiki/Quick-Start)
@@ -92,7 +94,9 @@ Here will be menu displayed with your options.
 nexss project new myproject # or nexss p new myproject
 cd myproject
 nexss start # or nexss s      - run the project
-nexss s --server # if you have specified server, this will start the server
+nexss s --server # if you don't have specified server, this will start the server at 127.0.0.1
+# path in the url becoming sequence eg.
+# http://localhost:8080/myseq1/abc will load myseq/abc sequence
 nexss s --verbose # this will display all extra information during run
 nexss project info # or nexss p i - display info about project
 
@@ -100,6 +104,7 @@ nexss project info # or nexss p i - display info about project
 nexss pkg list --json # list of available packages
 nexss pkg l ocr --json # Search for OCR packages with json output
 nexss package list video # List Video related packages
+nexss pkg init # install all packages dependencies. It is run during first run of nexss.
 
 # Add Packages/Actions
 # Adds Show Desktop to the package
@@ -119,9 +124,11 @@ nexss config get --configPath c:/Users/mapoart/.nexss/packages/Demos/Start --sel
 
 ## Packages Examples
 
+All packages help can be shown by `nexss <packageName> help` eg. `nexss Id help`
+
 ```sh
-nexss Id # returns id
-nexss Id --fields=cuid
+nexss Id # returns unique id
+nexss Id --fields=cuid # returns only field cuid
 nexss Blender
 nexss Clipboard # receive clipboard value nexss Clipboard help for more
 nexss Convert/VideoToGif --file=myfile.mp4
@@ -132,7 +139,7 @@ nexss Keyboard --type="#b" # WIN + b / Show Taskbar
 nexss Mouse/Move --x=1 --y=20
 nexss Mouse/MoveToImage --image=1
 nexss Nexss/PackageBrowser
-nexss Select/Area
+nexss Select/Area # After selecting area returns selection coordinates X1,Y1,X2,Y2
 nexss Screen/Capture --file=123123.png # OR as below PIPE
 echo {"file":"myfile.jpg"} | nexss Mouse/MoveToImage
 ```
@@ -175,8 +182,30 @@ files:
   - name: myfile.php
   - name: thisisatest.exs
 commands:
-  - name: lll
+  - name: listDirectory
     command: ls -la
+sequences:
+  myseq1:
+    - name: src/myfile.r
+    - name: Template --name=myname --file=mytemplate4.jade
+  myseq2:
+    - name: src/readData1.js
+    - name: src/readData2.rb
+    - name: Template --name=myname --file=mytemplate3.pug
+```
+
+## Sequences
+
+Nexss PROGRAMMER allow to use sequences to have multiple files section. Eg
+
+`nexss start --seq=myseq1`
+
+```yml
+sequences:
+  myseq1:
+    - name: src/myfile.js
+    - name: src/my.rb
+    - name: Template --name=myname
 ```
 
 ## Installing Packages (languages related)
@@ -222,10 +251,10 @@ nexss project create myproject --template examples/automation-1 -f
 
 ```sh
 nexss command add directorylist ls -la # nexss command add [name] [...command]
-nexss c add mycommand ls -la # also aliast is c
-nexss c add executeNexssBegin nexss s nexssBegin.js # execute nexss statement through command
-nexss c list # list of commands in the actual project
-nexss c delete #it will display selection of commands to delete one.
+nexss cmd add mycommand ls -la # also aliast is c
+nexss cmd add executeNexssBegin nexss nexssBegin.js # execute nexss statement through command
+nexss cmd list # list of commands in the actual project
+nexss cmd delete #it will display selection of commands to delete one.
 ```
 
 ### Stdin
@@ -273,7 +302,7 @@ nexss myfile.pl --verbose # will display extra information during run, best to u
 You can manage processes from nexss by commands
 
 ```sh
-nexss ps # list of processes
+nexss ps # list of processes run by nexss PROGRAMMER
 nexss ps clean # removes stopped processes from the queue
 nexss ps stop 1234 # stop process (windows kill as there is only emulation) with id (you can kill any process you like on OS. Be careful)
 nexss ps find 123 # finds proces with id
@@ -304,6 +333,7 @@ We are working now on the Graphical User Interface and many improvements so pack
 
 - **MacOS** finish implementation (packages, configurations for all languages) **Work in progress**,
 - **Linux** finish implementation (packages, configurations for all languages) **Work in progress**,
+- Setup builders 'Any language To EXE' and 'Any module to EXE',
 - More packages related to the current needs of the users,
 - More tutorials and practical examples,
 - Sequences/Applications with voice control,
