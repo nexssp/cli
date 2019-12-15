@@ -1,4 +1,4 @@
-const { extname, join } = require("path");
+const { extname, join, resolve, dirname } = require("path");
 const cliArgs = require("minimist")(process.argv.slice(3));
 const { searchData } = require("../../lib/search");
 
@@ -12,7 +12,7 @@ const {
 } = require("../../config/config");
 const fs = require("fs");
 const { loadConfigContent, saveConfigContent } = require("../../lib/config");
-
+const nexssLanguages = require("../../nexss-language/lib/language");
 // if (!NEXSS_PROJECT_SRC_PATH) {
 //   console.log(`You are not in the nexss project folder.`);
 //   process.exit(1);
@@ -79,10 +79,18 @@ if (!fs.existsSync(options.fileName) && !cliArgs.force) {
       options.extension = answers.extension[0].replace("\u001b[1m", "");
     }
 
+    // console.log(answers.template);
     if (answers.template) {
-      answers.template = answers.template.split("(");
-      options.template = answers.template[1].split(")")[0];
+      answers.template = answers.template.split(" ")[1];
+      options.template = answers.template;
     }
+
+    let lang = nexssLanguages.getLang(options.extension);
+    options.template = resolve(
+      dirname(lang.configFile),
+      "templates",
+      answers.template
+    );
 
     execute(options);
     process.exit(0);
