@@ -1,6 +1,6 @@
 # Nexss PROGRAMMER 2.0
 
-## This is OPEN SOURCE/FREE VERSION. We are looking for developers (at any level) who would like to help others and move this project forward, emailto: mapoart [at] gmail [dot] com
+This project is OPEN SOURCE. We are looking for developers (from beginners to experts) who would like to help others and move this project forward. Don't hesitate and email to: mapoart [at] gmail [dot] com
 
 ```sh
                 ____
