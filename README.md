@@ -1,5 +1,7 @@
 # Nexss PROGRAMMER 2.0
 
+This project is OPEN SOURCE. We are actively seeking developers (from beginners to experts) who would like to help others and move this project forward. Please don't hesitate and email to: mapoart [at] gmail [dot] com
+
 ```sh
                 ____
 |..          | |             ``..      ..''             ..''''             ..''''
@@ -13,7 +15,7 @@ Programmer 2.0.4, NodeJS v13.0.1, OS: win32 10.0.18362
 
 <a target="_blank" href="https://www.mgm-solutions.com"><img src="mgm-solutions.png"></a>
 
-This project is OPEN SOURCE. We are looking for developers (from beginners to experts) who would like to help others and move this project forward. Don't hesitate and email to: mapoart [at] gmail [dot] com
+## About Nexss Programmer
 
 ![Nexss Programmer - The innovative tool for programmers - programming tool](NexssProgrammer-innovative-tool-languagesList.jpg)
 
