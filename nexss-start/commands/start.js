@@ -481,7 +481,7 @@ if (nexssConfig && (cliArgs.server || files.length === 0)) {
     });
 
     // This needs to be changed so only build if is necessary
-    if (nexssBuild.length > 0 && cliArgs.build) {
+    if (nexssBuild.length > 0) {
       if (cliArgs.verbose) dy(`Building..`, nexssBuild);
       await run(nexssBuild, { quiet: !cliArgs.verbose, build: true }).catch(e =>
         console.error(e)
