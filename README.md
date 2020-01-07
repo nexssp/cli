@@ -11,10 +11,6 @@ This project is OPEN SOURCE. We are actively seeking developers (from beginners 
 Programmer 2.0.5, NodeJS v13.0.1, OS: win32 10.0.18362
 ```
 
-## Supported By
-
-<a target="_blank" href="https://www.nexss.com"><img src="Nexss.png"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a target="_blank" href="https://www.mgm-solutions.com"><img src="mgm-solutions.png"> </a>
-
 ## About Nexss Programmer
 
 ![Nexss Programmer - The innovative tool for programmers - programming tool](NexssProgrammer-innovative-tool-languagesList.jpg)
