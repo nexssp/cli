@@ -18,6 +18,8 @@ Programmer 2.0.5, NodeJS v13.0.1, OS: win32 10.0.18362
 ## How to start learning computer programming?
 
 - Start **learning PROGRAMMING** within minutes with Nexss PROGRAMMER 2.0 eg. `nexss myprogram.r` OR `nexss myanotherprogram.py` **(nexss file.ext)** and it will download automatically compiler and run Your program,
+- Add files from predefined templates for the languages: ![Nexss Programmer Select Template Example CLI](nexssProgrammer-SelectTemplateExampleCLI.png)  
+  **We are looking for people would like to contribute to the templates for each language**,
 - Build your own tools that other people can use,
 - Configurable Error handling with suggested solutions,
 - Save time by using as many languages you like for the solution (combined),
