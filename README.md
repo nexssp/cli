@@ -17,9 +17,10 @@ Programmer 2.0.5, NodeJS v13.0.1, OS: win32 10.0.18362
 
 ## How to start learning computer programming?
 
-- Start **learning PROGRAMMING** within minutes with Nexss PROGRAMMER 2.0 eg. `nexss myprogram.r` OR `nexss myanotherprogram.py` **(nexss file.ext)** and it will download automatically compiler and run Your program,
-- Add files from predefined templates for the languages: ![Nexss Programmer Select Template Example CLI](nexssProgrammer-SelectTemplateExampleCLI.png)  
-  **We are looking for people would like to contribute to the templates for each language**,
+![Nexss Programmer Select Template Example CLI](nexssProgrammer-SelectTemplateExampleCLI.png)  
+
+- Start **learning PROGRAMMING** within minutes with Nexss PROGRAMMER 2.0 eg. `nexss myprogram.r` OR `nexss myanotherprogram.py` **(nexss file.ext)** and it will download automatically compiler and run Your program.
+- Add files from predefined templates for the languages (**We are looking for people would like to contribute to the templates for each language**),
 - Build your own tools that other people can use,
 - Configurable Error handling with suggested solutions,
 - Save time by using as many languages you like for the solution (combined),
@@ -29,7 +30,7 @@ Programmer 2.0.5, NodeJS v13.0.1, OS: win32 10.0.18362
 
 **SAVE TIME** on learning any programming language with NEXSS PROGRAMMER.
 
-NOTE: **Java**, **Scala**, ~~**C++**~~, **C**, **C#**, **Haskell**, **VBScript**, ~~**Erlang**~~, **Windows Scripting Hosts**, **PureData** need some manual adjustments to make to work (languages related).
+NOTE: **Java**, **Scala**, **C**,  **Haskell**, **VBScript**, **Windows Scripting Hosts**, **PureData** need some manual adjustments to make to work (languages related).
 
 NOTE2: **Linux** _(Soon - FOR NOW ONLY WORKS NODEJS)_ and **MacOS** + Swift language _(Soon)_ - **Work In Progress**
 
