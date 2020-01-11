@@ -30,7 +30,7 @@ Programmer 2.0.5, NodeJS v13.0.1, OS: win32 10.0.18362
 
 **SAVE TIME** on learning any programming language with NEXSS PROGRAMMER.
 
-NOTE: **C**, **Java**, **Kotlin**, **Haskell**, **VBScript**, **Windows Scripting Hosts**, **PureData** need some manual adjustments to make to work (languages related).
+NOTE: **C**, **Java**, **Kotlin**, **Haskell**, **VBScript**, **Windows Scripting Hosts**, **PureData** need some manual adjustments to make to work with JSON data / Nexss Programmer Projects.
 
 NOTE2: **Linux** _(Soon - FOR NOW ONLY WORKS NODEJS)_ and **MacOS** + Swift language _(Soon)_ - **Work In Progress**
 
