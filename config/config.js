@@ -123,9 +123,9 @@ const copyIfNotExists = [
 
 try {
   copyIfNotExists.forEach(([src, dest]) => {
-    src = join(__dirname, src);
-    if (!existsSync(`${basename(src)}/${dest}`)) {
-      copyFileSync(src, join(dest, basename(src)));
+    const destination = join(dest, basename(src));
+    if (!existsSync(destination)) {
+      copyFileSync(join(__dirname, src), destination);
     }
   });
 } catch (error) {
