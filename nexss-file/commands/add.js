@@ -100,9 +100,7 @@ if (!fs.existsSync(options.fileName) && !cliArgs.force) {
   if (!cliArgs.noconfig) {
     let configContent = loadConfigContent(NEXSS_PROJECT_CONFIG_PATH);
     if (configContent) {
-      if (
-        configContentconfigContent.findByProp("files", "name", options.fileName)
-      ) {
+      if (configContent.findByProp("files", "name", options.fileName)) {
         info(yellow(`File '${options.fileName}' is already in the _nexss.yml`));
         return;
       } else {
