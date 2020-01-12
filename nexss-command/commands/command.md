@@ -1,6 +1,6 @@
 # Command
 
-Execute command eg. nexss c listFiles
+Execute command eg. nexss cmd listFiles
 
 ## Examples
 
