@@ -1,7 +1,7 @@
 {
   "name": "@nexssp/cli",
   "author": "Marcin Polak mapoart@gmail.com",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "Nexss PROGRAMMER",
   "main": "nexss.js",
   "scripts": {
@@ -31,6 +31,7 @@
   },
   "homepage": "https://github.com/nexssp/cli#readme",
   "dependencies": {
+    "chalk": "^3.0.0",
     "cli-table3": "^0.5.1",
     "copy-dir": "^1.2.0",
     "dotenv": "^8.2.0",
@@ -45,6 +46,7 @@
     "js-yaml": "^3.13.1",
     "minimist": "^1.2.0",
     "moment": "^2.24.0",
+    "pkg": "^4.4.2",
     "request": "^2.88.0"
   }
 }

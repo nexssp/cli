@@ -1,6 +1,6 @@
 # Nexss PROGRAMMER 2.0
 
-Nexss Programmer is the **innovative** and **evolutionary** tool for the programmers with unlimited possibilities. This system allows to combine over 30 programming languages in many different ways.   
+Nexss Programmer is the **innovative** and **evolutionary** tool for the programmers with unlimited possibilities. This system allows to combine from over 30 programming languages in many different ways.
 
 ```sh
                 ____
@@ -8,14 +8,20 @@ Nexss Programmer is the **innovative** and **evolutionary** tool for the program
 |  ``..      | |______           ``..''              .''                .''
 |      ``..  | |                 ..'`..           ..'                ..'
 |          ``| |___________  ..''      ``.. ....''             ....''
-Programmer 2.0.5, NodeJS v13.0.1, OS: win32 10.0.18362
+Programmer 2.0.6, NodeJS v12.13.1
 ```
+
+## Installation Windows
+
+Just download installer: [nexss-programmer-x64.exe](installer\nexss-programmer-x64.exe) or 32bit version [nexss-programmer-x86.exe](installer\nexss-programmer-x86.exe)
+
+If you would like to install it manualy please go to this secion.
 
 ![Nexss Programmer - The innovative tool for programmers - programming tool](NexssProgrammer-innovative-tool-languagesList.jpg)
 
 ## How to start learning computer programming?
 
-![Nexss Programmer Select Template Example CLI](nexssProgrammer-SelectTemplateExampleCLI.png)  
+![Nexss Programmer Select Template Example CLI](nexssProgrammer-SelectTemplateExampleCLI.png)
 
 - Start **learning PROGRAMMING** within minutes with Nexss PROGRAMMER 2.0 eg. `nexss myprogram.r` OR `nexss myanotherprogram.py` **(nexss file.ext)** and it will download automatically compiler and run Your program.
 - Add files from predefined templates for the languages (**We are looking for people would like to contribute to the templates for each language**),
@@ -57,17 +63,11 @@ NOTE2: **Linux** _(Soon - FOR NOW ONLY WORKS NODEJS)_ and **MacOS** + Swift lang
 
 Please go to the [USER_HOME_PATH]/.nexss/packages folder to grasp the idea. There are examples of the modules you can use.
 
-## Nexss PROGRAMMER Examples
-
-**[USER_HOME_PATH]/.nexss/packages** or `nexss pkg list`
-
-Note: Packages will be installed with the very first run of `nexss` command in your terminal.
-
 ## Installation & First Run
 
-### Installation
+### Manual Installation
 
-**For beginners**: Please install [Git](https://git-scm.com/) and [NodeJS](https://nodejs.org/) first.
+Please install [Git](https://git-scm.com/) and [NodeJS](https://nodejs.org/) first.
 
 **WINDOWS USERS:** Nexss Programmer is using Scoop for installing language related compilers, builders etc. If you have issues with older system(s) please use **Powershell** with Powershell Core and .NET Framework 4.5. More inforamtion please see:
 [Scoop Website](https://scoop.sh/) or [Scoop Quick Start](https://github.com/lukesampson/scoop/wiki/Quick-Start)
@@ -87,10 +87,16 @@ nexss
 |  ``..      | |______           ``..''              .''                .''
 |      ``..  | |                 ..'`..           ..'                ..'
 |          ``| |___________  ..''      ``.. ....''             ....''
-Programmer 2.0.2, NodeJS v13.0.1, OS: win32 10.0.18362
+Programmer 2.0.6, NodeJS v12.13.1
 ...
 Here will be menu displayed with your options.
 ```
+
+## Nexss PROGRAMMER Examples
+
+**[USER_HOME_PATH]/.nexss/packages** or `nexss pkg list`
+
+Note: Packages will be installed with the very first run of `nexss` command in your terminal.
 
 ### New Project
 
