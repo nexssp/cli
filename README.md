@@ -13,7 +13,7 @@ Programmer 2.0.6, NodeJS v12.13.1
 
 ## Installation Windows
 
-Just download installer: [nexss-programmer-x64.exe](installer\nexss-programmer-x64.exe) or 32bit version [nexss-programmer-x86.exe](installer\nexss-programmer-x86.exe)
+Just download installer: [nexss-programmer-x64.exe](installer/nexss-programmer-x64.exe) or 32bit version [nexss-programmer-x86.exe](installer/nexss-programmer-x86.exe)
 
 If you would like to install it manualy please go to this secion.
 
