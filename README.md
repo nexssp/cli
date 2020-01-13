@@ -11,12 +11,6 @@ Nexss Programmer is the **innovative** and **evolutionary** tool for the program
 Programmer 2.0.6, NodeJS v12.13.1
 ```
 
-## Installation Windows
-
-Just download installer: <a id="raw-url" href="https://raw.githubusercontent.com/nexssp/cli/master/installer/nexss-programmer-x64.exe">nexss-programmer-x64.exe</a> or 32bit version <a id="raw-url" href="https://raw.githubusercontent.com/nexssp/cli/master/installer/nexss-programmer-x86.exe">nexss-programmer-x86.exe</a>
-
-If you would like to install it manualy please go to this secion.
-
 ![Nexss Programmer - The innovative tool for programmers - programming tool](NexssProgrammer-innovative-tool-languagesList.jpg)
 
 ## How to start learning computer programming?
@@ -62,8 +56,6 @@ NOTE2: **Linux** _(Soon - FOR NOW ONLY WORKS NODEJS)_ and **MacOS** + Swift lang
 - Write reusable modules **EASY** in as many languages you like.
 
 Please go to the [USER_HOME_PATH]/.nexss/packages folder to grasp the idea. There are examples of the modules you can use.
-
-## Installation & First Run
 
 ### Manual Installation
 
