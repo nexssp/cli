@@ -17,13 +17,13 @@ Programmer 2.0.6
 ---
 
 <p align="center" >
-    <a href="https://github.com/nexssp/cli">
+    <a href="https://github.com/nexssp/cli/blob/master/LICENSE">
         <img src="https://img.shields.io/github/license/nexssp/cli?style=for-the-badge" alt="License" />
     </a>
     <a href="https://github.com/nexssp/cli">
         <img src="https://img.shields.io/github/languages/code-size/nexssp/cli?style=for-the-badge" alt="Repository size" />
     </a>
-    <a href="https://github.com/nexssp/cli/blob/master/LICENSE">
+    <a href="https://discord.gg/d9xjMEX">
         <img src="https://img.shields.io/badge/CHAT-ON%20DISCORD-brightgreen?style=for-the-badge" alt="License" />
     </a>
 </p>
