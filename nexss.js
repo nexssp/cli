@@ -156,9 +156,15 @@ if (commandAliases[command]) {
 // Here loads when help is needed for particular command eg nexss file add help
 if (process.argv[4] === "help") {
   //help for command
-  const helpContent = require("fs").readFileSync(
-    `${NEXSS_SRC_PATH}/nexss-${plugin}/commands/${command}.md`
-  );
+  try {
+    const helpContent = require("fs").readFileSync(
+      `${NEXSS_SRC_PATH}/nexss-${plugin}/commands/${command}.md`
+    );
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
+
   console.info(helpContent.toString());
   return;
 }
