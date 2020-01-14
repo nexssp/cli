@@ -1,10 +1,9 @@
 const { extname, join, resolve, dirname } = require("path");
 const cliArgs = require("minimist")(process.argv.slice(3));
 const { searchData } = require("../../lib/search");
-
 const inquirer = require("inquirer");
-const { yellow, bold, green } = require("../../lib/color");
-const { error, warn, ok, success, info } = require("../../lib/log");
+const { yellow, bold } = require("../../lib/color");
+const { error, ok, success, info } = require("../../lib/log");
 const {
   NEXSS_PROJECT_SRC_PATH,
   NEXSS_PROJECT_CONFIG_PATH,
@@ -24,8 +23,6 @@ inquirer.registerPrompt(
 );
 
 let options = {};
-
-const cmd = cliArgs._[0];
 options.fileName = cliArgs._[1] || options.fileName || "";
 options.extension = extname(options.fileName);
 options.template = cliArgs.template;
@@ -234,9 +231,10 @@ ${
 
       const descriptions = extraOptions.descriptions || [];
       if (descriptions.length > 0) {
-        warn("Some information about installed packages.");
+        // warn("Some information about installed packages.");
         descriptions.forEach(desc => {
-          warn(desc);
+          console.log("Info from additional third party libraries package:");
+          console.log(desc);
         });
       }
       let commands = extraOptions.commands;
