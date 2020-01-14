@@ -1,6 +1,6 @@
 # List
 
-For the first run pkg needs to be initialized, so it is go through all packages and run init command. `nexss cmd init`
+All installed packages have 'init' command run: `nexss cmd init`
 
 ## Examples
 
