@@ -80,7 +80,8 @@ if (nexssConfig) {
 
 let files;
 
-// if you put -seq=myseq it will run sequence more on Demos
+// SEQUENCES
+// more: https://github.com/nexssp/cli/wiki/Sequences
 if (
   cliArgs.seq &&
   nexssConfig.sequences &&
@@ -102,6 +103,7 @@ if (
   files = fileOrDirectory || (nexssConfig && nexssConfig.files) || [];
 }
 
+// SERVER
 if (nexssConfig && (cliArgs.server || files.length === 0)) {
   startServer(nexssConfig.server, nexssConfig.router || {});
 } else {
@@ -110,6 +112,7 @@ if (nexssConfig && (cliArgs.server || files.length === 0)) {
     process.exit(1);
   }
 
+  // more here: https://github.com/nexssp/cli/wiki/Config
   let startData = (nexssConfig && nexssConfig.data) || {};
 
   startData.start = Date.now();
@@ -176,7 +179,10 @@ if (nexssConfig && (cliArgs.server || files.length === 0)) {
     }
   ];
   if (cliArgs.verbose) {
-    nexssBuild.push({ stream: "transformError", cmd: "Builder Started." });
+    nexssBuild.push({
+      stream: "transformError",
+      cmd: "Builder Started."
+    });
   }
 
   // let nexssResult = [() => "process.stdin"];
@@ -483,9 +489,10 @@ if (nexssConfig && (cliArgs.server || files.length === 0)) {
     // This needs to be changed so only build if is necessary
     if (nexssBuild.length > 0) {
       if (cliArgs.verbose) dy(`Building..`, nexssBuild);
-      await run(nexssBuild, { quiet: !cliArgs.verbose, build: true }).catch(e =>
-        console.error(e)
-      );
+      await run(nexssBuild, {
+        quiet: !cliArgs.verbose,
+        build: true
+      }).catch(e => console.error(e));
     }
 
     if (cliArgs.verbose) dg(`Executing..`);
