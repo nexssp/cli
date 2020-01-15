@@ -1,6 +1,6 @@
 # List
 
-List languages available on the system.
+List installed languages.
 
 ## Examples
 

@@ -1,6 +1,6 @@
 # Add
 
-Adds new command to the project. eg. nexss c add listFiles ls -la
+Add new command to the project
 
 ## Examples
 

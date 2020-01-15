@@ -14,7 +14,10 @@ const os = require("os");
   });
 
   entries = entries.filter(
-    entry => entry.isDirectory() && entry.name.indexOf("nexss-") === 0
+    entry =>
+      entry.isDirectory() &&
+      entry.name.indexOf("nexss-") === 0 &&
+      entry.name !== "nexss-help"
   );
 
   let commandsHelp = await Promise.all(
@@ -92,7 +95,9 @@ Programmer ${require("../package.json").version}, NodeJS ${
     }, OS: ${process.platform} ${os.release()}  `
   );
   console.log(commandsHelp.flat());
-
+  console.log(
+    bold("To display help add 'help': nexss command help OR nexss package help")
+  );
   //   console.log(JSON.stringify(result));
 })().catch(e => console.error(e));
 
