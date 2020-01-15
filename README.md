@@ -38,6 +38,10 @@ NOTE2: **Linux** _(Soon - FOR NOW ONLY WORKS NODEJS)_ and **MacOS** + Swift lang
 
 ---
 
+For installing the compilers **Nexss Programmer** uses fantastic package manager tool from **Luke Sampson** [SCOOP](https://scoop.sh/)
+
+---
+
 ## How to start learning computer programming?
 
 ![Nexss Programmer Select Template Example CLI](nexssProgrammer-SelectTemplateExampleCLI.png)
