@@ -1,59 +1,77 @@
-const { extname, join, resolve, dirname } = require("path");
+const { extname, join, resolve, dirname, isAbsolute } = require("path");
 const cliArgs = require("minimist")(process.argv.slice(3));
 const { searchData } = require("../../lib/search");
-const inquirer = require("inquirer");
-const { yellow, bold } = require("../../lib/color");
+const { yellow, green, bold } = require("../../lib/color");
 const { error, ok, success, info } = require("../../lib/log");
 const {
   NEXSS_PROJECT_SRC_PATH,
-  NEXSS_PROJECT_CONFIG_PATH,
-  NEXSS_PROJECT_PATH
+  NEXSS_PROJECT_CONFIG_PATH
 } = require("../../config/config");
 const fs = require("fs");
 const { loadConfigContent, saveConfigContent } = require("../../lib/config");
 const nexssLanguages = require("../../nexss-language/lib/language");
-// if (!NEXSS_PROJECT_SRC_PATH) {
-//   console.log(`You are not in the nexss project folder.`);
-//   process.exit(1);
-// }
+const { extraFunctions } = require("../lib/fileExtraOptions");
 
-inquirer.registerPrompt(
-  "autocomplete",
-  require("inquirer-autocomplete-prompt")
-);
-
-let options = {};
+var options = {};
 options.fileName = cliArgs._[1] || options.fileName || "";
+
+if (
+  !/^[^\\\/\:\*\?\"\<\>\|\.]+(\.[^\\\/\:\*\?\"\<\>\|\.]+)+$/.test(
+    options.fileName
+  )
+) {
+  error(`Add valid filename like: mycorrectfilename.[extension]. Examples:
+nexss file add myfile.js
+nexss f a myfile.rs`);
+  process.exit(1);
+}
+
+options.filePath = options.fileName;
+
+if (
+  NEXSS_PROJECT_SRC_PATH &&
+  !options.fileName.includes("src/") &&
+  !options.fileName.includes("src\\")
+) {
+  if (!fs.existsSync(options.fileName)) {
+    options.filePath = join(NEXSS_PROJECT_SRC_PATH, options.fileName);
+  }
+}
+
+if (fs.existsSync(options.filePath) && !cliArgs.force && !cliArgs.f) {
+  error(`File already exists: ${options.fileName}`);
+  process.exit(1);
+}
+
 options.extension = extname(options.fileName);
-options.template = cliArgs.template;
+options.template = cliArgs.template || cliArgs.t;
+var lang = nexssLanguages.getLang(options.extension);
 
 let questions = [];
-if (!options.fileName) {
-  questions.push({
-    type: "input",
-    name: "fileName",
-    message: "Enter filename name",
-    //default: fileName,
-    validate: function(val) {
-      return val ? true : "Type the new filename";
-    }
-  });
-}
 
-if (!options.extension) {
-  const { languageNames } = require("../../nexss-language/lib/language");
-  questions.push({
-    type: "autocomplete",
-    name: "extension",
-    source: searchData(languageNames),
-    message: "Select language",
-    validate: function(val) {
-      return val ? true : "Select file type";
+if (options.template) {
+  if (extname(options.template)) {
+    if (!isAbsolute(options.template)) {
+      error(`Please enter template name without extension or pass the absolute path. Example:
+nexss file add myprogram.js --template=default
+nexss file add myprogram.js --template=helloWorld
+`);
+      process.exit(1);
+    } else {
+      if (existsSync(options.template)) {
+        error(`The template${options.template} does not exist.`);
+        process.exit(1);
+      }
     }
-  });
-}
+  }
+  execute(options);
+} else {
+  const inquirer = require("inquirer");
+  inquirer.registerPrompt(
+    "autocomplete",
+    require("inquirer-autocomplete-prompt")
+  );
 
-if (!options.template) {
   const { templateNames } = require("../../nexss-template/lib/template");
   questions.push({
     type: "autocomplete",
@@ -64,85 +82,21 @@ if (!options.template) {
       return val ? true : "Select file template";
     }
   });
-}
-
-if (!fs.existsSync(options.fileName) && !cliArgs.force) {
   inquirer.prompt(questions).then(function(answers) {
     Object.assign(options, answers);
-
-    if (answers.extension) {
-      // We remove formatting from the results
-      answers.extension = answers.extension.split("\u001b[22m");
-      options.extension = answers.extension[0].replace("\u001b[1m", "");
-    }
-
     // console.log(answers.template);
     if (answers.template) {
       answers.template = answers.template.split(" ")[1];
       options.template = answers.template;
     }
 
-    let lang = nexssLanguages.getLang(options.extension);
-    options.template = resolve(
-      dirname(lang.configFile),
-      "templates",
-      answers.template
-    );
-
     execute(options);
     process.exit(0);
   });
-} else {
-  // we check if there is no flag
-  if (!cliArgs.noconfig) {
-    let configContent = loadConfigContent(NEXSS_PROJECT_CONFIG_PATH);
-    if (configContent) {
-      if (configContent.findByProp("files", "name", options.fileName)) {
-        info(yellow(`File '${options.fileName}' is already in the _nexss.yml`));
-        return;
-      } else {
-        configContent.push("files", { name: options.fileName });
-        saveConfigContent(configContent, NEXSS_PROJECT_CONFIG_PATH);
-        success("Done.");
-      }
-    } else {
-      console.log("file already exists.");
-    }
-  }
 }
 
-const execute = options => {
-  const currentPath = process.cwd();
-  if (!extname(options.fileName)) {
-    options.fileName += options.extension;
-  }
-
-  // We can deal with files without nexss project!
-  let filePath = options.fileName;
-
-  if (
-    NEXSS_PROJECT_SRC_PATH &&
-    !options.fileName.includes("src/") &&
-    !options.fileName.includes("src\\")
-  ) {
-    if (!fs.existsSync(filePath)) {
-      filePath = join(NEXSS_PROJECT_SRC_PATH, options.fileName);
-    }
-  }
-
-  if (!cliArgs.noconfig && fs.existsSync(filePath)) {
-    if (!cliArgs.force) {
-      // We store path related to the
-      const filePath = NEXSS_PROJECT_SRC_PATH.replace(NEXSS_PROJECT_PATH, "");
-
-      let configContent = loadConfigContent(NEXSS_PROJECT_CONFIG_PATH);
-      configContent.push("files", { name: filePath });
-      saveConfigContent(configContent, NEXSS_PROJECT_CONFIG_PATH);
-      success("File exists, edded to the _nexss.yml");
-    } else {
-      error(`File ${filePath} exists but ${yellow("force option enabled.")}`);
-    }
-  }
+function execute(options) {
+  let filePath = options.filePath;
 
   if (
     (typeof options.template === "boolean" && options.template) ||
@@ -152,22 +106,27 @@ const execute = options => {
   }
 
   if (options.template) {
-    const templatePath = options.template;
-    //console.log(templatePath);
-    //  console.log(templatePath);
-    if (!fs.existsSync(templatePath)) {
-      info(yellow(`Template ${bold(options.template)} does not exist.`));
-      info(yellow(`File '${options.fileName}' has not been created.`));
+    if (!isAbsolute(options.template) && !extname(options.template)) {
+      options.template = `${options.template}${options.extension}`;
+    }
+    options.templatePath = resolve(
+      dirname(lang.configFile),
+      "templates",
+      options.template
+    );
+
+    if (!fs.existsSync(options.templatePath)) {
+      error(`Template ${bold(options.template)} does not exist.`);
+      error(`File ${bold(options.fileName)} has not been created.`);
+      process.exit(1);
     } else {
-      // console.log(
-      //   green(
-      //     `Using ${bold(options.template)} template. Creating from template...`
-      //   )
-      // );
+      console.log(
+        green(
+          `Using ${bold(options.template)} template. Creating from template...`
+        )
+      );
 
-      // console.log("COPY " + templatePath + " TO " + filePath);
-
-      fs.copyFileSync(templatePath, filePath, err => {
+      fs.copyFileSync(options.templatePath, filePath, err => {
         if (err) throw err;
       });
 
@@ -190,69 +149,15 @@ const execute = options => {
           );
           return;
         } else {
-          configContent.push("files", { name: options.fileName });
+          configContent.push("files", {
+            name: options.fileName
+          });
           saveConfigContent(configContent, NEXSS_PROJECT_CONFIG_PATH);
           success("Done.");
         }
       }
     }
-    // Extra operation for the template like installations, files copy, info
-    if (fs.existsSync(`${templatePath}.js`)) {
-      console.log("Additional files and commands for this file. Please wait..");
-      const extraOptions = require(`${templatePath}.js`);
-      const files = extraOptions.files || [];
-      const path = require("path");
-      files.forEach(element => {
-        const elementPath = path.join(path.dirname(templatePath), element);
-        const destinationPath = NEXSS_PROJECT_SRC_PATH
-          ? path.join(NEXSS_PROJECT_SRC_PATH, path.dirname(element))
-          : path.dirname(element);
 
-        //If we are in the project folder make a copy to the src/ of that project
-        info(
-          yellow(
-            bold(
-              `Copying 3rdParty libraries... 
-${elementPath} TO 
-${
-  NEXSS_PROJECT_SRC_PATH ? path.join(NEXSS_PROJECT_SRC_PATH, element) : element
-}`
-            )
-          )
-        );
-        const fse = require("fs-extra");
-        fse.ensureDirSync(destinationPath);
-        fse.copySync(
-          elementPath,
-          path.join(destinationPath, path.basename(element))
-        );
-        success("copied.");
-      });
-
-      const descriptions = extraOptions.descriptions || [];
-      if (descriptions.length > 0) {
-        // warn("Some information about installed packages.");
-        descriptions.forEach(desc => {
-          console.log("Info from additional third party libraries package:");
-          console.log(desc);
-        });
-      }
-      let commands = extraOptions.commands;
-
-      if (commands && commands.forEach) {
-        // FIXME: to check this part!!
-        commands.forEach(cmd => {
-          // TODO: better error handling
-          // console.log(cmd);
-          if (cmd) {
-            const cp = require("child_process").execSync(`${cmd}`, {
-              stdio: "inherit"
-            });
-          }
-        });
-      }
-    } else {
-      // info(`No extra operations file ${templatePath}.js found.`);
-    }
+    extraFunctions(options.templatePath);
   }
-};
+}

@@ -1,9 +1,10 @@
 const cliArgs = require("minimist")(process.argv.slice(4));
-const { info, warn } = require("../../lib/log");
+const { info, warn, success } = require("../../lib/log");
 const { loadConfigContent } = require("../../lib/config");
 const { NEXSS_PROJECT_CONFIG_PATH } = require("../../config/config");
 const { searchData } = require("../../lib/search");
 const { deleteFile } = require("../lib/file");
+const { existsSync } = require("fs");
 const inquirer = require("inquirer");
 inquirer.registerPrompt(
   "autocomplete",
@@ -24,6 +25,12 @@ inquirer.registerPrompt(
 let options = {};
 options.fileName = cliArgs._[0];
 let nexssConfig = loadConfigContent(NEXSS_PROJECT_CONFIG_PATH);
+if (!nexssConfig) {
+  warn(
+    `You are not in the Nexss Programmer Project. To remove file plase use 'rm ${options.fileName}'`
+  );
+  process.exit(1);
+}
 if (
   options.fileName &&
   nexssConfig.findByProp("files", "name", options.fileName)
