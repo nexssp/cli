@@ -1,6 +1,6 @@
 # List
 
-Adds nexss package to the actual folder. You can modify Nexss Packages locally.
+Adds nexss package to the actual folder.
 
 ## Examples
 

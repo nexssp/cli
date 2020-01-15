@@ -160,12 +160,12 @@ if (process.argv[4] === "help") {
     const helpContent = require("fs").readFileSync(
       `${NEXSS_SRC_PATH}/nexss-${plugin}/commands/${command}.md`
     );
+    console.info(helpContent.toString());
   } catch (error) {
     console.log(error);
     process.exit(1);
   }
 
-  console.info(helpContent.toString());
   return;
 }
 
