@@ -1,7 +1,7 @@
 let c = require("./config.base");
 c.osPackageManagers = {
     scoop: {
-        installation: `powershell.exe -File ${__dirname}/../../install/installScoop.ps1`,
+        installation: "Set-ExecutionPolicy RemoteSigned -scope CurrentUser ; powershell -command \"iex (new-object net.webclient).downloadstring('https://get.scoop.sh')\"",
         installCommand: "scoop install"
     },
     choco: {
