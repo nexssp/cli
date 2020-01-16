@@ -1,7 +1,7 @@
 let c = require("./config.base");
 c.osPackageManagers = {
     scoop: {
-        installation: `powershell -command "iex (new-object net.webclient).downloadstring('https://get.scoop.sh')"`,
+        installation: `powershell -command "iwr -useb get.scoop.sh | iex"`,
         installCommand: "scoop install"
     },
     choco: {
