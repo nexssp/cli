@@ -82,33 +82,51 @@ let files;
 
 // SEQUENCES
 // more: https://github.com/nexssp/cli/wiki/Sequences
-if (
-  cliArgs.seq &&
-  nexssConfig.sequences &&
-  nexssConfig.sequences[cliArgs.seq]
-) {
-  files = nexssConfig.sequences[cliArgs.seq];
-} else {
-  if (cliArgs.seq) {
-    if (
-      nexssConfig &&
-      nexssConfig.sequences &&
-      !nexssConfig.sequences[cliArgs.seq]
-    ) {
-      error(`${cliArgs.seq} sequence does not exist in the _nexss.yml`);
-      process.exit(1);
-    }
+
+if (cliArgs.seq) {
+  if (!nexssConfig) {
+    error(
+      "You can use 'sequences' ONLY in the Nexss Programmer Project. Create new project in the current folder by 'nexss project new .'"
+    );
+    process.exit(1);
   }
 
-  files = fileOrDirectory || (nexssConfig && nexssConfig.files) || [];
+  if (!nexssConfig.sequences) {
+    error(
+      `There is no 'sequence' section in the _nexss.yml file: ${nexssConfig.filePath}
+more: https://github.com/nexssp/cli/wiki/Sequences`
+    );
+    process.exit(1);
+  }
+
+  if (!nexssConfig.sequences[cliArgs.seq]) {
+    error(`${cliArgs.seq} sequence does not exist in the _nexss.yml`);
+    process.exit(1);
+  } else {
+    files = nexssConfig.sequences[cliArgs.seq];
+  }
+}
+
+if (!files) {
+  if (
+    nexssConfig &&
+    nexssConfig.sequences &&
+    nexssConfig.sequences["default"]
+  ) {
+    files = nexssConfig.sequences["default"];
+  } else {
+    files = fileOrDirectory || (nexssConfig && nexssConfig.files) || [];
+  }
 }
 
 // SERVER
-if (nexssConfig && (cliArgs.server || files.length === 0)) {
+if (nexssConfig && cliArgs.server) {
   startServer(nexssConfig.server, nexssConfig.router || {});
 } else {
   if (files.length === 0) {
-    warn("Nothing to run");
+    warn(
+      "Nothing to run. To add files to the project please use 'nexss file add myfile.[language extension]'"
+    );
     process.exit(1);
   }
 
@@ -306,8 +324,9 @@ if (nexssConfig && (cliArgs.server || files.length === 0)) {
                 if (!(await Exists(fileName))) {
                   error(`Nexss: ${fileName} has not been found.`);
                   info(
-                    "Possible solution: remove file from files entry in the nexss.yml file."
+                    "Possible solution: remove file entry from files section in the nexss.yml file. Files part in the _nexss.yml:"
                   );
+                  console.log(nexssConfig.files);
                   return 0;
                 } else {
                   if (fs.lstatSync(fileName).isDirectory()) {
