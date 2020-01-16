@@ -32,6 +32,14 @@ Nexss Programmer is the **innovative** and **evolutionary** tool for the program
 
 ---
 
+### Preview of Nexss Programmer GUI - Work in progress
+
+This is preview of Nexss Programmer GUI which will be available in **Nexss Programmer 2.1**
+
+![Nexss Programmer GUI](wiki/nexssProgrammerGUI.png)
+
+---
+
 IMPORTANT NOTE: Only **C**, **Kotlin**, **Haskell**, **VBScript**, **Windows Scripting Hosts**, **PureData** need some manual adjustments to make to work with JSON data / Nexss Programmer Projects.
 
 NOTE2: **Linux** _(Soon - FOR NOW ONLY WORKS NODEJS)_ and **MacOS** + Swift language _(Soon)_ - **Work In Progress**
