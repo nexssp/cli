@@ -356,9 +356,11 @@ if (cliArgs.server) {
                     } else {
                         if (languageDefinition) {
                             // !?@#$%
-                            compiler = Object.assign({},
-                                languageDefinition.getFirst("compilers")
-                            );
+
+                            compiler =
+                                languageDefinition.compilers[
+                                    Object.keys(languageDefinition.compilers)[0]
+                                ];
                         } else {
                             compiler = {};
                             compiler.command = "nexss";
@@ -367,8 +369,12 @@ if (cliArgs.server) {
                     }
 
                     let builder;
+
                     if (languageDefinition) {
-                        builder = languageDefinition.getFirst("builders");
+                        builder =
+                            languageDefinition.builders[
+                                Object.keys(languageDefinition.builders)[0]
+                            ];
                     }
 
                     // dg(`COMPILER IN`, compiler);
@@ -422,8 +428,8 @@ if (cliArgs.server) {
                         });
                     }
 
-                    // BUILDING
-                    if (builder && builder.build && (!compilerAdded || cliArgs.build)) {
+                    // BUILDING builder.build &&
+                    if (builder && (!compilerAdded || cliArgs.build)) {
                         // We create folder for builds..
                         if (!fs.existsSync(`_nexss`)) {
                             try {
