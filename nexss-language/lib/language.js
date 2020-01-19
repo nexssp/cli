@@ -40,14 +40,14 @@ function getLanguagesConfigFiles(projectFolder = "") {
     return fg.sync(paths);
 }
 
-module.exports.getLanguages = extensions => {
+module.exports.getLanguages = (extensions, recreateCache) => {
     let extFilename = "";
     // We make separate cache for each language and for all
     if (extensions) {
         extFilename = extensions.join("-");
     }
     const getLanguagesCacheName = `nexss_core_getLanguages_${extFilename}_.json`;
-    if (cache.exists(getLanguagesCacheName, "1y")) {
+    if (!recreateCache && cache.exists(getLanguagesCacheName, "1y")) {
         return JSON.parse(cache.read(getLanguagesCacheName));
     }
 
@@ -150,7 +150,7 @@ module.exports.getLang = ext => {
                 }
             }
 
-            Languages = module.exports.getLanguages([ext]);
+            Languages = module.exports.getLanguages([ext], true);
         } else {
             warn(
                 `Nexss Online Github Repository: Support for language with extension ${ext} has not been found. Please consider installing it manually.`

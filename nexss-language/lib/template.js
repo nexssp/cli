@@ -38,6 +38,7 @@ module.exports.templateNames = arg => {
 
 module.exports.getTemplatesPaths = ext => {
     const lang = nexssLanguages.getLang(ext);
+
     if (!lang) return;
     //console.log(lang);
     // console.log(module.exports.getLanguages());
