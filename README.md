@@ -9,6 +9,7 @@ Programmer 2.0.6
 
 <p align="center">
 <b><a href="https://github.com/nexssp/cli/wiki/Concept-Overview">Overview</a></b> |
+<b><a href="https://github.com/nexssp/cli/wiki/Nexss-Programmer-Programming-Languages">List of Languages</a></b> |
 <b><a href="https://github.com/nexssp/cli/wiki/Quick-Start">Installation</a></b> |
 <b><a href="https://github.com/nexssp/cli/wiki">Documentation</a></b> |
 <b><a href="https://github.com/nexssp/cli/wiki/Tutorials">Tutorials</a></b>
