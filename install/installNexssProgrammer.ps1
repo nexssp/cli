@@ -8,8 +8,10 @@ Write-Host "It will install Scoop, Node.js, git and Nexss Programmer." -Foregrou
 # =====================
 $currentDir = (Get-Location).Path
 $homeDir = (Get-PsProvider 'FileSystem').home
+
 $scoopInstallPath = "$($homeDir)\scoop";
-$nexssProgrammerInstallPath = "$($homeDir)\.nexss\cli"
+$nexssProgrammerInstallPath = "$($homeDir)\.nexssCli"
+
 $archType = 32;
 if ([System.Environment]::Is64BitOperatingSystem) {
     $archType = 64;
@@ -101,7 +103,7 @@ scoop install nodejs-lts git
 # for example: Your home directory **c:\Users\YourNickname\**)
 
 Write-Host "Installing Nexss Programmer 2.0.."
-if (!(Get-Command nexss -errorAction SilentlyContinue)) {
+if ((!(Get-Command nexss -errorAction SilentlyContinue)) -or (!(Test-Path $nexssProgrammerInstallPath))) {
     if ( Test-Path $nexssProgrammerInstallPath) {        
         Write-Host "Nexss Programmer is installed however nexss command does not work." -ForegroundColor Yellow
         Write-Host "Do you want reinstall Nexss Programmer $nexssProgrammerInstallPath (all old version data will be deleted - ONLY CLI, PACKAGES ARE NOT DELETED!) ? [y/n] " -NoNewline -ForegroundColor Yellow
