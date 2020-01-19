@@ -150,6 +150,7 @@ module.exports.getLang = ext => {
                 }
             }
 
+            cache.del(`nexss_core_getLanguages__.json`);
             Languages = module.exports.getLanguages([ext], true);
         } else {
             warn(
