@@ -2,15 +2,18 @@ const { error } = require("../../lib/log");
 const { bold, blue, yellow } = require("../../lib/color");
 const { getLangByFilename } = require("../../nexss-language/lib/language");
 
-module.exports.parseError = (filename, errorBody) => {
+module.exports.parseError = (filename, errorBody, stdOutput) => {
   const filenameStore = filename;
-  //console.log("===========================================");
-  // console.log("errrrr:", errorBody);
-
   const langInfo = getLangByFilename(filename);
   // exit codes, to display in bash last command $?
   // console.log(langInfo.compiler.split(" ")[0]);
-  error(`${bold(errorBody)}`);
+
+  // We display error to standard output eg --server
+  if (stdOutput) {
+    console.log(`Error:${bold(errorBody)}`);
+  } else {
+    error(`${bold(errorBody)}`);
+  }
 
   // We check errors based on the pattern in the languages definition
   //console.log();
@@ -44,17 +47,24 @@ module.exports.parseError = (filename, errorBody) => {
       if (match && match.length > 1) {
         //console.log("find: ", pattern);
         //console.log(match);
-        error(
-          `Possible solution:\n ${bold(yellow(solution))
-            .replace(/<package>/g, match[1])
-            .replace(/<module>/g, match[1])
-            .replace(/<found1>/g, match[1])}`
-        );
+        // We display errors to standard output (eg --server)
+        const psolution = `Possible solution:\n ${bold(yellow(solution))
+          .replace(/<package>/g, match[1])
+          .replace(/<module>/g, match[1])
+          .replace(/<found1>/g, match[1])}`;
+        if (stdOutput) {
+          console.log(psolution);
+        } else {
+          console.error(psolution);
+        }
       } else if (errorBody.includes(pattern)) {
-        console.error(blue(`Possible solution: ${bold(yellow(solution))}`));
+        // We display errors to standard output (eg --server)
+        if (stdOutput) {
+          console.log(`Possible solution: ${solution}`);
+        } else {
+          console.error(blue(`Possible solution: ${bold(yellow(solution))}`));
+        }
       }
     });
   }
-
-  //process.exit(1);
 };

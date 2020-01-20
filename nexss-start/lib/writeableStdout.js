@@ -4,8 +4,16 @@ const cliArgs = require("minimist")(process.argv);
 module.exports.writeableStdout = () =>
   new Writable({
     write: (chunk, encoding, callback) => {
+      // Display single value
+      const field = cliArgs.field;
+      // Display, selectm multuple values
       let fields = cliArgs.fields;
-      if (fields && fields.split) {
+      if (cliArgs.field) {
+        const data = JSON.parse(chunk.toString());
+        if (!data[field]) {
+          console.error(`'${field} does not exist'`);
+        } else console.log(data[field]);
+      } else if (fields && fields.split) {
         values = fields.split(",").map(e => {
           return JSON.parse(chunk.toString())[e];
         });

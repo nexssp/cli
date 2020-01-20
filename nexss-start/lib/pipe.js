@@ -5,18 +5,14 @@ const { transformFile } = require("./transformFile");
 const { writeableStdout } = require("./writeableStdout");
 const util = require("util");
 const { is } = require("../../lib/data/guard");
-// const finishedP = util.promisify(finished);
 const pipelineAsync = util.promisify(pipeline);
-// const ora = require("ora");
-// below doesnt work as is not sync like pipeline. To check ??
 const compose = (...fns) => stream =>
   fns.reduce((transformed, fn) => transformed.pipe(fn), stream);
 // options: quiet - no output to stdout
 // const cliArgs = require("minimist")(process.argv.slice(3));
-// let spin = ora(`Run Nexss Sequence..`);
 
 async function run(operations, options = {}) {
-  let result = await pipelineAsync(
+  await pipelineAsync(
     // process.stdin,
     ...operations.map(element => {
       // if (options.verbose) {

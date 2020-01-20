@@ -12,11 +12,7 @@ module.exports.transformNexss = (
   args = [], // arguments eg. ["--help", "myfile.php"]
   { quiet = false, fileName = undefined, inputData } = defaultExecuteOptions
 ) => {
-  if (!is("Array", args)) {
-    throw Error("args needs to be an Array");
-  }
   return new Transform({
-    bufferCompleted: false,
     transform(chunk, encoding, callback) {
       const self = this;
       if (encoding === "buffer") {
@@ -62,9 +58,9 @@ module.exports.transformNexss = (
         }
       });
 
-      this.worker.stderr.on("data", function(data) {
-        data = data.toString();
-        parseError(fileName, data);
+      this.worker.stderr.on("data", function(err) {
+        this.errBuffer = this.errBuffer || "";
+        this.errBuffer += err.toString();
       });
 
       this.worker.stdout.on("data", function(data) {
@@ -75,9 +71,14 @@ module.exports.transformNexss = (
         self.push(data.toString().trim());
       });
 
-      this.worker.stdout.on("end", () => {
-        this.bufferCompleted = true;
+      this.worker.stderr.on("end", function() {
+        if (this.errBuffer)
+          parseError(fileName, this.errBuffer, args.includes("--pipeerrors"));
       });
+
+      //   this.worker.stdout.on("end", () => {
+      //     this.bufferCompleted = true;
+      //   });
 
       this.worker.on("exit", () => {
         self.end();
@@ -100,12 +101,6 @@ module.exports.transformNexss = (
 
       //BElow maybe is in wrong placa but AutoIt doesn;t work if is not here!!!!!
       this.worker.stdin.end();
-      // if (process.stdout.clearLine) {
-      //   process.stdout.clearLine();
-      //   process.stdout.cursorTo(0);
-      // }
-
-      // Handle on exit event
 
       if (!quiet) console.log("waiting for ", this.worker.cmd);
     },
