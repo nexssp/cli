@@ -37,7 +37,7 @@ Nexss Programmer is the **innovative** and **evolutionary** tool for the program
 
 This is preview of Nexss Programmer GUI which will be available in **Nexss Programmer 2.1**
 
-![Nexss Programmer GUI](wiki/nexssProgrammerGUI.png)
+![nexssProgrammerGUI](https://user-images.githubusercontent.com/53263666/72731842-c97f8e80-3b94-11ea-954a-23b541aa3ff7.png)
 
 ---
 
@@ -53,7 +53,7 @@ For installing the compilers **Nexss Programmer** uses fantastic package manager
 
 ## How to start learning computer programming?
 
-![Nexss Programmer Select Template Example CLI](nexssProgrammer-SelectTemplateExampleCLI.png)
+![nexssProgrammer-SelectTemplateExampleCLI](https://user-images.githubusercontent.com/53263666/72731382-ebc4dc80-3b93-11ea-9d84-5ee136ab2e33.png)
 
 - Start **learning PROGRAMMING** within minutes with Nexss PROGRAMMER 2.0 eg. `nexss myprogram.r` OR `nexss myanotherprogram.py` **(nexss file.ext)** and it will download automatically compiler and run Your program.
 - Add files from predefined templates for the languages (**We are looking for people would like to contribute to the templates for each language**),
