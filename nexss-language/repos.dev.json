@@ -30,5 +30,7 @@
   ".rb": "https://github.com/nexssp/language_ruby.git",
   ".scala": "https://github.com/nexssp/language_scala.git",
   ".vbs": "https://github.com/nexssp/language_vbscript.git",
-  ".wsf": "https://github.com/nexssp/language_windowshostscript.git"
+  ".wsf": "https://github.com/nexssp/language_windowshostscript.git",
+  ".dart": "https://github.com/nexssp/language_dart.git",
+  ".nim": "https://github.com/nexssp/language_nim.git"
 }
