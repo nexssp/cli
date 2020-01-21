@@ -95,6 +95,7 @@ if (!(Get-Command scoop -errorAction SilentlyContinue)) {
 }
 scoop update
 scoop bucket add extras
+scoop bucket add versions
 
 # Install NodeJS (Long Term Support) and git
 scoop install nodejs-lts git
