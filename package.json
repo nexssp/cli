@@ -50,5 +50,6 @@
     "moment": "^2.24.0",
     "pkg": "^4.4.2",
     "request": "^2.88.0"
-  }
+  },
+  "devDependencies": {}
 }

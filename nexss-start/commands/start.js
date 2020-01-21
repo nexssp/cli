@@ -17,7 +17,7 @@ let paramNumber = 2;
 if (process.argv[2] === "s" || process.argv[2] === "start") {
   paramNumber = 3;
 }
-const { NEXSS_PACKAGES_PATH } = require("../../config/config");
+const { NEXSS_PACKAGES_PATH, NEXSS_HOME_PATH } = require("../../config/config");
 const cliArgs = require("minimist")(process.argv.slice(paramNumber));
 
 const request = require("request");
@@ -64,6 +64,12 @@ if (fileOrDirectory) {
 }
 //  ???????
 const nexssConfig = require("../../lib/config").loadConfigContent();
+const globalConfigPath = require("os").homedir() + "/.nexss/config.json";
+if (require("fs").existsSync(globalConfigPath)) {
+  globalConfig = require(globalConfigPath);
+} else {
+  globalConfig = { languages: {} };
+}
 
 let projectPath;
 if (nexssConfig) {
@@ -351,6 +357,29 @@ if (cliArgs.server) {
 
           ld_compiler = languageDefinition.compilers;
 
+          // GLOBAL COMPILER
+          let globalLangConfig;
+          if (
+            globalConfig &&
+            globalConfig.languages &&
+            globalConfig.languages[path.extname(fileName).slice(1)]
+          ) {
+            globalLangConfig =
+              globalConfig.languages[path.extname(fileName).slice(1)];
+
+            if (ld_compiler[globalLangConfig.compilers]) {
+              compiler =
+                languageDefinition.compilers[globalLangConfig.compilers];
+              // console.log(compiler);
+              if (cliArgs.verbose) {
+                info(
+                  `Compiler has been set to ${compiler} from global config file ${globalConfigPath}`
+                );
+              }
+            }
+          }
+
+          // CUSTOM COMPILER in the _nexss.yml file
           if (file.compiler) {
             fileCompilerSplit = file.compiler.split(" ");
 
@@ -361,15 +390,17 @@ if (cliArgs.server) {
               compiler.args = fileCompilerSplit.concat(compiler.args).join(" ");
             }
           } else {
-            if (languageDefinition) {
-              compiler =
-                languageDefinition.compilers[
-                  Object.keys(languageDefinition.compilers)[0]
-                ];
-            } else {
-              compiler = {};
-              compiler.command = "nexss";
-              compiler.args = `${fileName} ${fileArgs.join(" ")}`;
+            if (!compiler) {
+              if (languageDefinition) {
+                compiler =
+                  languageDefinition.compilers[
+                    Object.keys(languageDefinition.compilers)[0]
+                  ];
+              } else {
+                compiler = {};
+                compiler.command = "nexss";
+                compiler.args = `${fileName} ${fileArgs.join(" ")}`;
+              }
             }
           }
 

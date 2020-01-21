@@ -9,7 +9,7 @@
 
 const { blue, bold } = require("./lib/color");
 const { NEXSS_SRC_PATH, NEXSS_PACKAGES_PATH } = require("./config/config");
-const { error, info, warn } = require("./lib/log");
+const { error, info, ok, warn } = require("./lib/log");
 const { existsSync } = require("fs");
 const { isURL } = require("./lib/data/url");
 
@@ -57,7 +57,7 @@ if (existsSync(plugin) || isURL(plugin)) {
     // We check if thiscan be language specified action like
     // --> eg. nexss js install socketio
 
-    const languageSelected = getLangByFilename(`example.${plugin}`);
+    const languageSelected = getLangByFilename(`example.${plugin}`, true);
     // To use lang specific commands use
     // `nexss js install OR nexss php install` NOT!-> nexss .js install
     if (plugin.split(".").length === 1 && languageSelected) {
@@ -72,24 +72,149 @@ if (existsSync(plugin) || isURL(plugin)) {
 
       // custom actions like display compilers etc
       // eg nexss js compilers, nexss js builders
+
       switch (argument) {
+        case "default":
+          // Set default compilator eg nexss lua default compiler
+          let whatToSet = cliArgs._.shift();
+          let toSet = cliArgs._.shift();
+          switch (whatToSet) {
+            case "compilers":
+            case "compiler":
+              whatToSet = "compilers";
+              break;
+            case "builders":
+            case "builder":
+              whatToSet = "builders";
+              break;
+            case "languagePackageManagers":
+            case "pm":
+            case "packageManager":
+              whatToSet = "languagePackageManagers";
+              break;
+            default:
+              error(
+                `You cannot specify ${whatToSet}. Use ${bold(
+                  "compiler, builder, packageManager or pm"
+                )}`
+              );
+              process.exit(1);
+              break;
+          }
+
+          const firstName = Object.keys(languageSelected[whatToSet])[0];
+          if (!toSet) {
+            if (Object.keys(languageSelected[whatToSet]).length) {
+              error(
+                `Specify '${bold(whatToSet)}' name to set eg: nexss '${bold(
+                  plugin
+                )} ${argument} compiler ${bold(firstName)}'`
+              );
+
+              console.log(bold(`List of ${whatToSet}:`));
+              Object.keys(languageSelected[whatToSet]).forEach(w => {
+                console.log(blue(bold(w)), languageSelected[whatToSet][w]);
+              });
+            } else {
+              warn(
+                `No ${bold(
+                  whatToSet
+                )} specified in the configuration for ${bold(plugin)}.`
+              );
+            }
+
+            process.exit(1);
+          }
+
+          let config;
+          const configPath = require("os").homedir() + "/.nexss/config.json";
+          if (require("fs").existsSync(configPath)) {
+            config = require(configPath);
+          } else {
+            config = { languages: {} };
+          }
+
+          if (
+            !languageSelected[whatToSet][toSet] &&
+            toSet.toLowerCase() !== "unset"
+          ) {
+            error(
+              `Compiler '${bold(
+                toSet
+              )}' does not exist. Use existing one eg  'nexss ${plugin} ${argument} compiler ${firstName}'`
+            );
+            if (Object.keys(languageSelected[whatToSet]).length) {
+              console.log(bold(`List of ${whatToSet}:`));
+              Object.keys(languageSelected[whatToSet]).forEach(w => {
+                console.log(blue(bold(w)), languageSelected[whatToSet][w]);
+              });
+            } else {
+              warn(
+                `No ${bold(
+                  whatToSet
+                )} specified in the configuration for ${bold(plugin)}.`
+              );
+            }
+
+            process.exit(1);
+          }
+
+          if (!config.languages[plugin]) {
+            config.languages[plugin] = {};
+          }
+
+          if (toSet === "unset") {
+            delete config.languages[plugin][whatToSet];
+            toSet = Object.keys(languageSelected[whatToSet])[0];
+          } else {
+            config.languages[plugin][whatToSet] = toSet;
+          }
+
+          if (!languageSelected[whatToSet][toSet].switch) {
+            languageSelected[whatToSet][toSet].switch = languageSelected[
+              whatToSet
+            ][toSet].install.replace(/install/g, "reset");
+          }
+
+          require("fs").writeFileSync(configPath, JSON.stringify(config));
+
+          if (languageSelected[whatToSet][toSet]) {
+            //Reseting to the version
+            const command = `scoop bucket add versions && ${languageSelected[whatToSet][toSet].install} && ${languageSelected[whatToSet][toSet].switch}`;
+
+            try {
+              require("child_process").execSync(command, {
+                stdio: "inherit",
+                detached: false,
+                shell: true,
+                cwd: process.cwd()
+              });
+            } catch (error) {
+              console.log(
+                `Command failed ${languageSelected[whatToSet][toSet].switch}`
+              );
+            }
+          }
+
+          ok(
+            `${whatToSet} has been set for language ${plugin} ${argument} compiler ${toSet}'`
+          );
+
+          process.exit(0);
+          break;
         case "compilers":
           console.log(languageSelected.compilers);
           process.exit(0);
-          break;
         case "builders":
           console.log(languageSelected.builders);
           process.exit(0);
-          break;
         case "errors":
           console.log(languageSelected.errors);
           process.exit(0);
-          break;
         case "pm":
         case "packageManagers":
           console.log(languageSelected.languagePackageManagers);
           process.exit(0);
-          break;
         case "info":
           const info = {
             title: languageSelected.title,
@@ -98,7 +223,6 @@ if (existsSync(plugin) || isURL(plugin)) {
             configFile: languageSelected.configFile
           };
           console.info(info);
-          process.exit(0);
         case "config":
           Object.keys(languageSelected).forEach(element => {
             if (typeof languageSelected[element] === "object") {
