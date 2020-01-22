@@ -1,6 +1,7 @@
 const { NEXSS_PROJECT_SRC_PATH } = require("../../config/config");
-const { error, ok, success, info } = require("../../lib/log");
-const { yellow, green, bold } = require("../../lib/color");
+const { error, success, info } = require("../../lib/log");
+const { yellow, red, bold } = require("../../lib/color");
+const { which } = require("../../lib/terminal");
 const fs = require("fs");
 module.exports.extraFunctions = templatePath => {
   // Extra operation for the template like installations, files copy, info
@@ -52,9 +53,33 @@ ${
         // TODO: better error handling
         // console.log(cmd);
         if (cmd) {
-          const cp = require("child_process").execSync(`${cmd}`, {
-            stdio: "inherit"
-          });
+          try {
+            require("child_process").execSync(`${cmd}`, {
+              stdio: "inherit"
+            });
+          } catch (err) {
+            error("==========================================================");
+            error(
+              bold(`There was an issue with the command: ${red(cmd)}, details:`)
+            );
+
+            const commandRun = cmd.split(" ").shift();
+            if (!which(commandRun)) {
+              error(red(`${commandRun} seems to be not installed.`));
+            } else {
+              ok(
+                bold(
+                  `${commandRun} seems to be installed however there may be more errors:`
+                )
+              );
+              error(err);
+              error(
+                "=========================================================="
+              );
+            }
+
+            process.exit(1);
+          }
         }
       });
     }
