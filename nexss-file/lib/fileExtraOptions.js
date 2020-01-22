@@ -37,14 +37,6 @@ ${
       success("copied.");
     });
 
-    const descriptions = extraOptions.descriptions || [];
-    if (descriptions.length > 0) {
-      // warn("Some information about installed packages.");
-      descriptions.forEach(desc => {
-        info(bold("Info from additional third party libraries package:"));
-        info(desc);
-      });
-    }
     let commands = extraOptions.commands;
 
     if (commands && commands.forEach) {
@@ -66,6 +58,9 @@ ${
             const commandRun = cmd.split(" ").shift();
             if (!which(commandRun)) {
               error(red(`${commandRun} seems to be not installed.`));
+              error(
+                red(`Error during execute extra operations: ${templatePath}.js`)
+              );
             } else {
               ok(
                 bold(
@@ -81,6 +76,15 @@ ${
             process.exit(1);
           }
         }
+      });
+    }
+
+    const descriptions = extraOptions.descriptions || [];
+    if (descriptions.length > 0) {
+      // warn("Some information about installed packages.");
+      descriptions.forEach(desc => {
+        info(bold("Info from additional third party libraries package:"));
+        info(desc);
       });
     }
   }
