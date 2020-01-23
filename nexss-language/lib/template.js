@@ -65,7 +65,8 @@ module.exports.getTemplatesPaths = ext => {
       lang.compilers[languageGlobalConfig.compilers]
     ) {
       l(`Global Compiler Selected: ${languageGlobalConfig.compilers}`);
-      templateFolder = lang.compilers[languageGlobalConfig.compilers].template;
+      templateFolder =
+        lang.compilers[languageGlobalConfig.compilers].templates || "templates";
       l(
         `compilers: ${JSON.stringify(
           lang.compilers[languageGlobalConfig.compilers]

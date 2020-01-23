@@ -41,10 +41,11 @@ module.exports.transformNexss = (
           `Spawning ${cmd} ${args ? args.join(" ") : ""} options: `,
           JSON.stringify(options)
         );
-
+      // console.log();
+      // args = args.filter(e => e !== "--test");
       this.worker = spawn(cmd, args, options);
       this.worker.cmd = `${cmd} ${args.join(" ")} `;
-
+      // console.log(this.worker.cmd);
       let proc = new Proc(this.worker.pid, {
         filePath: path.resolve(fileName)
       });
