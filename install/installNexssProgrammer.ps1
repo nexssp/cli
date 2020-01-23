@@ -135,7 +135,9 @@ if ((!((Get-Command nexss -errorAction SilentlyContinue) -and (nexss -v))) -or (
     [System.Environment]::SetEnvironmentVariable("Path", "$env:Path;$nexssProgrammerInstallPath/bin/", "User") # for the user
     # Reload the environment variables with new ones
     $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User") 
-
+    cd $nexssProgrammerInstallPath
+    npm install
+    cd ..
     nexss
 }
 else {
