@@ -1,7 +1,7 @@
 const fs = require("fs");
 // Display default commands
 const { NEXSS_SRC_PATH } = require("../config/config.js");
-const { bold } = require("../lib/color");
+const { bold, grey, blue } = require("../lib/color");
 const { invert } = require("../lib/helper");
 const aliases = invert(require("../aliases.json"));
 const os = require("os");
@@ -75,10 +75,13 @@ const os = require("os");
 
             let commandHelp =
               cmd !== plugin
-                ? `nexss ${pluginDisplay} ${cmdDisplay}` //[args]
-                : `nexss ${pluginDisplay}`;
+                ? `${pluginDisplay} ${cmdDisplay}` //[args]
+                : `${pluginDisplay}`;
 
-            return `${commandHelp} - ${helpContent[2] || helpContent[0]}`;
+            return {
+              command: commandHelp,
+              commandDesc: helpContent[2] || helpContent[0]
+            };
           })
       );
     })
@@ -90,11 +93,14 @@ const os = require("os");
 |  \`\`..      | |______           \`\`..''              .''                .''       
 |      \`\`..  | |                 ..'\`..           ..'                ..'          
 |          \`\`| |___________  ..''      \`\`.. ....''             ....''             
-Programmer ${require("../package.json").version}, NodeJS ${
+Programmer ${bold(require("../package.json").version)}, NodeJS ${
       process.version
     }, OS: ${process.platform} ${os.release()}  `
   );
-  console.log(commandsHelp.flat());
+  commandsHelp.flat().forEach(e => {
+    console.log(grey("nexss"), e.command, blue(e.commandDesc));
+  });
+  // console.log(commandsHelp.flat());
   console.log(
     bold("To display help add 'help': nexss command help OR nexss package help")
   );

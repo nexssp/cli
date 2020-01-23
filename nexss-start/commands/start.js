@@ -156,11 +156,33 @@ if (cliArgs.server) {
 
   if (cliArgs.test) {
     info(green(bold("Testing enabled")));
-    Object.assign(startData, {
-      number: 369369,
-      string: "This is string",
-      Unicode: "½¼¾¿®¢£¤¥§óęśćźżÓŚĆŹŻäöüß€яшдфгчйкльжѠ" // For testing purposes
-    });
+    let testDataPassed = cliArgs.testData || cliArgs.testdata;
+    if (!testDataPassed) {
+      testData = require("../testingData.json");
+    } else {
+      var testDataPath = path.normalize(`${PROCESS_CWD}/${testDataPassed}`);
+      try {
+        testData = require(testDataPath);
+      } catch (_) {
+        if (!fs.existsSync(testDataPath)) {
+          error(
+            `Your test data ${bold(
+              testDataPath
+            )} must be valid json or JavaScript/NodeJS file!`
+          );
+        } else {
+          error(
+            `Your test data ${bold(
+              testDataPath
+            )} must be valid json or JavaScript/NodeJS file!`
+          );
+        }
+
+        process.exit(1);
+      }
+    }
+    info(green(bold("Testing Input Data")), testData);
+    Object.assign(startData, testData);
   }
 
   const stdin = () => {

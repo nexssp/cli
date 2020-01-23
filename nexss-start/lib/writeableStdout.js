@@ -1,10 +1,32 @@
 const { Writable } = require("stream");
 const cliArgs = require("minimist")(process.argv);
+const { error, warn, ok } = require("../../lib/log");
+const { bold, blue, green, red } = require("../../lib/color");
 
 module.exports.writeableStdout = () =>
   new Writable({
     write: (chunk, encoding, callback) => {
       // Display single value
+
+      if (cliArgs.test) {
+        const testingData = require("../testingData.json");
+        const data = JSON.parse(chunk.toString());
+        let errorExists;
+        Object.keys(testingData).forEach(k => {
+          if (testingData[k] !== data[k]) {
+            error(bold(red(testingData[k])), `Not Equal to`);
+            error(bold(red(data[k])));
+            errorExists = true;
+          } else {
+            ok(bold(`Field ${k} is correct:`, data[k]));
+          }
+        });
+        if (errorExists) {
+          warn("Program has been terminated.");
+          process.exit(1);
+        }
+      }
+
       const field = cliArgs.field;
       // Display, selectm multuple values
       let fields = cliArgs.fields;
