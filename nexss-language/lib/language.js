@@ -48,7 +48,16 @@ module.exports.getLanguages = (extensions, recreateCache) => {
   }
   const getLanguagesCacheName = `nexss_core_getLanguages_${extFilename}_.json`;
   if (!recreateCache && cache.exists(getLanguagesCacheName, "1y")) {
-    return JSON.parse(cache.read(getLanguagesCacheName));
+    return JSON.parse(cache.read(getLanguagesCacheName), function(k, v) {
+      if (
+        typeof v === "string" &&
+        v.startsWith("function(") &&
+        v.endsWith("}")
+      ) {
+        return eval("(" + v + ")");
+      }
+      return v;
+    });
   }
 
   if (extensions && !Array.isArray(extensions)) {
@@ -69,7 +78,10 @@ or no parameter for all languages.`);
     });
   }
 
-  cache.write(getLanguagesCacheName, JSON.stringify(result));
+  cache.write(
+    getLanguagesCacheName,
+    JSON.stringify(result, (k, v) => (typeof v === "function" ? "" + v : v))
+  );
   return result;
 };
 
