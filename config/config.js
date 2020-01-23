@@ -157,7 +157,8 @@ if (existsSync(NEXSS_HOME_PATH) && cache.exists(getConfigCacheName, "1y")) {
 const result = Object.assign({}, config, {
   NEXSS_PROJECT_CONFIG_PATH,
   NEXSS_PROJECT_PATH,
-  NEXSS_PROJECT_SRC_PATH
+  NEXSS_PROJECT_SRC_PATH,
+  NEXSS_CWD: process.cwd()
 });
 
 process.env = Object.assign({}, process.env, result);
