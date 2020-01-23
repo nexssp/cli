@@ -1,5 +1,5 @@
 const { NEXSS_PROJECT_SRC_PATH } = require("../../config/config");
-const { error, success, info } = require("../../lib/log");
+const { error, success, info, ok } = require("../../lib/log");
 const { yellow, red, bold } = require("../../lib/color");
 const { which } = require("../../lib/terminal");
 const fs = require("fs");
