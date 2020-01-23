@@ -98,8 +98,17 @@ scoop bucket add extras
 scoop bucket add versions
 
 # Install NodeJS (Long Term Support) and git
-scoop uninstall nodejs-lts git
-scoop install nodejs-lts git
+
+
+if (!((Get-Command node -errorAction SilentlyContinue) -and (node -v))) {
+    scoop install nodejs-lts
+}
+
+if (!((Get-Command git -errorAction SilentlyContinue) -and (git --version))) {
+    scoop install git
+}
+
+# scoop reset nodejs-lts git 
 
 # You need to be in the directory with write permission.
 # for example: Your home directory **c:\Users\YourNickname\**)
@@ -131,6 +140,8 @@ if ((!((Get-Command nexss -errorAction SilentlyContinue) -and (nexss -v))) -or (
 }
 else {
     Write-Host "Nexss Programmer is already installed." -ForegroundColor Green
+    cd $nexssProgrammerInstallPath
+    git pull
 }
 # If there was some changes to the directory, now we are back to the same one.
 Set-Location $currentDir
