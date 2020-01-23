@@ -32,6 +32,12 @@ Programmer 2.0.6
 Nexss Programmer is the **innovative** and **evolutionary** tool for the programmers with unlimited possibilities. This system allows to combine from over [32 programming languages](https://github.com/nexssp/cli/wiki/Nexss-Programmer-Programming-Languages) in many different ways.
 
 ---
+## Install by one line in PowerShell !
+
+```sh
+Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/nexssp/cli/master/install/installNexssProgrammer.ps1')
+```
+---
 
 ### Preview of Nexss Programmer GUI - Work in progress
 
