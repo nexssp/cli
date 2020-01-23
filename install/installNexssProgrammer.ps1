@@ -121,10 +121,12 @@ if ((!((Get-Command nexss -errorAction SilentlyContinue) -and (nexss -v))) -or (
         rm -r -fo $nexssProgrammerInstallPath
     }
 
-    git clone --recurse-submodules https://github.com/nexssp/cli.git "$nexssProgrammerInstallPath"
-    Set-Location "$nexssProgrammerInstallPath"
-    npm link
-    Set-Location ..
+    git clone --recurse-submodules https://github.com/nexssp/cli.git "$nexssProgrammerInstallPath"    
+    
+    [System.Environment]::SetEnvironmentVariable("Path", "$env:Path;$nexssProgrammerInstallPath/bin/", "User") # for the user
+    # Reload the environment variables with new ones
+    $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User") 
+
     nexss
 }
 else {
