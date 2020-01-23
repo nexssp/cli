@@ -1,5 +1,4 @@
 {
-  ".html": "https://github.com/nexssp/language_html.git",
   ".js": "https://github.com/nexssp/language_nodejs.git",
   ".pl": "https://github.com/nexssp/language_perl.git",
   ".cpp": "https://github.com/nexssp/language_cpp.git",
@@ -32,5 +31,7 @@
   ".vbs": "https://github.com/nexssp/language_vbscript.git",
   ".wsf": "https://github.com/nexssp/language_windowshostscript.git",
   ".dart": "https://github.com/nexssp/language_dart.git",
-  ".nim": "https://github.com/nexssp/language_nim.git"
+  ".nim": "https://github.com/nexssp/language_nim.git",
+  ".json": "https://github.com/nexssp/language_json.git",
+  ".html": "https://github.com/nexssp/language_html.git"
 }
