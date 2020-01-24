@@ -1,2 +1,2 @@
 @echo off
-Powershell -File "%~dp0nexss.ps1" %*
+Powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0nexss.ps1" %*
