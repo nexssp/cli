@@ -1,6 +1,5 @@
-# Nexss Programmer Installator
+# Nexss Programmer Installer
 # Author: Marcin Polak <mapoart@gmail.com>
-# Scoop, NodeJS lts, git, Nexss Programmer
 
 Write-Host "Welcome to the Nexss Programmer 2.0 Installer" -ForegroundColor Yellow
 Write-Host "It will install Scoop, Node.js, git and Nexss Programmer." -ForegroundColor Yellow
@@ -79,7 +78,7 @@ if (!(Get-Command scoop -errorAction SilentlyContinue)) {
     if ( Test-Path $scoopInstallPath) {    
         Write-Host "'scoop' command does not seem to work however you have directory $scoopInstallPath (Old installation?)" -ForegroundColor Green
         Write-Host "This will not install scoop if you don't remove it first." -ForegroundColor Red
-        Write-Host "You may need to fix it manually, but to continue you need to delete it first" -ForegroundColor Yellow
+        Write-Host "You may need to fix it manually (Maybe run terminal with admin rights?), but to continue you need to delete it first" -ForegroundColor Yellow
         Write-Host "Do you want to delete scoop install dirctory $scoopInstallPath ? [y/n] " -NoNewline -ForegroundColor Yellow
         $confirmation = Read-Host 
         while ($confirmation -ne "y") {
@@ -93,6 +92,28 @@ if (!(Get-Command scoop -errorAction SilentlyContinue)) {
     }
     Invoke-WebRequest -useb get.scoop.sh | Invoke-Expression # Installs Scoop Package Manager
 }
+
+if (!(Get-Command scoop -errorAction SilentlyContinue)) {
+	Write-Host "Scoop has been installed however is not recognized in this terminal."
+	if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+        Write-Warning "You are not running this with administrator rights, but maybe scoop has been installed with Admin rights?" ; 
+		
+		$confirmation = Read-Host 
+        while ($confirmation -ne "y") {
+            if ($confirmation -eq 'n') { exit }
+            Write-Host "Would you like to open new terminal with Administrator rights? Or Please restart this terminal/Powershell." -NoNewline -ForegroundColor Red
+            $confirmation = Read-Host 
+        }
+		
+		Start-Process powershell -Verb runAs -ArgumentList $arguments
+    }
+}
+
+if (!((Get-Command git -errorAction SilentlyContinue) -and (git --version))) {
+	Write-Host "We are using git for updates, so we are installing it first.."
+    scoop install git
+}
+
 scoop update
 scoop bucket add extras
 scoop bucket add versions
@@ -100,13 +121,11 @@ scoop bucket add versions
 # Install NodeJS (Long Term Support) and git
 
 
-if (!((Get-Command node -errorAction SilentlyContinue) -and (node -v))) {
+if (!((Get-Command node.exe -errorAction SilentlyContinue) -and (node.exe -v))) {
     scoop install nodejs-lts
 }
 
-if (!((Get-Command git -errorAction SilentlyContinue) -and (git --version))) {
-    scoop install git
-}
+
 
 # scoop reset nodejs-lts git 
 
@@ -130,9 +149,14 @@ if ((!((Get-Command nexss -errorAction SilentlyContinue) -and (nexss -v))) -or (
         rm -r -fo $nexssProgrammerInstallPath
     }
 
-    git clone --recurse-submodules https://github.com/nexssp/cli.git "$nexssProgrammerInstallPath"    
-    
-    [System.Environment]::SetEnvironmentVariable("Path", "$env:Path;$nexssProgrammerInstallPath/bin/", "User") # for the user
+    git clone --recurse-submodules https://github.com/nexssp/cli.git "$nexssProgrammerInstallPath"  
+    $nexssBinPath = "$nexssProgrammerInstallPath/bin/"	
+    Write-Host "Adding $nexssBinPath to the users PATH environment variable."
+    [System.Environment]::SetEnvironmentVariable("Path", $nexssBinPath + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User"), "User") # for the user
+	# Making sure there are no duplicates in the PATH 
+	[Environment]::SetEnvironmentVariable('Path',(([Environment]::GetEnvironmentVariable('Path', 'User') -split
+';'|Sort-Object -Unique) -join ';'),'User')
+	
     # Reload the environment variables with new ones
     $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User") 
     cd $nexssProgrammerInstallPath
