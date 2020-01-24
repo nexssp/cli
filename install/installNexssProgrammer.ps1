@@ -151,11 +151,16 @@ if ((!((Get-Command nexss -errorAction SilentlyContinue) -and (nexss -v))) -or (
 
     git clone --recurse-submodules https://github.com/nexssp/cli.git "$nexssProgrammerInstallPath"  
     $nexssBinPath = "$nexssProgrammerInstallPath/bin/"	
-    Write-Host "Adding $nexssBinPath to the users PATH environment variable."
-    [System.Environment]::SetEnvironmentVariable("Path", $nexssBinPath + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User"), "User") # for the user
-	# Making sure there are no duplicates in the PATH 
-	[Environment]::SetEnvironmentVariable('Path',(([Environment]::GetEnvironmentVariable('Path', 'User') -split
-';'|Sort-Object -Unique) -join ';'),'User')
+    
+	if ($($env:Path).ToLower().Contains($($nexssBinPath).ToLower()) -eq $false) {
+		$env:Path = [Environment]::GetEnvironmentVariable('Path', [System.EnvironmentVariableTarget]::User);
+	}else{
+		Write-Host "Adding $nexssBinPath to the users PATH environment variable."
+		[System.Environment]::SetEnvironmentVariable("Path", $nexssBinPath + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User"), "User") # for the user
+		# Making sure there are no duplicates in the PATH 
+		[Environment]::SetEnvironmentVariable('Path',(([Environment]::GetEnvironmentVariable('Path', 'User') -split
+	';'|Sort-Object -Unique) -join ';'),'User')
+	}
 	
     # Reload the environment variables with new ones
     $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User") 
