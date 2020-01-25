@@ -1,7 +1,7 @@
 const { Writable } = require("stream");
 const cliArgs = require("minimist")(process.argv);
 const { error, warn, ok } = require("../../lib/log");
-const { bold, blue, green, red } = require("../../lib/color");
+const { bold, red } = require("../../lib/color");
 
 module.exports.writeableStdout = () =>
   new Writable({

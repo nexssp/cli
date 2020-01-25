@@ -1,5 +1,5 @@
 const { Transform } = require("stream");
-const { blue } = require("../../lib/color");
+const { yellow } = require("../../lib/color");
 const { di } = require("../../lib/log");
 const { inspect } = require("util");
 module.exports.transformError = (
@@ -18,7 +18,7 @@ module.exports.transformError = (
       chunk = chunk.toString();
       // const data = JSON.parse(chunk);
       // di("111111111", data);
-      di(`${blue(title)} \n ${inspect(chunk)}\n${blue(title)} \n`);
+      di(`${yellow(title)} \n ${inspect(chunk)}\n${yellow(title)} \n`);
       //chunk.teeeeeeet = "works!!";
       //   process.stdout.write(
       //     `ERROR TRANSFORMER:${title}\n================\n${chunk}======================\n`

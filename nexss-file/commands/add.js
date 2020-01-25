@@ -1,7 +1,7 @@
 const { extname, join, resolve, dirname, isAbsolute } = require("path");
 const cliArgs = require("minimist")(process.argv.slice(3));
 const { searchData } = require("../../lib/search");
-const { yellow, green, bold, blue } = require("../../lib/color");
+const { yellow, bold } = require("../../lib/color");
 const { error, ok, success, info } = require("../../lib/log");
 const {
   NEXSS_PROJECT_SRC_PATH,
@@ -121,9 +121,7 @@ function execute(options) {
       process.exit(1);
     } else {
       info(
-        blue(
-          `Using ${bold(options.template)} template. Creating from template...`
-        )
+        `Using ${bold(options.template)} template. Creating from template...`
       );
 
       fs.copyFileSync(options.templatePath, filePath, err => {

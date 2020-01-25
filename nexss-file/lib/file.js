@@ -1,13 +1,13 @@
 const fs = require("fs");
 const fse = require("fs-extra");
 
-const { bold, blue, yellow, green } = require("../../lib/color");
-const { success, ok, error } = require("../../lib/log");
+// const { bold, blue, yellow, green } = require("../../lib/color");
+// const { success, ok, error } = require("../../lib/log");
 const { addTimeStampToFilename } = require("../../lib/fs");
 
 const { loadConfigContent, saveConfigContent } = require("../../lib/config");
 const { NEXSS_PROJECT_CONFIG_PATH } = require("../../config/config");
-const nexssConfig = loadConfigContent(NEXSS_PROJECT_CONFIG_PATH);
+// const nexssConfig = loadConfigContent(NEXSS_PROJECT_CONFIG_PATH);
 const inquirer = require("inquirer");
 inquirer.registerPrompt(
   "autocomplete",

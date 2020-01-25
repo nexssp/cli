@@ -1,7 +1,7 @@
 const { NEXSS_PROJECT_CONFIG_PATH } = require("../../config/config");
 const { loadConfigContent } = require("../../lib/config");
 let configContent = loadConfigContent(NEXSS_PROJECT_CONFIG_PATH);
-const { red, yellow, bold, blue, green } = require("../../lib/color");
+const { red, yellow, bold, green } = require("../../lib/color");
 
 function listCommands() {
   const commands = configContent.commands;
@@ -13,10 +13,8 @@ function listCommands() {
     process.exit(0);
   }
   console.log(
-    blue(
-      bold(
-        `Available predefined commands in _nexss.yml: (usage: nexss command *name*)`
-      )
+    bold(
+      `Available predefined commands in _nexss.yml: (usage: nexss command *name*)`
     )
   );
 

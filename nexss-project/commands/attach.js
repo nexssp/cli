@@ -1,5 +1,5 @@
 const { warn, info } = require("../../lib/log");
-const { bold, blue, green } = require("../../lib/color");
+const { bold, green } = require("../../lib/color");
 const { existsSync, writeFileSync } = require("fs");
 const path = require("path");
 const inquirer = require("inquirer");
@@ -28,7 +28,7 @@ let configContent,
 const { loadConfigContent, saveConfigContent } = require("../../lib/config");
 
 if (NEXSS_PROJECT_CONFIG_PATH) {
-  info(`This is ${blue("Nexss PROGRAMMER")} project.`);
+  info(`This is ${bold("Nexss PROGRAMMER")} project.`);
   configContent = loadConfigContent(NEXSS_PROJECT_CONFIG_PATH);
 }
 

@@ -1,5 +1,5 @@
 const find = require("find-process");
-const { green, blue, bold, yellow } = require("../../lib/color");
+const { green, bold, yellow } = require("../../lib/color");
 const { error } = require("../../lib/log");
 let whatToFind = process.argv[4];
 
@@ -59,7 +59,7 @@ switch (whatToFind) {
     find("name", name, true).then(function(list) {
       const Table = require("cli-table3");
       var table = new Table({
-        head: [green("pid"), green("ppid"), blue("name"), green("cmd")]
+        head: [green("pid"), green("ppid"), yellow("name"), green("cmd")]
       });
       list.forEach(proc => {
         if (proc.name.indexOf(name) >= 0) {

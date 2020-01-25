@@ -1,7 +1,7 @@
 const fs = require("fs");
 // Display default commands
 const { NEXSS_SRC_PATH } = require("../config/config.js");
-const { bold, grey, blue } = require("../lib/color");
+const { bold, grey } = require("../lib/color");
 const { invert } = require("../lib/helper");
 const aliases = invert(require("../aliases.json"));
 const os = require("os");
@@ -98,7 +98,7 @@ Programmer ${bold(require("../package.json").version)}, NodeJS ${
     }, OS: ${process.platform} ${os.release()}  `
   );
   commandsHelp.flat().forEach(e => {
-    console.log(grey("nexss"), e.command, blue(e.commandDesc));
+    console.log(grey("nexss"), e.command, bold(e.commandDesc));
   });
   // console.log(commandsHelp.flat());
   console.log(

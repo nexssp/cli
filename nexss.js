@@ -7,7 +7,7 @@
  * 2018/10/01 initial version
  */
 
-const { blue, bold } = require("./lib/color");
+const { bold } = require("./lib/color");
 const { NEXSS_SRC_PATH, NEXSS_PACKAGES_PATH } = require("./config/config");
 const { error, info, ok, warn } = require("./lib/log");
 const { existsSync } = require("fs");
@@ -113,7 +113,7 @@ if (existsSync(plugin) || isURL(plugin)) {
 
               console.log(bold(`List of ${whatToSet}:`));
               Object.keys(languageSelected[whatToSet]).forEach(w => {
-                console.log(blue(bold(w)), languageSelected[whatToSet][w]);
+                console.log(bold(w), languageSelected[whatToSet][w]);
               });
             } else {
               warn(
@@ -146,7 +146,7 @@ if (existsSync(plugin) || isURL(plugin)) {
             if (Object.keys(languageSelected[whatToSet]).length) {
               console.log(bold(`List of ${whatToSet}:`));
               Object.keys(languageSelected[whatToSet]).forEach(w => {
-                console.log(blue(bold(w)), languageSelected[whatToSet][w]);
+                console.log(bold(w), languageSelected[whatToSet][w]);
               });
             } else {
               warn(
@@ -394,7 +394,7 @@ switch (command) {
           helpContent += `${bold("Commands available")} for nexss-${bold(
             plugin
           )}
-${blue(filesList.join(", "))}
+${bold(filesList.join(", "))}
 example to display help 'nexss ${plugin} ${filesList[0]} help'`;
           // console.log(filesList);
           // files.forEach(

@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const copydir = require("copy-dir");
 const { warn, info, hr, header } = require("../../lib/log");
-const { bold, blue, red, yellow } = require("../../lib/color");
+const { bold, red, yellow } = require("../../lib/color");
 const exists = fs.existsSync;
 
 const {
@@ -26,9 +26,9 @@ if (exists(NEXSS_PROJECTS_DB)) {
     }
     let isNexss = exists(path.join(workDir, "_nexss.yml"));
     if (isNexss) {
-      info(blue(e), " ", projects[e].workDir);
+      info(yellow(e), " ", projects[e].workDir);
     } else {
-      info(bold(e), " ", projects[e].workDir);
+      info(yellow(e), " ", projects[e].workDir);
     }
   });
 }

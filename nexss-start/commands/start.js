@@ -3,7 +3,7 @@ const path = require("path");
 const { info, error, warn, di, dg, dy } = require("../../lib/log");
 const dotenv = require("dotenv");
 const { inspect } = require("util"),
-  { blue, bold, green } = require("../../lib/color"),
+  { yellow, bold, green } = require("../../lib/color"),
   { startServer } = require("../../lib/server"),
   { getLangByFilename } = require("../../nexss-language/lib/language");
 const { is, Exists } = require("../../lib/data/guard");
@@ -218,7 +218,7 @@ if (cliArgs.server) {
 
     Object.assign(startData, dataStdin);
   }
-  if (cliArgs.verbose) di(`startData: ${blue(inspect(startData))}`);
+  if (cliArgs.verbose) di(`startData: ${yellow(inspect(startData))}`);
 
   const globalBuild = (nexssConfig && nexssConfig.build) || undefined;
   const globalDisabled = nexssConfig && nexssConfig.disabled;

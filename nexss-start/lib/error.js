@@ -1,5 +1,5 @@
 const { error } = require("../../lib/log");
-const { bold, blue, yellow } = require("../../lib/color");
+const { bold, yellow } = require("../../lib/color");
 const { getLangByFilename } = require("../../nexss-language/lib/language");
 
 module.exports.parseError = (filename, errorBody, stdOutput) => {
@@ -62,7 +62,7 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
         if (stdOutput) {
           console.log(`Possible solution: ${solution}`);
         } else {
-          console.error(blue(`Possible solution: ${bold(yellow(solution))}`));
+          console.error(yellow(`Possible solution: ${bold(yellow(solution))}`));
         }
       }
     });
