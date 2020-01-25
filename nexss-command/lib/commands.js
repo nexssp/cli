@@ -7,9 +7,7 @@ function listCommands() {
   const commands = configContent.commands;
 
   if (!commands || (commands && commands.length == 0)) {
-    console.log(
-      red(bold(`No available commands. (use eg. nexss c add *name* ls -l)`))
-    );
+    console.log(bold(`No available commands for this package.`));
     process.exit(0);
   }
   console.log(

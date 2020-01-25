@@ -24,7 +24,9 @@ authors.forEach(author => {
                   cwd: `${packagesPath}/${author}/${pkg}/${details}`,
                   stdio: "inherit"
                 });
-                success(`Default template cloned.`);
+                success(
+                  `Completed init for package ${packagesPath}/${author}/${pkg}/${details}`
+                );
               } catch (er) {
                 console.error(er);
                 process.exit(1);
