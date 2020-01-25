@@ -94,23 +94,23 @@ if (!(Get-Command scoop -errorAction SilentlyContinue)) {
 }
 
 if (!(Get-Command scoop -errorAction SilentlyContinue)) {
-	Write-Host "Scoop has been installed however is not recognized in this terminal."
-	if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+    Write-Host "Scoop has been installed however is not recognized in this terminal."
+    if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
         Write-Warning "You are not running this with administrator rights, but maybe scoop has been installed with Admin rights?" ; 
 		
-		$confirmation = Read-Host 
+        $confirmation = Read-Host 
         while ($confirmation -ne "y") {
             if ($confirmation -eq 'n') { exit }
             Write-Host "Would you like to open new terminal with Administrator rights? Or Please restart this terminal/Powershell." -NoNewline -ForegroundColor Red
             $confirmation = Read-Host 
         }
 		
-		Start-Process powershell -Verb runAs -ArgumentList $arguments
+        Start-Process powershell -Verb runAs -ArgumentList $arguments
     }
 }
 
 if (!((Get-Command git -errorAction SilentlyContinue) -and (git --version))) {
-	Write-Host "We are using git for updates, so we are installing it first.."
+    Write-Host "We are using git for updates, so we are installing it first.."
     scoop install git
 }
 
@@ -152,15 +152,18 @@ if ((!((Get-Command nexss -errorAction SilentlyContinue) -and (nexss -v))) -or (
     git clone --recurse-submodules https://github.com/nexssp/cli.git "$nexssProgrammerInstallPath"  
     $nexssBinPath = "$nexssProgrammerInstallPath/bin/"	
     
-	if ($($env:Path).ToLower().Contains($($nexssBinPath).ToLower()) -eq $false) {
-		$env:Path = [Environment]::GetEnvironmentVariable('Path', [System.EnvironmentVariableTarget]::User);
-	}else{
-		Write-Host "Adding $nexssBinPath to the users PATH environment variable."
-		[System.Environment]::SetEnvironmentVariable("Path", $nexssBinPath + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User"), "User") # for the user
-		# Making sure there are no duplicates in the PATH 
-		[Environment]::SetEnvironmentVariable('Path',(([Environment]::GetEnvironmentVariable('Path', 'User') -split
-	';'|Sort-Object -Unique) -join ';'),'User')
-	}
+    if ($($env:Path).ToLower().Contains($($nexssBinPath).ToLower()) -eq $true) {
+        $env:Path = [Environment]::GetEnvironmentVariable('Path', [System.EnvironmentVariableTarget]::User);
+        # Write-Host "$nexssBinPath seems to be in your path. If you are having issues with nexss not found please ag. nexss command not found:"
+        # Write-Host "[System.Environment]::SetEnvironmentVariable(`"Path`", $nexssBinPath + `";`" + [System.Environment]::GetEnvironmentVariable(`"Path`", `"User`"), `"User`")"
+    }
+    else {
+        Write-Host "Adding $nexssBinPath to the users PATH environment variable."
+        [System.Environment]::SetEnvironmentVariable("Path", $nexssBinPath + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User"), "User") # for the user
+        # Making sure there are no duplicates in the PATH 
+        [Environment]::SetEnvironmentVariable('Path', (([Environment]::GetEnvironmentVariable('Path', 'User') -split
+                    ';' | Sort-Object -Unique) -join ';'), 'User')
+    }
 	
     # Reload the environment variables with new ones
     $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User") 
