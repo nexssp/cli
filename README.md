@@ -39,6 +39,9 @@ Nexss Programmer is the **innovative** and **evolutionary** tool for the program
 Set-ExecutionPolicy Bypass -Scope Process -Force; iwr -useb nexss.com/installProgrammer | iex
 ```
 
+If you are having errors about tls/ssl channel please run first:  
+`[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12`
+
 ---
 
 ### Preview of Nexss Programmer GUI - Work in progress
