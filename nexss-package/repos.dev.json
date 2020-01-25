@@ -14,5 +14,6 @@
   "Screen": "https://github.com/nexssp/package_screen.git",
   "Select": "https://github.com/nexssp/package_select.git",
   "Template": "https://github.com/nexssp/package_template.git",
+  "Test": "https://github.com/nexssp/package_test.git",
   "Web": "https://github.com/nexssp/package_web.git"
 }
