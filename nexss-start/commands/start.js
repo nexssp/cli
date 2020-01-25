@@ -374,7 +374,7 @@ if (cliArgs.server) {
               }
             }
           }
-
+          process.nexssFilename = fileName;
           let languageDefinition = getLangByFilename(fileName);
 
           ld_compiler = languageDefinition.compilers;
