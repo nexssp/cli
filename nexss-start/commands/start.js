@@ -358,7 +358,9 @@ if (cliArgs.server) {
                 fileName = `${NEXSS_PACKAGES_PATH}/${fileName}`;
 
                 if (!(await Exists(fileName))) {
-                  error(`Nexss: ${fileName} has not been found.`);
+                  error(
+                    `Nexss: ${path.normalize(fileName)} has not been found.`
+                  );
                   info(
                     "Possible solution: remove file entry from files section in the nexss.yml file. Files part in the _nexss.yml:"
                   );
