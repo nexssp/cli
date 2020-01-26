@@ -411,7 +411,7 @@ if (cliArgs.server) {
               compiler = ld_compiler[fileCompilerSplit[0]];
 
               fileCompilerSplit.shift();
-              compiler.args = fileCompilerSplit.concat(compiler.args).join(" ");
+              compilerArgs = fileCompilerSplit.concat(compilerArgs).join(" ");
             }
           } else {
             if (!compiler) {
@@ -423,7 +423,7 @@ if (cliArgs.server) {
               } else {
                 compiler = {};
                 compiler.command = "nexss";
-                compiler.args = `${fileName} ${fileArgs.join(" ")}`;
+                compilerArgs = `${fileName} ${fileArgs.join(" ")}`;
               }
             }
           }
@@ -459,15 +459,17 @@ if (cliArgs.server) {
               }
             }
 
-            compiler.args = compiler.args.replace(/<file>/g, fileName).replace(
-              /<fileNoExt>/g,
-              fileName
-                .split(".")
-                .slice(0, -1)
-                .join(".")
-            );
+            let compilerArgs = compiler.args
+              .replace(/<file>/g, fileName)
+              .replace(
+                /<fileNoExt>/g,
+                fileName
+                  .split(".")
+                  .slice(0, -1)
+                  .join(".")
+              );
 
-            args = compiler.args.split(" ");
+            args = compilerArgs.split(" ");
 
             let fileArgsObj = require("minimist")(fileArgs);
 
