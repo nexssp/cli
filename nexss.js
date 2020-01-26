@@ -93,11 +93,14 @@ if (existsSync(plugin) || isURL(plugin)) {
               whatToSet = "languagePackageManagers";
               break;
             default:
-              error(
-                `You cannot specify ${whatToSet}. Use ${bold(
-                  "compiler, builder, packageManager or pm"
-                )}`
-              );
+              if (whatToSet) {
+                error(`You cannot specify ${whatToSet}.`);
+              } else {
+                error(`What you want to change?`);
+              }
+
+              error(`Use ${bold("compiler, builder, packageManager or pm")}`);
+
               process.exit(1);
               break;
           }
