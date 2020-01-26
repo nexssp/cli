@@ -1,5 +1,5 @@
 const { error } = require("../../lib/log");
-const { bold, yellow } = require("../../lib/color");
+const { bold, yellow, blue } = require("../../lib/color");
 const { getLangByFilename } = require("../../nexss-language/lib/language");
 
 // more here: https://github.com/nexssp/cli/wiki/Errors-Solutions
@@ -11,7 +11,13 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
 
   // We display error to standard output eg --server
   if (stdOutput) {
-    console.log(`Error:${bold(errorBody)}`);
+    if (process.argv.includes("--htmlOutput")) {
+      console.log(
+        `<span style="color:red;">${errorBody.replace(/\n/g, "<BR />")}</span>`
+      );
+    } else {
+      console.log(`Error:${bold(errorBody)}`);
+    }
   } else {
     error(`${bold(errorBody)}`);
   }
@@ -26,8 +32,7 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
     langInfo.errors,
     nexssConfig && nexssConfig.errors
   );
-  // console.log("errrrrrrrrorrrrrssss", langInfo.errors);
-  // process.exit(1);
+
   let solutionNumber = 1;
   if (langInfo.errors) {
     Object.keys(langInfo.errors).forEach(pattern => {
@@ -71,9 +76,19 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
       } else {
         solution = null;
       }
+
       if (solution) {
         if (stdOutput) {
-          console.log(`Possible solution ${solutionNumber}: ${solution}`);
+          if (process.argv.includes("--htmlOutput")) {
+            console.log("<BR/>");
+            console.log(
+              `${'<span style="color:green"><BR /><b>Possible solution' +
+                solutionNumber +
+                "</B>"}: ${solution}</span>`
+            );
+          } else {
+            console.log(`Possible solution ${solutionNumber}: ${solution}`);
+          }
         } else {
           console.error(
             yellow(
