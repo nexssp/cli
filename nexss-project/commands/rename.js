@@ -11,7 +11,7 @@ if (!NEXSS_PROJECT_CONFIG_PATH) {
 const paramName = process.argv[4];
 if (!paramName) {
   warn(bold("Enter new project name."));
-  process.exit(1);
+  process.exit();
 }
 
 const { loadConfigContent, saveConfigContent } = require("../../lib/config");

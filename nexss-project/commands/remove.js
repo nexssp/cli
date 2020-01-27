@@ -12,7 +12,7 @@ let nexssConfig = loadConfigContent(NEXSS_PROJECT_CONFIG_PATH);
 const projectToDelete = process.argv[4];
 if (!projectToDelete) {
   error(bold("Enter project to delete. eg. nexss p <projectToDelete>"));
-  process.exit(1);
+  process.exit();
 }
 let projects = require(NEXSS_PROJECTS_DB);
 if (!projects[projectToDelete]) {
@@ -21,7 +21,7 @@ if (!projects[projectToDelete]) {
       NEXSS_PROJECTS_DB
     )}`
   );
-  process.exit(1);
+  process.exit();
 }
 
 delete projects[projectToDelete];

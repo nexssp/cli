@@ -94,7 +94,7 @@ if (cliArgs.seq) {
     error(
       "You can use 'sequences' ONLY in the Nexss Programmer Project. Create new project in the current folder by 'nexss project new .'"
     );
-    process.exit(1);
+    process.exit();
   }
 
   if (!nexssConfig.sequences) {
@@ -102,12 +102,12 @@ if (cliArgs.seq) {
       `There is no 'sequence' section in the _nexss.yml file: ${nexssConfig.filePath}
 more: https://github.com/nexssp/cli/wiki/Sequences`
     );
-    process.exit(1);
+    process.exit();
   }
 
   if (!nexssConfig.sequences[cliArgs.seq]) {
     error(`${cliArgs.seq} sequence does not exist in the _nexss.yml`);
-    process.exit(1);
+    process.exit();
   } else {
     files = nexssConfig.sequences[cliArgs.seq];
   }
@@ -137,7 +137,7 @@ if (cliArgs.server) {
     warn(
       "Nothing to run. To add files to the project please use 'nexss file add myfile.[language extension]'"
     );
-    process.exit(1);
+    process.exit();
   }
 
   // more here: https://github.com/nexssp/cli/wiki/Config
@@ -178,7 +178,7 @@ if (cliArgs.server) {
           );
         }
 
-        process.exit(1);
+        process.exit();
       }
     }
     info(green(bold("Testing Input Data")), testData);
@@ -288,7 +288,7 @@ if (cliArgs.server) {
         error(
           "file needs to have `name` field in the `files` section of the _nexss.yml config file. Please see examples/packages to grasp the idea."
         );
-        process.exit(1);
+        process.exit();
       }
 
       let fileArgs = file.name.split(" ");

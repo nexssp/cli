@@ -87,7 +87,7 @@ module.exports.getTemplatesPaths = ext => {
     error(
       `Please run with --nocache to recreate cache and try again. eg: 'nexss Id --nocache'`
     );
-    process.exit(1);
+    process.exit();
   }
   return langFileTemplates;
 };

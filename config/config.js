@@ -73,7 +73,7 @@ function getConfig() {
       console.error(p);
     });
     console.error(error);
-    process.exit(1);
+    process.exit();
   }
 
   const copyIfNotExists = [
@@ -97,7 +97,7 @@ function getConfig() {
       console.error(p);
     });
     console.error(error);
-    process.exit(1);
+    process.exit();
   }
   try {
     if (!existsSync(NEXSS_PACKAGES_PATH)) {

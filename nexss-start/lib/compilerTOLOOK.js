@@ -1,5 +1,3 @@
-const 
-
 module.exports.getCompiler = filename => {
   const ext = path.extname(filename);
   const langInfo = getLang(ext);
@@ -9,7 +7,7 @@ module.exports.getCompiler = filename => {
 
     return { compile: firstCompiler.compile };
     console.log(firstCompiler);
-    process.exit(1);
+    process.exit();
     installfirstCompiler = firstCompiler.install;
 
     if (langInfo.customCompiler && langInfo.customCompiler[process.platform]) {
@@ -50,7 +48,7 @@ module.exports.getCompiler = filename => {
     return langInfo.compiler;
   } else {
     warn(`File type ${bold(ext)} is not handled yet. File: ${bold(name)}.`);
-    process.exit(1);
+    process.exit();
   }
 };
 

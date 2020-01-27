@@ -29,7 +29,7 @@ authors.forEach(author => {
                 );
               } catch (er) {
                 console.error(er);
-                process.exit(1);
+                process.exit();
               }
             });
           } else {
@@ -49,7 +49,7 @@ authors.forEach(author => {
               });
             } catch (er) {
               console.error(er);
-              process.exit(1);
+              process.exit();
             }
           }
         }
@@ -65,7 +65,7 @@ authors.forEach(author => {
             });
           } catch (er) {
             console.error(er);
-            process.exit(1);
+            process.exit();
           }
         }
       }
@@ -85,7 +85,7 @@ authors.forEach(author => {
                 });
               } catch (er) {
                 console.error(er);
-                process.exit(1);
+                process.exit();
               }
             }
           }

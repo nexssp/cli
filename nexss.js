@@ -101,7 +101,7 @@ if (existsSync(plugin) || isURL(plugin)) {
 
               error(`Use ${bold("compiler, builder, packageManager or pm")}`);
 
-              process.exit(1);
+              process.exit();
               break;
           }
 
@@ -126,7 +126,7 @@ if (existsSync(plugin) || isURL(plugin)) {
               );
             }
 
-            process.exit(1);
+            process.exit();
           }
 
           let config;
@@ -159,7 +159,7 @@ if (existsSync(plugin) || isURL(plugin)) {
               );
             }
 
-            process.exit(1);
+            process.exit();
           }
 
           if (!config.languages[plugin]) {
@@ -269,7 +269,7 @@ if (existsSync(plugin) || isURL(plugin)) {
                   !["keyOfItem", "else", "messageAfterInstallation"].includes(e)
               )
           );
-          process.exit(1);
+          process.exit();
         } else {
           if (Object.prototype.toString.call(action) === `[object Function]`) {
             console.log(`Running FUNCTION ${argument}(${cliArgs._.join(",")})`);
@@ -335,7 +335,7 @@ if (process.argv[4] === "help") {
     console.info(helpContent.toString());
   } catch (error) {
     console.log(error);
-    process.exit(1);
+    process.exit();
   }
 
   return;

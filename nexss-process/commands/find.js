@@ -78,6 +78,6 @@ switch (whatToFind) {
   default:
     error(`Only find pid, name or port is available for searching.`);
     error(`eg: nexss ps find port 8000 or nexss ps find name node`);
-    process.exit(1);
+    process.exit();
     break;
 }

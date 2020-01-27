@@ -11,12 +11,12 @@ const { green } = require("../../lib/color");
 
 if (!process.argv[4]) {
   error("Please enter command name.");
-  process.exit(1);
+  process.exit();
 }
 
 if (!commandToAdd) {
   error("Please enter command body eg. nexss c add listFiles ls -la.");
-  process.exit(1);
+  process.exit();
 }
 
 console.log(green(`Adding command '${process.argv[3]}' as '${commandToAdd}'`));

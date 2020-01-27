@@ -31,7 +31,7 @@ module.exports.build = async file => {
         `Can't compile ${file} as there is no builders.[builder].build specified in the language config.`
       )
     );
-    process.exit(1);
+    process.exit();
   } else {
     if (typeof builder.build === "function") {
       builder.build = builder.build();
@@ -97,7 +97,7 @@ module.exports.build = async file => {
     d(yellow(`build completed..`));
   } catch (error) {
     console.log(error);
-    process.exit(1);
+    process.exit();
   }
 
   return builder;

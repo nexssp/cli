@@ -25,7 +25,7 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
   // We check errors based on the pattern in the languages definition
   //console.log();
   // console.log("===========================================================");
-  // process.exit(1);
+  // process.exit();
   const nexssConfig = require("../../lib/config").loadConfigContent();
   langInfo.errors = Object.assign(
     {},
@@ -58,7 +58,9 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
       if (ArrayMatch && ArrayMatch.length > 0) {
         if (ArrayMatch[0].groups) {
           Object.keys(ArrayMatch[0].groups).forEach(e => {
-            solution = solution.replace(`<${e}>`, ArrayMatch[0].groups[e]);
+            const reg = new RegExp(`<${e}>`, "gi");
+
+            solution = solution.replace(reg, ArrayMatch[0].groups[e]);
           });
         }
       } else if (match && match.length > 1) {

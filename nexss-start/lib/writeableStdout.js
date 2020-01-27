@@ -34,7 +34,7 @@ module.exports.writeableStdout = () =>
           });
           if (errorExists) {
             warn("Program has been terminated.");
-            process.exit(1);
+            process.exit();
           }
         }
       }

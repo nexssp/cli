@@ -29,7 +29,7 @@ if (!nexssConfig) {
   warn(
     `You are not in the Nexss Programmer Project. To remove file plase use 'rm ${options.fileName}'`
   );
-  process.exit(1);
+  process.exit();
 }
 if (
   options.fileName &&

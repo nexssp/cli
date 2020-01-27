@@ -7,7 +7,7 @@ const { spawn } = require("child_process");
 const { listCommands } = require("../lib/commands");
 if (!configContent) {
   console.log(`You are not in the ${bold("Nexss Programmer")} project folder.`);
-  process.exit(1);
+  process.exit();
 }
 
 // Setup commands names as default is run the command.

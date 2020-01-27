@@ -33,7 +33,7 @@ const os = require("os");
       }
 
       // console.log(entries);
-      // process.exit(1);
+      // process.exit();
 
       return Promise.all(
         commands

@@ -15,14 +15,14 @@ if (cliArgs._.length === 0) {
   error(
     "Enter package name `nexss pkg add myPackageName`. To see list of packages please use `nexss pkg l`"
   );
-  process.exit(1);
+  process.exit();
 }
 
 const packageName = cliArgs._[0];
 
 if (!fs.existsSync(`${NEXSS_PACKAGES_PATH}/${packageName}`)) {
   error(`Package '${packageName}' does not exist.`);
-  process.exit(1);
+  process.exit();
 }
 
 // without passing a name we use source name

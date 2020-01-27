@@ -7,7 +7,7 @@ process.stdin.on("data", function(NexssStdin) {
     NexssStdout = JSON.parse(NexssStdin.toString());
   } catch (e) {
     console.error(e);
-    process.exit(1);
+    process.exit();
   }
   // Modify data
   //NexssStdout.NodeJSOutput = `Hello from NodeJS! ${process.version}`;

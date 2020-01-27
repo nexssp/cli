@@ -27,7 +27,7 @@ function getLanguagesConfigFiles(projectFolder = "") {
   // PROJECTPATH/languages/php/win32/nexss.config.js
   paths.push(join(NEXSS_HOME_PATH, ...languagePathArray).replace(/\\/g, "/"));
   // console.log(NEXSS_PROJECT_PATH, "x");
-  // process.exit(1);
+  // process.exit();
   if (NEXSS_PROJECT_PATH) {
     paths.push(
       join(resolve(NEXSS_PROJECT_PATH), ...languagePathArray).replace(
@@ -158,7 +158,7 @@ module.exports.getLang = (ext, recreateCache) => {
             });
           } catch (error) {
             console.error(error);
-            process.exit(1);
+            process.exit();
           }
         }
       }

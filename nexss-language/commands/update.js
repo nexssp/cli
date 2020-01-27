@@ -17,6 +17,6 @@ languages.forEach(langDir => {
     success(`Default template cloned.`);
   } catch (er) {
     console.error(er);
-    process.exit(1);
+    process.exit();
   }
 });
