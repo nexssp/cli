@@ -21,7 +21,7 @@ if (paramName === ".") {
 
   if (fs.existsSync(`${projectPath}/_nexss.yml`)) {
     console.log("This is nexss project.");
-    process.exit(1);
+    process.exit(0);
   }
 } else {
   projectPath = path.join(currentPath, paramName);
@@ -32,7 +32,7 @@ if (paramName === ".") {
   } else {
     if (!cliArgs.f && !cliArgs.ff) {
       error(`Folder ${projectPath} exists. Folder cannot exist.`);
-      process.exit(1);
+      process.exit(0);
     } else {
       error(
         `Folder ${projectPath} exists but ${yellow("force option enabled.")}`
@@ -50,7 +50,7 @@ if (nexss.template) {
   if (!fs.existsSync(templatePath)) {
     error(`Template ${bold(nexss.template)} does not exist.`);
     fs.rmdirSync(projectPath);
-    process.exit(1);
+    process.exit(0);
   } else {
     success(`Using ${bold(nexss.template)} template. Copying files...`);
 
@@ -70,7 +70,7 @@ if (nexss.template) {
           success(`Default template cloned.`);
         } catch (er) {
           console.error(er);
-          process.exit(1);
+          process.exit(0);
         }
       }
       copydir.sync(templatePath, projectPath, options);

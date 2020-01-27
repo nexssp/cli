@@ -1,4 +1,11 @@
-const { extname, join, resolve, dirname, isAbsolute } = require("path");
+const {
+  extname,
+  join,
+  resolve,
+  dirname,
+  isAbsolute,
+  normalize
+} = require("path");
 const cliArgs = require("minimist")(process.argv.slice(3));
 const { searchData } = require("../../lib/search");
 const { yellow, bold } = require("../../lib/color");
@@ -23,7 +30,7 @@ if (
   error(`Add valid filename like: mycorrectfilename.[extension]. Examples:
 nexss file add myfile.js
 nexss f a myfile.rs`);
-  process.exit(1);
+  process.exit(0);
 }
 
 options.filePath = options.fileName;
@@ -40,7 +47,7 @@ if (
 
 if (fs.existsSync(options.filePath) && !cliArgs.force && !cliArgs.f) {
   error(`File already exists: ${options.fileName}`);
-  process.exit(1);
+  process.exit(0);
 }
 
 options.extension = extname(options.fileName);
@@ -56,11 +63,11 @@ if (options.template) {
 nexss file add myprogram.js --template=default
 nexss file add myprogram.js --template=helloWorld
 `);
-      process.exit(1);
+      process.exit(0);
     } else {
       if (existsSync(options.template)) {
         error(`The template${options.template} does not exist.`);
-        process.exit(1);
+        process.exit(0);
       }
     }
   }
@@ -117,8 +124,8 @@ function execute(options) {
 
     if (!fs.existsSync(options.templatePath)) {
       error(`Template ${bold(options.template)} does not exist.`);
-      error(`File ${bold(options.fileName)} has not been created.`);
-      process.exit(1);
+      error(`File ${bold(normalize(options.fileName))} has not been created.`);
+      process.exit(0);
     } else {
       info(
         `Using ${bold(options.template)} template. Creating from template...`
@@ -128,7 +135,7 @@ function execute(options) {
         if (err) throw err;
       });
 
-      ok(`File ${bold(filePath)} has been created.`);
+      ok(`File ${bold(normalize(filePath))} has been created.`);
 
       // cliArgs.noconfig - no config modification
       if (!cliArgs.noconfig && NEXSS_PROJECT_CONFIG_PATH) {
@@ -141,9 +148,16 @@ function execute(options) {
           options.fileName = "src/" + options.fileName;
         }
 
-        if (configContent.findByProp("files", "name", options.fileName)) {
+        if (
+          !cliArgs.f &&
+          configContent.findByProp("files", "name", options.fileName)
+        ) {
           info(
-            yellow(`File '${options.fileName}' is already in the _nexss.yml`)
+            yellow(
+              `File '${normalize(
+                options.fileName
+              )}' is already in the _nexss.yml`
+            )
           );
           return;
         } else {

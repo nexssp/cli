@@ -221,20 +221,34 @@ if (existsSync(plugin) || isURL(plugin)) {
         case "info":
           const info = {
             title: languageSelected.title,
+            url: languageSelected.url,
             description: languageSelected.description,
             extensions: languageSelected.extensions,
             configFile: languageSelected.configFile
           };
-          console.info(info);
+          if (process.argv.includes("--json")) {
+            console.info(JSON.stringify(info));
+          } else {
+            console.info(info);
+          }
+
+          process.exit(0);
         case "config":
-          Object.keys(languageSelected).forEach(element => {
-            if (typeof languageSelected[element] === "object") {
-              console.log(`${element}:`, languageSelected[element]);
-            } else {
-              if (languageSelected[element])
-                console.log(`${element}: ${languageSelected[element]}`);
-            }
-          });
+          // Object.keys(languageSelected).forEach(element => {
+          //   if (typeof languageSelected[element] === "object") {
+          //     console.log(`${element}:`, languageSelected[element]);
+          //   } else {
+          //     if (languageSelected[element])
+          //       console.log(`${element}: ${languageSelected[element]}`);
+          //   }
+          // });
+
+          if (process.argv.includes("--json")) {
+            console.info(JSON.stringify(languageSelected));
+          } else {
+            console.info(languageSelected);
+          }
+
           process.exit(0);
         default:
           break;
@@ -248,10 +262,12 @@ if (existsSync(plugin) || isURL(plugin)) {
         if (!action) {
           console.log(
             `Select Action.`,
-            Object.keys(pm).filter(
-              e =>
-                !["keyOfItem", "else", "messageAfterInstallation"].includes(e)
-            )
+            Object.keys(pm)
+              .concat(["info", "config"])
+              .filter(
+                e =>
+                  !["keyOfItem", "else", "messageAfterInstallation"].includes(e)
+              )
           );
           process.exit(1);
         } else {

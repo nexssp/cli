@@ -7,18 +7,18 @@ inquirer.registerPrompt(
   "autocomplete",
   require("inquirer-autocomplete-prompt")
 );
-
+const cliArgs = require("minimist")(process.argv.slice(3));
 const {
   NEXSS_PROJECT_CONFIG_PATH,
   NEXSS_PROJECTS_DB
 } = require("../../config/config");
 
-if (process.argv.length > 4) {
-  warn(`Project can be attached only from current folder.
-Go to the folder of the project you want to attach and then 
-'nexss project attach'`);
-  process.exit(0);
-}
+// if (process.argv.length > 4) {
+//   warn(`Project can be attached only from current folder.
+// Go to the folder of the project you want to attach and then
+// 'nexss project attach'`);
+//   process.exit(0);
+// }
 
 info(`Attaching project from current folder ${bold(process.cwd())}`);
 
@@ -32,43 +32,89 @@ if (NEXSS_PROJECT_CONFIG_PATH) {
   configContent = loadConfigContent(NEXSS_PROJECT_CONFIG_PATH);
 }
 
+let answersFromParams = {};
+
 if (configContent && configContent.name) {
   info(`Project name: ${green(configContent.name)}`);
 } else {
+  if (cliArgs.projectName) {
+    answersFromParams.projectName = cliArgs.projectName;
+    info(`Project name: ${green(answersFromParams.projectName)}`);
+  } else {
+    questions.push({
+      type: "input",
+      name: "projectName",
+      message: "Enter project name",
+      default: path.basename(process.cwd())
+    });
+  }
+}
+if (cliArgs.description) {
+  answersFromParams.description = cliArgs.description;
+  info(`Description: ${green(answersFromParams.description)}`);
+} else {
   questions.push({
     type: "input",
-    name: "projectName",
-    message: "Enter project name",
-    default: path.basename(process.cwd())
+    name: "description",
+    message: "Enter description",
+    default: cliArgs.description
   });
 }
 
-questions.push({
-  type: "input",
-  name: "description",
-  message: "Enter description"
-});
+if (cliArgs.keywords) {
+  answersFromParams.keywords = cliArgs.keywords;
+  info(`Keywords: ${green(answersFromParams.keywords)}`);
+} else {
+  questions.push({
+    type: "input",
+    name: "keywords",
+    message: "Enter keywords (for searching)"
+  });
+}
 
-questions.push({
-  type: "input",
-  name: "repo",
-  message: "Enter repository"
-});
+if (cliArgs.repo) {
+  answersFromParams.repo = cliArgs.repo;
+  info(`Repo: ${green(answersFromParams.repo)}`);
+} else {
+  questions.push({
+    type: "input",
+    name: "repo",
+    message: "Enter repository"
+  });
+}
 
-questions.push({
-  type: "input",
-  name: "editor",
-  message: "Enter code editor command",
-  default: "code ."
-});
+if (cliArgs.editor) {
+  answersFromParams.editor = cliArgs.editor;
+  info(`Editor: ${green(answersFromParams.editor)}`);
+} else {
+  questions.push({
+    type: "input",
+    name: "editor",
+    message: "Enter code editor command",
+    default: "code ."
+  });
+}
+if (cliArgs.note) {
+  answersFromParams.note = cliArgs.note;
+  info(`Note: ${green(answersFromParams.note)}`);
+} else {
+  questions.push({
+    type: "input",
+    name: "note",
+    message: "Enter extra note"
+  });
+}
 
-questions.push({
-  type: "input",
-  name: "note",
-  message: "Enter extra note"
-});
+if (questions.length === 0) {
+  attachProject(answersFromParams);
+} else {
+  inquirer.prompt(questions).then(function(answers) {
+    answers = Object.assign(answers, answersFromParams);
+    attachProject(answers);
+  });
+}
 
-inquirer.prompt(questions).then(function(answers) {
+function attachProject(answers) {
   let projectNameIndex = answers.projectName || configContent.name;
 
   let projects = existsSync(NEXSS_PROJECTS_DB)
@@ -80,7 +126,7 @@ inquirer.prompt(questions).then(function(answers) {
         NEXSS_PROJECTS_DB
       )}`
     );
-    process.exit(1);
+    process.exit(0);
   }
   delete answers.projectName;
 
@@ -88,4 +134,4 @@ inquirer.prompt(questions).then(function(answers) {
   Object.assign(projects, { [projectNameIndex]: answers });
 
   writeFileSync(NEXSS_PROJECTS_DB, JSON.stringify(projects, null, 2));
-});
+}
