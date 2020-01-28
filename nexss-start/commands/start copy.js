@@ -23,7 +23,7 @@ const cliArgs = require("minimist")(process.argv.slice(paramNumber));
 
 const request = require("request");
 
-let fileOrDirectory = Array.isArray(cliArgs._) && cliArgs._.shift();
+let fileOrDirectory = is("Array", cliArgs._) && cliArgs._.shift();
 
 // There is an argument so we check if this is folder
 if (fileOrDirectory) {
@@ -63,7 +63,6 @@ if (fileOrDirectory) {
     }
   }
 }
-
 //  ???????
 const nexssConfig = require("../../lib/config").loadConfigContent();
 const globalConfigPath = require("os").homedir() + "/.nexss/config.json";
@@ -206,7 +205,7 @@ if (cliArgs.server) {
 
   if (cliArgs.debug) di(`startData: ${yellow(inspect(startData))}`);
 
-  // const globalBuild = (nexssConfig && nexssConfig.build) || undefined;
+  const globalBuild = (nexssConfig && nexssConfig.build) || undefined;
   const globalDisabled = nexssConfig && nexssConfig.disabled;
   let nexssBuild = [
     () => {
@@ -377,7 +376,7 @@ if (cliArgs.server) {
               }
             }
           }
-          let compilerArgs;
+
           // CUSTOM COMPILER in the _nexss.yml file
           if (file.compiler) {
             fileCompilerSplit = file.compiler.split(" ");
@@ -398,7 +397,6 @@ if (cliArgs.server) {
               } else {
                 compiler = {};
                 compiler.command = "nexss";
-
                 compilerArgs = `${fileName} ${fileArgs.join(" ")}`;
               }
             }
@@ -435,16 +433,18 @@ if (cliArgs.server) {
               }
             }
 
-            if (compiler.args) {
-              compilerArgs = compiler.args.replace(/<file>/g, fileName).replace(
+            let compilerArgs = compiler.args
+              .replace(/<file>/g, fileName)
+              .replace(
                 /<fileNoExt>/g,
                 fileName
                   .split(".")
                   .slice(0, -1)
                   .join(".")
               );
-            }
+
             args = compilerArgs.split(" ");
+
             let fileArgsObj = require("minimist")(fileArgs);
             Object.assign(fileArgsObj, startData);
 

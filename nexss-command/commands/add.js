@@ -19,7 +19,7 @@ if (!commandToAdd) {
   process.exit();
 }
 
-console.log(green(`Adding command '${process.argv[3]}' as '${commandToAdd}'`));
+console.log(green(`Adding command '${process.argv[4]}' as '${commandToAdd}'`));
 
 // const bannedCommands = ["add", "command", "delete", "list"];
 

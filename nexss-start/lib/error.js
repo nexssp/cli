@@ -38,6 +38,7 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
     Object.keys(langInfo.errors).forEach(pattern => {
       let regExp = new RegExp(pattern, "gi");
       let match = errorBody.matchAll(regExp);
+
       var solution;
 
       if (
@@ -55,7 +56,8 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
       //Capturing naming groups
       // https://javascript.info/regexp-groups#named-groups
       const ArrayMatch = Array.from(match);
-      if (ArrayMatch && ArrayMatch.length > 0) {
+
+      if (ArrayMatch && ArrayMatch.groups) {
         if (ArrayMatch[0].groups) {
           Object.keys(ArrayMatch[0].groups).forEach(e => {
             const reg = new RegExp(`<${e}>`, "gi");
@@ -63,18 +65,16 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
             solution = solution.replace(reg, ArrayMatch[0].groups[e]);
           });
         }
-      } else if (match && match.length > 1) {
+      } else if (ArrayMatch && ArrayMatch[0] && ArrayMatch[0].length > 1) {
         //console.log("find: ", pattern);
         //console.log(match);
         // We display errors to standard output (eg --server)
         solution = solution
-          .replace(/<package>/g, match[1])
-          .replace(/<module>/g, match[1])
-          .replace(/<found1>/g, match[1]);
+          .replace(/<package>/g, ArrayMatch[0][1])
+          .replace(/<module>/g, ArrayMatch[0][1])
+          .replace(/<found1>/g, ArrayMatch[0][1]);
       } else if (errorBody.includes(pattern)) {
         // We display errors to standard output (eg --server)
-
-        return;
       } else {
         solution = null;
       }
