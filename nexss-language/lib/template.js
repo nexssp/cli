@@ -48,14 +48,14 @@ module.exports.getTemplatesPaths = ext => {
   // console.log(module.exports.getLanguages());
 
   const globalConfigPath = require("os").homedir() + "/.nexss/config.json";
-  const tempFilePath = require("os").homedir() + "/.nexss/xxxxx.json";
-  const l = data => fs.appendFileSync(tempFilePath, data + "\n");
+  // const tempFilePath = require("os").homedir() + "/.nexss/xxxxx.json";
+  // const l = data => fs.appendFileSync(tempFilePath, data + "\n");
 
   // We check if there is something about global config changed
   let globalConfig;
   let templateFolder = "templates";
   if (fs.existsSync(globalConfigPath)) {
-    l("Config file exists");
+    // l("Config file exists");
     globalConfig = require(globalConfigPath);
     const languageGlobalConfig =
       globalConfig.languages && globalConfig.languages[extWithOutDot];
@@ -64,15 +64,15 @@ module.exports.getTemplatesPaths = ext => {
       languageGlobalConfig &&
       lang.compilers[languageGlobalConfig.compilers]
     ) {
-      l(`Global Compiler Selected: ${languageGlobalConfig.compilers}`);
+      //l(`Global Compiler Selected: ${languageGlobalConfig.compilers}`);
       templateFolder =
         lang.compilers[languageGlobalConfig.compilers].templates || "templates";
-      l(
-        `compilers: ${JSON.stringify(
-          lang.compilers[languageGlobalConfig.compilers]
-        )}`
-      );
-      l(`Template folder ${templateFolder}`);
+      //l(
+      //  `compilers: ${JSON.stringify(
+      //    lang.compilers[languageGlobalConfig.compilers]
+      //  )}`
+      //);
+      //l(`Template folder ${templateFolder}`);
     }
   }
 

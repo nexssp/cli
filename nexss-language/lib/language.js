@@ -148,7 +148,9 @@ module.exports.getLang = (ext, recreateCache) => {
       }
 
       cache.del(`nexss_core_getLanguages__.json`);
-      language = module.exports.getLanguages(true);
+      cache.del(`nexss_core_getLanguages_${ext}_.json`);
+      module.exports.getLanguages(true);
+      language = module.exports.getLang(ext);
     } else {
       warn(
         `Nexss Online Github Repository: Support for language with extension ${ext} has not been found. Please consider installing it manually.`

@@ -1,10 +1,10 @@
-# List
+# update
 
-Updates all languages from the repository
+Updates installed languages to the latest version.
 
 ## Examples
 
 ```sh
-nexss language update
-nexss l u
+nexss language update # it wil download latest versions of the **installed** languages with the git repo. Also your custom ones.
+nexss l u # shortcut of command above
 ```
