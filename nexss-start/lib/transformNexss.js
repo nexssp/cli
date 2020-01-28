@@ -1,5 +1,5 @@
 const { Transform } = require("stream");
-const { dy } = require("../../lib/log");
+const { dy, dbg } = require("../../lib/log");
 const { spawn } = require("child_process");
 const { is } = require("../../lib/data/guard");
 const { defaultExecuteOptions } = require("../../config/defaults");
@@ -7,6 +7,7 @@ const { Proc } = require("../../lib/proc");
 const path = require("path");
 // const { promisify } = require("util");
 const { parseError } = require("./error");
+const isDebug = process.argv.indexOf("--debug") >= 0;
 
 module.exports.transformNexss = (
   cmd, // cmd = ls, node, php or whatever
@@ -20,10 +21,7 @@ module.exports.transformNexss = (
         chunk = chunk.toString();
       }
 
-      if (!quiet)
-        console.log(
-          `Chunk size: ${chunk.length}, trimmed: ${chunk.trim().length}`
-        );
+      dbg(`Chunk size: ${chunk.length}, trimmed: ${chunk.trim().length}`);
 
       if (chunk === "\u0003") {
         // process.exit();
@@ -98,13 +96,17 @@ module.exports.transformNexss = (
           this.worker.stdin.write(Buffer.from(JSON.stringify(inputData)));
         }
       } else {
-        this.worker.stdin.write(chunk);
+        try {
+          this.worker.stdin.write(chunk);
+        } catch (error) {
+          dbg(`ERROR WRITING TO PIPE: ${chunk}`);
+        }
       }
 
       //BElow maybe is in wrong placa but AutoIt doesn;t work if is not here!!!!!
       this.worker.stdin.end();
 
-      if (!quiet) console.log("waiting for ", this.worker.cmd);
+      dbg("waiting for ", this.worker.cmd);
     },
     flush(cb) {
       cb();

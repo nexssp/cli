@@ -1,6 +1,6 @@
 const PROCESS_CWD = process.cwd();
 const path = require("path");
-const { info, error, warn, di, dg, dy } = require("../../lib/log");
+const { info, error, warn, di, dg, dy, dbg } = require("../../lib/log");
 const dotenv = require("dotenv");
 const { inspect } = require("util"),
   { yellow, bold, green } = require("../../lib/color"),
@@ -9,9 +9,10 @@ const { inspect } = require("util"),
 const { is, Exists } = require("../../lib/data/guard");
 const { ensureInstalled } = require("../../lib/terminal");
 const fs = require("fs");
-const { readFileSync, existsSync, lstatSync } = require("fs");
+const { existsSync, lstatSync } = require("fs");
 const { isURL } = require("../../lib/data/url");
 const url = require("url");
+
 // nexss s OR nexss start is ommiting
 let paramNumber = 2;
 if (process.argv[2] === "s" || process.argv[2] === "start") {
@@ -143,7 +144,10 @@ if (cliArgs.server) {
   // more here: https://github.com/nexssp/cli/wiki/Config
   let startData = (nexssConfig && nexssConfig.data) || {};
 
-  startData.start = Date.now();
+  if (cliArgs.time) {
+    startData.start = Date.now();
+  }
+
   startData.cwd = PROCESS_CWD;
 
   // if (nexssConfig && nexssConfig.filePath) {
@@ -154,8 +158,9 @@ if (cliArgs.server) {
 
   Object.assign(startData, cliArgs);
 
+  // TEST DATA
   if (cliArgs.test) {
-    info(green(bold("Testing enabled")));
+    info("Testing enabled");
     let testDataPassed = cliArgs.testData || cliArgs.testdata;
     if (!testDataPassed) {
       testData = require("../testingData.json");
@@ -181,33 +186,12 @@ if (cliArgs.server) {
         process.exit();
       }
     }
-    info(green(bold("Testing Input Data")), testData);
+    info("Testing Input Data", JSON.stringify(testData, 2));
     Object.assign(startData, testData);
   }
 
-  const stdin = () => {
-    if (process.platform !== "win32") {
-      // Linux fix
-      process.stdin.resume();
-    }
-    var chunks = [];
-    try {
-      do {
-        var chunk = readFileSync(0, "utf8");
-        chunks.push(chunk);
-      } while (chunk.length);
-    } catch (error) {
-      // console.error(`STDIN Error: ${error}`);
-      // console.trace();
-      if (process.platform !== "win32") {
-        process.stdin.destroy();
-      }
-    }
-
-    return chunks.join("");
-  };
-
-  const stdinRead = stdin();
+  // STDIN
+  const stdinRead = require("../lib/stdin")();
   let dataStdin = {};
   if (stdinRead) {
     try {
@@ -218,7 +202,8 @@ if (cliArgs.server) {
 
     Object.assign(startData, dataStdin);
   }
-  if (cliArgs.verbose) di(`startData: ${yellow(inspect(startData))}`);
+
+  if (cliArgs.debug) di(`startData: ${yellow(inspect(startData))}`);
 
   const globalBuild = (nexssConfig && nexssConfig.build) || undefined;
   const globalDisabled = nexssConfig && nexssConfig.disabled;
@@ -232,7 +217,8 @@ if (cliArgs.server) {
       return s;
     }
   ];
-  if (cliArgs.verbose) {
+
+  if (cliArgs.debug) {
     nexssBuild.push({
       stream: "transformError",
       cmd: "Builder Started."
@@ -252,35 +238,29 @@ if (cliArgs.server) {
     // { stream: "transformError", cmd: "Some text" }
   ];
 
-  if (cliArgs.test) {
-    nexssResult.push(() => {
-      var Transform = require("stream").Transform;
-      var s = new Transform();
-      s._transform = function(obj, encoding, cb) {
-        let c = JSON.parse(obj.toString());
-        c.transformWorks = "ąęćśŻó";
-        this.push(JSON.stringify(c));
-        cb();
-      };
-      return s;
-    });
-  }
+  // if (cliArgs.test) {
+  //   nexssResult.push(() => {
+  //     var Transform = require("stream").Transform;
+  //     var s = new Transform();
+  //     s._transform = function(obj, encoding, cb) {
+  //       let c = JSON.parse(obj.toString());
+  //       c.transformWorks = "ąęćśŻó";
+  //       this.push(JSON.stringify(c));
+  //       cb();
+  //     };
+  //     return s;
+  //   });
+  // }
 
   (async () => {
     for await (let file of files) {
       let compiler = null;
-      // TODO: check this below
-      //if (paramNumber === 3) {
-      //this is nexss start or s so we change each time to the root of the project
-      //as each file has relative path in nexss.yml
       if (projectPath) process.chdir(projectPath);
-      //}
 
-      if (cliArgs.verbose) dg(`Parsing ${file.name}..`);
+      dg(`Parsing ${file.name}..`);
 
       if (globalDisabled && file.disabled) {
-        if (cliArgs.verbose)
-          dy(`file ${file.name} is disabled or Global disabled. Going next..`);
+        dy(`file ${file.name} is disabled or Global disabled. Going next..`);
         return;
       }
 
@@ -295,20 +275,14 @@ if (cliArgs.server) {
       let fileName = fileArgs.shift();
 
       let stream = "transformNexss";
-      //we check protocol
-
       const parsed = url.parse(fileName);
-      // for check if exists
-      // let physical = true;
+
       switch (parsed.protocol) {
         case "http:":
         case "https:":
           stream = "transformRequest";
-
           nexssResult.push(() => request(fileName));
           break;
-        // case "file:":
-        //   stream = "transformFile";
         default:
           if (parsed.protocol) {
             if (!path.isAbsolute(fileName)) {
@@ -376,9 +350,15 @@ if (cliArgs.server) {
               }
             }
           }
+
           process.nexssFilename = fileName;
           let languageDefinition = getLangByFilename(fileName);
 
+          if (languageDefinition && languageDefinition.hooks) {
+            if (languageDefinition.hooks.pre) {
+              languageDefinition.hooks.pre();
+            }
+          }
           ld_compiler = languageDefinition.compilers;
 
           // GLOBAL COMPILER
@@ -535,7 +515,7 @@ if (cliArgs.server) {
               fileName
             });
             if (cliArgs.verbose) {
-              console.log(
+              dbg(
                 `Build Command ${cmd} ${
                   builderArgs ? builderArgs.join(" ") : ""
                 }`
@@ -575,14 +555,14 @@ if (cliArgs.server) {
 
     // This needs to be changed so only build if is necessary
     if (nexssBuild.length > 0) {
-      if (cliArgs.verbose) dy(`Building..`, nexssBuild);
+      dy(`Building..`);
       await run(nexssBuild, {
         quiet: !cliArgs.verbose,
         build: true
       }).catch(e => console.error(e));
     }
 
-    if (cliArgs.verbose) dg(`Executing..`);
+    dg(`Executing..`);
     await run(nexssResult, { quiet: !cliArgs.verbose }).catch(e =>
       console.error(e)
     );

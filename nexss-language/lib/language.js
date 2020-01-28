@@ -7,7 +7,7 @@ const {
   NEXSS_HOME_PATH
 } = require("../../config/config");
 const { join, extname, resolve } = require("path");
-const { warn, error, success } = require("../../lib/log");
+const { warn, di, success } = require("../../lib/log");
 const { bold, yellow } = require("../../lib/color");
 const cache = require("../../lib/cache");
 
@@ -40,29 +40,10 @@ function getLanguagesConfigFiles(projectFolder = "") {
   return fg.sync(paths);
 }
 
-module.exports.getLanguages = (extensions, recreateCache) => {
-  let extFilename = "";
-  // We make separate cache for each language and for all
-  if (extensions) {
-    extFilename = extensions.join("-");
-  }
-  const getLanguagesCacheName = `nexss_core_getLanguages_${extFilename}_.json`;
+module.exports.getLanguages = recreateCache => {
+  const getLanguagesCacheName = `nexss_core_getLanguages__.json`;
   if (!recreateCache && cache.exists(getLanguagesCacheName, "1y")) {
-    return JSON.parse(cache.read(getLanguagesCacheName), function(k, v) {
-      if (
-        typeof v === "string" &&
-        v.startsWith("function(") &&
-        v.endsWith("}")
-      ) {
-        return eval("(" + v + ")");
-      }
-      return v;
-    });
-  }
-
-  if (extensions && !Array.isArray(extensions)) {
-    throw new Error(`Function getLanguages needs to pass extensions as array 
-or no parameter for all languages.`);
+    return cache.readJSON(getLanguagesCacheName);
   }
 
   let result = {};
@@ -71,23 +52,21 @@ or no parameter for all languages.`);
   for (file of files) {
     let content = require(file);
     content.extensions.forEach(languageExtension => {
-      if (!extensions || extensions.includes(languageExtension)) {
-        result[languageExtension] = content;
-        result[languageExtension]["configFile"] = file;
-      }
+      result[languageExtension] = content;
+      result[languageExtension]["configFile"] = file;
     });
   }
 
-  cache.write(
-    getLanguagesCacheName,
-    JSON.stringify(result, (k, v) => (typeof v === "function" ? "" + v : v))
-  );
+  // Store only if there is something in the cache
+  if (Object.keys(result).length > 0) {
+    cache.writeJSON(getLanguagesCacheName, result);
+  }
+
   return result;
 };
 
-const languages = module.exports.getLanguages();
-
 module.exports.languageNames = () => {
+  const languages = module.exports.getLanguages();
   if (languages)
     return Object.keys(languages)
       .map(
@@ -100,25 +79,30 @@ module.exports.languageNames = () => {
 };
 
 module.exports.getLang = (ext, recreateCache) => {
+  // Cache L1
+  if (process.languages && process.languages[ext]) {
+    return process.languages[ext];
+  }
   if (!ext) {
     return false;
   }
-  let Languages = module.exports.getLanguages([ext], recreateCache);
+  let language;
+  const getLanguageCacheName = `nexss_core_getLanguages_${ext}_.json`;
+  if (!recreateCache && cache.exists(getLanguageCacheName, "1y")) {
+    language = cache.readJSON(getLanguageCacheName);
+  } else {
+    language = module.exports.getLanguages(recreateCache);
+    language = language[ext];
+  }
 
-  if (Object.keys(Languages).length === 0) {
+  if (!language) {
     warn(
       `New extension '${bold(
         ext
       )}', checking online repository for implementation..`
     );
 
-    let langRepositories;
-    // checking online repository
-    if (process.env.NODE_ENV === "PRODUCTION") {
-      langRepositories = require("../repos.json");
-    } else {
-      langRepositories = require("../repos.dev.json");
-    }
+    const langRepositories = require("../repos.json");
 
     const { ensureInstalled } = require("../../lib/terminal");
 
@@ -164,26 +148,25 @@ module.exports.getLang = (ext, recreateCache) => {
       }
 
       cache.del(`nexss_core_getLanguages__.json`);
-      Languages = module.exports.getLanguages([ext], true);
+      language = module.exports.getLanguages(true);
     } else {
       warn(
         `Nexss Online Github Repository: Support for language with extension ${ext} has not been found. Please consider installing it manually.`
       );
       process.exit(0);
     }
-
-    // let Languages = module.exports.getLanguages([ext]);
-  }
-  const lang = Languages[ext];
-  if (!lang) {
-    warn(`Support for '${bold(ext)}' has not been found.`);
-    process.exit();
   }
 
-  //We add some defaults if not exists ???????????
-  // if (!lang) return false;
+  if (!language) {
+    warn(`File with extension ${ext} is not supported.`);
+  }
 
-  return lang;
+  cache.writeJSON(getLanguageCacheName, language);
+
+  if (!process.languages) process.languages = {};
+  process.languages[ext] = language;
+
+  return language;
 };
 
 module.exports.getLangByFilename = (name, recreateCache) => {

@@ -105,6 +105,14 @@ if (existsSync(plugin) || isURL(plugin)) {
               break;
           }
 
+          let config;
+          const configPath = require("os").homedir() + "/.nexss/config.json";
+          if (require("fs").existsSync(configPath)) {
+            config = require(configPath);
+          } else {
+            config = { languages: {} };
+          }
+
           const firstName = Object.keys(languageSelected[whatToSet])[0];
           if (!toSet) {
             if (Object.keys(languageSelected[whatToSet]).length) {
@@ -115,9 +123,26 @@ if (existsSync(plugin) || isURL(plugin)) {
               );
 
               console.log(bold(`List of ${whatToSet}:`));
+              let firstCompiler;
               Object.keys(languageSelected[whatToSet]).forEach(w => {
+                if (!firstCompiler) {
+                  firstCompiler = w;
+                }
                 console.log(bold(w), languageSelected[whatToSet][w]);
               });
+              if (config.languages && config.languages[plugin]) {
+                console.log(
+                  `Default ${whatToSet.slice(0, -1)} is set to ${bold(
+                    config.languages[plugin][whatToSet]
+                  )}`
+                );
+              } else {
+                console.log(
+                  `Default compiler has not been set. First on the list (${bold(
+                    firstCompiler
+                  )}) is as default.`
+                );
+              }
             } else {
               warn(
                 `No ${bold(
@@ -127,14 +152,6 @@ if (existsSync(plugin) || isURL(plugin)) {
             }
 
             process.exit();
-          }
-
-          let config;
-          const configPath = require("os").homedir() + "/.nexss/config.json";
-          if (require("fs").existsSync(configPath)) {
-            config = require(configPath);
-          } else {
-            config = { languages: {} };
           }
 
           if (
@@ -297,12 +314,14 @@ if (existsSync(plugin) || isURL(plugin)) {
       }
     } else {
       // File not found OR no actions can be performed
+
       console.log(
         `${bold(plugin)} has not been found. 
 To add new file please use command ${bold("nexss file add " + plugin)}`
       );
       //
     }
+
     return;
   }
 }
