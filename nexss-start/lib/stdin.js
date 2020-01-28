@@ -1,4 +1,6 @@
 // stdin module
+
+const { readFileSync } = require("fs");
 module.exports = () => {
   if (process.platform !== "win32") {
     // Linux fix
