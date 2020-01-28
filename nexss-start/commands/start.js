@@ -18,7 +18,7 @@ let paramNumber = 2;
 if (process.argv[2] === "s" || process.argv[2] === "start") {
   paramNumber = 3;
 }
-const { NEXSS_PACKAGES_PATH, NEXSS_HOME_PATH } = require("../../config/config");
+const { NEXSS_PACKAGES_PATH } = require("../../config/config");
 const cliArgs = require("minimist")(process.argv.slice(paramNumber));
 
 const request = require("request");
@@ -353,12 +353,6 @@ if (cliArgs.server) {
 
           process.nexssFilename = fileName;
           let languageDefinition = getLangByFilename(fileName);
-
-          if (languageDefinition && languageDefinition.hooks) {
-            if (languageDefinition.hooks.pre) {
-              languageDefinition.hooks.pre();
-            }
-          }
           ld_compiler = languageDefinition.compilers;
 
           // GLOBAL COMPILER
@@ -452,6 +446,7 @@ if (cliArgs.server) {
             args = compilerArgs.split(" ");
 
             let fileArgsObj = require("minimist")(fileArgs);
+            Object.assign(fileArgsObj, startData);
 
             const cmd = compiler.command ? compiler.command : args.shift();
 
