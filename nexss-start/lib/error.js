@@ -1,6 +1,7 @@
 const { error } = require("../../lib/log");
 const { bold, yellow, blue } = require("../../lib/color");
 const { getLangByFilename } = require("../../nexss-language/lib/language");
+const { normalize, isAbsolute } = require("path");
 
 // more here: https://github.com/nexssp/cli/wiki/Errors-Solutions
 module.exports.parseError = (filename, errorBody, stdOutput) => {
@@ -10,22 +11,27 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
   // console.log(langInfo.compiler.split(" ")[0]);
 
   // We display error to standard output eg --server
+
+  const ErrorPre = isAbsolute(filename)
+    ? filename
+    : `${process.nexssCWD}\\${filename}`;
+
   if (stdOutput) {
     if (process.argv.includes("--htmlOutput")) {
       console.log(
-        `<span style="color:red;">${errorBody.replace(/\n/g, "<BR />")}</span>`
+        `<span style="color:red;">${ErrorPre} ${errorBody.replace(
+          /\n/g,
+          "<BR />"
+        )}</span>`
       );
     } else {
-      console.log(`Error:${bold(errorBody)}`);
+      console.log(`Error ${ErrorPre}:${bold(errorBody)}`);
     }
   } else {
-    error(`${bold(errorBody)}`);
+    error(`${ErrorPre}: ${bold(errorBody)}`);
   }
 
   // We check errors based on the pattern in the languages definition
-  //console.log();
-  // console.log("===========================================================");
-  // process.exit();
   const nexssConfig = require("../../lib/config").loadConfigContent();
   langInfo.errors = Object.assign(
     {},
@@ -40,7 +46,6 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
       let match = errorBody.matchAll(regExp);
 
       var solution;
-
       if (
         !Array.isArray(langInfo.errors[pattern]) &&
         typeof langInfo.errors[pattern] !== "object"

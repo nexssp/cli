@@ -166,7 +166,7 @@ if (cliArgs.server) {
     info("Testing enabled");
     let testDataPassed = cliArgs.testData || cliArgs.testdata;
     if (!testDataPassed) {
-      testData = require("../testingData.json");
+      testData = require("../../config/testingData.json");
     } else {
       var testDataPath = path.normalize(`${PROCESS_CWD}/${testDataPassed}`);
       try {
@@ -241,6 +241,11 @@ if (cliArgs.server) {
     }
     // { stream: "transformError", cmd: "Some text" }
   ];
+
+  nexssResult.push({
+    stream: "transformValidation",
+    cmd: `input`
+  });
 
   // if (cliArgs.test) {
   //   nexssResult.push(() => {
@@ -355,7 +360,10 @@ if (cliArgs.server) {
             }
           }
 
-          process.nexssFilename = fileName;
+          // Extra info for also Error Handling
+          process.nexssCWD = process.cwd();
+          process.nexssFilename = path.normalize(fileName);
+
           let languageDefinition = getLangByFilename(fileName);
           ld_compiler = languageDefinition.compilers;
 
@@ -544,6 +552,16 @@ if (cliArgs.server) {
       //   // options: spawnOptions
       // });
     }
+
+    nexssResult.push({
+      stream: "transformValidation",
+      cmd: `output`
+    });
+
+    nexssResult.push({
+      stream: "transformTest",
+      cmd: `Test`
+    });
 
     nexssResult.push({
       stream: "writeableStdout",

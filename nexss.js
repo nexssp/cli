@@ -33,6 +33,21 @@ if (!plugin || plugin === "help") {
   return;
 }
 
+if (
+  existsSync(`${NEXSS_SRC_PATH}/nexss-${plugin}/`) &&
+  existsSync(`${NEXSS_PACKAGES_PATH}/${plugin}`)
+) {
+  error("NEXSS DEVELOPER WARNING !");
+  error(
+    `THE PLUGIN ${NEXSS_SRC_PATH}/nexss-${plugin} colide with package ${NEXSS_PACKAGES_PATH}/${plugin}`
+  );
+  error(
+    `There CANNOT be the same name for plugin and package. PLEASE CHANGE THE PACKAGE NAME!`
+  );
+  error(`Nexss Programmer will not continue until it is done.`);
+  process.exit(1);
+}
+
 //we check if first parameter is folder or plugin
 
 // We check if this is direct folder passed.
@@ -51,12 +66,10 @@ if (existsSync(plugin) || isURL(plugin)) {
   plugin = "start";
 } else {
   // FIXME: file system issue here ? TO REVIEW
-
   if (!existsSync(`${NEXSS_SRC_PATH}/nexss-${plugin}/nexssPlugin.js`)) {
     const { getLangByFilename } = require("./nexss-language/lib/language");
     // We check if thiscan be language specified action like
     // --> eg. nexss js install socketio
-
     const languageSelected = getLangByFilename(`example.${plugin}`, true);
     // To use lang specific commands use
     // `nexss js install OR nexss php install` NOT!-> nexss .js install

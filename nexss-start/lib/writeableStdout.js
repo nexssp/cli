@@ -8,48 +8,21 @@ module.exports.writeableStdout = () =>
     write: (chunk, encoding, callback) => {
       // Display single value
 
-      if (cliArgs.test) {
-        const testingData = require("../testingData.json");
-        let data = "";
-        try {
-          data = JSON.parse(chunk.toString());
-        } catch (er) {
-          error(
-            `There was an issue with JSON going out from file ${bold(
-              process.nexssFilename ? process.nexssFilename : "unknown"
-            )}:`
-          );
-          error(data);
-        }
-        if (data) {
-          let errorExists;
-          Object.keys(testingData).forEach(k => {
-            if (testingData[k] !== data[k]) {
-              error(bold(red(testingData[k])), `Not Equal to`);
-              error(bold(red(data[k])));
-              errorExists = true;
-            } else {
-              ok(bold(`Field ${k} is correct:`, data[k]));
-            }
-          });
-          if (errorExists) {
-            warn("Program has been terminated.");
-            process.exit();
-          }
-        }
-      }
-
-      const field = cliArgs.field;
+      const field = cliArgs.nxsField;
       // Display, selectm multuple values
-      let fields = cliArgs.fields;
-      if (cliArgs.field) {
+      let fields = cliArgs.nxsFields;
+      if (field) {
         const data = JSON.parse(chunk.toString());
+
         if (!data[field]) {
           console.error(`'${field} does not exist'`);
-        } else console.log(data[field]);
+        } else {
+          console.log(data[field]);
+        }
       } else if (fields && fields.split) {
+        const parsed = JSON.parse(chunk.toString());
         values = fields.split(",").map(e => {
-          return JSON.parse(chunk.toString())[e];
+          return parsed[e];
         });
         const merged = fields
           .split(",")

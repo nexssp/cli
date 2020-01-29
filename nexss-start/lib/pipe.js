@@ -3,6 +3,9 @@ const { transformNexss } = require("./transformNexss");
 const { transformError } = require("./transformError");
 const { transformFile } = require("./transformFile");
 const { writeableStdout } = require("./writeableStdout");
+const { transformTest } = require("./transformTest");
+const { transformValidation } = require("./transformValidation");
+
 const util = require("util");
 const { is } = require("../../lib/data/guard");
 const pipelineAsync = util.promisify(pipeline);
