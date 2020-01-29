@@ -145,9 +145,11 @@ if (cliArgs.server) {
   // more here: https://github.com/nexssp/cli/wiki/Config
   let startData = (nexssConfig && nexssConfig.data) || {};
 
-  if (cliArgs.time) {
-    startData.start = Date.now();
-  }
+  startData.start = +new Date();
+  //var moment = require("moment");
+  //var x = moment(startData.start).format("H:m:s");
+  //console.log(moment().locale());
+  //console.log(x);
 
   startData.cwd = PROCESS_CWD;
 
@@ -191,8 +193,9 @@ if (cliArgs.server) {
     Object.assign(startData, testData);
   }
 
-  // STDIN
-  const stdinRead = require("../lib/stdin")();
+  // STDIN -trim just to avoid extra params from JSON
+  const stdinRead = require("../lib/stdin")().trim();
+
   let dataStdin = {};
   if (stdinRead) {
     try {
