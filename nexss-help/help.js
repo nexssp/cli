@@ -98,7 +98,7 @@ Programmer ${bold(require("../package.json").version)}, NodeJS ${
     }, OS: ${process.platform} ${os.release()}  `
   );
   commandsHelp.flat().forEach(e => {
-    console.log(grey("nexss"), e.command, bold(e.commandDesc));
+    console.log(grey("nexss"), bold(e.command), e.commandDesc);
   });
   // console.log(commandsHelp.flat());
   console.log(
