@@ -242,10 +242,12 @@ if (cliArgs.server) {
     // { stream: "transformError", cmd: "Some text" }
   ];
 
-  nexssResult.push({
-    stream: "transformValidation",
-    cmd: `input`
-  });
+  if (process.nexssConfigContent) {
+    nexssResult.push({
+      stream: "transformValidation",
+      cmd: `input`
+    });
+  }
 
   // if (cliArgs.test) {
   //   nexssResult.push(() => {
@@ -552,11 +554,12 @@ if (cliArgs.server) {
       //   // options: spawnOptions
       // });
     }
-
-    nexssResult.push({
-      stream: "transformValidation",
-      cmd: `output`
-    });
+    if (process.nexssConfigContent) {
+      nexssResult.push({
+        stream: "transformValidation",
+        cmd: `output`
+      });
+    }
 
     nexssResult.push({
       stream: "transformTest",

@@ -1,10 +1,9 @@
 # Command
 
-Execute command eg. nexss cmd listFiles
+Testing framework for Nexss Programmer's core and packages.
 
 ## Examples
 
 ```sh
-nexss c listFiles
-nexss command mycommand
+nexss test
 ```
