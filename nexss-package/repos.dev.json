@@ -5,6 +5,7 @@
   "Clipboard": "https://github.com/nexssp/package_clipboard.git",
   "Convert": "https://github.com/nexssp/package_convert.git",
   "Data": "https://github.com/nexssp/package_data.git",
+  "Download": "https://github.com/nexssp/package_download.git",
   "Id": "https://github.com/nexssp/package_id.git",
   "Input": "https://github.com/nexssp/package_input.git",
   "Keyboard": "https://github.com/nexssp/package_keyboard.git",
@@ -14,6 +15,5 @@
   "Screen": "https://github.com/nexssp/package_screen.git",
   "Select": "https://github.com/nexssp/package_select.git",
   "Template": "https://github.com/nexssp/package_template.git",
-  "Test": "https://github.com/nexssp/package_test.git",
   "Web": "https://github.com/nexssp/package_web.git"
 }

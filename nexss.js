@@ -352,11 +352,11 @@ let command = cliArgs._[1] || undefined;
 let commandAliases = {};
 if (existsSync(`${NEXSS_SRC_PATH}/nexss-${plugin}/aliases.json`)) {
   commandAliases = require(`${NEXSS_SRC_PATH}/nexss-${plugin}/aliases.json`);
+  if (commandAliases[command]) {
+    command = commandAliases[command];
+  }
 }
 
-if (commandAliases[command]) {
-  command = commandAliases[command];
-}
 // Here loads when help is needed for particular command eg nexss file add help
 if (process.argv[4] === "help") {
   //help for command
@@ -376,8 +376,8 @@ if (process.argv[4] === "help") {
 switch (command) {
   case "help":
     try {
+      // Plugin hel
       if (fileOrFolderExists) {
-        // console.log(fileOrFolderExists, "WWWWWWWWWWWWWWWWWWWWWWWWWW");
         const fs = require("fs");
         if (fs.existsSync(`${fileOrFolderExists}/README.md`)) {
           const helpContent = require("fs").readFileSync(
@@ -404,13 +404,6 @@ switch (command) {
 
   default:
     try {
-      // each command needs to have module.exports.default function
-      // console.log(
-      //   "zzzzzzzzzzzzzzzzzzz",
-      //   `./nexss-${plugin}/commands/${command}.js`
-      // );
-      // console.log(command && plugin !== "command", command, plugin);
-
       if (!fileOrFolderExists && command && plugin !== "command") {
         if (
           require("fs").existsSync(
