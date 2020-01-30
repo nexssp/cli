@@ -1,19 +1,4 @@
-const { join } = require("path");
-
-// let values = [
-//   "nexss-command",
-//   "nexss-config",
-//   "nexss-file",
-//   "nexss-language",
-//   "nexss-package",
-//   "nexss-process",
-//   "nexss-project"
-// ];
-
 let values = ["Nexss"];
-
-// values = [".scala"];
-// values = values.slice(1, 30);
 
 module.exports = {
   values,

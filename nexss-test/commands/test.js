@@ -1,5 +1,5 @@
 const { bright, exe, camelCase } = require("../lib/lib");
-const { yellow, green, red, bold, purple } = require("../../lib/color");
+const { yellow, green, red, bold, purple, grey } = require("../../lib/color");
 const { error, warn } = require("../../lib/log");
 const fs = require("fs");
 const path = require("path");
@@ -71,8 +71,6 @@ if (cliArgs._[0] !== "all") {
   testNames = fs.readdirSync(nexssTestsFolder);
 }
 
-console.log(testNames);
-
 var tests = 1;
 var continuue = 0;
 var totalPerformedTests = 0;
@@ -101,27 +99,32 @@ testNames.forEach(test => {
   if (!fs.existsSync(testPath)) {
     fs.mkdirSync(testPath);
   }
-  console.log(`Test Folder Destination: ${testPath}`);
+  console.log(`Temp Folder Destination: ${testPath}`);
   process.chdir(testPath);
 
   global.currentExtension = null;
+
+  if (!testsDef.values) {
+    testsDef.values = ["Nexss"];
+  }
   testsDef.values.forEach(ext => {
     global.currentExtension = ext;
 
     console.log("===========================================================");
-    console.log(yellow(`Testing \x1b[1m${bright(ext)}\x1b[0m`));
+    if (ext !== "Nexss")
+      console.log(yellow(`Testing \x1b[1m${bright(ext)}\x1b[0m`));
 
     if (continuue || ext === startFrom || !startFrom) {
       continuue = 1;
 
-      if (omit.includes(ext)) {
+      if (omit && omit.includes(ext)) {
         console.log(`\x1b[1m${bright(ext)} Ommitted\x1b[0m`);
         continuue = 1;
         return;
       }
 
       testsDef.tests.forEach(test => {
-        console.log(yellow(test.title));
+        console.log(bold(green(test.title)));
 
         test.tests.forEach(subtest => {
           console.log("===========================================");
@@ -144,7 +147,7 @@ testNames.forEach(test => {
         });
       });
 
-      if (endsWith.includes(ext)) {
+      if (endsWith && endsWith.includes(ext)) {
         console.log(yellow(`End`));
         process.exit(1);
         return;
@@ -180,15 +183,18 @@ function should(fname, test, regE, options) {
       console.error("You need to specify REGEXP or STRING for the first test");
       process.exit();
     }
-    console.log(`Using cached data result (REGEXP or STRING is empty)`);
+    console.log(
+      grey(`Using cached result of previous command: ${bold(process.testTest)}`)
+    );
     data = process.testData;
   } else {
     data = process.testData = exe(test);
+    process.testTest = test;
+    console.log(`${green(bright(test))} `);
   }
 
   // console.log("return: ", test, data);
 
-  console.log(`${green(bright(test))} `);
   console.log(` ${camelCase(fname)}: ${bright(green(regE))}`);
   let regExp = new RegExp(regE, "i");
   let match = regExp.exec(data);
