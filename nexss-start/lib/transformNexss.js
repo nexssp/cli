@@ -79,8 +79,11 @@ module.exports.transformNexss = (
               nexssError = nexssError.substring(1);
               nexssError = nexssError.split(":");
               const type = nexssError.shift();
-
-              eval(type)(nexssError.join(":"));
+              if (args.includes("--pipeerrors")) {
+                console.log(nexssError.join(":"));
+              } else {
+                eval(type)(nexssError.join(":"));
+              }
             } else {
               parseError(fileName, element, args.includes("--pipeerrors"));
             }

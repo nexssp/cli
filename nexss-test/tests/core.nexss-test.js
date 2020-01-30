@@ -17,24 +17,9 @@ let values = ["Nexss"];
 
 module.exports = {
   values,
-  testsSelect: [1, 2],
   startFrom: "",
   endsWith: "",
-  omit: [
-    ".html",
-    ".json",
-    ".tcl",
-    ".pd",
-    ".c",
-    ".exs",
-    ".ex",
-    ".hs",
-    ".kts",
-    ".rb",
-    ".scala",
-    ".vbs",
-    ".wsf"
-  ],
+  omit: [],
   tests: [
     {
       title: "nexss-project",
@@ -49,6 +34,7 @@ module.exports = {
         },
         {
           title: "Add file to the Project",
+          type: "shouldNotContain",
           params: [
             "nexss file add myfile1.js -f -t=helloWorld",
             `File src\\\\myfile1.js has been created.`,
@@ -77,7 +63,7 @@ module.exports = {
         },
         {
           title: "Check project info",
-          params: ["nexss project info", `Current Projec`]
+          params: ["nexss project info", `Current Project`]
         },
         {
           title: "Check",

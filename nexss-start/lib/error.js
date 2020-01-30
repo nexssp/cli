@@ -25,7 +25,11 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
         )}</span>`
       );
     } else {
-      console.error(`Error ${ErrorPre}:${bold(errorBody)}`);
+      if (process.argv.includes("--pipeerrors")) {
+        console.log(`Error ${ErrorPre}:${bold(errorBody)}`);
+      } else {
+        console.error(`Error ${ErrorPre}:${bold(errorBody)}`);
+      }
     }
   } else {
     error(`${ErrorPre}: ${bold(errorBody)}`);

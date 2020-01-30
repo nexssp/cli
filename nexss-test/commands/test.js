@@ -1,10 +1,12 @@
 const { bright, exe, camelCase } = require("../lib/lib");
-const { yellow, green, red, bold } = require("../../lib/color");
+const { yellow, green, red, bold, purple } = require("../../lib/color");
 const { header, warn } = require("../../lib/log");
 const fs = require("fs");
 const path = require("path");
 
 const cliArgs = require("minimist")(process.argv.slice(3));
+
+// TODO: below needs to be rewritten, done in rush
 
 const availTests = () => {
   header("Tests available:");
@@ -29,7 +31,7 @@ if (!fs.existsSync(`${__dirname}\\../tests/${testName}`)) {
   availTests();
   process.exit();
 }
-const testsDef = require(`${__dirname}\\../tests/${testName}`);
+const testsDef = require(`${__dirname}\\..\\tests\\${testName}`);
 const startFrom = testsDef.startFrom;
 const endsWith = testsDef.endsWith;
 const omit = testsDef.omit;
@@ -106,36 +108,73 @@ function evalTS(v) {
 
 console.log(yellow(`done! Total ${totalPerformedTests} tests.`));
 
+function shouldNotContain(test, regE, options) {
+  should(arguments.callee.name, test, regE, options);
+}
+
 function shouldContain(test, regE, options) {
+  should(arguments.callee.name, test, regE, options);
+}
+
+function should(fname, test, regE, options) {
   if (options && options.chdir) {
     console.log(`Changing Dir to: ${options.chdir}`);
     process.chdir(options.chdir);
   }
-  const data = exe(test);
+
+  if (test == "null") {
+    //YES NULL as STRING
+    if (!process.testData) {
+      console.error("You need to specify REGEXP or STRING for the first test");
+      process.exit();
+    }
+    console.log(`Using cached data result (REGEXP or STRING is empty)`);
+    data = process.testData;
+  } else {
+    data = process.testData = exe(test);
+  }
 
   // console.log("return: ", test, data);
 
   console.log(`${green(bright(test))} `);
-  console.log(` ${camelCase(arguments.callee.name)}: ${bright(green(regE))}`);
+  console.log(` ${camelCase(fname)}: ${bright(green(regE))}`);
   let regExp = new RegExp(regE, "i");
   let match = regExp.exec(data);
-  if (match && match.length > 1) {
+  let result = match && match.length > 1;
+  let result2 = data && data.includes(regE);
+
+  let title = "contains";
+  if (fname === "shouldNotContain") {
+    result = match && !result;
+    result2 = !result2;
+  }
+
+  // console.log(result);
+  // console.log(result2);
+  if (result) {
     console.log(green(bright("PASSED")));
+    // console.error(yellow(data));
     return match;
-  } else if (data && data.includes(regE)) {
+  } else if (result2) {
     console.log(green(bright("PASSED")));
+    // console.error(yellow(data));
     return data;
   }
   console.error(
-    red(bright(`================================================`))
+    red(bright(`=======================================================`))
   );
-  console.error(red(bright(`But contains: `)));
-  console.error(yellow(data));
+
+  console.error(red(bright(`But ${title}: `)));
+  // Highlight the string which should not be there
+  if (fname === "shouldNotContain") {
+    data = data.replace(regE, bold(purple(regE)));
+  }
+  console.error(data);
   console.error(
     red(bright(`=======================================================`))
   );
   console.error("process.cwd()", process.cwd());
-  process.exit(1);
+  process.exit(0);
 }
 
 function test2(ext) {
