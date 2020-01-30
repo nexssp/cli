@@ -77,6 +77,7 @@ module.exports.transformNexss = (
             if (element.substring(0, 1) === "/") {
               let nexssError = element + "";
               nexssError = nexssError.substring(1);
+
               nexssError = nexssError.split(":");
               const type = nexssError.shift();
               if (args.includes("--pipeerrors")) {

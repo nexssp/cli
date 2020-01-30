@@ -1,104 +1,156 @@
 const { bright, exe, camelCase } = require("../lib/lib");
 const { yellow, green, red, bold, purple } = require("../../lib/color");
-const { header, warn } = require("../../lib/log");
+const { error, warn } = require("../../lib/log");
 const fs = require("fs");
 const path = require("path");
-
+const nexssConfig = require("../../lib/config").loadConfigContent();
 const cliArgs = require("minimist")(process.argv.slice(3));
 
 // TODO: below needs to be rewritten, done in rush
 
-const availTests = () => {
-  header("Tests available:");
-  const tests = fs.readdirSync(`${__dirname}\\..\\tests`);
+let nexssTestsPath = "./";
+let nexssTestsFolder = `${__dirname}\\..\\tests`;
+if (nexssConfig && nexssConfig.filePath) {
+  nexssTestsPath = path.dirname(nexssConfig.filePath);
+  nexssTestsFolder = `${nexssTestsPath}/test.nexss`;
+  if (!fs.existsSync(nexssTestsFolder)) {
+    console.error(`No available tests for this project..`);
+    process.exit(0);
+  }
+}
+
+const availTests = testsPath => {
+  if (!testsPath) testsPath = nexssTestsFolder;
+  if (!fs.existsSync(testsPath)) {
+    if (nexssConfig) {
+      warn(`No available tests for this project.`);
+      process.exit();
+    }
+  }
+  tests = fs.readdirSync(testsPath);
   tests.forEach(test => {
     const e = test.split(".");
-
     console.log(bold(e.shift()), ...e);
   });
   process.exit();
 };
 
 if (cliArgs._.length === 0) {
-  console.error(`Enter test name.`);
-  availTests();
-}
+  // We check location of the config file as in that folder there is a test.nexss folder with the tests..
 
-const testName = `${cliArgs._[0]}.nexss-test.js`;
+  if (nexssConfig) {
+    console.log(`You are in the Nexss Programmer Project. `);
+    if (fs.existsSync(nexssTestsFolder)) {
+      console.log(`Tests Folder: ${bold(path.normalize(nexssTestsFolder))}`);
+      availTests(nexssTestsFolder);
+      process.exit();
+    } else {
+      warn("No available tests for this project.");
+    }
+  } else {
+    console.log(green("Available global tests:"));
+    availTests();
+  }
 
-if (!fs.existsSync(`${__dirname}\\../tests/${testName}`)) {
-  warn(`Test '${bold(testName)}' does not exist.`);
-  availTests();
+  console.error(
+    `${bold("nexss test all")} OR ${bold("nexss test [testname]")}`
+  );
   process.exit();
 }
-const testsDef = require(`${__dirname}\\..\\tests\\${testName}`);
-const startFrom = testsDef.startFrom;
-const endsWith = testsDef.endsWith;
-const omit = testsDef.omit;
-// const lang = JSON.parse(exe("nexss py info --json"));
-// console.log(lang.title);
-// process.exit(1);
-const tempFolder = require("os").tmpdir();
-const testFolderName = `Nexss-test-${Math.random()
-  .toString(36)
-  .substring(7)}`;
-const testPath = path.join(tempFolder, testFolderName);
+let testName;
 
-if (!fs.existsSync(testPath)) {
-  fs.mkdirSync(testPath);
+if (cliArgs._[0] !== "all") {
+  const oneTest = `${cliArgs._[0]}.nexss-test.js`;
+  if (!fs.existsSync(`${nexssTestsFolder}/${oneTest}`)) {
+    warn(`Test ${bold(oneTest)} does not exist`);
+    availTests(nexssTestsFolder);
+    process.exit();
+  }
+  testNames = [oneTest];
+} else {
+  testNames = fs.readdirSync(nexssTestsFolder);
 }
-console.log(`Test Folder Destination: ${testPath}`);
-process.chdir(testPath);
+
+console.log(testNames);
 
 var tests = 1;
 var continuue = 0;
 var totalPerformedTests = 0;
-global.currentExtension = null;
-testsDef.values.forEach(ext => {
-  global.currentExtension = ext;
 
-  console.log("===========================================================");
-  console.log(yellow(`Testing \x1b[1m${bright(ext)}\x1b[0m`));
-
-  if (continuue || ext === startFrom || !startFrom) {
-    continuue = 1;
-
-    if (omit.includes(ext)) {
-      console.log(`\x1b[1m${bright(ext)} Ommitted\x1b[0m`);
-      continuue = 1;
-      return;
-    }
-
-    testsDef.tests.forEach(test => {
-      console.log(yellow(test.title));
-
-      test.tests.forEach(subtest => {
-        console.log("===========================================");
-        console.log(
-          yellow(bright(`TEST ${tests++}`)),
-          yellow(evalTS(subtest.title))
-        );
-
-        console.log(`===========================================`);
-        eval(subtest.type || "shouldContain")(
-          ...subtest.params.map(p => {
-            if (p !== null && typeof p === "object") {
-              return p;
-            } else {
-              return evalTS(p);
-            }
-          })
-        );
-        totalPerformedTests++;
-      });
-    });
-
-    if (endsWith.includes(ext)) {
-      console.log(yellow(`End`));
-      process.exit(1);
-      return;
-    }
+testNames.forEach(test => {
+  test = `${nexssTestsFolder}/${test}`;
+  if (!fs.existsSync(test)) {
+    warn(`Test '${bold(testName)}' does not exist.`);
+    availTests(nexssTestsFolder);
+    process.exit();
   }
+  console.log(green(`STARTING ${test}`));
+  const testsDef = require(test);
+  const startFrom = testsDef.startFrom;
+  const endsWith = testsDef.endsWith;
+  const omit = testsDef.omit;
+  // const lang = JSON.parse(exe("nexss py info --json"));
+  // console.log(lang.title);
+  // process.exit(1);
+  const tempFolder = require("os").tmpdir();
+  const testFolderName = `Nexss-test-${Math.random()
+    .toString(36)
+    .substring(7)}`;
+  const testPath = path.join(tempFolder, testFolderName);
+
+  if (!fs.existsSync(testPath)) {
+    fs.mkdirSync(testPath);
+  }
+  console.log(`Test Folder Destination: ${testPath}`);
+  process.chdir(testPath);
+
+  global.currentExtension = null;
+  testsDef.values.forEach(ext => {
+    global.currentExtension = ext;
+
+    console.log("===========================================================");
+    console.log(yellow(`Testing \x1b[1m${bright(ext)}\x1b[0m`));
+
+    if (continuue || ext === startFrom || !startFrom) {
+      continuue = 1;
+
+      if (omit.includes(ext)) {
+        console.log(`\x1b[1m${bright(ext)} Ommitted\x1b[0m`);
+        continuue = 1;
+        return;
+      }
+
+      testsDef.tests.forEach(test => {
+        console.log(yellow(test.title));
+
+        test.tests.forEach(subtest => {
+          console.log("===========================================");
+          console.log(
+            yellow(bright(`TEST ${tests++}`)),
+            yellow(evalTS(subtest.title))
+          );
+
+          console.log(`===========================================`);
+          eval(subtest.type || "shouldContain")(
+            ...subtest.params.map(p => {
+              if (p !== null && typeof p === "object") {
+                return p;
+              } else {
+                return evalTS(p);
+              }
+            })
+          );
+          totalPerformedTests++;
+        });
+      });
+
+      if (endsWith.includes(ext)) {
+        console.log(yellow(`End`));
+        process.exit(1);
+        return;
+      }
+    }
+  });
 });
 
 function evalTS(v) {

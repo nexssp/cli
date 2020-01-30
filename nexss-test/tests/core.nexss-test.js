@@ -34,7 +34,7 @@ module.exports = {
         },
         {
           title: "Add file to the Project",
-          type: "shouldNotContain",
+          type: "shouldContain",
           params: [
             "nexss file add myfile1.js -f -t=helloWorld",
             `File src\\\\myfile1.js has been created.`,

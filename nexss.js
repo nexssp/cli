@@ -373,6 +373,13 @@ if (process.argv[4] === "help") {
   return;
 }
 
+if (fileOrFolderExists && process.argv[3] === "test") {
+  //help for command
+  console.log("tttttttttttteeess");
+
+  return;
+}
+
 switch (command) {
   case "help":
     try {
