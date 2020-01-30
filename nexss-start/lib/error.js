@@ -25,7 +25,7 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
         )}</span>`
       );
     } else {
-      console.log(`Error ${ErrorPre}:${bold(errorBody)}`);
+      console.error(`Error ${ErrorPre}:${bold(errorBody)}`);
     }
   } else {
     error(`${ErrorPre}: ${bold(errorBody)}`);
@@ -61,7 +61,6 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
       //Capturing naming groups
       // https://javascript.info/regexp-groups#named-groups
       const ArrayMatch = Array.from(match);
-
       if (ArrayMatch && ArrayMatch.groups) {
         if (ArrayMatch[0].groups) {
           Object.keys(ArrayMatch[0].groups).forEach(e => {
@@ -94,10 +93,10 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
                 "</B>"}: ${solution}</span>`
             );
           } else {
-            console.log(`Possible solution ${solutionNumber}: ${solution}`);
+            console.error(`Possible solution ${solutionNumber}: ${solution}`);
           }
         } else {
-          console.error(
+          error(
             yellow(
               `Possible solution ${solutionNumber}: ${bold(yellow(solution))}`
             )

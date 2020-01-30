@@ -1,8 +1,35 @@
 const { bright, exe, camelCase } = require("../lib/lib");
-const { yellow, green, red } = require("../../lib/color");
+const { yellow, green, red, bold } = require("../../lib/color");
+const { header, warn } = require("../../lib/log");
 const fs = require("fs");
 const path = require("path");
-const testsDef = require("../tests/languages.nexss-test.js");
+
+const cliArgs = require("minimist")(process.argv.slice(3));
+
+const availTests = () => {
+  header("Tests available:");
+  const tests = fs.readdirSync(`${__dirname}\\..\\tests`);
+  tests.forEach(test => {
+    const e = test.split(".");
+
+    console.log(bold(e.shift()), ...e);
+  });
+  process.exit();
+};
+
+if (cliArgs._.length === 0) {
+  console.error(`Enter test name.`);
+  availTests();
+}
+
+const testName = `${cliArgs._[0]}.nexss-test.js`;
+
+if (!fs.existsSync(`${__dirname}\\../tests/${testName}`)) {
+  warn(`Test '${bold(testName)}' does not exist.`);
+  availTests();
+  process.exit();
+}
+const testsDef = require(`${__dirname}\\../tests/${testName}`);
 const startFrom = testsDef.startFrom;
 const endsWith = testsDef.endsWith;
 const omit = testsDef.omit;

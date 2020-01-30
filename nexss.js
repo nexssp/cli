@@ -404,7 +404,12 @@ switch (command) {
 
   default:
     try {
-      if (!fileOrFolderExists && command && plugin !== "command") {
+      if (
+        !fileOrFolderExists &&
+        command &&
+        plugin !== "command" &&
+        plugin !== "test"
+      ) {
         if (
           require("fs").existsSync(
             `${NEXSS_SRC_PATH}/nexss-${plugin}/commands/${command}.js`

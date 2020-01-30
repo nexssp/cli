@@ -1,5 +1,5 @@
 const { Transform } = require("stream");
-const { dy, dbg } = require("../../lib/log");
+const { dy, dbg, success, warn, error, ok } = require("../../lib/log");
 const { spawn } = require("child_process");
 const { is } = require("../../lib/data/guard");
 const { defaultExecuteOptions } = require("../../config/defaults");
@@ -48,6 +48,7 @@ module.exports.transformNexss = (
         filePath: path.resolve(fileName)
       });
       proc.write();
+
       this.worker.on("error", err => {
         // throw Error(err);
         switch (err.code) {
@@ -61,12 +62,39 @@ module.exports.transformNexss = (
       this.worker.stderr.on("data", function(err) {
         this.errBuffer = this.errBuffer || "";
         this.errBuffer += err.toString();
+
+        // console.log("ERRSTRING: " + err.toString());
+
+        if (this.errBuffer.includes("NEXSS/")) {
+          const exploded = this.errBuffer.split("NEXSS");
+          exploded.forEach(element => {
+            if (!element) return;
+            // console.log("###################");
+            // console.log(element);
+            // console.log("##################");
+            // console.log(element.substring(0, 1));
+            // console.log("EEEEEEEEEEEEEEEENNNNNNNNNNNNNDDDDDDDD");
+            if (element.substring(0, 1) === "/") {
+              let nexssError = element + "";
+              nexssError = nexssError.substring(1);
+              nexssError = nexssError.split(":");
+              const type = nexssError.shift();
+
+              eval(type)(nexssError.join(":"));
+            } else {
+              parseError(fileName, element, args.includes("--pipeerrors"));
+            }
+            // console.error("##############element!!!", element);
+          });
+          this.errBuffer = "";
+        } else {
+          if (this.errBuffer)
+            parseError(fileName, this.errBuffer, args.includes("--pipeerrors"));
+          this.errBuffer = "";
+        }
       });
 
       this.worker.stdout.on("data", function(data) {
-        if (!quiet) {
-          console.log("OUTPUT: ", data.toString().trim());
-        }
         // TODO: Check if trim is ok here
         self.push(data.toString().trim());
       });
@@ -74,6 +102,7 @@ module.exports.transformNexss = (
       this.worker.stderr.on("end", function() {
         if (this.errBuffer)
           parseError(fileName, this.errBuffer, args.includes("--pipeerrors"));
+        this.errBuffer = "";
       });
 
       //   this.worker.stdout.on("end", () => {

@@ -73,6 +73,9 @@ module.exports.getTemplatesPaths = ext => {
       //  )}`
       //);
       //l(`Template folder ${templateFolder}`);
+    } else {
+      templateFolder =
+        lang.compilers[Object.keys(lang.compilers)[0]].templates || "templates";
     }
   }
 

@@ -10,18 +10,23 @@ module.exports.transformValidation = (area = "input", options = {}) => {
     // readableObjectMode: true,
     transform(chunk, encoding, callback) {
       if (!cliArgs.nxsNoValidation) {
-        try {
-          data = JSON.parse(chunk.toString());
-        } catch (er) {
-          error(
-            `There was an issue with JSON going out from file ${bold(
-              process.nexssFilename ? process.nexssFilename : "unknown"
-            )}:`
-          );
-          error(data);
-        }
+        let data = chunk.toString();
+        if (
+          process.nexssConfigContent &&
+          process.nexssConfigContent[area] &&
+          Array.isArray(process.nexssConfigContent[area])
+        ) {
+          try {
+            data = JSON.parse(data);
+          } catch (er) {
+            error(
+              `There was an issue with JSON going out from file ${bold(
+                process.nexssFilename ? process.nexssFilename : "unknown"
+              )}:`
+            );
+            error(data);
+          }
 
-        if (process.nexssConfigContent && process.nexssConfigContent[area]) {
           let errorExists = [];
           // more: https://github.com/nexssp/cli/wiki/Data-Validation
           process.nexssConfigContent[area].forEach(k => {

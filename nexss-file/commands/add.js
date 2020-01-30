@@ -116,11 +116,19 @@ function execute(options) {
     if (!isAbsolute(options.template) && !extname(options.template)) {
       options.template = `${options.template}${options.extension}`;
     }
-    options.templatePath = resolve(
-      dirname(lang.configFile),
-      "templates",
-      options.template
-    );
+
+    let templatesPath =
+      require("../../nexss-language/lib/template").getTemplatesPaths(
+        options.extension
+      ) + `\\${options.template}`;
+
+    // options.templatePath = resolve(
+    //   dirname(lang.configFile),
+    //   "templates",
+    //   options.template
+    // );
+
+    options.templatePath = templatesPath;
 
     if (!fs.existsSync(options.templatePath)) {
       error(`Template ${bold(options.template)} does not exist.`);
