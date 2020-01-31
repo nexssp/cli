@@ -375,7 +375,24 @@ if (process.argv[4] === "help") {
 
 if (fileOrFolderExists && process.argv[3] === "test") {
   //help for command
-  console.log("tttttttttttteeess");
+  process.chdir(fileOrFolderExists);
+
+  const testName = process.argv.length > 3 ? process.argv[4] : null;
+  if (!testName) {
+    warn(`Enter test name or specify 'all' to run all tests`);
+    process.exit(1);
+  }
+  const testCommand = `nexss test ${testName}`;
+
+  try {
+    require("child_process").execSync(testCommand, {
+      stdio: "inherit",
+      detached: false,
+      shell: true
+    });
+  } catch (error) {
+    console.log(`Command failed ${testCommand}`);
+  }
 
   return;
 }

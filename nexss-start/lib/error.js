@@ -26,9 +26,9 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
       );
     } else {
       if (process.argv.includes("--pipeerrors")) {
-        console.log(`Error ${ErrorPre}:${bold(errorBody)}`);
+        console.log(`ERROR ${ErrorPre}:${bold(errorBody)}`);
       } else {
-        console.error(`Error ${ErrorPre}:${bold(errorBody)}`);
+        console.error(`ERROR ${ErrorPre}:${bold(errorBody)}`);
       }
     }
   } else {
@@ -97,14 +97,26 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
                 "</B>"}: ${solution}</span>`
             );
           } else {
-            console.error(`Possible solution ${solutionNumber}: ${solution}`);
+            if (process.argv.includes("--pipeerrors")) {
+              console.log(`Possible solution ${solutionNumber}: ${solution}`);
+            } else {
+              console.error(`Possible solution ${solutionNumber}: ${solution}`);
+            }
           }
         } else {
-          error(
-            yellow(
-              `Possible solution ${solutionNumber}: ${bold(yellow(solution))}`
-            )
-          );
+          if (process.argv.includes("--pipeerrors")) {
+            console.log(
+              yellow(
+                `Possible solution ${solutionNumber}: ${bold(yellow(solution))}`
+              )
+            );
+          } else {
+            error(
+              yellow(
+                `Possible solution ${solutionNumber}: ${bold(yellow(solution))}`
+              )
+            );
+          }
         }
         solutionNumber++;
       }
