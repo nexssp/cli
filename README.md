@@ -54,7 +54,7 @@ This is preview of Nexss Programmer GUI which will be available in **Nexss Progr
 
 ---
 
-IMPORTANT NOTE: Only **Kotlin**, **Haskell**, **VBScript**, **Windows Scripting Hosts**, **PureData** need some manual adjustments to make to work with JSON data / Nexss Programmer Projects.
+IMPORTANT NOTE: Only **TCL/TK**(needs to be installed manually), **Kotlin**, **Haskell**, **VBScript**, **Windows Scripting Hosts**, **PureData** need some manual adjustments to make to work with JSON data / Nexss Programmer Projects.
 
 NOTE2: **Linux** _(Soon - FOR NOW ONLY WORKS NODEJS)_ and **MacOS** + Swift language _(Soon)_ - **Work In Progress**
 
