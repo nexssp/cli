@@ -4,8 +4,10 @@ Welcome to      ____
 |  ``..      | |______           ``..''              .''                .''
 |      ``..  | |                 ..'`..           ..'                ..'
 |          ``| |___________  ..''      ``.. ....''             ....''
-Programmer 2.0.6
+Programmer 2.0.8 - Final Free Student Version
 ```
+
+The Nexss Programmer has been moved to the different private repository. This is however fully working version which will be **still supported if there are any bugs or questions**.
 
 <p align="center">
 <b><a href="https://github.com/nexssp/cli/wiki/Concept-Overview">Overview</a></b> |
