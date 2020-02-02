@@ -7,7 +7,9 @@ Welcome to      ____
 Programmer 2.0.8 - Final Free Student Version
 ```
 
-**The Nexss Programmer** has been moved to the different **private** repository. This is however fully working version which will be **still supported if there are any bugs or questions or contributions**.
+From the 1st of Februrary 2020, **This Free, Educational, Open Source, fully functional** version of **The Nexss Programmer** will be **still supported if there are any bugs, questions or contributions**. Please remember to keep copyright notice if you are going to use it.
+
+The next version(s) of this software has been moved to the different **private** repository.
 
 <p align="center">
 <b><a href="https://github.com/nexssp/cli/wiki/Concept-Overview">Overview</a></b> |
