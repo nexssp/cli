@@ -4,12 +4,14 @@ Welcome to      ____
 |  ``..      | |______           ``..''              .''                .''
 |      ``..  | |                 ..'`..           ..'                ..'
 |          ``| |___________  ..''      ``.. ....''             ....''
-Programmer 2.0.8 - Final Free Student Version
+Programmer 2.0.8 - Free, Open Source, Educational Version
 ```
 
-From the 1st of Februrary 2020, **This Free, Educational, Open Source, fully functional** version of **The Nexss Programmer** will be **still supported if there are any bugs, questions or contributions**. Please remember to keep copyright notice if you are useing it.
+From the 1st of Februrary 2020, This **Free, Educational, Open Source**, fully functional version of **The Nexss Programmer** will be **still supported if there are any bugs, questions or contributions**. Please remember to keep the copyright notice if you are using it for any purposes.
 
-The next version(s) of this software has been moved to the different **private** repository.
+From now, the next version(s) of this software has been moved to the different **private** repository under the different licensing terms.   
+Contact us for the details,  
+**Nexss.com TEAM**
 
 <p align="center">
 <b><a href="https://github.com/nexssp/cli/wiki/Concept-Overview">Overview</a></b> |
@@ -50,7 +52,7 @@ If you are having errors about tls/ssl channel please run first:
 
 ### Preview of Nexss Programmer GUI - Work in progress
 
-This is preview of Nexss Programmer GUI which will be available in **Nexss Programmer 2.1**
+This is preview of Nexss Programmer GUI which will be available in **PAID** version of the  **Nexss Programmer 2.1**
 
 ![nexssProgrammerGUI](https://user-images.githubusercontent.com/53263666/72731842-c97f8e80-3b94-11ea-954a-23b541aa3ff7.png)
 
@@ -62,7 +64,7 @@ NOTE2: **Linux** _(Soon - FOR NOW ONLY WORKS NODEJS)_ and **MacOS** + Swift lang
 
 ---
 
-For installing the compilers **Nexss Programmer** uses fantastic package manager tool from **Luke Sampson** [SCOOP](https://scoop.sh/)
+For installing some of the compilers **Nexss Programmer** uses fantastic package manager tool from **Luke Sampson** [SCOOP](https://scoop.sh/)
 
 ---
 
@@ -71,11 +73,11 @@ For installing the compilers **Nexss Programmer** uses fantastic package manager
 ![nexssProgrammer-SelectTemplateExampleCLI](https://user-images.githubusercontent.com/53263666/72731382-ebc4dc80-3b93-11ea-9d84-5ee136ab2e33.png)
 
 - Start **learning PROGRAMMING** within minutes with Nexss PROGRAMMER 2.0 eg. `nexss myprogram.r` OR `nexss myanotherprogram.py` **(nexss file.ext)** and it will download automatically compiler and run Your program.
-- Add files from predefined templates for the languages (**We are looking for people would like to contribute to the templates for each language**),
+- Add files from predefined templates for the languages 
 - Build your own tools that other people can use,
 - Configurable Error handling with suggested solutions,
 - Save time by using as many languages you like for the solution (combined),
-- At the moment **28 programming languages** can be used in one project (and increasing) with provided templates for each language,
+- At the moment **32 programming languages** can be used in one project (and increasing) with provided templates for each language,
 - Predefined/customisable solutions (nexss allow to predefine solutions for errors to fix them quickly),
 - Easy to develop reusable modules and code.
 
