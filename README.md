@@ -7,7 +7,7 @@ Welcome to      ____
 Programmer 2.0.8 - Final Free Student Version
 ```
 
-From the 1st of Februrary 2020, **This Free, Educational, Open Source, fully functional** version of **The Nexss Programmer** will be **still supported if there are any bugs, questions or contributions**. Please remember to keep copyright notice if you are going to use it.
+From the 1st of Februrary 2020, **This Free, Educational, Open Source, fully functional** version of **The Nexss Programmer** will be **still supported if there are any bugs, questions or contributions**. Please remember to keep copyright notice if you are useing it.
 
 The next version(s) of this software has been moved to the different **private** repository.
 
