@@ -33,5 +33,6 @@
   ".vbs": "https://github.com/nexssp/language_vbscript.git",
   ".wsf": "https://github.com/nexssp/language_windowshostscript.git",
   ".json": "https://github.com/nexssp/language_json.git",
-  ".html": "https://github.com/nexssp/language_html.git"
+  ".html": "https://github.com/nexssp/language_html.git",
+  ".f90": "https://github.com/nexssp/language_fortran.git"
 }
