@@ -1,5 +1,5 @@
 const { Transform } = require("stream");
-const { dy, dbg, success, warn, error, ok } = require("../../lib/log");
+const { dy, dbg, success, warn, error, ok, info } = require("../../lib/log");
 const { spawn } = require("child_process");
 const { is } = require("../../lib/data/guard");
 const { defaultExecuteOptions } = require("../../config/defaults");
