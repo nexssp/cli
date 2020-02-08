@@ -14,6 +14,7 @@
   "Output": "https://github.com/nexssp/package_output.git",
   "Screen": "https://github.com/nexssp/package_screen.git",
   "Select": "https://github.com/nexssp/package_select.git",
+  "System": "https://github.com/nexssp/package_system.git",
   "Template": "https://github.com/nexssp/package_template.git",
   "Web": "https://github.com/nexssp/package_web.git"
 }
