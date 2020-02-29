@@ -1,5 +1,17 @@
 const { Transform } = require("stream");
-const { dy, dbg, success, warn, error, ok, info } = require("../../lib/log");
+// NOTE: below showing that are not used, but they ARE!!!
+const {
+  dy,
+  dbg,
+  success,
+  warn,
+  error,
+  ok,
+  info,
+  trace
+} = require("../../lib/log");
+const { bold } = require("../../lib/color");
+require("../../lib/arrays");
 const { spawn } = require("child_process");
 const { is } = require("../../lib/data/guard");
 const { defaultExecuteOptions } = require("../../config/defaults");
@@ -8,14 +20,23 @@ const path = require("path");
 // const { promisify } = require("util");
 const { parseError } = require("./error");
 const isDebug = process.argv.indexOf("--debug") >= 0;
+const isLearningMode = process.argv.indexOf("--nxsLearning") >= 0;
+const cliArgsParser = require("minimist");
 
 module.exports.transformNexss = (
   cmd, // cmd = ls, node, php or whatever
   args = [], // arguments eg. ["--help", "myfile.php"]
-  { quiet = false, fileName = undefined, inputData } = defaultExecuteOptions
+  {
+    quiet = false,
+    fileName = undefined,
+    inputData,
+    cwd,
+    env
+  } = defaultExecuteOptions
 ) => {
   return new Transform({
     transform(chunk, encoding, callback) {
+      // console.log("INPUT DATA!!!", inputData);
       const self = this;
       if (encoding === "buffer") {
         chunk = chunk.toString();
@@ -30,19 +51,35 @@ module.exports.transformNexss = (
 
       let options = Object.assign({});
 
-      options.stdio = "pipe";
+      options.stdio = ["pipe", "pipe", "pipe"];
       options.detached = false;
       options.shell = true;
+      // options.cwd = cwd;
+      options.env = "SEE: process.env";
 
-      if (!quiet)
+      if (!quiet) {
+        dy("Current working dir: ", process.cwd());
         dy(
           `Spawning ${cmd} ${args ? args.join(" ") : ""} options: `,
           JSON.stringify(options)
         );
-      // console.log();
+      }
+      if (isLearningMode) {
+        args = args.remove("--nxsLearning");
+        const commandLearning = `${cmd} ${args ? args.join(" ") : ""}`;
+        console.error(`Execute: ${bold(commandLearning)}`);
+      }
+
+      options.env = env;
       // args = args.filter(e => e !== "--test");
+
+      // console.log(args);
+      process.nexssCWD = cwd;
       this.worker = spawn(cmd, args, options);
       this.worker.cmd = `${cmd} ${args.join(" ")} `;
+
+      process.env.NEXSS_CURRENT_COMMAND = this.worker.cmd;
+
       // console.log(this.worker.cmd);
       let proc = new Proc(this.worker.pid, {
         filePath: path.resolve(fileName)
@@ -69,8 +106,7 @@ module.exports.transformNexss = (
           const exploded = this.errBuffer.split("NEXSS");
           exploded.forEach(element => {
             if (!element) return;
-            // console.log("###################");
-            // console.log(element);
+
             // console.log("##################");
             // console.log(element.substring(0, 1));
             // console.log("EEEEEEEEEEEEEEEENNNNNNNNNNNNNDDDDDDDD");
@@ -100,7 +136,18 @@ module.exports.transformNexss = (
 
       this.worker.stdout.on("data", function(data) {
         // TODO: Check if trim is ok here
-        self.push(data.toString().trim());
+
+        if (cmd === "bash") {
+          self.push(
+            data
+              .toString()
+              .trim()
+              .replace(/\n/g, "\n\r")
+          );
+          return;
+        }
+
+        self.push(data.toString("utf8").trim());
       });
 
       this.worker.stderr.on("end", function() {
@@ -119,7 +166,10 @@ module.exports.transformNexss = (
       });
 
       if (inputData) {
-        // Later to review
+        let parsed;
+        if (Array.isArray(inputData)) {
+          inputData = cliArgsParser(inputData);
+        }
         try {
           let j = JSON.parse(chunk.toString());
           const FinalData = Object.assign({}, j, inputData);
@@ -136,7 +186,7 @@ module.exports.transformNexss = (
         }
       }
 
-      //BElow maybe is in wrong placa but AutoIt doesn;t work if is not here!!!!!
+      //Below maybe is in wrong placa but AutoIt doesn't work if is not here!
       this.worker.stdin.end();
 
       dbg("waiting for ", this.worker.cmd);

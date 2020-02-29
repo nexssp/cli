@@ -5,6 +5,7 @@ const { transformFile } = require("./transformFile");
 const { writeableStdout } = require("./writeableStdout");
 const { transformTest } = require("./transformTest");
 const { transformValidation } = require("./transformValidation");
+const { transformOutput } = require("./transformOutput");
 
 const util = require("util");
 const { is } = require("../../lib/data/guard");
@@ -18,37 +19,42 @@ async function run(operations, options = {}) {
   await pipelineAsync(
     // process.stdin,
     ...operations.map(element => {
-      // if (options.verbose) {
-      //   console.log("VERBOSE: ", fileName, element);
-      // }
-      let streamName = element.stream || "nexssTransform";
+      let streamName = element.stream || "transformNexss";
       let args = element.args || [];
-      if (element.cwd && element.fileName.indexOf(".nexss") > -1) {
-        process.chdir(element.cwd);
-        if (!options.quiet) {
-          console.log("CHANGED DIR", element.cwd);
-        }
-      }
 
       // Arguments from command line on run
       let paramsNumber = 4;
       if (process.argv[2] !== "s" && process.argv[2] !== "start") {
         paramsNumber = 3;
       }
+
       if (!options.build) args = args.concat(process.argv.slice(paramsNumber));
 
       const runOptions = Object.assign({}, options, {
-        fileName: element.fileName
+        fileName: element.fileName,
+        cwd: element.cwd
       });
 
+      runOptions.inputData = element.inputData;
+      if (element.data) {
+        if (runOptions.inputData) {
+          Object.assign(runOptions.inputData, element.data);
+        } else {
+          runOptions.inputData = element.data;
+        }
+      }
+      runOptions.env = Object.assign({}, process.env, element.env);
       if (element.cmd) {
-        runOptions.inputData = element.fileArgs;
+        // console.log("========================1");
         return eval(streamName)(element.cmd, args, runOptions);
+        // console.error("first", strResult);
       } else {
         if (typeof element === "function") {
-          return eval(element(runOptions));
+          return eval(element)(runOptions);
+          // console.error("second", strResult);
+        } else {
+          return eval(element)();
         }
-        return element;
       }
     })
   )

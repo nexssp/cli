@@ -13,18 +13,19 @@ let values = Object.keys(languages);
 module.exports = {
   values,
   testsSelect: [1, 2],
-  startFrom: "",
-  endsWith: "",
+  startFrom: ".cs",
+  endsWith: ".cs",
   omit: [
     ".html", // No json parsing
-    ".json", // To Add combine json
     ".tcl",
+    ".exs",
     ".pd",
-    ".scala",
     ".hs",
-    ".kts",
+    ".f90",
+    ".kts", // add json + utf-8
     ".vbs",
-    ".wsf"
+    ".wsf",
+    ".nexss"
   ],
   tests: [
     {
@@ -36,18 +37,18 @@ module.exports = {
           type: "shouldContain",
           params: [
             "nexss file add Default${ext} --t=default --f",
-            "OK  File (.*) has been created"
+            /OK  File (.*) has been created/
           ]
         },
         {
           title: "Test without Unicode",
           type: "shouldContain",
-          params: ["nexss Default${ext}", `"test":(.*)"test"`]
+          params: ["nexss Default${ext}", /"test":(.*)"test"/]
         },
         {
           title: "Test Unicode characters",
           type: "shouldContain",
-          params: ["nexss Default${ext} --test", `"test":(.*)"test"`]
+          params: ["nexss Default${ext} --test", /"test":(.*)"test"/]
         }
       ]
     }

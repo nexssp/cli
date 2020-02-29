@@ -1,7 +1,7 @@
-const { error } = require("../../lib/log");
+const { error, warn } = require("../../lib/log");
 const { bold, yellow, blue } = require("../../lib/color");
 const { getLangByFilename } = require("../../nexss-language/lib/language");
-const { normalize, isAbsolute } = require("path");
+const { normalize, isAbsolute, extname } = require("path");
 
 // more here: https://github.com/nexssp/cli/wiki/Errors-Solutions
 module.exports.parseError = (filename, errorBody, stdOutput) => {
@@ -12,9 +12,24 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
 
   // We display error to standard output eg --server
 
+  if (
+    errorBody.includes(
+      "is not recognized as an internal or external command"
+    ) &&
+    extname(filename) !== ".bat"
+  ) {
+    warn(
+      bold(
+        yellow("RESTART YOUR TERMINAL:") +
+          "You may need to restart your teminal in order to continue without issues."
+      )
+    );
+    process.exit(1);
+  }
+
   const ErrorPre = isAbsolute(filename)
     ? filename
-    : `${process.nexssCWD}\\${filename}`;
+    : `${process.cwd()}\\${filename}`;
 
   if (stdOutput) {
     if (process.argv.includes("--htmlOutput")) {
@@ -32,7 +47,11 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
       }
     }
   } else {
-    error(`${ErrorPre}: ${bold(errorBody)}`);
+    if (errorBody.startsWith("OK ") || errorBody.startsWith("INFO ")) {
+      console.log(errorBody);
+    } else {
+      error(`${ErrorPre}: ${bold(errorBody)}`);
+    }
   }
 
   // We check errors based on the pattern in the languages definition

@@ -242,12 +242,12 @@ if (cliArgs.server) {
     // { stream: "transformError", cmd: "Some text" }
   ];
 
-  if (process.nexssConfigContent) {
-    nexssResult.push({
-      stream: "transformValidation",
-      cmd: `input`
-    });
-  }
+  // if (process.nexssConfigContent) {
+  //   nexssResult.push({
+  //     stream: "transformValidation",
+  //     cmd: `input`
+  //   });
+  // }
 
   // if (cliArgs.test) {
   //   nexssResult.push(() => {
@@ -459,6 +459,15 @@ if (cliArgs.server) {
             }
             args = compilerArgs.split(" ");
             let fileArgsObj = require("minimist")(fileArgs);
+
+            if (fileArgsObj._ && fileArgsObj._.length === 0) {
+              delete fileArgsObj._;
+            }
+
+            if (startData._ && startData._.length === 0) {
+              delete startData._;
+            }
+
             Object.assign(fileArgsObj, startData);
 
             const cmd = compiler.command ? compiler.command : args.shift();
@@ -553,13 +562,18 @@ if (cliArgs.server) {
       //   fileName
       //   // options: spawnOptions
       // });
-    }
-    if (process.nexssConfigContent) {
       nexssResult.push({
-        stream: "transformValidation",
-        cmd: `output`
+        stream: "transformOutput",
+        cmd: "out"
+        // options: spawnOptions
       });
     }
+    // if (process.nexssConfigContent) {
+    //   nexssResult.push({
+    //     stream: "transformValidation",
+    //     cmd: `output`
+    //   });
+    // }
 
     nexssResult.push({
       stream: "transformTest",
@@ -582,8 +596,12 @@ if (cliArgs.server) {
     }
 
     dg(`Executing..`);
+    // console.log(nexssResult);
+    // process.exit(1);
     await run(nexssResult, { quiet: !cliArgs.verbose }).catch(e =>
       console.error(e)
     );
-  })().catch(console.error);
+  })().catch(xxx => {
+    console.error(xxx);
+  });
 }

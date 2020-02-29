@@ -34,5 +34,10 @@
   ".wsf": "https://github.com/nexssp/language_windowshostscript.git",
   ".json": "https://github.com/nexssp/language_json.git",
   ".html": "https://github.com/nexssp/language_html.git",
-  ".f90": "https://github.com/nexssp/language_fortran.git"
+  ".f90": "https://github.com/nexssp/language_fortran.git",
+  ".coffee": "https://github.com/nexssp/language_coffee.git",
+  ".d": "https://github.com/nexssp/language_d.git",
+  ".groovy": "https://github.com/nexssp/language_groovy.git",
+  ".bat": "https://github.com/nexssp/language_batch.git",
+  ".swift": "https://github.com/nexssp/language_swift.git"
 }

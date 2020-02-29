@@ -127,9 +127,23 @@ testNames.forEach(test => {
         console.log(bold(green(test.title)));
 
         test.tests.forEach(subtest => {
+          tests++;
+          if (cliArgs.startFromTest) {
+            if (isNaN(cliArgs.startFromTest)) {
+              console.error(
+                `Parameter --startFromNo must be a number, but it is '${cliArgs.startFromTest}'`
+              );
+              process.exit(0);
+            }
+
+            if (cliArgs.startFromTest > tests) {
+              return;
+            }
+          }
+
           console.log("===========================================");
           console.log(
-            yellow(bright(`TEST ${tests++}`)),
+            yellow(bright(`TEST ${tests}`)),
             yellow(evalTS(subtest.title))
           );
 
@@ -143,6 +157,7 @@ testNames.forEach(test => {
               }
             })
           );
+
           totalPerformedTests++;
         });
       });
@@ -172,6 +187,7 @@ function shouldContain(test, regE, options) {
 }
 
 function should(fname, test, regE, options) {
+  // TODO: To rewrite it, now works
   if (options && options.chdir) {
     console.log(`Changing Dir to: ${options.chdir}`);
     process.chdir(options.chdir);
@@ -180,7 +196,7 @@ function should(fname, test, regE, options) {
   if (test == "null") {
     //YES NULL as STRING
     if (!process.testData) {
-      console.error("You need to specify REGEXP or STRING for the first test");
+      console.error("You need to specify REGEXP or STRING for the first test.");
       process.exit();
     }
     console.log(
@@ -195,29 +211,46 @@ function should(fname, test, regE, options) {
 
   // console.log("return: ", test, data);
 
-  console.log(` ${camelCase(fname)}: ${bright(green(regE))}`);
-  let regExp = new RegExp(regE, "i");
-  let match = regExp.exec(data);
-  let result = match && match.length > 1;
-  let result2 = data && data.includes(regE);
+  console.log(`>>> ${camelCase(fname)}: ${bright(green(regE))}`);
+  let result, result2, result3, match;
+  // console.log(data);
+  data = data.trim();
+  if (regE instanceof RegExp) {
+    result3 = regE.test(data);
+  } else {
+    let regExp = new RegExp(regE, "i");
+    match = regExp.exec(data);
+    result = match && match.length > 1;
+    result2 = data && data.includes(regE);
+  }
 
   let title = "contains";
   if (fname === "shouldNotContain") {
     result = match && !result;
     result2 = !result2;
+    result3 = !result3;
   }
+
+  // console.log("Results: ", result, result2, result3);
 
   // console.log(result);
   // console.log(result2);
-  if (result) {
+  if (result && !regE instanceof RegExp) {
     console.log(green(bright("PASSED")));
     // console.error(yellow(data));
     return match;
-  } else if (result2) {
+  } else if (result2 && !(regE instanceof RegExp)) {
+    console.log(green(bright("PASSED")));
+    // console.error(yellow(data));
+    return data;
+  } else if (result3) {
     console.log(green(bright("PASSED")));
     // console.error(yellow(data));
     return data;
   }
+
+  console.log(result3);
+
   console.error(
     red(bright(`=======================================================`))
   );
