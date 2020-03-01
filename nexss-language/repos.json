@@ -40,5 +40,6 @@
   ".groovy": "https://github.com/nexssp/language_groovy.git",
   ".bat": "https://github.com/nexssp/language_batch.git",
   ".swift": "https://github.com/nexssp/language_swift.git",
-  ".v": "https://github.com/nexssp/language_v.git"
+  ".v": "https://github.com/nexssp/language_v.git",
+  ".clj": "https://github.com/nexssp/language_clojure.git"
 }

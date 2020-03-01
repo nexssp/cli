@@ -253,7 +253,7 @@ if (cliArgs.server) {
     //   s.push(null);
     //   return s;
     // });
-    nexssBuild.push({ stream: "readable", cmd: nexssConfig.customInput });
+    nexssResult.push({ stream: "readable", cmd: nexssConfig.customInput });
   }
   // if (cliArgs.test) {
   //   nexssResult.push(() => {
