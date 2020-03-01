@@ -13,11 +13,12 @@ let values = Object.keys(languages);
 module.exports = {
   values,
   testsSelect: [1, 2],
-  startFrom: ".cs",
-  endsWith: ".cs",
+  startFrom: null, // eg. .cs
+  endsWith: null, // eg .cs
   omit: [
     ".html", // No json parsing
     ".tcl",
+    ".d", // dome compiler proble, default.d not found
     ".exs",
     ".pd",
     ".hs",
@@ -25,7 +26,11 @@ module.exports = {
     ".kts", // add json + utf-8
     ".vbs",
     ".wsf",
-    ".nexss"
+    ".nexss",
+    ".ex",
+    ".java",
+    ".scala", // unicode characters not working
+    ".json"
   ],
   tests: [
     {

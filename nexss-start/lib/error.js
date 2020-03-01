@@ -13,6 +13,7 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
   // We display error to standard output eg --server
 
   if (
+    !errorBody.includes(`${filename}.exe`) &&
     errorBody.includes(
       "is not recognized as an internal or external command"
     ) &&
@@ -47,7 +48,13 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
       }
     }
   } else {
-    if (errorBody.startsWith("OK ") || errorBody.startsWith("INFO ")) {
+    if (
+      errorBody.startsWith("OK ") ||
+      errorBody.startsWith("INFO ") ||
+      errorBody.startsWith("WARN ") ||
+      errorBody.startsWith("SUCESS ") ||
+      errorBody.startsWith("DEBUG ")
+    ) {
       console.log(errorBody);
     } else {
       error(`${ErrorPre}: ${bold(errorBody)}`);
@@ -106,7 +113,7 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
         solution = null;
       }
 
-      if (solution) {
+      if (solution && !solution.includes(`${filename}.exe`)) {
         if (stdOutput) {
           if (process.argv.includes("--htmlOutput")) {
             console.log("<BR/>");

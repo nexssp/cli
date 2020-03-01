@@ -1,6 +1,6 @@
 const { Transform } = require("stream");
-const { yellow, bold } = require("../../lib/color");
-const { di, ok } = require("../../lib/log");
+const { red, bold } = require("../../lib/color");
+const { warn, ok, error } = require("../../lib/log");
 const cliArgs = require("minimist")(process.argv);
 const { inspect } = require("util");
 module.exports.transformTest = (
@@ -9,7 +9,7 @@ module.exports.transformTest = (
   options = {}
 ) => {
   return new Transform({
-    writableObjectMode: true,
+    // writableObjectMode: true,
     // readableObjectMode: true,
     transform(chunk, encoding, callback) {
       if (cliArgs.test) {

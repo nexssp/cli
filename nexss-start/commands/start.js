@@ -209,6 +209,11 @@ if (cliArgs.server) {
 
   if (cliArgs.debug) di(`startData: ${yellow(inspect(startData))}`);
 
+  const { expressionParser } = require("../lib/expressionParser");
+  Object.keys(startData).forEach(e => {
+    startData[e] = expressionParser(startData, startData[e]);
+  });
+
   // const globalBuild = (nexssConfig && nexssConfig.build) || undefined;
   const globalDisabled = nexssConfig && nexssConfig.disabled;
   let nexssBuild = [
@@ -434,7 +439,17 @@ if (cliArgs.server) {
             // We make sure compiler is installed
             compilerAdded = true;
             if (compiler.command) {
-              ensureInstalled(compiler.command, compiler.install);
+              let compilerInstallOptions = {};
+
+              if (compiler.shell) {
+                compilerInstallOptions = { shell: "Powershell" };
+              }
+
+              ensureInstalled(
+                compiler.command,
+                compiler.install,
+                compilerInstallOptions
+              );
 
               if (compiler.command === "bash" && process.platform === "win32") {
                 // on Windows it's using the WSL (Windows Subsystem Linux)
