@@ -6,6 +6,7 @@ const { writeableStdout } = require("./writeableStdout");
 const { transformTest } = require("./transformTest");
 const { transformValidation } = require("./transformValidation");
 const { transformOutput } = require("./transformOutput");
+const { readable } = require("./readable");
 
 const util = require("util");
 const { is } = require("../../lib/data/guard");
@@ -45,7 +46,12 @@ async function run(operations, options = {}) {
       }
       runOptions.env = Object.assign({}, process.env, element.env);
       if (element.cmd) {
-        // console.log("========================1");
+        // console.log(
+        //   "========================1",
+        //   streamName,
+        //   element.cmd,
+        //   runOptions
+        // );
         return eval(streamName)(element.cmd, args, runOptions);
         // console.error("first", strResult);
       } else {
@@ -59,6 +65,7 @@ async function run(operations, options = {}) {
     })
   )
     .then(e => {
+      // Bellow will give undefined!!!!
       // console.log(e);
       // if (!options.quiet) {
       //   spin.succeed("Completed Nexss Sequence.");
@@ -69,7 +76,7 @@ async function run(operations, options = {}) {
     .catch(err => {
       // This is handled by nexss transform as all errors are parsed
       // based on language - this can be used maybe to better debug ?
-      // console.error("Nexss last error: ", err);
+      console.error("Nexss last error: ", err);
       // process.exit();
     });
 

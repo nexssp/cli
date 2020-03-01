@@ -2,9 +2,13 @@ const { error, warn } = require("../../lib/log");
 const { bold, yellow, blue } = require("../../lib/color");
 const { getLangByFilename } = require("../../nexss-language/lib/language");
 const { normalize, isAbsolute, extname } = require("path");
+const { colorizer } = require("./colorizer");
 
 // more here: https://github.com/nexssp/cli/wiki/Errors-Solutions
 module.exports.parseError = (filename, errorBody, stdOutput) => {
+  if (errorBody && errorBody.trim) {
+    errorBody = errorBody.trim();
+  }
   const filenameStore = filename;
   const langInfo = getLangByFilename(filename);
   // exit codes, to display in bash last command $?
@@ -48,6 +52,9 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
       }
     }
   } else {
+    // This below is much better in Nexss Programmer PRO.
+    // Here we need to distingquish unlimited nested programms
+    // like nexss, in nexss, in nexss...
     if (
       errorBody.startsWith("OK ") ||
       errorBody.startsWith("INFO ") ||
@@ -55,7 +62,7 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
       errorBody.startsWith("SUCESS ") ||
       errorBody.startsWith("DEBUG ")
     ) {
-      console.log(errorBody);
+      console.error(colorizer(errorBody));
     } else {
       error(`${ErrorPre}: ${bold(errorBody)}`);
     }

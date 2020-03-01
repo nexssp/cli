@@ -10,6 +10,7 @@ const {
   info,
   trace
 } = require("../../lib/log");
+const { colorizer } = require("./colorizer");
 const { bold } = require("../../lib/color");
 require("../../lib/arrays");
 const { spawn } = require("child_process");
@@ -119,7 +120,7 @@ module.exports.transformNexss = (
               if (args.includes("--pipeerrors")) {
                 console.log(nexssError.join(":"));
               } else {
-                eval(type)(nexssError.join(":"));
+                eval(type)(colorizer(nexssError.join(":")));
               }
             } else {
               parseError(fileName, element, args.includes("--pipeerrors"));
@@ -146,7 +147,6 @@ module.exports.transformNexss = (
           );
           return;
         }
-
         self.push(data.toString("utf8").trim());
       });
 

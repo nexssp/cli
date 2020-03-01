@@ -144,116 +144,117 @@ if (cliArgs.server) {
 
   // more here: https://github.com/nexssp/cli/wiki/Config
   let startData = (nexssConfig && nexssConfig.data) || {};
-
-  startData.start = +new Date();
-  //var moment = require("moment");
-  //var x = moment(startData.start).format("H:m:s");
-  //console.log(moment().locale());
-  //console.log(x);
-
-  startData.cwd = PROCESS_CWD;
-
-  // if (nexssConfig && nexssConfig.filePath) {
-  //   startData.projwd = path.dirname(nexssConfig.filePath);
-  // }
-  startData.debug = nexssConfig && nexssConfig.debug;
-  const { run } = require("../lib/pipe");
-
-  Object.assign(startData, cliArgs);
-
-  // TEST DATA
-  if (cliArgs.test) {
-    info("Testing enabled");
-    let testDataPassed = cliArgs.testData || cliArgs.testdata;
-    if (!testDataPassed) {
-      testData = require("../../config/testingData.json");
-    } else {
-      var testDataPath = path.normalize(`${PROCESS_CWD}/${testDataPassed}`);
-      try {
-        testData = require(testDataPath);
-      } catch (_) {
-        if (!fs.existsSync(testDataPath)) {
-          error(
-            `Your test data ${bold(
-              testDataPath
-            )} must be valid json or JavaScript/NodeJS file!`
-          );
-        } else {
-          error(
-            `Your test data ${bold(
-              testDataPath
-            )} must be valid json or JavaScript/NodeJS file!`
-          );
-        }
-
-        process.exit();
-      }
-    }
-    info("Testing Input Data", JSON.stringify(testData, 2));
-    Object.assign(startData, testData);
-  }
-
-  // STDIN -trim just to avoid extra params from JSON
-  const stdinRead = require("../lib/stdin")().trim();
-
   let dataStdin = {};
-  if (stdinRead) {
-    try {
-      dataStdin = JSON.parse(stdinRead);
-    } catch (error) {
-      dataStdin.nexssStdin = stdinRead;
-    }
-
-    Object.assign(startData, dataStdin);
-  }
-
-  if (cliArgs.debug) di(`startData: ${yellow(inspect(startData))}`);
-
-  const { expressionParser } = require("../lib/expressionParser");
-  Object.keys(startData).forEach(e => {
-    startData[e] = expressionParser(startData, startData[e]);
-  });
-
-  // const globalBuild = (nexssConfig && nexssConfig.build) || undefined;
+  let nexssResult = [];
+  let nexssBuild = [];
   const globalDisabled = nexssConfig && nexssConfig.disabled;
-  let nexssBuild = [
-    () => {
-      var Readable = require("stream").Readable;
-      var s = new Readable();
-      s._read = () => {};
-      s.push(JSON.stringify(startData));
-      s.push(null);
-      return s;
-    }
-  ];
+  const { run } = require("../lib/pipe");
+  let nexssInput = false;
+  if (!nexssConfig || (nexssConfig && !nexssConfig.customInput)) {
+    nexssInput = true;
+    startData.start = +new Date();
+    //var moment = require("moment");
+    //var x = moment(startData.start).format("H:m:s");
+    //console.log(moment().locale());
+    //console.log(x);
 
-  if (cliArgs.debug) {
-    nexssBuild.push({
-      stream: "transformError",
-      cmd: "Builder Started."
-    });
+    startData.cwd = PROCESS_CWD;
+
+    // if (nexssConfig && nexssConfig.filePath) {
+    //   startData.projwd = path.dirname(nexssConfig.filePath);
+    // }
+    startData.debug = nexssConfig && nexssConfig.debug;
+
+    Object.assign(startData, cliArgs);
+
+    // TEST DATA
+    // if (cliArgs.test) {
+    //   info("Testing enabled");
+    //   let testDataPassed = cliArgs.testData || cliArgs.testdata;
+    //   if (!testDataPassed) {
+    //     testData = require("../../config/testingData.json");
+    //   } else {
+    //     var testDataPath = path.normalize(`${PROCESS_CWD}/${testDataPassed}`);
+    //     try {
+    //       testData = require(testDataPath);
+    //     } catch (_) {
+    //       if (!fs.existsSync(testDataPath)) {
+    //         error(
+    //           `Your test data ${bold(
+    //             testDataPath
+    //           )} must be valid json or JavaScript/NodeJS file!`
+    //         );
+    //       } else {
+    //         error(
+    //           `Your test data ${bold(
+    //             testDataPath
+    //           )} must be valid json or JavaScript/NodeJS file!`
+    //         );
+    //       }
+
+    //       process.exit();
+    //     }
+    //   }
+    //   info("Testing Input Data", JSON.stringify(testData, 2));
+
+    //   Object.assign(startData, testData);
+    // }
+
+    // STDIN -trim just to avoid extra params from JSON
+    // const stdinRead = require("../lib/stdin")().trim();
+
+    // if (stdinRead) {
+    //   try {
+    //     dataStdin = JSON.parse(stdinRead);
+    //   } catch (error) {
+    //     dataStdin.nexssStdin = stdinRead;
+    //   }
+
+    //   Object.assign(startData, dataStdin);
+    // }
+
+    // if (cliArgs.debug) di(`startData: ${yellow(inspect(startData))}`);
+
+    // const globalBuild = (nexssConfig && nexssConfig.build) || undefined;
+
+    nexssBuild.push({ stream: "readable", cmd: startData });
+
+    // nexssBuild.push(() => {
+    //   var Readable = require("stream").Readable;
+    //   var s = new Readable();
+    //   s._read = () => {};
+    //   s.push(JSON.stringify(startData));
+    //   s.push(null);
+    //   return s;
+    // });
+
+    if (cliArgs.debug) {
+      nexssBuild.push({
+        stream: "transformError",
+        cmd: "Builder Started."
+      });
+    }
+
+    // let nexssResult = [() => "process.stdin"];
+    nexssResult.push({ stream: "readable", cmd: startData });
+
+    // if (process.nexssConfigContent) {
+    //   nexssResult.push({
+    //     stream: "transformValidation",
+    //     cmd: `input`
+    //   });
+    // }
+  } else {
+    // nexssResult.push(() => {
+    //   var Readable = require("stream").Readable;
+    //   var s = new Readable();
+    //   s._read = () => {};
+    //   s.push(nexssConfig.customInput);
+    //   s.push(null);
+    //   return s;
+    // });
+    nexssBuild.push({ stream: "readable", cmd: nexssConfig.customInput });
   }
-
-  // let nexssResult = [() => "process.stdin"];
-  let nexssResult = [
-    () => {
-      var Readable = require("stream").Readable;
-      var s = new Readable();
-      s._read = () => {};
-      s.push(JSON.stringify(startData));
-      s.push(null);
-      return s;
-    }
-    // { stream: "transformError", cmd: "Some text" }
-  ];
-
-  // if (process.nexssConfigContent) {
-  //   nexssResult.push({
-  //     stream: "transformValidation",
-  //     cmd: `input`
-  //   });
-  // }
-
   // if (cliArgs.test) {
   //   nexssResult.push(() => {
   //     var Transform = require("stream").Transform;
@@ -577,11 +578,13 @@ if (cliArgs.server) {
       //   fileName
       //   // options: spawnOptions
       // });
-      nexssResult.push({
-        stream: "transformOutput",
-        cmd: "out"
-        // options: spawnOptions
-      });
+      if (nexssInput) {
+        nexssResult.push({
+          stream: "transformOutput",
+          cmd: "out"
+          // options: spawnOptions
+        });
+      }
     }
     // if (process.nexssConfigContent) {
     //   nexssResult.push({
@@ -589,11 +592,12 @@ if (cliArgs.server) {
     //     cmd: `output`
     //   });
     // }
-
-    nexssResult.push({
-      stream: "transformTest",
-      cmd: `Test`
-    });
+    if (nexssInput) {
+      nexssResult.push({
+        stream: "transformTest",
+        cmd: `Test`
+      });
+    }
 
     nexssResult.push({
       stream: "writeableStdout",
@@ -602,7 +606,9 @@ if (cliArgs.server) {
     });
 
     // This needs to be changed so only build if is necessary
-    if (nexssBuild.length > 0) {
+    if (nexssBuild.length > 1) {
+      // console.log(nexssBuild);
+      // process.exit(1);
       dy(`Building..`);
       await run(nexssBuild, {
         quiet: !cliArgs.verbose,
