@@ -172,7 +172,13 @@ module.exports.transformNexss = (
         }
         try {
           let j = JSON.parse(chunk.toString());
-          const FinalData = Object.assign({}, j, inputData);
+          let FinalData = Object.assign({}, j, inputData);
+
+          // const { expressionParser } = require("./lib/expressionParser");
+          // Object.keys(FinalData).forEach(e => {
+          //   FinalData[e] = expressionParser(FinalData, FinalData[e]);
+          // });
+
           this.worker.stdin.write(Buffer.from(JSON.stringify(FinalData)));
         } catch (error) {
           inputData.nexssStdin = chunk.toString();
@@ -180,7 +186,15 @@ module.exports.transformNexss = (
         }
       } else {
         try {
-          this.worker.stdin.write(chunk);
+          // console.error(chunk);
+          let j = JSON.parse(chunk.toString());
+
+          const { expressionParser } = require("./expressionParser");
+          Object.keys(j).forEach(e => {
+            j[e] = expressionParser(j, j[e]);
+          });
+
+          this.worker.stdin.write(Buffer.from(JSON.stringify(j)));
         } catch (error) {
           dbg(`ERROR WRITING TO PIPE: ${chunk}`);
         }

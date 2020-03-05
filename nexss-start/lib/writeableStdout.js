@@ -17,6 +17,8 @@ module.exports.writeableStdout = () =>
           delete chunk["nxsPretty"];
           console.log(JSON.stringify(chunk, null, 2));
         }
+
+        timeElapsed(chunk.nxsTime);
       } else {
         // data is not json but we want to show it to the stdout
         console.log(chunk);

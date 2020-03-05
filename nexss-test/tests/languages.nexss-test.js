@@ -13,7 +13,7 @@ let values = Object.keys(languages);
 module.exports = {
   values,
   testsSelect: [1, 2],
-  startFrom: null, // eg. .cs
+  startFrom: ".bat", // eg. .cs
   endsWith: null, // eg .cs
   omit: [
     ".html", // No json parsing
@@ -30,7 +30,8 @@ module.exports = {
     ".ex",
     ".java",
     ".scala", // unicode characters not working
-    ".json"
+    ".json", //implement to free version
+    ".bat" //finish the json
   ],
   tests: [
     {

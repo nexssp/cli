@@ -81,6 +81,7 @@ module.exports.readable = startData => {
   delete cliArgs.nxsTime;
 
   Object.assign(startData, cliArgs);
+  // console.error(startData);
 
   s.push(JSON.stringify(startData));
   s.push(null);
