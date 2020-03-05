@@ -1,9 +1,9 @@
-# List
+# Update
 
-All installed packages have 'init' command run: `nexss cmd init`
+Updates all packages from the repositories.
 
 ## Examples
 
 ```sh
-nexss pkg init
+nexss pkg update
 ```

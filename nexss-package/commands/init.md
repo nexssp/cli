@@ -1,4 +1,4 @@
-# List
+# Init
 
 All installed packages have 'init' command run: `nexss cmd init`
 
