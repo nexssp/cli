@@ -1,7 +1,8 @@
 const { error, warn } = require("../../lib/log");
 const { bold, yellow, blue } = require("../../lib/color");
 const { getLangByFilename } = require("../../nexss-language/lib/language");
-const { normalize, isAbsolute, extname } = require("path");
+const { normalize, isAbsolute, extname, dirname } = require("path");
+const { existsSync } = require("fs");
 const { colorizer } = require("./colorizer");
 
 // more here: https://github.com/nexssp/cli/wiki/Errors-Solutions
@@ -79,7 +80,20 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
   let solutionNumber = 1;
   if (langInfo.errors) {
     Object.keys(langInfo.errors).forEach(pattern => {
-      let regExp = new RegExp(pattern, "gi");
+      let regExp;
+      try {
+        regExp = new RegExp(pattern, "gis");
+      } catch (er) {
+        //
+        error("===========================================================");
+        error(er.message);
+        error(
+          "Check error definition in the directory:",
+          dirname(langInfo.configFile)
+        );
+        process.exit(0);
+      }
+      // let regExp = new RegExp(pattern, "gi");
       let match = errorBody.matchAll(regExp);
 
       var solution;
@@ -97,30 +111,67 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
 
       //Capturing naming groups
       // https://javascript.info/regexp-groups#named-groups
-      const ArrayMatch = Array.from(match);
-      if (ArrayMatch && ArrayMatch.groups) {
-        if (ArrayMatch[0].groups) {
-          Object.keys(ArrayMatch[0].groups).forEach(e => {
-            const reg = new RegExp(`<${e}>`, "gi");
+      let replacer;
+      if (langInfo.replacer) {
+        // We load packages map (for example when something is not found, we replace with this map)
+        // eg Data.aesis by aesis.
+        if (existsSync(langInfo.replacer)) {
+          replacer = require(langInfo.replacer);
+        }
+      }
 
-            solution = solution.replace(reg, ArrayMatch[0].groups[e]);
-          });
+      const ArrayMatch = Array.from(match);
+      if (ArrayMatch && ArrayMatch[0] && ArrayMatch[0].groups) {
+        if (solution && solution.replace) {
+          if (ArrayMatch[0].groups) {
+            Object.keys(ArrayMatch[0].groups).forEach(e => {
+              const reg = new RegExp(`<${e}>`, "gi");
+
+              solution = solution.replace(reg, ArrayMatch[0].groups[e]);
+            });
+          }
         }
       } else if (ArrayMatch && ArrayMatch[0] && ArrayMatch[0].length > 1) {
         //console.log("find: ", pattern);
         //console.log(match);
         // We display errors to standard output (eg --server)
-        solution = solution
-          .replace(/<package>/g, ArrayMatch[0][1])
-          .replace(/<module>/g, ArrayMatch[0][1])
-          .replace(/<found1>/g, ArrayMatch[0][1]);
+
+        // langInfo.packagesMap contains the mapping so we can display right
+        // package name
+        let am = ArrayMatch[0][1];
+        if (solution.replace) {
+          solution = solution
+            .replace(/<package>/g, am)
+            .replace(/<module>/g, am)
+            .replace(/<found1>/g, am);
+        }
       } else if (errorBody.includes(pattern)) {
         // We display errors to standard output (eg --server)
       } else {
         solution = null;
       }
-
-      if (solution && !solution.includes(`${filename}.exe`)) {
+      if (solution) {
+        if (replacer) {
+          Object.keys(replacer).forEach(rpl => {
+            if (solution.replace) {
+              solution = solution.replace(new RegExp(rpl, "g"), replacer[rpl]);
+            }
+            // else {
+            //   if (typeof solution === "function") {
+            //     solution(errorBody, filename, ArrayMatch, langInfo);
+            //   }
+            // }
+          });
+        }
+        if (typeof solution === "function") {
+          solution(errorBody, filename, ArrayMatch, langInfo);
+        }
+      }
+      if (
+        solution &&
+        solution.includes &&
+        !solution.includes(`${filename}.exe`)
+      ) {
         if (stdOutput) {
           if (process.argv.includes("--htmlOutput")) {
             console.log("<BR/>");

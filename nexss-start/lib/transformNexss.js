@@ -129,9 +129,9 @@ module.exports.transformNexss = (
           });
           this.errBuffer = "";
         } else {
-          if (this.errBuffer)
-            parseError(fileName, this.errBuffer, args.includes("--pipeerrors"));
-          this.errBuffer = "";
+          // if (this.errBuffer)
+          //   parseError(fileName, this.errBuffer, args.includes("--pipeerrors"));
+          // this.errBuffer = "";
         }
       });
 
