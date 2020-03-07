@@ -16,7 +16,7 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
   // console.log(langInfo.compiler.split(" ")[0]);
 
   // We display error to standard output eg --server
-
+  // console.log(errorBody);
   if (
     !errorBody.includes(`${filename}.exe`) &&
     errorBody.includes(

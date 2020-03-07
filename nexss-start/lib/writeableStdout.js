@@ -21,8 +21,11 @@ module.exports.writeableStdout = () =>
         timeElapsed(chunk.nxsTime);
       } else {
         // data is not json but we want to show it to the stdout
-        console.log(chunk);
+        console.error(chunk);
+        // console.log(chunk);
       }
-      // callback();
+      // Below must be here as for example Blender will not display
+      // Progress of rendering, some stdout will be cut etc.
+      callback();
     }
   });

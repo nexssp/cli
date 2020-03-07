@@ -48,7 +48,7 @@ function getConfig() {
   const NEXSS_BACKUP_PATH =
     process.env.NEXSS_BACKUP_PATH ||
     (process.env.NEXSS_BACKUP_PATH = normalize(`${NEXSS_HOME_PATH}/backup`));
-  // console.log("PROCESS CWD!!!!!!!!!!!!! config/config.js", process.cwd());
+
   const NEXSS_PROJECTS_DB = normalize(`${NEXSS_HOME_PATH}/projects.json`);
 
   const NEXSS_SRC_PATH = join(__dirname, ".."); //Nexss source engine path

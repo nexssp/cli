@@ -77,6 +77,7 @@ module.exports.transformNexss = (
       // console.log(args);
       process.nexssCWD = cwd;
       this.worker = spawn(cmd, args, options);
+
       this.worker.cmd = `${cmd} ${args.join(" ")} `;
 
       process.env.NEXSS_CURRENT_COMMAND = this.worker.cmd;
@@ -149,6 +150,8 @@ module.exports.transformNexss = (
         }
         self.push(data.toString("utf8").trim());
       });
+
+      // self.pipe(this.worker);
 
       this.worker.stderr.on("end", function() {
         if (this.errBuffer)

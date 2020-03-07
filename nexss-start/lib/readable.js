@@ -15,7 +15,7 @@ module.exports.readable = startData => {
   const nexssVersion = require("../../package.json").version;
   startData.nexss = `FREE/OPENSOURCE ${nexssVersion}`;
   startData.start = +new Date();
-  startData.cwd = process.cwd();
+
   if (cliArgs.nxsTime) {
     startData.nxsTime = process.hrtime();
   }
@@ -81,7 +81,6 @@ module.exports.readable = startData => {
   delete cliArgs.nxsTime;
 
   Object.assign(startData, cliArgs);
-  // console.error(startData);
 
   s.push(JSON.stringify(startData));
   s.push(null);

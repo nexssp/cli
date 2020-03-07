@@ -397,9 +397,15 @@ if (cliArgs.server) {
             }
           }
           let compilerArgs;
+          // console.error(cliArgs.nxsCompiler);
           // CUSTOM COMPILER in the _nexss.yml file
-          if (file.compiler) {
-            fileCompilerSplit = file.compiler.split(" ");
+          if (file.compiler || cliArgs.nxsCompiler) {
+            if (!cliArgs.nxsCompiler) {
+              fileCompilerSplit = file.compiler.split(" ");
+            } else {
+              fileCompilerSplit = cliArgs.nxsCompiler.split(" ");
+              delete cliArgs.nxsCompiler;
+            }
 
             if (ld_compiler[fileCompilerSplit[0]]) {
               compiler = ld_compiler[fileCompilerSplit[0]];
@@ -465,15 +471,24 @@ if (cliArgs.server) {
             }
 
             if (compiler.args) {
-              compilerArgs = compiler.args.replace(/<file>/g, fileName).replace(
-                /<fileNoExt>/g,
-                fileName
-                  .split(".")
-                  .slice(0, -1)
-                  .join(".")
-              );
+              // if (compilerArgs) {
+              //   console.log(compilerArgs, compiler.args);
+              // }
+              if (!compilerArgs) {
+                compilerArgs = "";
+              }
+              compilerArgs += compiler.args
+                .replace(/<file>/g, fileName)
+                .replace(
+                  /<fileNoExt>/g,
+                  fileName
+                    .split(".")
+                    .slice(0, -1)
+                    .join(".")
+                );
             }
             args = compilerArgs.split(" ");
+
             let fileArgsObj = require("minimist")(fileArgs);
 
             if (fileArgsObj._ && fileArgsObj._.length === 0) {
@@ -488,9 +503,16 @@ if (cliArgs.server) {
 
             const cmd = compiler.command ? compiler.command : args.shift();
 
+            // console.log(compilerArgs);
+            // process.exit(1);
+
             if (compiler.stream) {
               stream = compiler.stream;
             }
+
+            // cleanups nxs Vars
+
+            delete fileArgsObj.nxsCompiler;
 
             nexssResult.push({
               stream,
@@ -578,6 +600,7 @@ if (cliArgs.server) {
       //   fileName
       //   // options: spawnOptions
       // });
+
       if (nexssInput) {
         nexssResult.push({
           stream: "transformOutput",
@@ -592,7 +615,7 @@ if (cliArgs.server) {
     //     cmd: `output`
     //   });
     // }
-    if (nexssInput) {
+    if (nexssInput && cliArgs.test) {
       nexssResult.push({
         stream: "transformTest",
         cmd: `Test`
