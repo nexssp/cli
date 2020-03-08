@@ -46,7 +46,12 @@ async function run(operations, options = {}) {
       }
       runOptions.env = Object.assign({}, process.env, element.env);
       if (element.cmd) {
-        args = args.filter(a => !a.startsWith("--nxs"));
+        // When we dont pass nexss arguments to the program run
+        // it can show errors etc. pass them as not starts with --nxs*
+        if (element.cmd !== "nexss") {
+          args = args.filter(a => !a.startsWith("--nxs"));
+        }
+
         // runOptions.env = "disable this line to see env.";
         // console.log(
         //   "========================",

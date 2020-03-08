@@ -7,6 +7,7 @@
 
 const { Transform } = require("stream");
 const { createReadStream, existsSync } = require("fs");
+const { extname } = require("path");
 
 module.exports.transformFile = file => {
   return new Transform({
@@ -15,20 +16,36 @@ module.exports.transformFile = file => {
       if (!existsSync(file)) {
         callback(`File ${file} not found`);
       }
+      try {
+        data = JSON.parse(chunk.toString());
+      } catch (error) {
+        console.error(
+          "ERROR in JSON (start/trasformFile.js): ",
+          chunk.toString()
+        );
+        callback(null, JSON.stringify(data));
+      }
 
       let streamRead = createReadStream(file);
-      // console.log(chunk.toString());
-      streamRead.on("data", data => {
-        callback(null, data);
+      let wholeData = "";
+      streamRead.on("data", d => {
+        wholeData += d;
+        // callback(null, data);
       });
+
       streamRead.on("error", er => {
         callback(er);
       });
-      let self = this;
+
       streamRead.on("end", () => {
-        self.end();
-        this.end();
-        // callback(1, null);
+        if (extname(file) === ".json") {
+          const jsonToObj = JSON.parse(wholeData);
+          data = Object.assign({}, data, jsonToObj);
+        } else {
+          data.nxsOut = wholeData;
+        }
+
+        callback(null, Buffer.from(JSON.stringify(data)));
       });
 
       // streamRead.on("exit", (code, signal) => {

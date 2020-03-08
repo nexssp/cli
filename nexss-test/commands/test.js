@@ -30,6 +30,9 @@ const availTests = testsPath => {
   tests = fs.readdirSync(testsPath);
   tests.forEach(test => {
     const e = test.split(".");
+    if (e.pop() !== "js") {
+      return;
+    }
     console.log(bold(e.shift()), ...e);
   });
   process.exit();
@@ -125,6 +128,11 @@ testNames.forEach(test => {
 
       testsDef.tests.forEach(test => {
         console.log(bold(green(test.title)));
+
+        if (test.chdir) {
+          console.log(`Changing global subdir to: ${test.chdir}`);
+          process.chdir(test.chdir);
+        }
 
         test.tests.forEach(subtest => {
           tests++;
@@ -248,8 +256,6 @@ function should(fname, test, regE, options) {
     // console.error(yellow(data));
     return data;
   }
-
-  console.log(result3);
 
   console.error(
     red(bright(`=======================================================`))

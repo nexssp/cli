@@ -30,6 +30,7 @@ module.exports.transformOutput = () =>
           );
 
           callback(null, JSON.stringify(data));
+          return;
         }
 
         // Parsing values insde the template !!
@@ -48,7 +49,6 @@ module.exports.transformOutput = () =>
           // console.log("DATA BEFORE: ", data);
           // data = expressionParser(data);
           // data = expressionParser(data);
-
           // console.log("DATA AFTER: ", data);
           // Because there is Select module and when use SelectOnly it
           // wipes out the nxsDelete, so we cache this here.

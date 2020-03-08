@@ -4,6 +4,7 @@ const { NEXSS_PACKAGES_PATH } = require("../../config/config");
 const packagesPath = `${NEXSS_PACKAGES_PATH}`;
 const cliArgs = require("minimist")(process.argv);
 const authors = fs.readdirSync(packagesPath);
+const { bold } = require("../../lib/color");
 
 let pkgs = [];
 // TODO: To fix below syntac - make more efficient! works for now
@@ -29,8 +30,13 @@ authors.forEach(author => {
                   `Package update checked. ${packagesPath}/${author}/${pkg}/${details}`
                 );
               } catch (er) {
-                console.error(er);
-                process.exit();
+                // console.error(er);
+                // process.exit();
+                console.error(
+                  bold(
+                    `${packagesPath}/${author}/${pkg}/${details} not a git repo?`
+                  )
+                );
               }
             });
           } else {
@@ -49,8 +55,9 @@ authors.forEach(author => {
                 stdio: "inherit"
               });
             } catch (er) {
-              console.error(er);
-              process.exit();
+              console.error(
+                bold(`${packagesPath}/${author}/${pkg} not a git repo?`)
+              );
             }
           }
         }
@@ -65,8 +72,7 @@ authors.forEach(author => {
               stdio: "inherit"
             });
           } catch (er) {
-            console.error(er);
-            process.exit();
+            console.error(bold(`${packagesPath}/${author} not a git repo?`));
           }
         }
       }
@@ -85,8 +91,9 @@ authors.forEach(author => {
                   stdio: "inherit"
                 });
               } catch (er) {
-                console.error(er);
-                process.exit();
+                console.error(
+                  bold(`${packagesPath}/${author}/${pkg} not a git repo?`)
+                );
               }
             }
           }

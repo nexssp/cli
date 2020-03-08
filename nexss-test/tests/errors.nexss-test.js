@@ -33,6 +33,32 @@ module.exports = {
           params: ["nexss Nexss/Test/Errors", "NexssStdin"]
         }
       ]
+    },
+    {
+      title: "Errors Solutions",
+      tests: [
+        {
+          title: "Check Capturing Group (*.?)",
+          params: [
+            "nexss Nexss/Test/ErrorsSolutions/src/errors1.js",
+            "Define 'testNotExistVariable2' before you use it."
+          ]
+        },
+        {
+          title: "Check Named Group (?<found1>.*?)",
+          params: [
+            `nexss Nexss/Test/ErrorsSolutions/src/errors2.js`,
+            "Possible solution 1: Define 'DefineBeforeUseVar' before you use it"
+          ]
+        },
+        {
+          title: "Check String Solution",
+          params: [
+            `nexss Nexss/Test/ErrorsSolutions/src/errors3.js`,
+            "Possible solution 1: Did you forget semi-color ';' ?"
+          ]
+        }
+      ]
     }
     // {
     //   title: "nexss-command",

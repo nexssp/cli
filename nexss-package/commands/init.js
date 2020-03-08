@@ -4,11 +4,13 @@ const { NEXSS_PACKAGES_PATH } = require("../../config/config");
 const packagesPath = `${NEXSS_PACKAGES_PATH}`;
 const cliArgs = require("minimist")(process.argv);
 const authors = fs.readdirSync(packagesPath);
+const { success } = require("../../lib/log");
 
 let pkgs = [];
 // TODO: To fix below syntac - make more efficient! works for now
 process.chdir(packagesPath);
 authors.forEach(author => {
+  if (author === "@dev") return;
   if (
     author !== "3rdPartyLibraries" &&
     fs.statSync(`${packagesPath}/${author}`).isDirectory()

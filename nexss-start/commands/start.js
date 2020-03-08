@@ -52,6 +52,7 @@ if (fileOrDirectory) {
     const nexssConfig = require("../../lib/config").loadConfigContent();
     if (
       nexssConfig &&
+      nexssConfig.files &&
       nexssConfig.findByProp("files", "name", fileOrDirectory)
     ) {
       fileOrDirectory = [
@@ -112,6 +113,8 @@ more: https://github.com/nexssp/cli/wiki/Sequences`
     process.exit();
   } else {
     files = nexssConfig.sequences[cliArgs.seq];
+    delete cliArgs.seq;
+    process.argv = process.argv.filter(e => !e.startsWith("--seq="));
   }
 }
 
@@ -272,7 +275,9 @@ if (cliArgs.server) {
   (async () => {
     for await (let file of files) {
       let compiler = null;
-      if (projectPath) process.chdir(projectPath);
+
+      if (nexssConfig && nexssConfig.files && projectPath)
+        process.chdir(projectPath);
 
       dg(`Parsing ${file.name}..`);
 
