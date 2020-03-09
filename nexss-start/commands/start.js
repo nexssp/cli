@@ -156,81 +156,11 @@ if (cliArgs.server) {
   if (!nexssConfig || (nexssConfig && !nexssConfig.customInput)) {
     nexssInput = true;
     startData.start = +new Date();
-    //var moment = require("moment");
-    //var x = moment(startData.start).format("H:m:s");
-    //console.log(moment().locale());
-    //console.log(x);
-
     startData.cwd = PROCESS_CWD;
-
-    // if (nexssConfig && nexssConfig.filePath) {
-    //   startData.projwd = path.dirname(nexssConfig.filePath);
-    // }
     startData.debug = nexssConfig && nexssConfig.debug;
 
     Object.assign(startData, cliArgs);
-
-    // TEST DATA
-    // if (cliArgs.test) {
-    //   info("Testing enabled");
-    //   let testDataPassed = cliArgs.testData || cliArgs.testdata;
-    //   if (!testDataPassed) {
-    //     testData = require("../../config/testingData.json");
-    //   } else {
-    //     var testDataPath = path.normalize(`${PROCESS_CWD}/${testDataPassed}`);
-    //     try {
-    //       testData = require(testDataPath);
-    //     } catch (_) {
-    //       if (!fs.existsSync(testDataPath)) {
-    //         error(
-    //           `Your test data ${bold(
-    //             testDataPath
-    //           )} must be valid json or JavaScript/NodeJS file!`
-    //         );
-    //       } else {
-    //         error(
-    //           `Your test data ${bold(
-    //             testDataPath
-    //           )} must be valid json or JavaScript/NodeJS file!`
-    //         );
-    //       }
-
-    //       process.exit();
-    //     }
-    //   }
-    //   info("Testing Input Data", JSON.stringify(testData, 2));
-
-    //   Object.assign(startData, testData);
-    // }
-
-    // STDIN -trim just to avoid extra params from JSON
-    // const stdinRead = require("../lib/stdin")().trim();
-
-    // if (stdinRead) {
-    //   try {
-    //     dataStdin = JSON.parse(stdinRead);
-    //   } catch (error) {
-    //     dataStdin.nexssStdin = stdinRead;
-    //   }
-
-    //   Object.assign(startData, dataStdin);
-    // }
-
-    // if (cliArgs.debug) di(`startData: ${yellow(inspect(startData))}`);
-
-    // const globalBuild = (nexssConfig && nexssConfig.build) || undefined;
-
     nexssBuild.push({ stream: "readable", cmd: startData });
-
-    // nexssBuild.push(() => {
-    //   var Readable = require("stream").Readable;
-    //   var s = new Readable();
-    //   s._read = () => {};
-    //   s.push(JSON.stringify(startData));
-    //   s.push(null);
-    //   return s;
-    // });
-
     if (cliArgs.debug) {
       nexssBuild.push({
         stream: "transformError",
@@ -248,14 +178,6 @@ if (cliArgs.server) {
     //   });
     // }
   } else {
-    // nexssResult.push(() => {
-    //   var Readable = require("stream").Readable;
-    //   var s = new Readable();
-    //   s._read = () => {};
-    //   s.push(nexssConfig.customInput);
-    //   s.push(null);
-    //   return s;
-    // });
     nexssResult.push({ stream: "readable", cmd: nexssConfig.customInput });
   }
   // if (cliArgs.test) {
@@ -276,7 +198,11 @@ if (cliArgs.server) {
     for await (let file of files) {
       let compiler = null;
 
-      if (nexssConfig && nexssConfig.files && projectPath)
+      if (
+        nexssConfig &&
+        projectPath &&
+        (nexssConfig.files || nexssConfig.sequences)
+      )
         process.chdir(projectPath);
 
       dg(`Parsing ${file.name}..`);
@@ -360,7 +286,11 @@ if (cliArgs.server) {
                   info(
                     "Possible solution: remove file entry from files section in the nexss.yml file. Files part in the _nexss.yml:"
                   );
-                  console.log(nexssConfig.files);
+                  if (nexssConfig.files) {
+                    console.log(nexssConfig.files);
+                  } else {
+                    console.log("no files section has been found");
+                  }
                   return 0;
                 } else {
                   if (fs.lstatSync(fileName).isDirectory()) {
@@ -402,6 +332,33 @@ if (cliArgs.server) {
             }
           }
           let compilerArgs;
+
+          if (path.extname(fileName) && fs.existsSync(fileName)) {
+            // We check for extra attributes for the files
+            // eg: # nexss-compiler: blender --background
+            // This can be added in any language just comment and nexss-[parameter]
+            if (cliArgs.verbose) {
+              info(`Checkinf for the config in the file..`);
+            }
+            // TODO: Later fix for efficient, read only lines which are needed
+            // The one which starts with nexss-
+            const fileContent = fs
+              .readFileSync(fileName)
+              .toString()
+              .split(/\r?\n/);
+
+            for (let i = 0; i < fileContent.length; i++) {
+              const line = fileContent[i];
+              if (!line.includes("nexss-") || !line.includes(":")) break;
+              const splitter = line.split("nexss-")[1].split(":");
+              file[splitter[0]] = splitter[1].trim();
+            }
+
+            // console.log(file);
+
+            // process.exit(1);
+          }
+
           // console.error(cliArgs.nxsCompiler);
           // CUSTOM COMPILER in the _nexss.yml file
           if (file.compiler || cliArgs.nxsCompiler) {

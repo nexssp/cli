@@ -99,36 +99,40 @@ module.exports.transformNexss = (
       });
 
       this.worker.stderr.on("data", function(err) {
-        const errorString = err.toString();
+        this.errBuffer = this.errBuffer || "";
+        this.errBuffer += err.toString();
 
-        // console.error("ERRSTRING: " + err.toString());
+        // console.log("ERRSTRING: " + err.toString());
 
-        if (errorString.includes("NEXSS/")) {
-          const exploded = errorString.split("NEXSS");
+        if (this.errBuffer.includes("NEXSS/")) {
+          const exploded = this.errBuffer.split("NEXSS");
           exploded.forEach(element => {
             if (!element) return;
+
+            // console.log("##################");
+            // console.log(element.substring(0, 1));
+            // console.log("EEEEEEEEEEEEEEEENNNNNNNNNNNNNDDDDDDDD");
             if (element.substring(0, 1) === "/") {
               let nexssError = element + "";
               nexssError = nexssError.substring(1);
+
               nexssError = nexssError.split(":");
               const type = nexssError.shift();
               if (args.includes("--pipeerrors")) {
-                console.log(nexssError.join(":").trim());
+                console.log(nexssError.join(":"));
               } else {
-                eval(type)(colorizer(nexssError.join(":").trim()));
+                eval(type)(colorizer(nexssError.join(":")));
               }
             } else {
               parseError(fileName, element, args.includes("--pipeerrors"));
             }
             // console.error("##############element!!!", element);
           });
-          // this.errBuffer = "";
+          this.errBuffer = "";
         } else {
-          this.errBuffer = this.errBuffer || "";
-          this.errBuffer += err.toString();
-          // if (this.errBuffer)
-          //   parseError(fileName, this.errBuffer, args.includes("--pipeerrors"));
-          // this.errBuffer = "";
+          if (this.errBuffer)
+            parseError(fileName, this.errBuffer, args.includes("--pipeerrors"));
+          this.errBuffer = "";
         }
       });
 
@@ -144,17 +148,15 @@ module.exports.transformNexss = (
           );
           return;
         }
-        self.push(data.toString("utf8")); //.trim removed (some distored output eg blender compiler)
+        self.push(data.toString("utf8").trim());
       });
 
       // self.pipe(this.worker);
 
       this.worker.stderr.on("end", function() {
-        if (this.errBuffer) {
+        if (this.errBuffer)
           parseError(fileName, this.errBuffer, args.includes("--pipeerrors"));
-          this.errBuffer = "";
-          // console.error(this.errBuffer);
-        }
+        this.errBuffer = "";
       });
 
       //   this.worker.stdout.on("end", () => {

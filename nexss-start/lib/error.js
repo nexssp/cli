@@ -17,21 +17,21 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
 
   // We display error to standard output eg --server
   // console.log(errorBody);
-  if (
-    !errorBody.includes(`${filename}.exe`) &&
-    errorBody.includes(
-      "is not recognized as an internal or external command"
-    ) &&
-    extname(filename) !== ".bat"
-  ) {
-    warn(
-      bold(
-        yellow("RESTART YOUR TERMINAL:") +
-          "You may need to restart your teminal in order to continue without issues."
-      )
-    );
-    process.exit(1);
-  }
+  // if (
+  //   !errorBody.includes(`${filename}.exe`) &&
+  //   errorBody.includes(
+  //     "is not recognized as an internal or external command"
+  //   ) &&
+  //   extname(filename) !== ".bat"
+  // ) {
+  //   warn(
+  //     bold(
+  //       yellow("RESTART YOUR TERMINAL:") +
+  //         "You may need to restart your teminal in order to continue without issues."
+  //     )
+  //   );
+  //   process.exit(1);
+  // }
 
   const ErrorPre = isAbsolute(filename)
     ? filename
