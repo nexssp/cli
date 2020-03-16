@@ -29,8 +29,12 @@ module.exports.transformOutput = () =>
         //   "ERROR in JSON (start/tranformOutput.js): ",
         //   chunk.toString()
         // );
+        if (process.argv.indexOf("--pipeerrors") >= 0) {
+          console.log(data);
+        } else {
+          callback(null, data);
+        }
 
-        callback(null, data);
         return;
       }
 
@@ -54,7 +58,7 @@ module.exports.transformOutput = () =>
         // Because there is Select module and when use SelectOnly it
         // wipes out the nxsDelete, so we cache this here.
 
-        data = nxsInModule(data);
+        // data = nxsInModule(data);
 
         const nxsDeleteCache = data.nxsDelete;
         if (data.nxsField && data) {
