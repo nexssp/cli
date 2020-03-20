@@ -135,6 +135,9 @@ testNames.forEach(test => {
         }
 
         test.tests.forEach(subtest => {
+          if (test.notEval && !subtest.notEval) {
+            subtest.notEval = test.notEval;
+          }
           tests++;
           if (cliArgs.startFromTest) {
             if (isNaN(cliArgs.startFromTest)) {
@@ -158,7 +161,7 @@ testNames.forEach(test => {
           console.log(`===========================================`);
           eval(subtest.type || "shouldContain")(
             ...subtest.params.map(p => {
-              if (p !== null && typeof p === "object") {
+              if ((p !== null && typeof p === "object") || subtest.notEval) {
                 return p;
               } else {
                 return evalTS(p);
