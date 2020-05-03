@@ -4,15 +4,16 @@ Welcome to      ____
 |  ``..      | |______           ``..''              .''                .''
 |      ``..  | |                 ..'`..           ..'                ..'
 |          ``| |___________  ..''      ``.. ....''             ....''
-Programmer 2.0.8 - Free, Open Source, Educational Version
+Programmer 2.1.0 - Free, Open Source, Educational Version
 ```
+
 NOTE: _**Nexss Programmer DOES NOT need administrative rights**_ for your operating system so it is very safe. Try it today and save your time!
 
 From the 1st of Februrary 2020, This **Free, Educational, Open Source**, fully functional version of **The Nexss Programmer** will be **still supported if there are any bugs, questions or contributions**. Please remember to keep with your products the copyright notice and license document if you are using it for any purposes: [License of the Nexss Programmer](https://github.com/nexssp/cli/blob/master/LICENSE)
 
 ### Copyright (c) 2018-2020 Nexss.com
 
-From now, the next version(s) of this software has been moved to the different **private** repository under the different licensing terms.   
+From now, the next version(s) of this software has been moved to the different **private** repository under the different licensing terms.  
 Contact us for the details,  
 **Nexss.com TEAM**
 
@@ -55,7 +56,7 @@ If you are having errors about tls/ssl channel please run first:
 
 ### Preview of Nexss Programmer GUI - Work in progress
 
-This is preview of Nexss Programmer GUI which will be available in **PAID** version of the  **Nexss Programmer 2.1**
+This is preview of Nexss Programmer GUI which will be available in **PAID** version of the **Nexss Programmer 2.1**
 
 ![nexssProgrammerGUI](https://user-images.githubusercontent.com/53263666/72731842-c97f8e80-3b94-11ea-954a-23b541aa3ff7.png)
 
@@ -76,7 +77,7 @@ For installing some of the compilers **Nexss Programmer** uses fantastic package
 ![nexssProgrammer-SelectTemplateExampleCLI](https://user-images.githubusercontent.com/53263666/72731382-ebc4dc80-3b93-11ea-9d84-5ee136ab2e33.png)
 
 - Start **learning PROGRAMMING** within minutes with Nexss PROGRAMMER 2.0 eg. `nexss myprogram.r` OR `nexss myanotherprogram.py` **(nexss file.ext)** and it will download automatically compiler and run Your program.
-- Add files from predefined templates for the languages 
+- Add files from predefined templates for the languages
 - Build your own tools that other people can use,
 - Configurable Error handling with suggested solutions,
 - Save time by using as many languages you like for the solution (combined),
