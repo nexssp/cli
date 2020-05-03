@@ -7,15 +7,15 @@ if (process.argv[2] === "s" || process.argv[2] === "start") {
 }
 const cliArgs = require("minimist")(process.argv.slice(paramNumber));
 const nxsInModule = require("./input/nxsIn");
-module.exports.readable = startData => {
+module.exports.readable = (startData) => {
   var s = new Readable({
-    objectMode: true
+    objectMode: true,
   });
   s._read = () => {};
   const nexssVersion = require("../../package.json").version;
   startData.nexss = `FREE/OPENSOURCE ${nexssVersion}`;
   startData.start = +new Date();
-
+  startData.cwd = process.nexssGlobalCWD;
   if (cliArgs.nxsTime) {
     startData.nxsTime = process.hrtime();
   }
@@ -65,7 +65,7 @@ module.exports.readable = startData => {
   }
 
   const { expressionParser } = require("../lib/expressionParser");
-  Object.keys(startData).forEach(e => {
+  Object.keys(startData).forEach((e) => {
     startData[e] = expressionParser(startData, startData[e]);
   });
 

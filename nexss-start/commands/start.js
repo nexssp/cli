@@ -1,613 +1,378 @@
 const PROCESS_CWD = process.cwd();
 const path = require("path");
 const { info, error, warn, di, dg, dy, dbg } = require("../../lib/log");
-const dotenv = require("dotenv");
+// const dotenv = require("dotenv");
 const { inspect } = require("util"),
   { yellow, bold, green } = require("../../lib/color"),
-  { startServer } = require("../../lib/server"),
-  { getLangByFilename } = require("../../nexss-language/lib/language");
-const { is, Exists } = require("../../lib/data/guard");
+  { startServer } = require("../../lib/server");
 const { ensureInstalled } = require("../../lib/terminal");
 const fs = require("fs");
 const { existsSync, lstatSync } = require("fs");
 const { isURL } = require("../../lib/data/url");
 const url = require("url");
+const { NEXSS_SPECIAL_CHAR } = require("../../config/defaults");
+
+const globalConfigPath = require("os").homedir() + "/.nexssPRO/config.json";
+
+if (require("fs").existsSync(globalConfigPath)) {
+  process.nexssGlobalConfig = require(globalConfigPath);
+} else {
+  process.nexssGlobalConfig = { languages: {} };
+}
+
+const { getFiles } = require("../lib/start/files");
 
 // nexss s OR nexss start is ommiting
 let paramNumber = 2;
 if (process.argv[2] === "s" || process.argv[2] === "start") {
   paramNumber = 3;
 }
-const { NEXSS_PACKAGES_PATH } = require("../../config/config");
 const cliArgs = require("minimist")(process.argv.slice(paramNumber));
-
-const request = require("request");
 
 let fileOrDirectory = Array.isArray(cliArgs._) && cliArgs._.shift();
 
-// There is an argument so we check if this is folder
+if (
+  (!fileOrDirectory && process.argv[2] === "start") ||
+  process.argv[2] === "s"
+) {
+  fileOrDirectory = ".";
+}
+
 if (fileOrDirectory) {
-  if (!isURL(fileOrDirectory)) {
-    fileOrDirectory = fileOrDirectory.replace(/\\/g, "/");
-    fileOrDirectory = path.normalize(fileOrDirectory).replace(/(\/|\\)$/, "");
-  }
-
-  //replace only first occurance
-  const platformDir = `${fileOrDirectory}/${process.platform}`;
-  const platformExists = existsSync(platformDir);
-
-  // In the Package you can create folder eg win32, darwin OR linux.
-  // We check if the platformDir
-  if (platformExists && lstatSync(`${platformDir}`).isDirectory()) {
-    process.chdir(platformDir);
-    fileOrDirectory = null;
-  } else if (
-    existsSync(`${fileOrDirectory}`) &&
-    lstatSync(`${fileOrDirectory}`).isDirectory()
-  ) {
-    process.chdir(fileOrDirectory);
-    fileOrDirectory = null;
-  } else {
-    // We get config for the selected file
-    const nexssConfig = require("../../lib/config").loadConfigContent();
-    if (
-      nexssConfig &&
-      nexssConfig.files &&
-      nexssConfig.findByProp("files", "name", fileOrDirectory)
-    ) {
-      fileOrDirectory = [
-        nexssConfig.findByProp("files", "name", fileOrDirectory)
-      ];
-    } else {
-      // console.log(fileOrDirectory);
-      fileOrDirectory = [{ name: fileOrDirectory }];
-    }
-  }
-}
-
-//  ???????
-const nexssConfig = require("../../lib/config").loadConfigContent();
-const globalConfigPath = require("os").homedir() + "/.nexss/config.json";
-if (require("fs").existsSync(globalConfigPath)) {
-  globalConfig = require(globalConfigPath);
-} else {
-  globalConfig = { languages: {} };
-}
-
-let projectPath;
-if (nexssConfig) {
-  delete require.cache[require.resolve("../../config/config")];
-  const { NEXSS_PROJECT_PATH } = require("../../config/config");
-
-  projectPath = path.resolve(NEXSS_PROJECT_PATH);
-  const envConfigPath = projectPath
-    ? `${projectPath}/config.env`
-    : `./config.env`;
-
-  dotenv.config({ path: envConfigPath });
-}
-
-let files;
-
-// SEQUENCES
-// more: https://github.com/nexssp/cli/wiki/Sequences
-
-if (cliArgs.seq) {
-  if (!nexssConfig) {
-    error(
-      "You can use 'sequences' ONLY in the Nexss Programmer Project. Create new project in the current folder by 'nexss project new .'"
-    );
-    process.exit();
-  }
-
-  if (!nexssConfig.sequences) {
-    error(
-      `There is no 'sequence' section in the _nexss.yml file: ${nexssConfig.filePath}
-more: https://github.com/nexssp/cli/wiki/Sequences`
-    );
-    process.exit();
-  }
-
-  if (!nexssConfig.sequences[cliArgs.seq]) {
-    error(`${cliArgs.seq} sequence does not exist in the _nexss.yml`);
-    process.exit();
-  } else {
-    files = nexssConfig.sequences[cliArgs.seq];
-    delete cliArgs.seq;
-    process.argv = process.argv.filter(e => !e.startsWith("--seq="));
-  }
-}
-
-if (!files) {
   if (
-    nexssConfig &&
-    nexssConfig.sequences &&
-    nexssConfig.sequences["default"]
+    path.extname(fileOrDirectory) === ".nexss"
+    // &&process.argv.includes("--nexssScript")
   ) {
-    files = nexssConfig.sequences["default"];
+    if (fs.existsSync(fileOrDirectory)) {
+      const nexssProgram = fs.readFileSync(fileOrDirectory);
+
+      files = require("../lib/nexssFileParser")(
+        nexssProgram,
+        fileOrDirectory,
+        cliArgs
+      );
+
+      // console.log(files);
+      // process.exit(1);
+    }
   } else {
-    files = fileOrDirectory || (nexssConfig && nexssConfig.files) || [];
+    // CLEANUP IF THIS IS NOT URL, REMOVE END / OR \ AND REPLACE TO /
+    if (!isURL(fileOrDirectory)) {
+      fileOrDirectory = fileOrDirectory.replace(/\\/g, "/");
+      fileOrDirectory = path.normalize(fileOrDirectory).replace(/(\/|\\)$/, "");
+    }
+
+    if (fileOrDirectory === "." && !fs.existsSync("./_nexss.yml")) {
+      warn("Nothing to run");
+      process.exit(0);
+    }
+
+    files = getFiles({ name: fileOrDirectory });
   }
 }
 
-// SERVER
+const { loadConfigContent } = require("../../lib/config");
+
+let nexssConfig;
+
+if (
+  !isURL(fileOrDirectory) &&
+  !fileOrDirectory.startsWith(NEXSS_SPECIAL_CHAR)
+) {
+  if (lstatSync(fileOrDirectory).isFile()) {
+    const dirname = path.dirname(fileOrDirectory);
+    const configFileDirname = `${dirname}/_nexss.yml`;
+    if (existsSync(configFileDirname) && lstatSync(configFileDirname)) {
+      nexssConfig = loadConfigContent(configFileDirname);
+    }
+  } else {
+    nexssConfig = loadConfigContent(`${fileOrDirectory}/_nexss.yml`);
+  }
+}
+
+if (!Array.isArray(files)) {
+  files = [files];
+}
+
+files = files.filter(Boolean);
+
+const cache = require("../../lib/cache");
+const cacheFileName = "myCache.json";
+let nexssResult = [];
+let nexssBuild = [];
+
 if (cliArgs.server) {
+  // SERVER
   if (nexssConfig) {
     startServer(nexssConfig.server, { cwd: PROCESS_CWD });
   } else {
     startServer({}, { cwd: PROCESS_CWD });
   }
 } else {
-  if (files.length === 0) {
-    warn(
-      "Nothing to run. To add files to the project please use 'nexss file add myfile.[language extension]'"
-    );
-    process.exit();
-  }
+  if (!cliArgs.nxsLive || !cache.exists(cacheFileName, "1y")) {
+    if (files.length === 0) {
+      warn(
+        "Nothing to run. To add files to the project please use 'nexss file add myfile.[language extension]'"
+      );
+      process.exit();
+    }
 
-  // more here: https://github.com/nexssp/cli/wiki/Config
-  let startData = (nexssConfig && nexssConfig.data) || {};
-  let dataStdin = {};
-  let nexssResult = [];
-  let nexssBuild = [];
-  const globalDisabled = nexssConfig && nexssConfig.disabled;
-  const { run } = require("../lib/pipe");
-  let nexssInput = false;
-  if (!nexssConfig || (nexssConfig && !nexssConfig.customInput)) {
-    nexssInput = true;
-    startData.start = +new Date();
-    startData.cwd = PROCESS_CWD;
-    startData.debug = nexssConfig && nexssConfig.debug;
+    // more here: https://github.com/nexssp/cli/wiki/Config
+    let startData = { debug: nexssConfig && nexssConfig.debug };
 
-    Object.assign(startData, cliArgs);
+    if (cliArgs.debug) di(`startData: ${yellow(inspect(startData))}`);
+
+    // const globalBuild = (nexssConfig && nexssConfig.build) || undefined;
+    const globalDisabled = nexssConfig && nexssConfig.disabled;
     nexssBuild.push({ stream: "readable", cmd: startData });
+
     if (cliArgs.debug) {
       nexssBuild.push({
         stream: "transformError",
-        cmd: "Builder Started."
+        cmd: "Builder Started.",
       });
     }
 
     // let nexssResult = [() => "process.stdin"];
     nexssResult.push({ stream: "readable", cmd: startData });
+    // { stream: "transformError", cmd: "Some text" }
 
-    // if (process.nexssConfigContent) {
-    //   nexssResult.push({
-    //     stream: "transformValidation",
-    //     cmd: `input`
-    //   });
-    // }
-  } else {
-    nexssResult.push({ stream: "readable", cmd: nexssConfig.customInput });
-  }
-  // if (cliArgs.test) {
-  //   nexssResult.push(() => {
-  //     var Transform = require("stream").Transform;
-  //     var s = new Transform();
-  //     s._transform = function(obj, encoding, cb) {
-  //       let c = JSON.parse(obj.toString());
-  //       c.transformWorks = "ąęćśŻó";
-  //       this.push(JSON.stringify(c));
-  //       cb();
-  //     };
-  //     return s;
-  //   });
-  // }
+    const { getCompiler } = require("../lib/start/compiler");
+    const { getBuilder } = require("../lib/start/builder");
 
-  (async () => {
-    for await (let file of files) {
-      let compiler = null;
+    for (let file of files) {
+      let fileName = file.name;
 
-      if (
-        nexssConfig &&
-        projectPath &&
-        (nexssConfig.files || nexssConfig.sequences)
-      )
-        process.chdir(projectPath);
+      dg(`Parsing ${fileName}..`);
 
-      dg(`Parsing ${file.name}..`);
+      if (file.path && fs.existsSync(file.path)) process.chdir(file.path);
 
-      if (globalDisabled && file.disabled) {
-        dy(`file ${file.name} is disabled or Global disabled. Going next..`);
-        return;
-      }
+      process.nexssCWD = file.path;
+      process.nexssFilename = path.normalize(fileName);
 
       if (!file.name) {
         error(
-          "file needs to have `name` field in the `files` section of the _nexss.yml config file. Please see examples/packages to grasp the idea."
+          "file needs to have `name` field in the `files` section of the _nexss.yml config file. Please see examples/packages."
         );
         process.exit();
       }
 
-      let fileArgs = file.name.split(" ");
-      let fileName = fileArgs.shift();
-
       let stream = "transformNexss";
+
       const parsed = url.parse(fileName);
-
-      switch (parsed.protocol) {
-        case "http:":
-        case "https:":
-          stream = "transformRequest";
-          nexssResult.push(() => request(fileName));
-          break;
-        default:
-          if (parsed.protocol) {
-            if (!path.isAbsolute(fileName)) {
-              fileName = fileName.substring(parsed.protocol.length + 2);
-              if (parsed.protocol === "file:") {
-                stream = "transformFile";
-              }
-            }
-          }
-
-          if (await Exists(`${fileName}`)) {
-            const oldFileName = fileName;
-            fileName = `${fileName}`;
-            // Below there is the same code - to modify later.
-            if (fs.existsSync(fileName)) {
-              if (!fs.lstatSync(fileName).isDirectory()) {
-                fileName = oldFileName;
-              } else {
-                process.chdir(fileName);
-              }
-            }
-          } else {
-            if (!(await Exists(`${fileName}`))) {
-              fileName = `src/${fileName}`;
-
-              if (await Exists(`${fileName}`)) {
-                const oldFileName = fileName;
-                fileName = `${fileName}`;
-
-                if (fs.existsSync(fileName)) {
-                  if (!fs.lstatSync(fileName).isDirectory()) {
-                    fileName = oldFileName;
-                  } else {
-                    process.chdir(fileName);
-                  }
-                }
-              } else {
-                if (cliArgs.verbose)
-                  error(
-                    `File ${fileName} has not been found. Trying Packages folder`
-                  );
-
-                if (fileName.substring(0, 3) === "src") {
-                  fileName = fileName.substring(4);
-                }
-
-                fileName = `${NEXSS_PACKAGES_PATH}/${fileName}`;
-
-                if (!(await Exists(fileName))) {
-                  error(
-                    `Nexss: ${path.normalize(fileName)} has not been found.`
-                  );
-                  info(
-                    "Possible solution: remove file entry from files section in the nexss.yml file. Files part in the _nexss.yml:"
-                  );
-                  if (nexssConfig.files) {
-                    console.log(nexssConfig.files);
-                  } else {
-                    console.log("no files section has been found");
-                  }
-                  return 0;
-                } else {
-                  if (fs.lstatSync(fileName).isDirectory()) {
-                    process.chdir(fileName);
-                  } else {
-                    process.chdir(path.dirname(fileName));
+      if (parsed.hash) {
+        const fileArgsHash = file.args;
+        delete file.args;
+        // console.log(fileArgsHash);
+        nexssResult.push({
+          stream: "transformHash",
+          cmd: file,
+          inputData: fileArgsHash,
+        });
+      } else {
+        if (parsed.href) {
+          switch (parsed.protocol) {
+            case "http:":
+            case "https:":
+              nexssResult.push({
+                stream: "transformRequest",
+                cmd: fileName,
+                // options: spawnOptions
+              });
+              break;
+            default:
+              if (parsed.protocol) {
+                if (!path.isAbsolute(fileName)) {
+                  fileName = fileName.substring(parsed.protocol.length + 2);
+                  if (parsed.protocol === "file:") {
+                    stream = "transformFile";
                   }
                 }
               }
-            }
-          }
 
-          // Extra info for also Error Handling
-          process.nexssCWD = process.cwd();
-          process.nexssFilename = path.normalize(fileName);
+              let spawnOptions = { detached: true };
 
-          let languageDefinition = getLangByFilename(fileName);
-          ld_compiler = languageDefinition.compilers;
+              let compiler = Object.assign({}, getCompiler(file));
+              if (Object.keys(compiler).length > 0) {
+                if (compiler.args) {
+                  // console.log(compiler.args, "REPLACE", fileName);
 
-          // GLOBAL COMPILER
-          let globalLangConfig;
-          if (
-            globalConfig &&
-            globalConfig.languages &&
-            globalConfig.languages[path.extname(fileName).slice(1)]
-          ) {
-            globalLangConfig =
-              globalConfig.languages[path.extname(fileName).slice(1)];
-
-            if (ld_compiler[globalLangConfig.compilers]) {
-              compiler =
-                languageDefinition.compilers[globalLangConfig.compilers];
-              // console.log(compiler);
-              if (cliArgs.verbose) {
-                info(
-                  `Compiler has been set to ${compiler} from global config file ${globalConfigPath}`
-                );
-              }
-            }
-          }
-          let compilerArgs;
-
-          if (path.extname(fileName) && fs.existsSync(fileName)) {
-            // We check for extra attributes for the files
-            // eg: # nexss-compiler: blender --background
-            // This can be added in any language just comment and nexss-[parameter]
-            if (cliArgs.verbose) {
-              info(`Checkinf for the config in the file..`);
-            }
-            // TODO: Later fix for efficient, read only lines which are needed
-            // The one which starts with nexss-
-            const fileContent = fs
-              .readFileSync(fileName)
-              .toString()
-              .split(/\r?\n/);
-
-            for (let i = 0; i < fileContent.length; i++) {
-              const line = fileContent[i];
-              if (!line.includes("nexss-") || !line.includes(":")) break;
-              const splitter = line.split("nexss-")[1].split(":");
-              file[splitter[0]] = splitter[1].trim();
-            }
-
-            // console.log(file);
-
-            // process.exit(1);
-          }
-
-          // console.error(cliArgs.nxsCompiler);
-          // CUSTOM COMPILER in the _nexss.yml file
-          if (file.compiler || cliArgs.nxsCompiler) {
-            if (!cliArgs.nxsCompiler) {
-              fileCompilerSplit = file.compiler.split(" ");
-            } else {
-              fileCompilerSplit = cliArgs.nxsCompiler.split(" ");
-              delete cliArgs.nxsCompiler;
-            }
-
-            if (ld_compiler[fileCompilerSplit[0]]) {
-              compiler = ld_compiler[fileCompilerSplit[0]];
-
-              fileCompilerSplit.shift();
-              compilerArgs = fileCompilerSplit.concat(compilerArgs).join(" ");
-            }
-          } else {
-            if (!compiler) {
-              if (languageDefinition) {
-                compiler =
-                  languageDefinition.compilers[
-                    Object.keys(languageDefinition.compilers)[0]
-                  ];
-              } else {
-                compiler = {};
-                compiler.command = "nexss";
-
-                compilerArgs = `${fileName} ${fileArgs.join(" ")}`;
-              }
-            }
-          }
-
-          let builder;
-
-          if (languageDefinition) {
-            builder =
-              languageDefinition.builders[
-                Object.keys(languageDefinition.builders)[0]
-              ];
-          }
-
-          // dg(`COMPILER IN`, compiler);
-          let spawnOptions = { detached: true };
-          let compilerAdded = false;
-
-          if (!builder || (compiler && compiler.args && !cliArgs.build)) {
-            // We make sure compiler is installed
-            compilerAdded = true;
-            if (compiler.command) {
-              let compilerInstallOptions = {};
-
-              if (compiler.shell) {
-                compilerInstallOptions = { shell: "Powershell" };
-              }
-
-              ensureInstalled(
-                compiler.command,
-                compiler.install,
-                compilerInstallOptions
-              );
-
-              if (compiler.command === "bash" && process.platform === "win32") {
-                // on Windows it's using the WSL (Windows Subsystem Linux)
-                // So we convert the path to from c:\abc to /mnt/c/abc.....
-                fileName = fileName
-                  .replace(/c\:/, "/mnt/c")
-                  .replace(/\\/g, "/");
-              }
-              if (compiler.command == "elixir") {
-                spawnOptions.shell = true;
-              }
-            }
-
-            if (compiler.args) {
-              // if (compilerArgs) {
-              //   console.log(compilerArgs, compiler.args);
-              // }
-              if (!compilerArgs) {
-                compilerArgs = "";
-              }
-              compilerArgs += compiler.args
-                .replace(/<file>/g, fileName)
-                .replace(
-                  /<fileNoExt>/g,
-                  fileName
-                    .split(".")
-                    .slice(0, -1)
-                    .join(".")
-                );
-            }
-            args = compilerArgs.split(" ");
-
-            let fileArgsObj = require("minimist")(fileArgs);
-
-            if (fileArgsObj._ && fileArgsObj._.length === 0) {
-              delete fileArgsObj._;
-            }
-
-            if (startData._ && startData._.length === 0) {
-              delete startData._;
-            }
-
-            Object.assign(fileArgsObj, startData);
-
-            const cmd = compiler.command ? compiler.command : args.shift();
-
-            // console.log(compilerArgs);
-            // process.exit(1);
-
-            if (compiler.stream) {
-              stream = compiler.stream;
-            }
-
-            // cleanups nxs Vars
-
-            delete fileArgsObj.nxsCompiler;
-
-            nexssResult.push({
-              stream,
-              cmd: path.normalize(cmd),
-              args,
-              options: spawnOptions,
-              fileName: path.normalize(fileName),
-              fileArgs: fileArgsObj,
-              cwd: PROCESS_CWD
-            });
-          }
-
-          // BUILDING builder.build &&
-          if (builder && (!compilerAdded || cliArgs.build)) {
-            // We create folder for builds..
-            if (!fs.existsSync(`_nexss`)) {
-              try {
-                fs.mkdirSync(`_nexss`, { recursive: true });
-              } catch (err) {
-                if (err.code !== "EEXIST") throw err;
-              }
-            }
-            // We add exe to the file name as build file.
-            let exeFile = path.resolve(`_nexss/${path.basename(fileName)}.exe`);
-
-            let cmd;
-            if (await is("Function", builder.build)) {
-              cmd = builder.build();
-            } else {
-              cmd = builder.build;
-            }
-
-            if (!cmd) cmd = builder.cmd;
-            ensureInstalled(cmd, builder.install);
-
-            const builderArgs = builder.args
-              .replace(/<file>/g, path.resolve(fileName))
-              //.replace(/<destinationPath>/g, dirname(exeFile))
-              .replace(/<destinationFile>/g, exeFile)
-              .replace(/<destinationDirectory>/g, path.dirname(exeFile))
-              .split(" ");
-
-            nexssBuild.push({
-              stream: "transformNexss",
-              cmd,
-              args: builderArgs,
-              options: spawnOptions,
-              fileName
-            });
-
-            nexssBuild.push({
-              stream: "transformError",
-              cmd: "BUILD RESULTS:",
-              options: spawnOptions,
-              fileName
-            });
-            if (cliArgs.verbose) {
-              dbg(
-                `Build Command ${cmd} ${
-                  builderArgs ? builderArgs.join(" ") : ""
-                }`
-              );
-            }
-
-            nexssResult.push({
-              stream: "transformNexss",
-              cmd: exeFile,
-              args: fileArgs.args
-                ? fileArgs.args
+                  compiler.args = compiler.args
                     .replace(/<file>/g, fileName)
-                    //.replace(/<destinationPath>/g, dirname(exeFile))
-                    .replace(/<destinationFile>/g, exeFile)
-                    .replace(/<destinationDirectory>/g, path.dirname(exeFile))
-                    .split(" ")
-                : [],
-              fileName
-            });
+                    .replace(
+                      /<fileNoExt>/g,
+                      fileName.split(".").slice(0, -1).join(".")
+                    );
+
+                  compiler.args = compiler.args.split(" ");
+                }
+
+                let builder;
+
+                if (!builder || (compiler && compiler.args && !cliArgs.build)) {
+                  // We make sure compiler is installed
+                  compilerAdded = true;
+                  if (compiler.command) {
+                    // Installation of the compiler
+                    let compilerInstallOptions = {};
+
+                    if (compiler.shell) {
+                      compilerInstallOptions = { shell: "Powershell" };
+                    }
+
+                    ensureInstalled(
+                      compiler.command,
+                      compiler.install,
+                      compilerInstallOptions
+                    );
+
+                    if (
+                      compiler.command === "bash" &&
+                      process.platform === "win32"
+                    ) {
+                      // on Windows it's using the WSL (Windows Subsystem Linux)
+                      // So we convert the path to from c:\abc to /mnt/c/abc.....
+                      try {
+                        compiler.args = compiler.args
+                          .replace(/c\:/, "/mnt/c")
+                          .replace(/\\/g, "/");
+                      } catch (error) {
+                        console.error("args on the compiler: ", compiler.args);
+                      }
+                    }
+                    if (compiler.command == "elixir") {
+                      spawnOptions.shell = true;
+                    }
+                  }
+
+                  let fileArgs;
+                  if (file.args) {
+                    fileArgs = file.args;
+                  }
+
+                  let cmd =
+                    compiler.command ||
+                    (compiler.args && compiler.args.shift());
+
+                  // VALIDATION
+                  if (file.input) {
+                    nexssResult.push({
+                      stream: "transformValidation",
+                      cmd: `input`,
+                      input: file.input,
+                    });
+                  }
+
+                  if (compiler && compiler.stream) {
+                    stream = compiler.stream;
+                  }
+                  nexssResult.push({
+                    stream,
+                    // eg. cmd = php
+                    cmd,
+                    // args = ["my.php", "args from config", "static args"]
+                    args: compiler.args,
+                    data: file.data,
+                    options: spawnOptions,
+                    fileName: path.normalize(fileName),
+                    inputData: fileArgs,
+                    cwd: file.path,
+                    env: file.env ? file.env : null,
+                  });
+                }
+              } else {
+                const builder = getBuilder(file);
+
+                let exeFile = path.resolve(
+                  `_nexss/${path.basename(fileName)}.exe`
+                );
+                const builderArgs = builder.args
+                  .replace(/<file>/g, path.resolve(fileName))
+                  //.replace(/<destinationPath>/g, dirname(exeFile))
+                  .replace(/<destinationFile>/g, exeFile)
+                  .replace(/<destinationDirectory>/g, path.dirname(exeFile))
+                  .split(" ");
+
+                nexssResult.push({
+                  stream: "transformNexss",
+                  cmd,
+                  args: builderArgs,
+                  options: spawnOptions,
+                  fileName,
+                });
+
+                nexssBuild.push({
+                  stream: "transformError",
+                  cmd: "BUILD RESULTS:",
+                  options: spawnOptions,
+                  fileName,
+                });
+
+                if (cliArgs.verbose) {
+                  dbg(
+                    `Build Command ${cmd} ${
+                      builderArgs ? builderArgs.join(" ") : ""
+                    }`
+                  );
+                }
+              }
+
+            // Below is for extra transfers from data for each output of the module
           }
+        }
       }
 
-      // We check if there are errors.
-      // nexssResult.push({
-      //   stream: "transformError",
-      //   cmd: `Error Recognition for ${fileName}`,
-      //   fileName
-      //   // options: spawnOptions
-      // });
+      nexssResult.push({
+        stream: "transformOutput",
+        cmd: "out",
+        // options: spawnOptions
+      });
 
-      if (nexssInput) {
+      // VALIDATION - OUTPUT
+      if (file.output) {
         nexssResult.push({
-          stream: "transformOutput",
-          cmd: "out"
-          // options: spawnOptions
+          stream: "transformValidation",
+          cmd: `output`,
+          options: { xxx: file.output },
         });
       }
     }
-    // if (process.nexssConfigContent) {
-    //   nexssResult.push({
-    //     stream: "transformValidation",
-    //     cmd: `output`
-    //   });
-    // }
-    if (nexssInput && cliArgs.test) {
-      nexssResult.push({
-        stream: "transformTest",
-        cmd: `Test`
-      });
-    }
+
+    // TEST
+    nexssResult.push({
+      stream: "transformTest",
+      cmd: `Test`,
+    });
 
     nexssResult.push({
       stream: "writeableStdout",
-      cmd: "out"
+      cmd: "out",
       // options: spawnOptions
     });
 
-    // This needs to be changed so only build if is necessary
-    if (nexssBuild.length > 1) {
-      // console.log(nexssBuild);
-      // process.exit(1);
-      dy(`Building..`);
-      await run(nexssBuild, {
-        quiet: !cliArgs.verbose,
-        build: true
-      }).catch(e => console.error(e));
-    }
+    cache.writeJSON(cacheFileName, nexssResult);
+  } else {
+    nexssResult = cache.readJSON(cacheFileName);
+  }
 
-    dg(`Executing..`);
-    // console.log(nexssResult);
-    // process.exit(1);
-    await run(nexssResult, { quiet: !cliArgs.verbose }).catch(e =>
-      console.error(e)
-    );
-  })().catch(xxx => {
-    console.error(xxx);
-  });
+  const { run } = require("../lib/pipe");
+  // This needs to be changed so only build if is necessary
+  // if (nexssBuild.length > 0) {
+  //   dy(`Building..`);
+  //   run(nexssBuild, {
+  //     quiet: !cliArgs.verbose,
+  //     build: true
+  //   }).catch(e => console.error(e));
+  // }
+  const json = require("../../lib/data/json");
+
+  // console.log(nexssBuild);
+
+  nexssResult = json.parse(json.stringify(nexssResult));
+  // const util = require("util");
+  // console.log("r", util.inspect(nexssResult, false, null, true));
+  // process.exit(1);
+  // console.log(nexssResult);
+  dg(`Executing..`);
+  run(nexssResult, { quiet: !cliArgs.verbose }).catch((e) => console.error(e));
 }

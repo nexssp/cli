@@ -12,30 +12,27 @@ const { NEXSS_SRC_PATH, NEXSS_PACKAGES_PATH } = require("./config/config");
 const { error, info, ok, warn } = require("./lib/log");
 const { existsSync } = require("fs");
 const { isURL } = require("./lib/data/url");
+
 const cliArgs = require("minimist")(process.argv.slice(2));
-const { NEXSS_SPECIAL_CHAR } = require("./config/defaults");
-process.nexssGlobalCWD = process.cwd();
+
 if (cliArgs.version) {
   console.log(require("./package.json").version);
   process.exit(0);
 }
 
 let plugin = cliArgs._[0];
+
 const aliases = require("./aliases.json");
 
 if (aliases[plugin]) {
   plugin = aliases[plugin];
 }
 
-if (!plugin) plugin = NEXSS_SPECIAL_CHAR;
-
-// Loads help with Nexss Logo
-if (!plugin.startsWith(NEXSS_SPECIAL_CHAR) && (!plugin || plugin === "help")) {
+if (!plugin || plugin === "help") {
   require(`./nexss-help/help.js`);
   return;
 }
 
-// During development you can create package name as plugin which is not allowed.
 if (
   existsSync(`${NEXSS_SRC_PATH}/nexss-${plugin}/`) &&
   existsSync(`${NEXSS_PACKAGES_PATH}/${plugin}`)
@@ -56,11 +53,7 @@ if (
 // We check if this is direct folder passed.
 // console.log(`${NEXSS_PACKAGES_PATH}/${plugin}`);
 let fileOrFolderExists;
-if (
-  plugin.startsWith(NEXSS_SPECIAL_CHAR) ||
-  existsSync(plugin) ||
-  isURL(plugin)
-) {
+if (existsSync(plugin) || isURL(plugin)) {
   fileOrFolderExists = plugin;
   process.argv[2] = plugin;
   process.argv[1] = "start";
@@ -144,7 +137,7 @@ if (
 
               console.log(bold(`List of ${whatToSet}:`));
               let firstCompiler;
-              Object.keys(languageSelected[whatToSet]).forEach((w) => {
+              Object.keys(languageSelected[whatToSet]).forEach(w => {
                 if (!firstCompiler) {
                   firstCompiler = w;
                 }
@@ -185,7 +178,7 @@ if (
             );
             if (Object.keys(languageSelected[whatToSet]).length) {
               console.log(bold(`List of ${whatToSet}:`));
-              Object.keys(languageSelected[whatToSet]).forEach((w) => {
+              Object.keys(languageSelected[whatToSet]).forEach(w => {
                 console.log(bold(w), languageSelected[whatToSet][w]);
               });
             } else {
@@ -227,7 +220,7 @@ if (
                 stdio: "inherit",
                 detached: false,
                 shell: true,
-                cwd: process.cwd(),
+                cwd: process.cwd()
               });
             } catch (error) {
               console.log(
@@ -261,7 +254,7 @@ if (
             url: languageSelected.url,
             description: languageSelected.description,
             extensions: languageSelected.extensions,
-            configFile: languageSelected.configFile,
+            configFile: languageSelected.configFile
           };
           if (process.argv.includes("--json")) {
             console.info(JSON.stringify(info));
@@ -302,7 +295,7 @@ if (
             Object.keys(pm)
               .concat(["info", "config"])
               .filter(
-                (e) =>
+                e =>
                   !["keyOfItem", "else", "messageAfterInstallation"].includes(e)
               )
           );
@@ -322,7 +315,7 @@ if (
                 stdio: "inherit",
                 detached: false,
                 shell: true,
-                cwd: process.cwd(),
+                cwd: process.cwd()
               });
             } catch (error) {
               console.log(`Command failed ${command}`);
@@ -395,7 +388,7 @@ if (fileOrFolderExists && process.argv[3] === "test") {
     require("child_process").execSync(testCommand, {
       stdio: "inherit",
       detached: false,
-      shell: true,
+      shell: true
     });
   } catch (error) {
     console.log(`Command failed ${testCommand}`);
@@ -417,7 +410,7 @@ switch (command) {
           console.info(helpContent.toString());
         } else {
           const f = fs.readdirSync(`${fileOrFolderExists}/`);
-          f.forEach((e) => console.log(`${e}`));
+          f.forEach(e => console.log(`${e}`));
         }
 
         return;
@@ -467,10 +460,10 @@ switch (command) {
           // console.log(`./nexss-${plugin}/commands/*.md`);
           const fg = require("fast-glob");
           const files = fg.sync([
-            `${__dirname}/nexss-${plugin}/commands/*.md`.replace(/\\/g, "/"),
+            `${__dirname}/nexss-${plugin}/commands/*.md`.replace(/\\/g, "/")
           ]);
           const { basename } = require("path");
-          let filesList = files.map((f) => basename(f).replace(".md", ""));
+          let filesList = files.map(f => basename(f).replace(".md", ""));
           helpContent += `${bold("Commands available")} for nexss-${bold(
             plugin
           )}

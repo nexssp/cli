@@ -13,26 +13,31 @@ module.exports = {
       title: "Error",
       tests: [
         {
+          title:
+            "Check for data validation (_nexss.yml input: name: file, type: required)",
+          params: ["nexss Nexss/Test/Errors", "file is required"],
+        },
+        {
           title: "Check for OK message",
           params: [
-            "nexss Nexss/Test/Errors",
-            "Error 1/2 from file 1: Standard STDERR"
-          ]
+            "nexss Nexss/Test/Errors --file=any.jpg",
+            "Error 1/2 from file 1: Standard STDERR",
+          ],
         },
         {
           title: "Check for warning message",
-          params: [null, "Warning from file (Between erros No 1/2 and 2/2)"]
+          params: [null, "Warning from file (Between erros No 1/2 and 2/2)"],
         },
         {
           title: "Check for warning message",
-          params: [null, "Error 2/2 from file 1: Standard STDERR"]
+          params: [null, "Error 2/2 from file 1: Standard STDERR"],
         },
         {
           title: "NexssStdin should not be there",
           type: "shouldNotContain",
-          params: ["nexss Nexss/Test/Errors", "NexssStdin"]
-        }
-      ]
+          params: ["nexss Nexss/Test/Errors", "NexssStdin"],
+        },
+      ],
     },
     {
       title: "Errors Solutions",
@@ -41,25 +46,25 @@ module.exports = {
           title: "Check Capturing Group (*.?)",
           params: [
             "nexss Nexss/Test/ErrorsSolutions/src/errors1.js",
-            "Define 'testNotExistVariable2' before you use it."
-          ]
+            "Define 'testNotExistVariable2' before you use it.",
+          ],
         },
         {
           title: "Check Named Group (?<found1>.*?)",
           params: [
             `nexss Nexss/Test/ErrorsSolutions/src/errors2.js`,
-            "Possible solution 1: Define 'DefineBeforeUseVar' before you use it"
-          ]
+            "Possible solution 1: Define 'DefineBeforeUseVar' before you use it",
+          ],
         },
         {
           title: "Check String Solution",
           params: [
             `nexss Nexss/Test/ErrorsSolutions/src/errors3.js`,
-            "Possible solution 1: Did you forget semi-color ';' ?"
-          ]
-        }
-      ]
-    }
+            "Possible solution 1: Did you forget semi-color ';' ?",
+          ],
+        },
+      ],
+    },
     // {
     //   title: "nexss-command",
     //   onError: "stop", // global value
@@ -74,5 +79,5 @@ module.exports = {
     //     }
     //   ]
     // }
-  ]
+  ],
 };

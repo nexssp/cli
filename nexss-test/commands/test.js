@@ -19,7 +19,7 @@ if (nexssConfig && nexssConfig.filePath) {
   }
 }
 
-const availTests = testsPath => {
+const availTests = (testsPath) => {
   if (!testsPath) testsPath = nexssTestsFolder;
   if (!fs.existsSync(testsPath)) {
     if (nexssConfig) {
@@ -28,7 +28,7 @@ const availTests = testsPath => {
     }
   }
   tests = fs.readdirSync(testsPath);
-  tests.forEach(test => {
+  tests.forEach((test) => {
     const e = test.split(".");
     if (e.pop() !== "js") {
       return;
@@ -78,7 +78,7 @@ var tests = 1;
 var continuue = 0;
 var totalPerformedTests = 0;
 
-testNames.forEach(test => {
+testNames.forEach((test) => {
   test = `${nexssTestsFolder}/${test}`;
   if (!fs.existsSync(test)) {
     warn(`Test '${bold(testName)}' does not exist.`);
@@ -110,7 +110,7 @@ testNames.forEach(test => {
   if (!testsDef.values) {
     testsDef.values = ["Nexss"];
   }
-  testsDef.values.forEach(ext => {
+  testsDef.values.forEach((ext) => {
     global.currentExtension = ext;
 
     console.log("===========================================================");
@@ -126,7 +126,7 @@ testNames.forEach(test => {
         return;
       }
 
-      testsDef.tests.forEach(test => {
+      testsDef.tests.forEach((test) => {
         console.log(bold(green(test.title)));
 
         if (test.chdir) {
@@ -134,7 +134,7 @@ testNames.forEach(test => {
           process.chdir(test.chdir);
         }
 
-        test.tests.forEach(subtest => {
+        test.tests.forEach((subtest) => {
           if (test.notEval && !subtest.notEval) {
             subtest.notEval = test.notEval;
           }
@@ -160,7 +160,7 @@ testNames.forEach(test => {
 
           console.log(`===========================================`);
           eval(subtest.type || "shouldContain")(
-            ...subtest.params.map(p => {
+            ...subtest.params.map((p) => {
               if ((p !== null && typeof p === "object") || subtest.notEval) {
                 return p;
               } else {
