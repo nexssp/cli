@@ -71,6 +71,9 @@ if (fileOrDirectory) {
   }
 }
 
+// console.log("start 74: FINAL FILES:", files);
+// process.exit(1);
+
 const { loadConfigContent } = require("../../lib/config");
 
 let nexssConfig;

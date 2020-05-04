@@ -17,7 +17,7 @@ const loadEnv = (p) => {
 
 const parseName = (name, incl) => {
   const arr = name.split(" ");
-  let result = {};
+  let result = []; // was {} ??
   if (incl) result.name = arr[0];
   if (arr.length > 1) {
     result.args = arr.slice(1);
@@ -49,11 +49,10 @@ function getPath(fileOrFolder) {
   return resultPath;
 }
 const { isURL } = require("../../../lib/data/url");
-const getFiles = (folder, args, env, ccc) => {
-  // console.log(folder);
 
+const getFiles = (folder, args, env, ccc) => {
   //We ommit comments
-  // console.log(folder);
+  // console.log("GET FILES START: ", folder);
   if (folder.name.startsWith("//")) {
     return;
   }
@@ -74,11 +73,14 @@ const getFiles = (folder, args, env, ccc) => {
     folderAbsolute = path.resolve(folder.filename);
     // console.log("RESOLVED!!!", folderAbsolute);
   }
+
+  // console.log("folder absolute========================", folderAbsolute);
+
   // const currentFolder = path.dirname(folder.filename);
   // process.chdir(folder.path);
 
   // console.log(`CF: ${process.cwd()}, folder abs: ${folderAbsolute}`);
-
+  // .nexss language
   if (
     !folder.name.startsWith(NEXSS_SPECIAL_CHAR) &&
     !fs.existsSync(folderAbsolute)
@@ -138,6 +140,9 @@ const getFiles = (folder, args, env, ccc) => {
     config.files.map((file) => {
       const fileCWD = process.cwd();
       const ppp = getPath(getName(file.name));
+
+      // console.log("---------------------------------------------", ppp);
+
       if (!ppp) {
         if (!file.name) {
           console.error(`'name' parameter not found in`, file);
@@ -148,80 +153,89 @@ const getFiles = (folder, args, env, ccc) => {
         process.exit();
       }
 
-      if (fs.lstatSync(ppp).isDirectory()) {
-        process.chdir(ppp);
-        let xxxx = getFiles(file, null, env, config);
-        process.chdir(fileCWD);
+      // if (!fs.lstatSync(ppp).isDirectory()) {
+      //   //console.log("DIIIIIIIIIIIIIIIRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
+      //   process.chdir(ppp);
+      //   // console.log(
+      //   //   "----------------------------------------------file:",
+      //   //   file,
+      //   //   "----ppp:",
+      //   //   ppp,
+      //   //   "----config:",
+      //   //   config
+      //   // );
+      //   let xxxx = getFiles(file, null, env, config);
+      //   process.chdir(fileCWD);
 
-        return xxxx;
-      } else {
-        // We add input from the module at start of queue of this module
-        if (counter-- === config.files.length) {
-          if (config.input) {
-            file.input = config.input;
-          }
+      //   return xxxx;
+      // } else {
+      // We add input from the module at start of queue of this module
+      if (counter-- === config.files.length) {
+        if (config.input) {
+          file.input = config.input;
         }
-
-        // We add output from the module at end of queue of this module
-        if (counter === 0) {
-          if (config.output) {
-            file.output = config.output;
-          }
-        }
-
-        file.path = process.cwd();
-        // console.log(file.path, config.filePath);
-        // Custom data from the module
-        // if (!file.data) file.data = {};
-        if (ccc && ccc.data && file.data) {
-          // console.log("file.data, ccc.data", file.data, ccc.data);
-          Object.assign(file.data, ccc.data);
-        }
-
-        if (config.data) {
-          if (Array.isArray(config.data)) {
-            console.error(
-              `config.data is an Array. Do not use array for 'data' section in config file.`
-            );
-            const errorConfig = JSON.stringify(config, null, 2);
-            console.error(errorConfig.replace(/\"data\"\:/, bold('"data:"')));
-            console.error(
-              bold(
-                `Example of the correct config file here: https://github.com/nexssp/cli/wiki/Config`
-              )
-            );
-            process.exit(0);
-          }
-          // console.log("file.data, config.data", file.data, config.data);
-
-          file.data = Object.assign(file.data || {}, config.data);
-        }
-        if (ccc && ccc.debug) file.debug = ccc.debug;
-
-        const arr = parseName(file.name);
-
-        if (counter == 0) {
-          // params from package only of first submodule,file as they are passed.
-          file = Object.assign(file, { args });
-        }
-
-        if (Object.keys(arr).length > 0) {
-          file.name = file.name.split(" ")[0];
-          if (file.args) {
-            file.args = file.args.concat(arr.args);
-          } else {
-            file.args = arr.args;
-          }
-          var unique = new Set(file.args);
-          file.args = [...unique];
-        }
-
-        if (env) {
-          file.env = env;
-        }
-
-        return file;
       }
+
+      // We add output from the module at end of queue of this module
+      if (counter === 0) {
+        if (config.output) {
+          file.output = config.output;
+        }
+      }
+
+      file.path = process.cwd();
+      // console.log(file.path, config.filePath);
+      // Custom data from the module
+      // if (!file.data) file.data = {};
+      if (ccc && ccc.data && file.data) {
+        // console.log("file.data, ccc.data", file.data, ccc.data);
+        Object.assign(file.data, ccc.data);
+      }
+
+      if (config.data) {
+        if (Array.isArray(config.data)) {
+          console.error(
+            `config.data is an Array. Do not use array for 'data' section in config file.`
+          );
+          const errorConfig = JSON.stringify(config, null, 2);
+          console.error(errorConfig.replace(/\"data\"\:/, bold('"data:"')));
+          console.error(
+            bold(
+              `Example of the correct config file here: https://github.com/nexssp/cli/wiki/Config`
+            )
+          );
+          process.exit(0);
+        }
+        // console.log("file.data, config.data", file.data, config.data);
+
+        file.data = Object.assign(file.data || {}, config.data);
+      }
+      if (ccc && ccc.debug) file.debug = ccc.debug;
+
+      const arr = parseName(file.name);
+
+      if (counter == 0) {
+        // params from package only of first submodule,file as they are passed.
+        file = Object.assign(file, { args });
+      }
+
+      if (Object.keys(arr).length > 0) {
+        file.name = file.name.split(" ")[0];
+        if (file.args) {
+          file.args = file.args.concat(arr.args);
+        } else {
+          file.args = arr.args;
+        }
+        var unique = new Set(file.args);
+        file.args = [...unique];
+      }
+
+      if (env) {
+        file.env = env;
+      }
+
+      return file;
+      //}
     });
 
   process.chdir(cwd);
