@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const { ensureInstalled } = require("../../../lib/terminal");
 
-module.exports.getBuilder = file => {
+module.exports.getBuilder = (file) => {
   const fileName = file.name;
 
   const languageDefinition = getLangByFilename(fileName);
@@ -25,6 +25,9 @@ module.exports.getBuilder = file => {
 
   if (typeof builder.build === "function") {
     cmd = builder.build();
+  } else if (typeof eval(builder.build) === "function") {
+    //During cache we need to eval to get that is function.
+    cmd = eval(builder.build)();
   } else {
     cmd = builder.build;
   }

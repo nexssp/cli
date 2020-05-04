@@ -372,7 +372,8 @@ if (cliArgs.server) {
   // const util = require("util");
   // console.log("r", util.inspect(nexssResult, false, null, true));
   // process.exit(1);
-  // console.log(nexssResult);
+  // console.log(nexssBuild);
+  // process.exit(1);
   dg(`Executing..`);
   run(nexssResult, { quiet: !cliArgs.verbose }).catch((e) => console.error(e));
 }
