@@ -13,10 +13,11 @@ let values = Object.keys(languages);
 module.exports = {
   values,
   testsSelect: [1, 2],
-  startFrom: ".bat", // eg. .cs
+  startFrom: ".json", // eg. .cs
   endsWith: null, // eg .cs
   omit: [
     ".html", // No json parsing
+    ".swift",
     ".tcl",
     ".d", // dome compiler proble, default.d not found
     ".exs",
@@ -30,8 +31,10 @@ module.exports = {
     ".ex",
     ".java",
     ".scala", // unicode characters not working
-    ".json", //implement to free version
-    ".bat" //finish the json
+    // ".json", //implement to free version
+    ".bat", //finish the json,
+    ".v",
+    ".clj",
   ],
   tests: [
     {
@@ -43,20 +46,20 @@ module.exports = {
           type: "shouldContain",
           params: [
             "nexss file add Default${ext} --t=default --f",
-            /OK  File (.*) has been created/
-          ]
+            /OK  File (.*) has been created/,
+          ],
         },
         {
           title: "Test without Unicode",
           type: "shouldContain",
-          params: ["nexss Default${ext}", /"test":(.*)"test"/]
+          params: ["nexss Default${ext}", /"test":(.*)"test"/],
         },
         {
           title: "Test Unicode characters",
           type: "shouldContain",
-          params: ["nexss Default${ext} --test", /"test":(.*)"test"/]
-        }
-      ]
-    }
-  ]
+          params: ["nexss Default${ext} --test", /"test":(.*)"test"/],
+        },
+      ],
+    },
+  ],
 };

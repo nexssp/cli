@@ -9,12 +9,16 @@ const { Transform } = require("stream");
 const { createReadStream, existsSync } = require("fs");
 const { extname } = require("path");
 
-module.exports.transformFile = file => {
+module.exports.transformFile = (file, x, y) => {
   return new Transform({
     writableObjectMode: true,
     transform(chunk, encoding, callback) {
+      process.chdir(y.cwd);
       if (!existsSync(file)) {
-        callback(`File ${file} not found`);
+        // Stop as first parameter is an error.
+        callback(
+          `File ${file} not found. Current dir (transformFile.js):${process.cwd()}`
+        );
       }
       try {
         data = JSON.parse(chunk.toString());
@@ -28,12 +32,12 @@ module.exports.transformFile = file => {
 
       let streamRead = createReadStream(file);
       let wholeData = "";
-      streamRead.on("data", d => {
+      streamRead.on("data", (d) => {
         wholeData += d;
         // callback(null, data);
       });
 
-      streamRead.on("error", er => {
+      streamRead.on("error", (er) => {
         callback(er);
       });
 
@@ -58,6 +62,6 @@ module.exports.transformFile = file => {
     flush(cb) {
       cb();
       // console.log("flush!!!!!");
-    }
+    },
   });
 };

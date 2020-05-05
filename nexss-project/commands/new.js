@@ -64,7 +64,7 @@ if (nexss.template) {
           require("child_process").execSync(
             `git clone https://github.com/nexssp/template_default.git ${templatePath}`,
             {
-              stdio: "inherit"
+              stdio: "inherit",
             }
           );
           success(`Default template cloned.`);
@@ -97,7 +97,7 @@ to run please enter 'nexss start'`
   } else {
     success(
       `Project '${paramName}' is ready. 
-Go to by 'cd ${paramName}' and run 'nexss start'`
+Go to the project by command '${bold("cd " + paramName)}'`
     );
   }
 }

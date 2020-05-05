@@ -46,6 +46,14 @@ if (fileOrDirectory) {
     if (fs.existsSync(fileOrDirectory)) {
       const nexssProgram = fs.readFileSync(fileOrDirectory);
 
+      // console.log(
+      //   "nexssProgram:",
+      //   nexssProgram,
+      //   "fileOrDirectory:",
+      //   fileOrDirectory,
+      //   "cliArgs:",
+      //   cliArgs
+      // );
       files = require("../lib/nexssFileParser")(
         nexssProgram,
         fileOrDirectory,
@@ -99,6 +107,8 @@ if (!Array.isArray(files)) {
 
 files = files.filter(Boolean);
 
+// console.log(files);
+// process.exit(1);
 const cache = require("../../lib/cache");
 const cacheFileName = "myCache.json";
 let nexssResult = [];
@@ -371,6 +381,7 @@ if (cliArgs.server) {
 
   // console.log(nexssBuild);
 
+  // Recheck the Serialize (later remove??)
   nexssResult = json.parse(json.stringify(nexssResult));
   // const util = require("util");
   // console.log("r", util.inspect(nexssResult, false, null, true));
@@ -378,5 +389,19 @@ if (cliArgs.server) {
   // console.log(nexssBuild);
   // process.exit(1);
   dg(`Executing..`);
+
+  // TODO: We revert back the current dir if there are any changes (should not be)
+  // To review
+  // process.chdir(process.nexssGlobalCWD);
+
+  // We do not run, just display info
+  if (cliArgs.nxsDry) {
+    console.log(JSON.stringify(nexssResult, null, 2));
+    process.exit(0);
+  }
+
+  // console.log(nexssResult);
+  // process.exit(1);
+
   run(nexssResult, { quiet: !cliArgs.verbose }).catch((e) => console.error(e));
 }

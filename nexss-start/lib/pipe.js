@@ -17,7 +17,7 @@ const pipelineAsync = util.promisify(pipeline);
 async function run(operations, options = {}) {
   await pipelineAsync(
     // process.stdin,
-    ...operations.map(element => {
+    ...operations.map((element) => {
       let streamName = element.stream || "transformNexss";
       let args = element.args || [];
 
@@ -31,7 +31,7 @@ async function run(operations, options = {}) {
 
       const runOptions = Object.assign({}, options, {
         fileName: element.fileName,
-        cwd: element.cwd
+        cwd: element.cwd,
       });
 
       runOptions.inputData = element.inputData;
@@ -43,21 +43,28 @@ async function run(operations, options = {}) {
         }
       }
       runOptions.env = Object.assign({}, process.env, element.env);
+
+      // console.log(runOptions);
+      // process.exit(1);
+
       if (element.cmd) {
         // console.log("========================1");
+        // let ro = runOptions;
+        // delete ro.env;
+        // console.error("first", ro);
+
         return eval(streamName)(element.cmd, args, runOptions);
-        // console.error("first", strResult);
       } else {
         if (typeof element === "function") {
           return eval(element)(runOptions);
           // console.error("second", strResult);
         } else {
-          return eval(element)();
+          return eval(element)(runOptions);
         }
       }
     })
   )
-    .then(e => {
+    .then((e) => {
       // console.log(e);
       // if (!options.quiet) {
       //   spin.succeed("Completed Nexss Sequence.");
@@ -65,11 +72,12 @@ async function run(operations, options = {}) {
       //   console.timeEnd("nexss");
       // }
     })
-    .catch(err => {
+    .catch((err) => {
       // This is handled by nexss transform as all errors are parsed
       // based on language - this can be used maybe to better debug ?
       console.error("Nexss last error: ", err);
-      // process.exit();
+      console.error("Nexss last error: ", process.cwd());
+      process.exit();
     });
 
   // console.timeEnd("nexss");

@@ -114,9 +114,10 @@ const getFiles = (folder, args, env, ccc) => {
 
     return res;
   }
-
+  // console.log("folderAbsolute:", folderAbsolute);
   process.chdir(folderAbsolute);
-  const config = loadConfigContent();
+  const config = loadConfigContent(folderAbsolute + "/_nexss.yml");
+  // console.log("config:", config);
   let envLoaded = loadEnv();
   if (envLoaded) {
     env = envLoaded;
@@ -139,9 +140,13 @@ const getFiles = (folder, args, env, ccc) => {
     config.files &&
     config.files.map((file) => {
       const fileCWD = process.cwd();
-      const ppp = getPath(getName(file.name));
+      // console.log("=============================================");
+      // console.log("FFFFFIIILLLLEEEEEEEEEE->", file, "fileCWD:", fileCWD);
 
-      // console.log("---------------------------------------------", ppp);
+      const ppp = getPath(getName(file.name));
+      // console.log("=============================================");
+
+      // console.log("ppp", ppp, "file:", file);
 
       if (!ppp) {
         if (!file.name) {
@@ -233,7 +238,7 @@ const getFiles = (folder, args, env, ccc) => {
       if (env) {
         file.env = env;
       }
-
+      process.chdir(cwd);
       return file;
       //}
     });

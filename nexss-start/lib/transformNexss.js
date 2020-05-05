@@ -8,7 +8,7 @@ const {
   error,
   ok,
   info,
-  trace
+  trace,
 } = require("../../lib/log");
 const { colorizer } = require("./colorizer");
 const { bold } = require("../../lib/color");
@@ -32,9 +32,11 @@ module.exports.transformNexss = (
     fileName = undefined,
     inputData,
     cwd,
-    env
+    env,
   } = defaultExecuteOptions
 ) => {
+  // console.error("TRANSFORM NEXSSS!!!!!", fileName);
+
   return new Transform({
     transform(chunk, encoding, callback) {
       // console.log("INPUT DATA!!!", inputData);
@@ -55,12 +57,12 @@ module.exports.transformNexss = (
       options.stdio = ["pipe", "pipe", "pipe"];
       options.detached = false;
       options.shell = true;
-      // options.cwd = cwd;
+      options.cwd = cwd;
       options.env = "SEE: process.env";
 
       if (!quiet) {
         dy("Current working dir: ", process.cwd());
-        dy(
+        console.error(
           `Spawning ${cmd} ${args ? args.join(" ") : ""} options: `,
           JSON.stringify(options)
         );
@@ -84,11 +86,11 @@ module.exports.transformNexss = (
 
       // console.log(this.worker.cmd);
       let proc = new Proc(this.worker.pid, {
-        filePath: path.resolve(fileName)
+        filePath: path.resolve(fileName),
       });
       proc.write();
 
-      this.worker.on("error", err => {
+      this.worker.on("error", (err) => {
         // throw Error(err);
         switch (err.code) {
           case "ENOENT":
@@ -98,14 +100,14 @@ module.exports.transformNexss = (
         }
       });
 
-      this.worker.stderr.on("data", function(err) {
+      this.worker.stderr.on("data", function (err) {
         const errorString = err.toString();
 
         // console.error("ERRSTRING: " + err.toString());
 
         if (errorString.includes("NEXSS/")) {
           const exploded = errorString.split("NEXSS");
-          exploded.forEach(element => {
+          exploded.forEach((element) => {
             if (!element) return;
             if (element.substring(0, 1) === "/") {
               let nexssError = element + "";
@@ -132,24 +134,24 @@ module.exports.transformNexss = (
         }
       });
 
-      this.worker.stdout.on("data", function(data) {
+      this.worker.stdout.on("data", function (data) {
         // TODO: Check if trim is ok here
 
         if (cmd === "bash") {
-          self.push(
-            data
-              .toString()
-              .trim()
-              .replace(/\n/g, "\n\r")
-          );
+          self.push(data.toString().trim().replace(/\n/g, "\n\r"));
           return;
         }
-        self.push(data.toString("utf8")); //.trim removed (some distored output eg blender compiler)
+        const outputString = data.toString("utf8");
+        // On Powershellthere is additional extra line which cousing a lot of headache..
+        // Anyways we do not want to run empty line through
+        if (outputString !== "\n") {
+          self.push(outputString); //.trim removed (some distored output eg blender compiler)
+        }
       });
 
       // self.pipe(this.worker);
 
-      this.worker.stderr.on("end", function() {
+      this.worker.stderr.on("end", function () {
         if (this.errBuffer) {
           parseError(fileName, this.errBuffer, args.includes("--pipeerrors"));
           this.errBuffer = "";
@@ -191,7 +193,7 @@ module.exports.transformNexss = (
           let j = JSON.parse(chunk.toString());
 
           const { expressionParser } = require("./expressionParser");
-          Object.keys(j).forEach(e => {
+          Object.keys(j).forEach((e) => {
             j[e] = expressionParser(j, j[e]);
           });
 
@@ -209,6 +211,6 @@ module.exports.transformNexss = (
     flush(cb) {
       cb();
       // console.log("flush!!!!!");
-    }
+    },
   });
 };

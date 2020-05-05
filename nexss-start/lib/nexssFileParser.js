@@ -2,14 +2,11 @@ const { getFiles } = require("./start/files");
 const minimist = require("minimist");
 const nexssFileParser = (content, filename, nxsArgs) => {
   let lineNumber = 0;
-  const nexssProgram = content
-    .toString()
-    .trim()
-    .split(/\r?\n/);
+  const nexssProgram = content.toString().trim().split(/\r?\n/);
   const totalLines = nexssProgram.length;
 
   const files = nexssProgram
-    .map(line => {
+    .map((line) => {
       line = line.trim(); // if there is unnecessary space at the end of line.
       lineNumber++;
       let splitter = line.split(" ");
@@ -28,16 +25,34 @@ const nexssFileParser = (content, filename, nxsArgs) => {
         args.nxsArgs = nxsArgs;
       }
 
-      if (name)
-        return getFiles(
+      let pathFilename = require("path").dirname(filename);
+
+      // console.log("==========================================================");
+      // console.log("name:        ", name);
+      // console.log("lineNumber:        ", lineNumber);
+      // console.log("filename:        ", filename);
+      // console.log("path:        ", pathFilename);
+      // console.log("args:        ", args);
+      if (name) {
+        let f = getFiles(
           {
             name,
             lineNumber,
             filename,
-            path: require("path").dirname(filename)
+            path: pathFilename,
           },
           args
         );
+        // console.log("Result:", f);
+        // console.log(
+        //   "=========================================================="
+        // );
+        return f;
+      } else {
+        // console.log(
+        //   "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!NO RESULT."
+        // );
+      }
     })
 
     .flat();
