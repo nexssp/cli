@@ -9,8 +9,14 @@ const nexssFileParser = (content, filename, nxsArgs) => {
     .map((line) => {
       line = line.trim(); // if there is unnecessary space at the end of line.
       lineNumber++;
+      // Comments ommit
+      if (line.startsWith("//")) {
+        return;
+      }
+
       let splitter = line.split(" ");
       const name = splitter.shift();
+
       // Add parameters added to the .nexss program to the last one.
       if (totalLines === lineNumber && nxsArgs) {
         splitter = splitter.concat(nxsArgs);
@@ -43,6 +49,23 @@ const nexssFileParser = (content, filename, nxsArgs) => {
           },
           args
         );
+
+        // When run - .nexss first is look at local folder then remote (eg. packages)
+
+        if (f.path) {
+          let toCheck = require("path").join(f.path, f.name);
+          if (!require("fs").existsSync(toCheck)) {
+            f.path = pathFilename;
+            toCheck = require("path").join(f.path, f.name);
+            if (!require("fs").existsSync(toCheck)) {
+              console.error(
+                "File does not exist in local and remote folders (where file is located).",
+                toCheck
+              );
+            }
+          }
+        }
+
         // console.log("Result:", f);
         // console.log(
         //   "=========================================================="
