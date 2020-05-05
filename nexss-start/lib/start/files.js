@@ -238,7 +238,7 @@ const getFiles = (folder, args, env, ccc) => {
       if (env) {
         file.env = env;
       }
-      process.chdir(cwd);
+      // ?????? process.chdir(cwd);
       return file;
       //}
     });
