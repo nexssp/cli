@@ -4,8 +4,10 @@ Welcome to      ____
 |  ``..      | |______           ``..''              .''                .''
 |      ``..  | |                 ..'`..           ..'                ..'
 |          ``| |___________  ..''      ``.. ....''             ....''
-Programmer 2.0.8 - Free, Open Source, Educational Version
+Programmer 2.0.9 - Free, Open Source, Educational Version
 ```
+**2.1** Free/Open Source Version Soon
+
 NOTE: _**Nexss Programmer DOES NOT need administrative rights**_ for your operating system so it is very safe. Try it today and save your time!
 
 From the 1st of Februrary 2020, This **Free, Educational, Open Source**, fully functional version of **The Nexss Programmer** will be **still supported if there are any bugs, questions or contributions**. Please remember to keep with your products the copyright notice and license document if you are using it for any purposes: [License of the Nexss Programmer](https://github.com/nexssp/cli/blob/master/LICENSE)
