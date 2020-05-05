@@ -1,5 +1,6 @@
 const { getFiles } = require("./start/files");
 const minimist = require("minimist");
+const { NEXSS_SPECIAL_CHAR } = require("../../config/defaults");
 const nexssFileParser = (content, filename, nxsArgs) => {
   let lineNumber = 0;
   const nexssProgram = content.toString().trim().split(/\r?\n/);
@@ -52,7 +53,11 @@ const nexssFileParser = (content, filename, nxsArgs) => {
 
         // When run - .nexss first is look at local folder then remote (eg. packages)
 
-        if (f.path) {
+        if (
+          f.name &&
+          f.name !== NEXSS_SPECIAL_CHAR &&
+          !f.name.startsWith("http")
+        ) {
           let toCheck = require("path").join(f.path, f.name);
           if (!require("fs").existsSync(toCheck)) {
             f.path = pathFilename;
