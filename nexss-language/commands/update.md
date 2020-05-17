@@ -1,6 +1,6 @@
 # update
 
-Updates installed languages to the latest version.
+Updates the installed languages to the latest version.
 
 ## Examples
 

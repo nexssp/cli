@@ -13,7 +13,7 @@ let values = Object.keys(languages);
 module.exports = {
   values,
   testsSelect: [1, 2],
-  startFrom: ".json", // eg. .cs
+  startFrom: null, // eg. .cs
   endsWith: null, // eg .cs
   omit: [
     ".html", // No json parsing

@@ -1,6 +1,6 @@
 # List
 
-Creates folder with logos and json file with all the languages.
+Creates a folder with logos and json file with all the languages.
 
 ## Check what is in config
 

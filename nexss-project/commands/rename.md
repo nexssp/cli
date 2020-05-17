@@ -1,6 +1,6 @@
 # Rename
 
-Rename the project (field name in the \_nexss.yml file)
+Rename a project (field name in the `_nexss.yml` file)
 
 ## Examples
 

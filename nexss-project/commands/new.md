@@ -1,6 +1,6 @@
 # New
 
-Adds new project
+Adds a new project
 
 ## Examples
 

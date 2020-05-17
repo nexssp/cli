@@ -1,6 +1,6 @@
 # Command
 
-Execute command eg. nexss cmd listFiles
+Execute a command eg. `nexss cmd findUpdatedFiles`.
 
 ## Examples
 

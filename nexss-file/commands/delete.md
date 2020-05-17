@@ -1,6 +1,6 @@
 # Delete
 
-Deletes files from nexss project.
+Deletes files from the nexss programmer project.
 
 ## More info
 

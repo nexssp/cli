@@ -12,11 +12,12 @@ module.exports = {
     {
       title: "Error",
       tests: [
-        {
-          title:
-            "Check for data validation (_nexss.yml input: name: file, type: required)",
-          params: ["nexss Nexss/Test/Errors", "file is required"],
-        },
+        // Validation - todo / Worked..
+        // {
+        //   title:
+        //     "Check for data validation (_nexss.yml input: name: file, type: required)",
+        //   params: ["nexss Nexss/Test/Errors", "file is required"],
+        // },
         {
           title: "Check for OK message",
           params: [

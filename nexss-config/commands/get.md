@@ -1,6 +1,6 @@
 # Config Get
 
-Prints config settings from \_nexss.yml
+Prints config settings from the `_nexss.yml`.
 
 ## Examples
 

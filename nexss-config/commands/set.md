@@ -1,6 +1,6 @@
 # Config Get
 
-Sets config data in the config file \_nexss.yml
+Sets a config data in the config file `_nexss.yml`.
 
 ## Examples
 

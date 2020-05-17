@@ -1,6 +1,6 @@
 # List
 
-List available commands
+List of the available commands.
 
 ## Examples
 

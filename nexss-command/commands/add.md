@@ -1,6 +1,6 @@
 # Add
 
-Add new command to the project
+Add a new command to the project.
 
 ## Examples
 
