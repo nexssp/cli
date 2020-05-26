@@ -41,5 +41,7 @@
   ".bat": "https://github.com/nexssp/language_batch.git",
   ".swift": "https://github.com/nexssp/language_swift.git",
   ".v": "https://github.com/nexssp/language_v.git",
-  ".clj": "https://github.com/nexssp/language_clojure.git"
+  ".clj": "https://github.com/nexssp/language_clojure.git",
+  ".coco": "https://github.com/nexssp/language_coconut.git",
+  ".hy": "https://github.com/nexssp/language_hy.git"
 }
