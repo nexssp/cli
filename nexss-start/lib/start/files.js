@@ -4,7 +4,7 @@ const { loadConfigContent } = require("../../../lib/config");
 const dotenv = require("dotenv");
 const { bold, red } = require("../../../lib/color");
 const { NEXSS_SPECIAL_CHAR } = require("../../../config/defaults");
-
+const { getSequence } = require("./sequence");
 const loadEnv = (p) => {
   if (!p) {
     p = `./config.env`;
@@ -134,11 +134,13 @@ const getFiles = (folder, args, env, ccc) => {
     process.exit(0);
   }
 
-  let counter = config.files ? config.files.length : 0;
+  let config_files = getSequence(folder.seq, config);
+
+  let counter = config_files ? config_files.length : 0;
 
   const resultFiles =
-    config.files &&
-    config.files.map((file) => {
+    config_files &&
+    config_files.map((file) => {
       const fileCWD = process.cwd();
       // console.log("=============================================");
       // console.log("FFFFFIIILLLLEEEEEEEEEE->", file, "fileCWD:", fileCWD);
@@ -175,7 +177,7 @@ const getFiles = (folder, args, env, ccc) => {
       //   return xxxx;
       // } else {
       // We add input from the module at start of queue of this module
-      if (counter-- === config.files.length) {
+      if (counter-- === config_files.length) {
         if (config.input) {
           file.input = config.input;
         }

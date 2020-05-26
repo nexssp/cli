@@ -75,13 +75,19 @@ if (fileOrDirectory) {
       process.exit(0);
     }
 
-    files = getFiles({ name: fileOrDirectory });
+    let firstParam = { name: fileOrDirectory };
+    if (cliArgs.seq) {
+      firstParam.seq = cliArgs.seq;
+    }
+    files = getFiles(firstParam);
   }
 }
 
 // console.log("start 74: FINAL FILES:", files);
 // process.exit(1);
 
+// console.log(files);
+// process.exit(1);
 const { loadConfigContent } = require("../../lib/config");
 
 let nexssConfig;
