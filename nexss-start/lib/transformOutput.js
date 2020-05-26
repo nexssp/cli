@@ -32,7 +32,9 @@ module.exports.transformOutput = () =>
         if (process.argv.indexOf("--pipeerrors") >= 0) {
           console.log(data);
         } else {
-          callback(null, data);
+          // callback has been disabled for the wrong JSON (??)
+          // callback(null, data);
+          console.log(data);
         }
 
         return;
@@ -43,7 +45,7 @@ module.exports.transformOutput = () =>
 
       // VERSION 1 LESS EFFICIENT(VERSION2 to fix)
 
-      Object.keys(data).forEach(e => {
+      Object.keys(data).forEach((e) => {
         data[e] = expressionParser(data, data[e]);
       });
 
@@ -121,5 +123,5 @@ module.exports.transformOutput = () =>
       //   callback(null, data);
       // }
       // if (chunk) callback(null, chunk);
-    }
+    },
   });
