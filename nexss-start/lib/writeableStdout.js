@@ -11,19 +11,18 @@ module.exports.writeableStdout = () =>
 
       try {
         chunk = JSON.parse(chunk);
+        delete chunk["nexssScript"];
+        if (!chunk.nxsPretty) {
+          console.log(JSON.stringify(chunk));
+        } else {
+          delete chunk["nxsPretty"];
+          console.log(JSON.stringify(chunk, null, 2));
+        }
+
+        timeElapsed(chunk.nxsTime);
       } catch (error) {
-        // process.stderr.write("ERRRROOOORRRR: " + chunk);
+        process.stdout.write(chunk);
       }
-
-      delete chunk["nexssScript"];
-      if (!chunk.nxsPretty) {
-        console.log(JSON.stringify(chunk));
-      } else {
-        delete chunk["nxsPretty"];
-        console.log(JSON.stringify(chunk, null, 2));
-      }
-
-      timeElapsed(chunk.nxsTime);
 
       // Below must be here as for example Blender will not display
       // Progress of rendering, some stdout will be cut etc.

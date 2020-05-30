@@ -33,8 +33,8 @@ module.exports.transformOutput = () =>
           console.log(data);
         } else {
           // callback has been disabled for the wrong JSON (??)
-          // callback(null, data);
-          console.log(data);
+          callback(null, data);
+          // console.log(data);
         }
 
         return;
@@ -44,7 +44,6 @@ module.exports.transformOutput = () =>
       // You can use variables now!!!
 
       // VERSION 1 LESS EFFICIENT(VERSION2 to fix)
-
       Object.keys(data).forEach((e) => {
         data[e] = expressionParser(data, data[e]);
       });
