@@ -52,7 +52,7 @@ const { isURL } = require("../../../lib/data/url");
 
 const getFiles = (folder, args, env, ccc) => {
   //We ommit comments
-  // console.log("GET FILES START: ", folder);
+  console.log("GET FILES START: ", folder);
   if (folder.name.startsWith("//")) {
     return;
   }
@@ -120,7 +120,7 @@ const getFiles = (folder, args, env, ccc) => {
   // console.log("folderAbsolute:", folderAbsolute);
   process.chdir(folderAbsolute);
   const config = loadConfigContent(folderAbsolute + "/_nexss.yml");
-  // console.log("config:", config);
+
   let envLoaded = loadEnv();
   if (envLoaded) {
     env = envLoaded;
@@ -167,6 +167,7 @@ const getFiles = (folder, args, env, ccc) => {
         //   //console.log("DIIIIIIIIIIIIIIIRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
         process.chdir(ppp);
         const subConfig = loadConfigContent(ppp + "/_nexss.yml");
+
         // console.log("config:", config);
         let envLoaded = loadEnv();
         if (envLoaded) {
@@ -202,7 +203,14 @@ const getFiles = (folder, args, env, ccc) => {
       }
 
       file.path = process.cwd();
-      // console.log(file.path, config.filePath);
+      // console.log(
+      //   "ccc:",
+      //   ccc,
+      //   "filePATH",
+      //   file.path,
+      //   "configPATH: ",
+      //   config.filePath
+      // );
       // Custom data from the module
       // if (!file.data) file.data = {};
       if (ccc && ccc.data && file.data) {
