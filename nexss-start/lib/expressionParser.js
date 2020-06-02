@@ -1,11 +1,11 @@
 const parserSyntax = require("./parserSyntax");
 const { error } = require("../../lib/log");
 
-const expressionParser2 = data => {
+const expressionParser2 = (data) => {
   if (!data) return data;
   let jsON = JSON.stringify(data);
 
-  parserSyntax.forEach(ps => {
+  parserSyntax.forEach((ps) => {
     jsON = jsON.replace(ps.match, ps.replace);
   });
 
@@ -19,7 +19,7 @@ const expressionParser2 = data => {
     if (er.message.includes("is not defined")) {
       const undefinedVar = er.message.split(" ")[0];
 
-      Object.keys(data).forEach(k => {
+      Object.keys(data).forEach((k) => {
         if (undefinedVar.similarity(k) > 50) {
           maybe.push(k);
         }
@@ -33,7 +33,7 @@ const expressionParser2 = data => {
   }
 
   if (errors.size > 0) {
-    errors.forEach(se => {
+    errors.forEach((se) => {
       error(se);
     });
     process.exit(0);
@@ -54,7 +54,7 @@ const expressionParser = (data, exp) => {
   //   );
   // }
   if (Array.isArray(exp)) {
-    return exp.map(subexpr => expressionParser(data, subexpr));
+    return exp.map((subexpr) => expressionParser(data, subexpr));
   }
 
   let errors = new Set();
@@ -66,7 +66,7 @@ const expressionParser = (data, exp) => {
       if (er.message.includes("is not defined")) {
         const undefinedVar = er.message.split(" ")[0];
 
-        Object.keys(data).forEach(k => {
+        Object.keys(data).forEach((k) => {
           if (undefinedVar.similarity(k) > 50) {
             maybe.push(k);
           }
@@ -83,7 +83,7 @@ const expressionParser = (data, exp) => {
   }
 
   if (errors.size > 0) {
-    errors.forEach(se => {
+    errors.forEach((se) => {
       error(se);
     });
     process.exit(0);

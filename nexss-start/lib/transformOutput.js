@@ -33,6 +33,10 @@ module.exports.transformOutput = () =>
           console.log(data);
         } else {
           // callback has been disabled for the wrong JSON (??)
+          // if (!data) {
+          //   console.error("NO DATA");
+          // }
+
           callback(null, data);
           // console.log(data);
         }

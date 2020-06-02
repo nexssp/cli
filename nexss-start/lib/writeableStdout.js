@@ -21,7 +21,11 @@ module.exports.writeableStdout = () =>
 
         timeElapsed(chunk.nxsTime);
       } catch (error) {
-        process.stdout.write(chunk);
+        if (process.argv.indexOf("--nxsModule") >= 0) {
+          console.log(JSON.stringify({ nxsOut: chunk }));
+        } else {
+          process.stdout.write(chunk);
+        }
       }
 
       // Below must be here as for example Blender will not display

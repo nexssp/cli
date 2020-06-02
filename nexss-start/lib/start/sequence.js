@@ -4,7 +4,10 @@ const { error } = require("../../../lib/log");
 const { bold } = require("../../../lib/color");
 const getSequence = (seqName, nexssConfig) => {
   if (!seqName) {
-    return nexssConfig.files || nexssConfig.sequences["default"];
+    return (
+      nexssConfig.files ||
+      (nexssConfig.sequences ? nexssConfig.sequences["default"] : null)
+    );
   }
 
   if (!nexssConfig) {

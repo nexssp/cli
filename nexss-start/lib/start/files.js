@@ -58,8 +58,11 @@ const getFiles = (folder, args, env, ccc) => {
   }
   const cwd = path.resolve(process.cwd());
   if (!args) {
-    args = parseName(folder.name);
+    args = parseName(folder.name).args;
   }
+
+  // console.log("folder:", folder, "ARGS!!!!!!!!!!", args);
+
   // const { isURL } = require("../../lib/url");
 
   if (isURL(folder.name)) {
@@ -160,21 +163,29 @@ const getFiles = (folder, args, env, ccc) => {
         process.exit();
       }
 
-      // if (!fs.lstatSync(ppp).isDirectory()) {
-      //   //console.log("DIIIIIIIIIIIIIIIRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
-      //   process.chdir(ppp);
-      //   // console.log(
-      //   //   "----------------------------------------------file:",
-      //   //   file,
-      //   //   "----ppp:",
-      //   //   ppp,
-      //   //   "----config:",
-      //   //   config
-      //   // );
-      //   let xxxx = getFiles(file, null, env, config);
-      //   process.chdir(fileCWD);
+      if (fs.lstatSync(ppp).isDirectory()) {
+        //   //console.log("DIIIIIIIIIIIIIIIRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
+        process.chdir(ppp);
+        const subConfig = loadConfigContent(ppp + "/_nexss.yml");
+        // console.log("config:", config);
+        let envLoaded = loadEnv();
+        if (envLoaded) {
+          env = envLoaded;
+        }
+        // console.log(
+        //   "----------------------------------------------file:",
+        //   file,
+        //   "----ppp:",
+        //   ppp,
+        //   "----config:",
+        //   config
+        // );
+        // console.log(subConfig);
+        let xxxx = getFiles(file, null, env, subConfig);
+        process.chdir(fileCWD);
 
-      //   return xxxx;
+        return xxxx;
+      }
       // } else {
       // We add input from the module at start of queue of this module
       if (counter-- === config_files.length) {
@@ -223,6 +234,7 @@ const getFiles = (folder, args, env, ccc) => {
 
       if (counter == 0) {
         // params from package only of first submodule,file as they are passed.
+
         file = Object.assign(file, { args });
       }
 
@@ -241,6 +253,7 @@ const getFiles = (folder, args, env, ccc) => {
         file.env = env;
       }
       // ?????? process.chdir(cwd);
+      // console.log(file);
       return file;
       //}
     });
