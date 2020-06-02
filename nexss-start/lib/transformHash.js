@@ -29,7 +29,12 @@ module.exports.transformHash = (cmd, inputData, options) =>
         }
       }
       let newData = JSON.parse(chunk.toString());
+
       newData = Object.assign(newData, options.inputData);
+      const { expressionParser } = require("./expressionParser");
+      Object.keys(newData).forEach((e) => {
+        newData[e] = expressionParser(newData, newData[e]);
+      });
       callback(null, Buffer.from(JSON.stringify(newData)));
 
       //console.log(n);
@@ -42,7 +47,7 @@ module.exports.transformHash = (cmd, inputData, options) =>
       // callback(null, chunk);
 
       // callback(null, JSON.stringify(data));
-    }
+    },
 
     // if (chunk) callback(null, chunk);
   });
