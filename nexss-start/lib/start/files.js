@@ -52,7 +52,7 @@ const { isURL } = require("../../../lib/data/url");
 
 const getFiles = (folder, args, env, ccc) => {
   //We ommit comments
-  console.log("GET FILES START: ", folder);
+  // console.log("GET FILES START: ", folder);
   if (folder.name.startsWith("//")) {
     return;
   }
