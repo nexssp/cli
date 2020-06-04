@@ -4,7 +4,7 @@ const {
   resolve,
   dirname,
   isAbsolute,
-  normalize
+  normalize,
 } = require("path");
 const cliArgs = require("minimist")(process.argv.slice(3));
 const { searchData } = require("../../lib/search");
@@ -12,7 +12,7 @@ const { yellow, bold } = require("../../lib/color");
 const { error, ok, success, info } = require("../../lib/log");
 const {
   NEXSS_PROJECT_SRC_PATH,
-  NEXSS_PROJECT_CONFIG_PATH
+  NEXSS_PROJECT_CONFIG_PATH,
 } = require("../../config/config");
 const fs = require("fs");
 const { loadConfigContent, saveConfigContent } = require("../../lib/config");
@@ -85,11 +85,11 @@ nexss file add myprogram.js --template=helloWorld
     name: "template",
     source: searchData(templateNames, "extension", options.extension),
     message: "Select template",
-    validate: function(val) {
+    validate: function (val) {
       return val ? true : "Select file template";
-    }
+    },
   });
-  inquirer.prompt(questions).then(function(answers) {
+  inquirer.prompt(questions).then(function (answers) {
     Object.assign(options, answers);
     // console.log(answers.template);
     if (answers.template) {
@@ -139,7 +139,7 @@ function execute(options) {
         `Using ${bold(options.template)} template. Creating from template...`
       );
 
-      fs.copyFileSync(options.templatePath, filePath, err => {
+      fs.copyFileSync(options.templatePath, filePath, (err) => {
         if (err) throw err;
       });
 
@@ -170,7 +170,7 @@ function execute(options) {
           return;
         } else {
           configContent.push("files", {
-            name: options.fileName
+            name: options.fileName,
           });
           saveConfigContent(configContent, NEXSS_PROJECT_CONFIG_PATH);
           success("Done.");

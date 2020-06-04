@@ -4,7 +4,7 @@ const { join, extname, dirname } = require("path");
 const { error } = require("../../lib/log");
 const { bold } = require("../../lib/color");
 
-module.exports.templateNames = arg => {
+module.exports.templateNames = (arg) => {
   if (arg) {
     // We remove colors characters if exist
     arg = arg.split(" ")[0];
@@ -31,14 +31,14 @@ module.exports.templateNames = arg => {
     files
       // We need to filter as there are also configuration files .js to
       // make additional operation
-      .filter(el => {
+      .filter((el) => {
         return extname(el) === arg;
       })
-      .map(element => `${extname(element)} ${element}`)
+      .map((element) => `${extname(element)} ${element}`)
   );
 };
 
-module.exports.getTemplatesPaths = ext => {
+module.exports.getTemplatesPaths = (ext) => {
   const fs = require("fs");
   const lang = nexssLanguages.getLang(ext);
   const extWithOutDot = ext.substring(1);

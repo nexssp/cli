@@ -12,14 +12,28 @@ const cliArgs = require("minimist")(process.argv.slice(4));
 if (nexssConfig) {
   console.log(bold(yellow("Current Project: ")));
   const files = nexssConfig.files;
+  const sequences = nexssConfig.sequences;
   const pInfo = () => {
-    return `Name: ${bold(green(nexssConfig.name))}
-Files: ${yellow(files && files.length)} ${grey("nexss f add myfile.php")}`;
+    return `\nFiles: ${yellow(files && files.length)} ${grey(
+      "nexss f add myfile.php"
+    )}`;
   };
   // Config file: ${util.inspect(nexssConfig)}
-  console.log(pInfo());
 
-  console.table(files);
+  console.log(`Name: ${bold(green(nexssConfig.name))}`);
+
+  if (files) {
+    console.log(pInfo());
+    console.table(files);
+  }
+  if (sequences) {
+    console.log(bold(yellow(`Sequences:`)));
+
+    Object.keys(sequences).forEach((element) => {
+      console.log(bold(element));
+      console.table(sequences[element]);
+    });
+  }
   console.log(`${grey("To display config 'nexss config get'")}`);
 } else {
   warn(`This is not ${bold("Nexss PROGRAMMER project")}`);
