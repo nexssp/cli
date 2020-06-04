@@ -6,7 +6,7 @@ Welcome to      ____
 |          ``| |___________  ..''      ``.. ....''             ....''
 Programmer 2.0.9 - Free, Open Source, Educational Version
 ```
-**2.1** Free/Open Source Version Soon
+**2.1** Free/Open Source Version Soon - [Check 2.1 Branch](https://github.com/nexssp/cli/tree/2.1)
 
 NOTE: _**Nexss Programmer DOES NOT need administrative rights**_ for your operating system so it is very safe. Try it today and save your time!
 
