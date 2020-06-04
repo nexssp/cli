@@ -3,10 +3,10 @@ const path = require("path");
 // We get compiler
 // if it is in the globalConfig ./nexss/config.json
 //
-
+const { info } = require("../../../lib/log");
 const cliArgs = require("minimist")(process.argv.slice(2));
 
-module.exports.getCompiler = file => {
+module.exports.getCompiler = (file) => {
   const fileName = file.name;
   const languageDefinition = getLangByFilename(fileName);
 
@@ -15,8 +15,35 @@ module.exports.getCompiler = file => {
 
   ld_compiler = languageDefinition.compilers;
 
+  // We check for custom compiler at the top of the file
+
   // GLOBAL COMPILER
   let globalLangConfig;
+  const globalConfigPath = require("os").homedir() + "/.nexss/config.json";
+  if (require("fs").existsSync(globalConfigPath)) {
+    globalConfig = require(globalConfigPath);
+  } else {
+    globalConfig = { languages: {} };
+  }
+
+  if (
+    globalConfig &&
+    globalConfig.languages &&
+    globalConfig.languages[path.extname(fileName).slice(1)]
+  ) {
+    globalLangConfig = globalConfig.languages[path.extname(fileName).slice(1)];
+
+    if (ld_compiler[globalLangConfig.compilers]) {
+      compiler = languageDefinition.compilers[globalLangConfig.compilers];
+      // console.log(compiler);
+      if (cliArgs.verbose) {
+        info(
+          `Compiler has been set to ${compiler} from global config file ${globalConfigPath}`
+        );
+      }
+    }
+  }
+
   if (process.nexssGlobalConfig.languages[extension]) {
     globalLangConfig = process.nexssGlobalConfig.languages[extension];
 
@@ -38,7 +65,7 @@ module.exports.getCompiler = file => {
       compiler = ld_compiler[fileCompilerSplit[0]];
 
       fileCompilerSplit.shift();
-      compilerArgs = fileCompilerSplit.concat(compilerArgs).join(" ");
+      compiler.args = fileCompilerSplit.concat(compilerArgs).join(" ");
     }
   } else {
     if (!compiler) {
@@ -51,7 +78,7 @@ module.exports.getCompiler = file => {
         compiler = {};
         compiler.command = "nexss";
 
-        compilerArgs = `${fileName} ${file.args.join(" ")}`;
+        compiler.args = `${fileName} ${file.args.join(" ")}`;
       }
     }
   }
