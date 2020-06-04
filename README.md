@@ -114,6 +114,11 @@ Note: Packages will be installed with the very first run of `nexss` command in y
 - Setup builders (Done on C++, C, Python) to make binaries (much faster ! even 1000x) + Compile Nexss PROGRAMMER packages to binary,
 - Write Automatic Tests.
 
+### Did you find a bug?
+
+- Ensure the bug can be reproduced in the latest version of Nexss Programmer.
+- [Open new issue][new_issue], be sure to include all versions, and screenshot showing the error message.
+
 ## Donate [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RP72WY9S6CM4L&source=url)
 
 It is a great pleasure to work on the tools for everyone however it is a huge amount of work and the donations are always part of motivation which helps to move forward. There is still a lot of work to implement **Nexss PROGRAMMER** on the **Linux** and **MacOS**.
