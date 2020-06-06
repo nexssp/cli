@@ -2,7 +2,7 @@ const path = require("path");
 const fs = require("fs");
 const { loadConfigContent } = require("../../../lib/config");
 const dotenv = require("dotenv");
-const { bold, red } = require("../../../lib/color");
+const { bold, red, green } = require("../../../lib/color");
 const { NEXSS_SPECIAL_CHAR } = require("../../../config/defaults");
 const { getSequence } = require("./sequence");
 const loadEnv = (p) => {
@@ -140,6 +140,17 @@ const getFiles = (folder, args, env, ccc) => {
   let config_files = getSequence(folder.seq, config);
 
   let counter = config_files ? config_files.length : 0;
+
+  if (!Array.isArray(config_files)) {
+    console.error(
+      bold("files") +
+        " needs to be an array. Maybe you need to add " +
+        red("-") +
+        "\nat the front of the name in the _nexss.yml config file eg.\n" +
+        green(bold("- name: myfile.js"))
+    );
+    process.exit(0);
+  }
 
   const resultFiles =
     config_files &&

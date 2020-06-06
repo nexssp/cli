@@ -11,6 +11,13 @@ module.exports.writeableStdout = () =>
 
       try {
         chunk = JSON.parse(chunk);
+
+        // We hide variables started with _
+        // like username, password etc. replaced by ****
+        Object.keys(chunk).forEach((e) => {
+          if (e.startsWith("_")) chunk[e] = "*****";
+        });
+
         delete chunk["nexssScript"];
         if (!chunk.nxsPretty) {
           console.log(JSON.stringify(chunk));

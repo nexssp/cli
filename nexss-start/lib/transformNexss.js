@@ -113,10 +113,17 @@ module.exports.transformNexss = (
               let nexssError = element + "";
               nexssError = nexssError.substring(1);
               nexssError = nexssError.split(":");
-              const type = nexssError.shift();
+              let type = nexssError.shift();
               if (args.includes("--pipeerrors")) {
                 console.log(nexssError.join(":").trim());
               } else {
+                switch (type) {
+                  case "debug":
+                    type = "dbg";
+                    break;
+                  default:
+                    break;
+                }
                 eval(type)(colorizer(nexssError.join(":").trim()));
               }
             } else {
