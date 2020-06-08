@@ -21,7 +21,9 @@ module.exports.getCompiler = (file) => {
 
   if (path.extname(fileName) && fs.existsSync(fileName)) {
     if (cliArgs.verbose) {
-      info(`Checking for the config in the file.. (top of the file)`);
+      info(
+        `Checking for the config in the program (eg. nexss-compiler:).. (top part of the file:${fileName})`
+      );
     }
 
     // TODO: Later fix for efficient, read only lines which are needed

@@ -15,7 +15,7 @@ module.exports.writeableStdout = () =>
         // We hide variables started with _
         // like username, password etc. replaced by ****
         Object.keys(chunk).forEach((e) => {
-          if (e.startsWith("_")) chunk[e] = "*****";
+          if (e.length > 1 && e.startsWith("_")) chunk[e] = "*****";
         });
 
         delete chunk["nexssScript"];

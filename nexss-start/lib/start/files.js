@@ -32,14 +32,20 @@ function getPath(fileOrFolder) {
   if (fs.existsSync(fileOrFolder)) {
     resultPath = path.resolve(fileOrFolder);
     if (
+      !(process.nxsErrors && process.nxsErrors[fileOrFolder]) &&
       fileOrFolder !== "." &&
       fs.existsSync(`${process.env.NEXSS_PACKAGES_PATH}/${fileOrFolder}`)
     ) {
       console.error(
         bold(
-          `NOTE: You have folder on your project: ${fileOrFolder}. There is also package name called with the same. If this is overwrite of standard Nexss Programmer package is ok, otherwise use different name.`
+          `Warning: You have folder on your project: ${fileOrFolder}. 
+There is also Nexss Programmer package name called with the same. 
+If this is overwrite of standard Nexss Programmer 
+package then it is ok, otherwise use different name.`
         )
       );
+      if (!process.nxsErrors) process.nxsErrors = {};
+      process.nxsErrors[fileOrFolder] = true;
     }
   } else if (
     fs.existsSync(`${process.env.NEXSS_PACKAGES_PATH}/${fileOrFolder}`)
@@ -193,8 +199,8 @@ const getFiles = (folder, args, env, ccc) => {
         //   config
         // );
         // console.log(subConfig);
-        let xxxx = getFiles(file, null, env, subConfig);
         process.chdir(fileCWD);
+        let xxxx = getFiles(file, null, env, subConfig);
 
         return xxxx;
       }
