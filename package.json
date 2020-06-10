@@ -45,6 +45,7 @@
     "ioredis": "^4.16.0",
     "is-running": "^2.1.0",
     "js-yaml": "^3.13.1",
+    "json-diff": "^0.5.4",
     "minimist": "^1.2.5",
     "moment": "^2.24.0",
     "pkg": "^4.4.4",

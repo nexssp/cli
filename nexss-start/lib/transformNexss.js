@@ -78,9 +78,11 @@ module.exports.transformNexss = (
 
       // console.log(args);
       process.nexssCWD = cwd;
+      const nexssCommand = `${cmd} ${args.join(" ")}`;
+      process.nexssCMD = nexssCommand;
       this.worker = spawn(cmd, args, options);
 
-      this.worker.cmd = `${cmd} ${args.join(" ")} `;
+      this.worker.cmd = nexssCommand;
 
       process.env.NEXSS_CURRENT_COMMAND = this.worker.cmd;
 
