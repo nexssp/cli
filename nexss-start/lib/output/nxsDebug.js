@@ -7,12 +7,16 @@ module.exports = (data) => {
     if (process.nexssCMD) console.error("COMMAND: ", process.nexssCMD);
     console.error("CURRENT DIR", process.nexssCWD);
     if (process.previousDATA) {
-      if (typeof data["nxsDebug"] !== "boolean") {
-        // displays __old, __new
-        console.log(diffString(process.previousDATA, data));
+      if (data["nxsDebug"] !== "nodiff") {
+        if (typeof data["nxsDebug"] !== "boolean") {
+          // displays __old, __new
+          console.error(diffString(process.previousDATA, data));
+        } else {
+          // displays +, i colorized output
+          console.error(diff(process.previousDATA, data));
+        }
       } else {
-        // displays +, i colorized output
-        console.log(diff(process.previousDATA, data));
+        console.error(data);
       }
     } else {
       console.error(data);
