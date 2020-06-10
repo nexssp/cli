@@ -22,7 +22,7 @@ const nexssFileParser = (content, filename, nxsArgs) => {
       }
       // remove inline comments
       line = line.replace(/(\/\*[^*]*\*\/)|(\/\/[^*]*)/g, "");
-
+      line = line.trim();
       // split by space but keep ""
       let splitter = line.split(/\ (?=(?:(?:[^"]*"){2})*[^"]*$)/);
 
@@ -30,10 +30,10 @@ const nexssFileParser = (content, filename, nxsArgs) => {
       const name = splitter.shift();
 
       // Add parameters added to the .nexss program to the last one.
-      if (totalLines === lineNumber && nxsArgs) {
-        splitter = splitter.concat(nxsArgs);
-      }
-
+      // if (totalLines === lineNumber && nxsArgs) {
+      //   splitter = splitter.concat(nxsArgs);
+      // }
+      // console.log("splitter!!!", splitter);
       // Check if some arguments needs to be passed
       // Don't think combining  will all other args will be good in this
       // case.
