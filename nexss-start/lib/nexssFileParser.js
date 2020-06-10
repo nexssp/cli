@@ -1,6 +1,11 @@
 const { getFiles } = require("./start/files");
 const minimist = require("minimist");
 const { NEXSS_SPECIAL_CHAR } = require("../../config/defaults");
+
+function stripEndQuotes(s) {
+  return s.replace && s.replace(/(^")|("$)/g, "");
+}
+
 const nexssFileParser = (content, filename, nxsArgs) => {
   let lineNumber = 0;
   const nexssProgram = content.toString().trim().split(/\r?\n/);
@@ -10,12 +15,18 @@ const nexssFileParser = (content, filename, nxsArgs) => {
     .map((line) => {
       line = line.trim(); // if there is unnecessary space at the end of line.
       lineNumber++;
+
       // Comments ommit
-      if (line.startsWith("//")) {
+      if (line.startsWith("//") || line.length === 0) {
         return;
       }
+      // remove inline comments
+      line = line.replace(/(\/\*[^*]*\*\/)|(\/\/[^*]*)/g, "");
 
-      let splitter = line.split(" ");
+      // split by space but keep ""
+      let splitter = line.split(/\ (?=(?:(?:[^"]*"){2})*[^"]*$)/);
+
+      // console.log(line, line.split(/\ (?=(?:(?:[^"]*"){2})*[^"]*$)/));
       const name = splitter.shift();
 
       // Add parameters added to the .nexss program to the last one.
@@ -28,7 +39,18 @@ const nexssFileParser = (content, filename, nxsArgs) => {
       // case.
 
       let args = minimist(splitter);
+      args.nxsIn = args._;
+
+      // We remove unnecessary quotes from the parameters
+      for (let [key, value] of Object.entries(args)) {
+        if (!Array.isArray(value)) {
+          args[key] = stripEndQuotes(value);
+        }
+      }
+
+      delete args._;
       if (nxsArgs) {
+        // Object.assign(args, nxsArgs); // if actual parameters  pass to all lines
         args.nxsArgs = nxsArgs;
       }
 

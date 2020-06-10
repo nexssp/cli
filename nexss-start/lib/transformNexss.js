@@ -11,7 +11,7 @@ const {
   trace,
 } = require("../../lib/log");
 const { colorizer } = require("./colorizer");
-const { bold } = require("../../lib/color");
+const { bold, yellow, red } = require("../../lib/color");
 require("../../lib/arrays");
 const { spawn } = require("child_process");
 const { is } = require("../../lib/data/guard");
@@ -84,11 +84,21 @@ module.exports.transformNexss = (
 
       process.env.NEXSS_CURRENT_COMMAND = this.worker.cmd;
 
-      // console.log(this.worker.cmd);
-      let proc = new Proc(this.worker.pid, {
-        filePath: path.resolve(fileName),
-      });
-      proc.write();
+      try {
+        let proc = new Proc(this.worker.pid, {
+          filePath: path.resolve(fileName),
+        });
+        proc.write();
+      } catch (error) {
+        console.error(
+          "Command " +
+            bold(yellow(this.worker.cmd.trim())) +
+            red(
+              " failed.\n(process information saving error. Check if the systax is correct.)"
+            )
+        );
+        process.exit(1);
+      }
 
       this.worker.on("error", (err) => {
         // throw Error(err);

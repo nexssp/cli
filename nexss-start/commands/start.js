@@ -137,7 +137,9 @@ if (cliArgs.server) {
     }
 
     // more here: https://github.com/nexssp/cli/wiki/Config
-    let startData = { debug: nexssConfig && nexssConfig.debug };
+    let startData = {
+      debug: (nexssConfig && nexssConfig.debug) || cliArgs.debug,
+    };
 
     if (nexssConfig && nexssConfig.data) {
       Object.assign(startData, nexssConfig.data);
