@@ -6,6 +6,7 @@ const { transformFile } = require("./transformFile");
 const { writeableStdout } = require("./writeableStdout");
 const { transformTest } = require("./transformTest");
 const { transformValidation } = require("./transformValidation");
+const { transformInput } = require("./transformInput");
 const { transformOutput } = require("./transformOutput");
 const { transformHash } = require("./transformHash");
 const { transformRequest } = require("./transformRequest");
@@ -46,7 +47,10 @@ async function run(operations, options = {}) {
 
       // console.log(runOptions);
       // process.exit(1);
-
+      // if (streamName === "transformValidation") {
+      //   delete runOptions.env;
+      //   // console.log("run options", runOptions);
+      // }
       if (element.cmd) {
         // console.log("========================1");
         // let ro = runOptions;

@@ -11,11 +11,8 @@ module.exports.transformValidation = (area = "input", options = {}) => {
     transform(chunk, encoding, callback) {
       if (!cliArgs.nxsNoValidation) {
         let data = chunk.toString();
-        if (
-          process.nexssConfigContent &&
-          process.nexssConfigContent[area] &&
-          Array.isArray(process.nexssConfigContent[area])
-        ) {
+        const opts = options;
+        if (opts && Array.isArray(opts)) {
           try {
             data = JSON.parse(data);
           } catch (er) {
@@ -29,16 +26,18 @@ module.exports.transformValidation = (area = "input", options = {}) => {
 
           let errorExists = [];
           // more: https://github.com/nexssp/cli/wiki/Data-Validation
-          process.nexssConfigContent[area].forEach(k => {
+
+          opts.forEach((k) => {
             if (k.validate) {
-              k.validate.forEach(validation => {
+              k.validate.forEach((validation) => {
+                // console.log("VALIDATION!!!!!:", validation, "kname!!", k.name);
                 let message;
                 if (validation.message) {
                   message = validation.message;
                 } else if (validationMessages[validation.type]) {
                   message = validationMessages[validation.type].message.replace(
                     "<Field>",
-                    k.name
+                    "'" + k.name + "'"
                   );
                 } else {
                   error(
@@ -62,6 +61,7 @@ module.exports.transformValidation = (area = "input", options = {}) => {
                     break;
                   default:
                     if (
+                      data[k.name] &&
                       !data[k.name].match(
                         validationMessages[validation.type].regexp
                       )
@@ -79,7 +79,7 @@ module.exports.transformValidation = (area = "input", options = {}) => {
                 process.nexssFilename
               }`
             );
-            error(`${red("Data Validation Error(s)")}`);
+            error(`${red("Data (" + area + ") Validation Error(s)")}`);
             console.log(bold(errorExists.join("\n")));
             console.log(bold("DATA:"));
             console.log(JSON.stringify(data, null, 2));
@@ -89,6 +89,6 @@ module.exports.transformValidation = (area = "input", options = {}) => {
       }
       if (chunk) callback(null, chunk);
       //   process.stdout.write(`END ERROR TRANSFORMER ${title}\n\n `);
-    }
+    },
   });
 };

@@ -23,6 +23,7 @@ const { parseError } = require("./error");
 const isDebug = process.argv.indexOf("--debug") >= 0;
 const isLearningMode = process.argv.indexOf("--nxsLearning") >= 0;
 const cliArgsParser = require("minimist");
+const { nxsDebugTitle } = require("./output/nxsDebug");
 
 module.exports.transformNexss = (
   cmd, // cmd = ls, node, php or whatever
@@ -80,11 +81,10 @@ module.exports.transformNexss = (
       process.nexssCWD = cwd;
       const nexssCommand = `${cmd} ${args.join(" ")}`;
       process.nexssCMD = nexssCommand;
+
       this.worker = spawn(cmd, args, options);
 
       this.worker.cmd = nexssCommand;
-
-      process.env.NEXSS_CURRENT_COMMAND = this.worker.cmd;
 
       try {
         let proc = new Proc(this.worker.pid, {
@@ -186,14 +186,15 @@ module.exports.transformNexss = (
         self.end();
         callback();
       });
-
+      let j;
       if (inputData) {
         let parsed;
         if (Array.isArray(inputData)) {
           inputData = cliArgsParser(inputData);
         }
+
         try {
-          let j = JSON.parse(chunk.toString());
+          j = JSON.parse(chunk.toString());
           let FinalData = Object.assign({}, j, inputData);
 
           // const { expressionParser } = require("./lib/expressionParser");
@@ -209,7 +210,7 @@ module.exports.transformNexss = (
       } else {
         try {
           // console.error(chunk);
-          let j = JSON.parse(chunk.toString());
+          j = JSON.parse(chunk.toString());
 
           const { expressionParser } = require("./expressionParser");
           Object.keys(j).forEach((e) => {
@@ -221,6 +222,8 @@ module.exports.transformNexss = (
           dbg(`ERROR WRITING TO PIPE: ${chunk}`);
         }
       }
+
+      nxsDebugTitle("Executed: " + this.worker.cmd, j, "yellow");
 
       //Below maybe is in wrong placa but AutoIt doesn't work if is not here!
       this.worker.stdin.end();

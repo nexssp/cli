@@ -82,7 +82,10 @@ module.exports.readable = (startData) => {
 
   Object.assign(startData, cliArgs);
 
-  startData = nxsInModule(startData);
+  // Make sure we are in the right folder.
+  // Later change it
+  process.chdir(startData.cwd);
+  // startData = nxsInModule(startData);
 
   s.push(JSON.stringify(startData));
   s.push(null);

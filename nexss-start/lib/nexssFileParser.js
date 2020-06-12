@@ -21,8 +21,10 @@ const nexssFileParser = (content, filename, nxsArgs) => {
         return;
       }
       // remove inline comments
-      line = line.replace(/(\/\*[^*]*\*\/)|(\/\/[^*]*)/g, "");
-      line = line.trim();
+      if (!line.startsWith("https://")) {
+        line = line.replace(/(\/\*[^*]*\*\/)|(\/\/[^*]*)/g, "");
+        line = line.trim();
+      }
       // split by space but keep ""
       let splitter = line.split(/\ (?=(?:(?:[^"]*"){2})*[^"]*$)/);
 
@@ -39,7 +41,11 @@ const nexssFileParser = (content, filename, nxsArgs) => {
       // case.
 
       let args = minimist(splitter);
-      args.nxsIn = args._;
+      if (args._ && args._.length === 0) {
+        delete args._;
+      } else {
+        args.nxsIn = args._;
+      }
 
       // We remove unnecessary quotes from the parameters
       for (let [key, value] of Object.entries(args)) {
@@ -48,11 +54,12 @@ const nexssFileParser = (content, filename, nxsArgs) => {
         }
       }
 
-      delete args._;
-      if (nxsArgs) {
-        // Object.assign(args, nxsArgs); // if actual parameters  pass to all lines
-        args.nxsArgs = nxsArgs;
-      }
+      // delete args._;
+      // if (nxsArgs) {
+      //   // Object.assign(args, nxsArgs); // if actual parameters  pass to all lines
+      //   args.nxsArgs = nxsArgs;
+
+      // }
 
       let pathFilename = require("path").dirname(filename);
 

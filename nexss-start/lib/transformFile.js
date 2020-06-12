@@ -8,12 +8,14 @@
 const { Transform } = require("stream");
 const { createReadStream, existsSync } = require("fs");
 const { extname } = require("path");
+const { nxsDebugTitle } = require("./output/nxsDebug");
 
 module.exports.transformFile = (file, x, y) => {
   return new Transform({
     writableObjectMode: true,
     transform(chunk, encoding, callback) {
       process.chdir(y.cwd);
+      process.nexssCWD = y.cwd;
       if (!existsSync(file)) {
         // Stop as first parameter is an error.
         callback(
@@ -29,7 +31,7 @@ module.exports.transformFile = (file, x, y) => {
         );
         callback(null, JSON.stringify(data));
       }
-
+      nxsDebugTitle("Transforming File: " + file, data, "yellow");
       let streamRead = createReadStream(file);
       let wholeData = "";
       streamRead.on("data", (d) => {
@@ -48,8 +50,8 @@ module.exports.transformFile = (file, x, y) => {
         } else {
           data.nxsOut = wholeData;
         }
-
-        callback(null, Buffer.from(JSON.stringify(data)));
+        data = JSON.stringify(data);
+        callback(null, Buffer.from(data));
       });
 
       // streamRead.on("exit", (code, signal) => {

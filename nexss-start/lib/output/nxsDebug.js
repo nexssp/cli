@@ -1,27 +1,74 @@
 const { diffString, diff } = require("json-diff");
+const {
+  bold,
+  yellow,
+  red,
+  blue,
+  green,
+  grey,
+  magenta,
+  cyan,
+  white,
+} = require("../../../lib/color");
+module.exports.nxsDebugTitle = (title, data, color) => {
+  if (data && data["nxsDebug"]) {
+    if (!color) color = "white";
+    const belt = eval(color)(`=`.repeat(80));
+
+    console.error(belt);
+    console.error(eval(color)(`->->-> ${title} `));
+    // console.error(belt);
+  }
+};
+
 // I am aware that using global process is not best but for now is ok.
 // TODO: change global process later
-module.exports = (data) => {
+module.exports.nxsDebugData = (data, title, color) => {
   if (data["nxsDebug"]) {
-    console.error("==================================================");
-    if (process.nexssCMD) console.error("COMMAND: ", process.nexssCMD);
-    console.error("CURRENT DIR", process.nexssCWD);
+    const totalLengthSide = (80 - title.length - 2) / 2;
+    const side = "=".repeat(totalLengthSide);
+    if (title === "Input") console.error("\n");
+    switch (color) {
+      case "red":
+      case "yellow":
+      case "green":
+      case "blue":
+      case "grey":
+      case "magenta":
+      case "cyan":
+        console.error(eval(color)(side + ` ${title} ` + side));
+        break;
+      default:
+        console.error(side + ` ${title} ` + side);
+        break;
+    }
+    console.error(
+      grey(
+        "CURRENT DIR:" + (process.nexssCWD ? process.nexssCWD : process.cwd())
+      )
+    );
+    // if (process.nexssCMD) console.error(yellow("COMMAND: " + process.nexssCMD));
+
     if (process.previousDATA) {
       if (data["nxsDebug"] !== "nodiff") {
         if (typeof data["nxsDebug"] !== "boolean") {
           // displays __old, __new
-          console.error(diffString(process.previousDATA, data));
+          diffData = diffString(process.previousDATA, data);
         } else {
           // displays +, i colorized output
-          console.error(diff(process.previousDATA, data));
+          diffData = diff(process.previousDATA, data);
         }
       } else {
-        console.error(data);
+        diffData = data;
       }
     } else {
-      console.error(data);
+      diffData = data;
     }
-
+    if (diffData) {
+      console.error(diffData);
+    } else {
+      console.error(grey("Data not changed."));
+    }
     process.previousDATA = data;
   }
 };

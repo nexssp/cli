@@ -1,9 +1,10 @@
 const { Transform } = require("stream");
 const cliArgs = require("minimist")(process.argv);
-const { error, warn, ok } = require("../../lib/log");
+const { dbg, warn, ok } = require("../../lib/log");
 const { bold, red } = require("../../lib/color");
 const request = require("request");
-module.exports.transformRequest = url =>
+const { nxsDebugTitle } = require("../lib/output/nxsDebug");
+module.exports.transformRequest = (url) =>
   new Transform({
     transform: (chunk, encoding, callback) => {
       let data;
@@ -18,16 +19,18 @@ module.exports.transformRequest = url =>
         callback(null, JSON.stringify(data));
       }
 
+      nxsDebugTitle("Nexss Request:" + bold(url), data, "red");
+
       let streamRead = request(url);
 
       // console.log(chunk.toString());
       let wholeData = "";
-      streamRead.on("data", d => {
+      streamRead.on("data", (d) => {
         wholeData += d;
         // callback(null, data);
       });
 
-      streamRead.on("error", er => {
+      streamRead.on("error", (er) => {
         callback(er);
       });
 
@@ -46,5 +49,5 @@ module.exports.transformRequest = url =>
     flush(cb) {
       cb();
       // console.log("flush!!!!!");
-    }
+    },
   });

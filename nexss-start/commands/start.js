@@ -59,9 +59,6 @@ if (fileOrDirectory) {
         fileOrDirectory,
         cliArgs
       );
-
-      // console.log(files);
-      // process.exit(1);
     }
   } else {
     // CLEANUP IF THIS IS NOT URL, REMOVE END / OR \ AND REPLACE TO /
@@ -82,7 +79,6 @@ if (fileOrDirectory) {
     files = getFiles(firstParam);
   }
 }
-
 // console.log("start 74: FINAL FILES:", files);
 // process.exit(1);
 
@@ -113,7 +109,7 @@ if (!Array.isArray(files)) {
 
 files = files.filter(Boolean);
 
-// console.log(files);
+// console.error(require("util").inspect(files[0]));
 // process.exit(1);
 const cache = require("../../lib/cache");
 const cacheFileName = "myCache.json";
@@ -181,7 +177,11 @@ if (cliArgs.server) {
         );
         process.exit();
       }
-
+      nexssResult.push({
+        stream: "transformInput",
+        cmd: "in",
+        // options: spawnOptions
+      });
       let stream = "transformNexss";
 
       const parsed = url.parse(fileName);
@@ -284,7 +284,7 @@ if (cliArgs.server) {
                     nexssResult.push({
                       stream: "transformValidation",
                       cmd: `input`,
-                      input: file.input,
+                      args: file.input,
                     });
                   }
 
@@ -358,7 +358,7 @@ if (cliArgs.server) {
         nexssResult.push({
           stream: "transformValidation",
           cmd: `output`,
-          options: { xxx: file.output },
+          args: file.output,
         });
       }
     }
@@ -392,7 +392,7 @@ if (cliArgs.server) {
   const json = require("../../lib/data/json");
 
   // console.log(nexssBuild);
-
+  process.chdir(PROCESS_CWD); //TODO: Later to recheck folder changing on getFiles + mess cleanup
   // Recheck the Serialize (later remove??)
   nexssResult = json.parse(json.stringify(nexssResult));
   // const util = require("util");
@@ -405,6 +405,14 @@ if (cliArgs.server) {
   // TODO: We revert back the current dir if there are any changes (should not be)
   // To review
   // process.chdir(process.nexssGlobalCWD);
+
+  if (cliArgs.nxsBuild) {
+    let buildFilename = "./build.nexss.json";
+    if (typeof cliArgs.nxsBuild !== "boolean") {
+      buildFilename = cliArgs.nxsBuild;
+    }
+    fs.writeFileSync(buildFilename, JSON.stringify(nexssResult, null, 2));
+  }
 
   // We do not run, just display info
   if (cliArgs.nxsDry) {

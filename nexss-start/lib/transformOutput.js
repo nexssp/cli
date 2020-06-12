@@ -11,7 +11,7 @@ const nxsDeleteModule = require("./output/nxsDelete");
 const nxsRenameModule = require("./output/nxsRename");
 const nxsSelectModule = require("./output/nxsSelect");
 const nxsInModule = require("./input/nxsIn");
-const nxsDebug = require("./output/nxsDebug");
+const { nxsDebugData } = require("./output/nxsDebug");
 require("../../lib/strings"); //we load string interpolate
 const { expressionParser } = require("./expressionParser");
 
@@ -120,7 +120,7 @@ module.exports.transformOutput = () =>
         // console.log(data);
         // self.push(data.toString("utf8").trim());
 
-        nxsDebug(data);
+        nxsDebugData(data, "Output", "cyan");
 
         callback(null, JSON.stringify(data));
       }
