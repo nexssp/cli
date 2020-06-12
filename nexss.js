@@ -439,7 +439,8 @@ switch (command) {
         !fileOrFolderExists &&
         command &&
         plugin !== "command" &&
-        plugin !== "test"
+        plugin !== "test" &&
+        plugin !== "edit"
       ) {
         if (
           require("fs").existsSync(

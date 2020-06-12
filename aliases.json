@@ -8,5 +8,6 @@
   "i": "install",
   "cmd": "command",
   "s": "start",
-  "pkg": "package"
+  "pkg": "package",
+  "e": "edit"
 }
