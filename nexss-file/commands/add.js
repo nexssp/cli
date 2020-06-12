@@ -138,11 +138,17 @@ function execute(options) {
       info(
         `Using ${bold(options.template)} template. Creating from template...`
       );
-
-      fs.copyFileSync(options.templatePath, filePath, (err) => {
-        if (err) throw err;
-      });
-
+      try {
+        fs.copyFileSync(options.templatePath, filePath);
+      } catch (err) {
+        if (err.code === "ENOENT") {
+          console.log(
+            `Error during copy from ${options.templatePath} to ${filePath}`
+          );
+        } else {
+          throw err;
+        }
+      }
       ok(`File ${bold(normalize(filePath))} has been created.`);
 
       // cliArgs.noconfig - no config modification

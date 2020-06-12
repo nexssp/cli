@@ -410,6 +410,9 @@ if (cliArgs.server) {
     let buildFilename = "./build.nexss.json";
     if (typeof cliArgs.nxsBuild !== "boolean") {
       buildFilename = cliArgs.nxsBuild;
+      if (cliArgs.nxsBuild.indexOf(".json") <= 0) {
+        buildFilename += ".json";
+      }
     }
     fs.writeFileSync(buildFilename, JSON.stringify(nexssResult, null, 2));
   }

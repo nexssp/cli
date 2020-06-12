@@ -1,6 +1,6 @@
 const parserSyntax = require("./parserSyntax");
 const { error } = require("../../lib/log");
-
+const { red, bold, blue, yellow } = require("../../lib/color");
 const expressionParser2 = (data) => {
   if (!data) return data;
   let jsON = JSON.stringify(data);
@@ -72,10 +72,15 @@ const expressionParser = (data, exp) => {
           }
         });
       }
+      errors.add("=".repeat(80));
       errors.add(
-        `Error in parsing expression: ${exp},\nError message: ${er.message} ${
-          maybe ? `\nDid you meant: ${maybe.join(" or ")}?` : ""
-        }`
+        bold(`\tError in parsing expression: ${exp},`) +
+          red(bold(`\n\tError message: ${yellow(bold(er.message))}`)) +
+          ` ${
+            maybe && maybe.length > 0
+              ? blue(`\nDid you meant: ${maybe.join(" or ")}?`)
+              : ""
+          }`
       );
 
       errors.add(data);
