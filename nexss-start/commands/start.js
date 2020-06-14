@@ -177,11 +177,18 @@ if (cliArgs.server) {
         );
         process.exit();
       }
-      nexssResult.push({
+
+      let transformInParams = {
         stream: "transformInput",
         cmd: "in",
-        // options: spawnOptions
-      });
+      };
+      if (file.args && file.args.nxsInFrom) {
+        transformInParams.inputData = {};
+        transformInParams.inputData.nxsInFrom = file.args.nxsInFrom;
+        delete file.args.nxsInFrom;
+      }
+
+      nexssResult.push(transformInParams);
       let stream = "transformNexss";
 
       const parsed = url.parse(fileName);

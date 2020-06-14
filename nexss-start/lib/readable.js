@@ -6,7 +6,7 @@ if (process.argv[2] === "s" || process.argv[2] === "start") {
   paramNumber = 3;
 }
 const cliArgs = require("minimist")(process.argv.slice(paramNumber));
-const nxsInModule = require("./input/nxsIn");
+// const nxsInModule = require("./input/nxsIn");
 module.exports.readable = (startData) => {
   var s = new Readable({
     objectMode: true,

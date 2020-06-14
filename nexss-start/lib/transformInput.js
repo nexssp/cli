@@ -7,7 +7,7 @@ const { nxsDebugData } = require("./output/nxsDebug");
 require("../../lib/strings"); //we load string interpolate
 const { expressionParser } = require("./expressionParser");
 
-module.exports.transformInput = () =>
+module.exports.transformInput = (x, y, params) =>
   new Transform({
     // writableObjectMode: true,
     transform: (chunk, encoding, callback) => {
@@ -30,9 +30,13 @@ module.exports.transformInput = () =>
           data[e] = expressionParser(data, data[e]);
         });
 
-        nxsDebugData(data, "Input", "blue");
+        if (params && params.inputData && params.inputData.nxsInFrom) {
+          data.nxsInFrom = params.inputData.nxsInFrom;
+        }
 
         data = nxsInModule(data);
+
+        nxsDebugData(data, "Input", "blue");
 
         callback(null, JSON.stringify(data));
       }
