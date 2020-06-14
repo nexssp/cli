@@ -17,8 +17,13 @@ module.exports.transformValidation = (area = "input", options = {}) => {
             data = JSON.parse(data);
           } catch (er) {
             error(
-              `There was an issue with JSON going out from file ${bold(
-                process.nexssFilename ? process.nexssFilename : "unknown"
+              `There was an issue with JSON going out from command: ${bold(
+                process.nexssCMD ? process.nexssCMD : "unknown"
+              )}:`
+            );
+            error(
+              `Current dir: ${bold(
+                process.nexssCWD ? process.nexssCWD : "unknown"
               )}:`
             );
             error(data);
@@ -52,7 +57,7 @@ module.exports.transformValidation = (area = "input", options = {}) => {
                   case "Required":
                     if (
                       !data[k.name] ||
-                      !data[k.name].match(
+                      !(data[k.name] + "").match(
                         validationMessages[validation.type].regexp
                       )
                     ) {
@@ -62,7 +67,7 @@ module.exports.transformValidation = (area = "input", options = {}) => {
                   default:
                     if (
                       data[k.name] &&
-                      !data[k.name].match(
+                      !(data[k.name] + "").match(
                         validationMessages[validation.type].regexp
                       )
                     ) {

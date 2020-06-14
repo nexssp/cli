@@ -1,4 +1,4 @@
-module.exports = data => {
+module.exports = (data) => {
   if (data.nxsInFrom) {
     // We have the nxsIn changed field, so we move it to the nxsIn
     if (data[data.nxsInFrom]) {
@@ -7,7 +7,9 @@ module.exports = data => {
       delete data[data.nxsInFrom];
     } else {
       console.error(
-        `You have passed nxsInFrom: ${data.nxsInFrom} however this field does not exist. Corrent it.`
+        `You have passed nxsInFrom: ${data.nxsInFrom} however this field does not exist.
+If you are using | with multiple nexss commands make sure you are not using --debug option. 
+use nxsDebug instead.`
       );
       process.exit(0);
     }

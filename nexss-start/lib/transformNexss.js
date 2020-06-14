@@ -173,7 +173,9 @@ module.exports.transformNexss = (
       this.worker.stderr.on("end", function () {
         if (this.errBuffer) {
           parseError(fileName, this.errBuffer, args.includes("--pipeerrors"));
+          callback("Error during: " + nexssCommand);
           this.errBuffer = "";
+
           // console.error(this.errBuffer);
         }
       });
@@ -197,10 +199,10 @@ module.exports.transformNexss = (
           j = JSON.parse(chunk.toString());
           let FinalData = Object.assign({}, j, inputData);
 
-          // const { expressionParser } = require("./lib/expressionParser");
-          // Object.keys(FinalData).forEach(e => {
-          //   FinalData[e] = expressionParser(FinalData, FinalData[e]);
-          // });
+          const { expressionParser } = require("./expressionParser");
+          Object.keys(FinalData).forEach((e) => {
+            FinalData[e] = expressionParser(FinalData, FinalData[e]);
+          });
 
           this.worker.stdin.write(Buffer.from(JSON.stringify(FinalData)));
         } catch (error) {
