@@ -5,14 +5,14 @@ const { info, error, warn, di, dg, dy, dbg } = require("../../lib/log");
 const { inspect } = require("util"),
   { yellow, bold, green } = require("../../lib/color"),
   { startServer } = require("../../lib/server");
-const { ensureInstalled } = require("../../lib/terminal");
+const { ensureInstalled, pathWinToLinux } = require("../../lib/terminal");
 const fs = require("fs");
 const { existsSync, lstatSync } = require("fs");
 const { isURL } = require("../../lib/data/url");
 const url = require("url");
 const { NEXSS_SPECIAL_CHAR } = require("../../config/defaults");
 
-const globalConfigPath = require("os").homedir() + "/.nexssPRO/config.json";
+const globalConfigPath = require("os").homedir() + "/.nexss/config.json";
 
 if (require("fs").existsSync(globalConfigPath)) {
   process.nexssGlobalConfig = require(globalConfigPath);
@@ -259,19 +259,18 @@ if (cliArgs.server) {
                     );
 
                     if (
-                      compiler.command === "bash" &&
+                      (compiler.command === "bash" ||
+                        compiler.command === "wsl") &&
                       process.platform === "win32"
                     ) {
                       // on Windows it's using the WSL (Windows Subsystem Linux)
                       // So we convert the path to from c:\abc to /mnt/c/abc.....
                       try {
                         if (!Array.isArray(compiler.args)) {
-                          compiler.args = compiler.args
-                            .replace(/c\:/, "/mnt/c")
-                            .replace(/\\/g, "/");
+                          compiler.args = pathWinToLinux(compiler.args);
                         } else {
                           compiler.args = compiler.args.map((e) =>
-                            e.replace(/c\:/, "/mnt/c").replace(/\\/g, "/")
+                            pathWinToLinux(e)
                           );
                         }
                       } catch (error) {
