@@ -265,9 +265,15 @@ if (cliArgs.server) {
                       // on Windows it's using the WSL (Windows Subsystem Linux)
                       // So we convert the path to from c:\abc to /mnt/c/abc.....
                       try {
-                        compiler.args = compiler.args
-                          .replace(/c\:/, "/mnt/c")
-                          .replace(/\\/g, "/");
+                        if (!Array.isArray(compiler.args)) {
+                          compiler.args = compiler.args
+                            .replace(/c\:/, "/mnt/c")
+                            .replace(/\\/g, "/");
+                        } else {
+                          compiler.args = compiler.args.map((e) =>
+                            e.replace(/c\:/, "/mnt/c").replace(/\\/g, "/")
+                          );
+                        }
                       } catch (error) {
                         console.error("args on the compiler: ", compiler.args);
                       }

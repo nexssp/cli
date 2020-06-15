@@ -79,6 +79,9 @@ module.exports.transformNexss = (
 
       // console.log(args);
       process.nexssCWD = cwd;
+
+      args = args.remove("--nocache");
+
       const nexssCommand = `${cmd} ${args.join(" ")}`;
       process.nexssCMD = nexssCommand;
 
