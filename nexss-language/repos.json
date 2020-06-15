@@ -45,5 +45,7 @@
   ".clj": "https://github.com/nexssp/language_clojure.git",
   ".coco": "https://github.com/nexssp/language_coconut.git",
   ".hy": "https://github.com/nexssp/language_hy.git",
-  ".bas": "https://github.com/nexssp/language_basic.git"
+  ".bas": "https://github.com/nexssp/language_basic.git",
+  ".zig": "https://github.com/nexssp/language_zig.git",
+  ".m": "https://github.com/nexssp/language_octave.git"
 }
