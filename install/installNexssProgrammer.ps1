@@ -1,7 +1,7 @@
 # Nexss Programmer Installer
 # Author: Marcin Polak <mapoart@gmail.com>
 
-Write-Host "Welcome to the Nexss Programmer 2.0 Installer" -ForegroundColor Yellow
+Write-Host "Welcome to the Nexss Programmer 2.1 Installer" -ForegroundColor Yellow
 Write-Host "It will install Scoop, Node.js, git and Nexss Programmer." -ForegroundColor Yellow
 
 # =====================
