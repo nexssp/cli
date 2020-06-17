@@ -6,6 +6,8 @@ Welcome to      ____
 |          ``| |___________  ..''      ``.. ....''             ....''
 Programmer 2.1.0 - Free, Open Source, Educational Version
 ```
+**Nexss Programmer Presentation** (Youtube video):  
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/vs2tXMrZzzs/0.jpg)](https://www.youtube.com/watch?v=vs2tXMrZzzs)
 
 NOTE: _**Nexss Programmer DOES NOT need administrative rights**_ for your operating system so it is very safe. Try it today and save your time!
 
