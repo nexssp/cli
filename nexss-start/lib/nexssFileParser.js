@@ -3,7 +3,7 @@ const minimist = require("minimist");
 const { NEXSS_SPECIAL_CHAR } = require("../../config/defaults");
 
 function stripEndQuotes(s) {
-  return s.replace && s.replace(/(^")|("$)/g, "");
+  return s.replace && s.replace(/(^["|'])|(["|']$)/g, "");
 }
 
 const nexssFileParser = (content, filename, nxsArgs) => {
