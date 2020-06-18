@@ -81,8 +81,10 @@ module.exports.transformNexss = (
       process.nexssCWD = cwd;
 
       args = args.remove("--nocache");
-
-      const nexssCommand = `${cmd} ${args.join(" ")}`;
+      const argsStrings = args
+        .map((a) => (a.indexOf(" ") > -1 ? `${a.replace("=", "='")}'` : a))
+        .join(" ");
+      const nexssCommand = `${cmd} ${argsStrings}`;
       process.nexssCMD = nexssCommand;
 
       this.worker = spawn(cmd, args, options);

@@ -47,9 +47,14 @@ module.exports.transformOutput = () =>
       // Parsing values insde the template !!
       // You can use variables now!!!
 
-      // VERSION 1 LESS EFFICIENT(VERSION2 to fix)
       Object.keys(data).forEach((e) => {
-        data[e] = expressionParser(data, data[e]);
+        if (e.startsWith("_")) {
+          // All vars which starts with _ are automatically cleaned up
+          // as they are local for execute one Nexss Programmer Node.
+          delete data[e];
+        } else {
+          data[e] = expressionParser(data, data[e]);
+        }
       });
 
       // VERSION 2 MUCH MORE EFFICIENT
