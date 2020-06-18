@@ -58,7 +58,7 @@ If you are having errors about tls/ssl channel please run first:
 
 ### Preview of Nexss Programmer GUI - Work in progress
 
-This is preview of Nexss Programmer GUI which will be available in **PAID** version of the **Nexss Programmer 2.1**
+This is preview of Nexss Programmer GUI which will be available in **PAID** version of the **Nexss Programmer 3.0**
 
 ![nexssProgrammerGUI](https://user-images.githubusercontent.com/53263666/72731842-c97f8e80-3b94-11ea-954a-23b541aa3ff7.png)
 
