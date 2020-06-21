@@ -10,18 +10,18 @@ const os = require("os");
   // const EOL = require("os").EOL;
   const EOL = "\n";
   let entries = await fs.promises.readdir(NEXSS_SRC_PATH, {
-    withFileTypes: true
+    withFileTypes: true,
   });
 
   entries = entries.filter(
-    entry =>
+    (entry) =>
       entry.isDirectory() &&
       entry.name.indexOf("nexss-") === 0 &&
       entry.name !== "nexss-help"
   );
 
   let commandsHelp = await Promise.all(
-    entries.map(async entry => {
+    entries.map(async (entry) => {
       const commands = await fs.promises.readdir(
         `${NEXSS_SRC_PATH}/${entry.name}/commands/`
       );
@@ -37,8 +37,8 @@ const os = require("os");
 
       return Promise.all(
         commands
-          .filter(c => c.indexOf(".md") < 0)
-          .map(async command => {
+          .filter((c) => c.indexOf(".md") < 0)
+          .map(async (command) => {
             // const shortHelp = require(`${NEXSS_SRC_PATH}/${
             //   entry.name
             // }/commands/${command.replace(".js", "-help.js")}`).shortHelp;
@@ -80,7 +80,7 @@ const os = require("os");
 
             return {
               command: commandHelp,
-              commandDesc: helpContent[2] || helpContent[0]
+              commandDesc: helpContent[2] || helpContent[0],
             };
           })
       );
@@ -97,7 +97,7 @@ Programmer ${bold(require("../package.json").version)}, NodeJS ${
       process.version
     }, OS: ${process.platform} ${os.release()}  `
   );
-  commandsHelp.flat().forEach(e => {
+  commandsHelp.flat().forEach((e) => {
     console.log(grey("nexss"), bold(e.command), e.commandDesc);
   });
   // console.log(commandsHelp.flat());
@@ -105,6 +105,6 @@ Programmer ${bold(require("../package.json").version)}, NodeJS ${
     bold("To display help add 'help': nexss command help OR nexss package help")
   );
   //   console.log(JSON.stringify(result));
-})().catch(e => console.error(e));
+})().catch((e) => console.error(e));
 
 // await fs.promises.mkdir("/tmp/a/apple", { recursive: true });

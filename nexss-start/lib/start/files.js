@@ -134,10 +134,10 @@ const getFiles = (folder, args, env, ccc) => {
 
   if (!config) {
     console.error("No config file in the ", path.normalize(folderAbsolute));
-    console.error("Error item: ");
-    console.error(folder);
-    console.error("Args: ");
-    console.error(args);
+    // console.error("Error item: ");
+    // console.error(folder);
+    // console.error("Args: ");
+    // console.error(args);
     // console.error("Env: ");
     // console.error(env);
     process.exit(0);

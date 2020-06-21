@@ -74,17 +74,18 @@ module.exports.getCompiler = (file) => {
         }
       }
     }
+    if (process.nexssGlobalConfig) {
+      if (process.nexssGlobalConfig.languages[extension]) {
+        globalLangConfig = process.nexssGlobalConfig.languages[extension];
 
-    if (process.nexssGlobalConfig.languages[extension]) {
-      globalLangConfig = process.nexssGlobalConfig.languages[extension];
-
-      if (ld_compiler[globalLangConfig.compilers]) {
-        compiler = languageDefinition.compilers[globalLangConfig.compilers];
-        // console.log(compiler);
-        if (cliArgs.verbose) {
-          info(
-            `Compiler has been set to ${compiler} from global config file ${globalConfigPath}`
-          );
+        if (ld_compiler[globalLangConfig.compilers]) {
+          compiler = languageDefinition.compilers[globalLangConfig.compilers];
+          // console.log(compiler);
+          if (cliArgs.verbose) {
+            info(
+              `Compiler has been set to ${compiler} from global config file ${globalConfigPath}`
+            );
+          }
         }
       }
     }

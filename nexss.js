@@ -296,17 +296,33 @@ if (
       if (pm) {
         const action = pm[argument];
 
-        if (!action) {
-          console.log(
-            `Select Action.`,
-            Object.keys(pm)
-              .concat(["info", "config"])
-              .filter(
-                (e) =>
-                  !["keyOfItem", "else", "messageAfterInstallation"].includes(e)
-              )
-          );
-          process.exit();
+        if (!action || process.argv[3].startsWith("-")) {
+          if (argument && !process.argv[3].startsWith("-")) {
+            warn(
+              `Action '${argument}' does not exist for ${bold(
+                languageSelected.title
+              )}`
+            );
+          }
+
+          const { getCompiler } = require("./nexss-start/lib/start/compiler");
+          const compiler = getCompiler({
+            path: "",
+            name: `test${languageSelected.extensions[0]}`,
+          });
+
+          const pmArguments = process.argv.slice(3);
+          const command = `${compiler.command} ${pmArguments.join(" ")}`;
+          try {
+            require("child_process").execSync(command, {
+              stdio: "inherit",
+              detached: false,
+              shell: true,
+              cwd: process.cwd(),
+            });
+          } catch (error) {
+            console.log(`Command failed ${command}`);
+          }
         } else {
           if (Object.prototype.toString.call(action) === `[object Function]`) {
             console.log(`Running FUNCTION ${argument}(${cliArgs._.join(",")})`);
@@ -416,8 +432,11 @@ switch (command) {
           );
           console.info(helpContent.toString());
         } else {
+          const { extname } = require("path");
           const f = fs.readdirSync(`${fileOrFolderExists}/`);
-          f.forEach((e) => console.log(`${e}`));
+          f.filter(
+            (e) => [".json", ".git"].indexOf(extname(e)) !== 0
+          ).forEach((e) => (e !== ".git" ? console.log(`${e}`) : ""));
         }
 
         return;
