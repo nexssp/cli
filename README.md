@@ -11,14 +11,6 @@ Programmer 2.1.0 - Free, Open Source, Educational Version
 
 NOTE: _**Nexss Programmer DOES NOT need administrative rights**_ for your operating system so it is very safe. Try it today and save your time!
 
-From the 1st of Februrary 2020, This **Free, Educational, Open Source**, fully functional version of **The Nexss Programmer** will be **still supported if there are any bugs, questions or contributions**. Please remember to keep with your products the copyright notice and license document if you are using it for any purposes: [License of the Nexss Programmer](https://github.com/nexssp/cli/blob/master/LICENSE)
-
-### Copyright (c) 2018-2020 Nexss.com
-
-From now, the next version(s) of this software has been moved to the different **private** repository under the different licensing terms.  
-Contact us for the details,  
-**Nexss.com TEAM**
-
 <p align="center">
 <b><a href="https://github.com/nexssp/cli/wiki/Concept-Overview">Overview</a></b> |
 <b><a href="https://github.com/nexssp/cli/wiki/Nexss-Programmer-Programming-Languages">List of Languages</a></b> |
@@ -41,7 +33,7 @@ Contact us for the details,
     </a>
 </p>
 
-Nexss Programmer is the **innovative** and **evolutionary** tool for the programmers with unlimited possibilities. This system allows to combine from over [32 programming languages](https://github.com/nexssp/cli/wiki/Nexss-Programmer-Programming-Languages) in many different ways.
+Nexss Programmer is the **innovative** and **evolutionary** tool for the programmers with unlimited possibilities. This system allows to combine from almost [50 programming languages](https://github.com/nexssp/cli/wiki/Nexss-Programmer-Programming-Languages) in many different ways.
 
 ---
 
@@ -64,7 +56,7 @@ This is preview of Nexss Programmer GUI which will be available in **PAID** vers
 
 ---
 
-IMPORTANT NOTE: Only **TCL/TK**(needs to be installed manually), **Kotlin**, **Haskell**, **VBScript**, **Windows Scripting Hosts**, **PureData** need some manual adjustments to make to work with JSON data / Nexss Programmer Projects.
+IMPORTANT NOTE: **Kotlin**, **Haskell**, **VBScript**, **Windows Scripting Hosts**, **PureData** need some manual adjustments to make to work with JSON data / Nexss Programmer Projects.
 
 NOTE2: **Linux** _(Soon - FOR NOW ONLY WORKS NODEJS)_ and **MacOS** + Swift language _(Soon)_ - **Work In Progress**
 
