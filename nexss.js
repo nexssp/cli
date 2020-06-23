@@ -15,9 +15,15 @@ const { isURL } = require("./lib/data/url");
 const cliArgs = require("minimist")(process.argv.slice(2));
 const { NEXSS_SPECIAL_CHAR } = require("./config/defaults");
 process.nexssGlobalCWD = process.cwd();
-if (cliArgs.version) {
-  console.log(require("./package.json").version);
-  process.exit(0);
+
+// Core functions like version, update. All are located ./lib/core
+if (process.argv[2] && process.argv[2].startsWith("--")) {
+  const f = process.argv[2].slice(2);
+  const functionsFolder = `./lib/core/${f}.js`;
+  if (existsSync(`${__dirname}${functionsFolder.slice(1)}`)) {
+    const functionRun = require(functionsFolder);
+    functionRun();
+  }
 }
 
 let plugin = cliArgs._[0];
