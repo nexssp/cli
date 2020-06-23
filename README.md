@@ -4,7 +4,13 @@ Welcome to      ____
 |  ``..      | |______           ``..''              .''                .''
 |      ``..  | |                 ..'`..           ..'                ..'
 |          ``| |___________  ..''      ``.. ....''             ....''
-Programmer 2.1.0 - Free, Open Source, Educational Version
+Programmer 2.1.1 - Free, Open Source, Educational Version
+```
+```sh
+# Switch between Nexss Programmer versions
+nexss --update master # latest version
+nexss --update 2.1
+nexss --update 2.0
 ```
 **Nexss Programmer Presentation** (Youtube video):  
 [![Nexss Programmer Presentation](https://img.youtube.com/vi/vs2tXMrZzzs/0.jpg)](https://www.youtube.com/watch?v=vs2tXMrZzzs)
