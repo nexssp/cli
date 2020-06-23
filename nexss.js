@@ -15,9 +15,14 @@ const { isURL } = require("./lib/data/url");
 
 const cliArgs = require("minimist")(process.argv.slice(2));
 
-if (cliArgs.version) {
-  console.log(require("./package.json").version);
-  process.exit(0);
+// Core functions like version, update. All are located ./lib/core
+if (process.argv[2] && process.argv[2].startsWith("--")) {
+  const f = process.argv[2].slice(2);
+  const functionsFolder = `./lib/core/${f}.js`;
+  if (existsSync(`${__dirname}${functionsFolder.slice(1)}`)) {
+    const functionRun = require(functionsFolder);
+    functionRun();
+  }
 }
 
 let plugin = cliArgs._[0];
@@ -137,7 +142,7 @@ if (existsSync(plugin) || isURL(plugin)) {
 
               console.log(bold(`List of ${whatToSet}:`));
               let firstCompiler;
-              Object.keys(languageSelected[whatToSet]).forEach(w => {
+              Object.keys(languageSelected[whatToSet]).forEach((w) => {
                 if (!firstCompiler) {
                   firstCompiler = w;
                 }
@@ -178,7 +183,7 @@ if (existsSync(plugin) || isURL(plugin)) {
             );
             if (Object.keys(languageSelected[whatToSet]).length) {
               console.log(bold(`List of ${whatToSet}:`));
-              Object.keys(languageSelected[whatToSet]).forEach(w => {
+              Object.keys(languageSelected[whatToSet]).forEach((w) => {
                 console.log(bold(w), languageSelected[whatToSet][w]);
               });
             } else {
@@ -220,7 +225,7 @@ if (existsSync(plugin) || isURL(plugin)) {
                 stdio: "inherit",
                 detached: false,
                 shell: true,
-                cwd: process.cwd()
+                cwd: process.cwd(),
               });
             } catch (error) {
               console.log(
@@ -254,7 +259,7 @@ if (existsSync(plugin) || isURL(plugin)) {
             url: languageSelected.url,
             description: languageSelected.description,
             extensions: languageSelected.extensions,
-            configFile: languageSelected.configFile
+            configFile: languageSelected.configFile,
           };
           if (process.argv.includes("--json")) {
             console.info(JSON.stringify(info));
@@ -295,7 +300,7 @@ if (existsSync(plugin) || isURL(plugin)) {
             Object.keys(pm)
               .concat(["info", "config"])
               .filter(
-                e =>
+                (e) =>
                   !["keyOfItem", "else", "messageAfterInstallation"].includes(e)
               )
           );
@@ -315,7 +320,7 @@ if (existsSync(plugin) || isURL(plugin)) {
                 stdio: "inherit",
                 detached: false,
                 shell: true,
-                cwd: process.cwd()
+                cwd: process.cwd(),
               });
             } catch (error) {
               console.log(`Command failed ${command}`);
@@ -388,7 +393,7 @@ if (fileOrFolderExists && process.argv[3] === "test") {
     require("child_process").execSync(testCommand, {
       stdio: "inherit",
       detached: false,
-      shell: true
+      shell: true,
     });
   } catch (error) {
     console.log(`Command failed ${testCommand}`);
@@ -410,7 +415,7 @@ switch (command) {
           console.info(helpContent.toString());
         } else {
           const f = fs.readdirSync(`${fileOrFolderExists}/`);
-          f.forEach(e => console.log(`${e}`));
+          f.forEach((e) => console.log(`${e}`));
         }
 
         return;
@@ -460,10 +465,10 @@ switch (command) {
           // console.log(`./nexss-${plugin}/commands/*.md`);
           const fg = require("fast-glob");
           const files = fg.sync([
-            `${__dirname}/nexss-${plugin}/commands/*.md`.replace(/\\/g, "/")
+            `${__dirname}/nexss-${plugin}/commands/*.md`.replace(/\\/g, "/"),
           ]);
           const { basename } = require("path");
-          let filesList = files.map(f => basename(f).replace(".md", ""));
+          let filesList = files.map((f) => basename(f).replace(".md", ""));
           helpContent += `${bold("Commands available")} for nexss-${bold(
             plugin
           )}
