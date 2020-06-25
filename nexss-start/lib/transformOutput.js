@@ -70,6 +70,13 @@ module.exports.transformOutput = () =>
 
         // data = nxsInModule(data);
 
+        // This is handy if you need to execute some command after node.
+        // Like dropbox
+        if (data.nxsExecute) {
+          const nxsExecute = require("./output/nxsExecute");
+          data = nxsExecute(data);
+        }
+
         const nxsDeleteCache = data.nxsDelete;
         if (data.nxsField && data) {
           nxsFieldModule(data, data.nxsField);
