@@ -1,5 +1,5 @@
 module.exports = (data) => {
-  const nxsExecuteFieldAs = data.nxsExecuteFieldAs;
+  let nxsExecuteFieldAs = data.nxsExecuteFieldAs;
   delete data.nxsExecuteFieldAs;
 
   var sss = require("child_process").spawnSync;
