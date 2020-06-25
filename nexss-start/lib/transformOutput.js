@@ -48,7 +48,7 @@ module.exports.transformOutput = () =>
       // You can use variables now!!!
 
       Object.keys(data).forEach((e) => {
-        if (e.startsWith("_")) {
+        if (!e.startsWith("__") && e.startsWith("_")) {
           // All vars which starts with _ are automatically cleaned up
           // as they are local for execute one Nexss Programmer Node.
           delete data[e];
