@@ -38,7 +38,10 @@ module.exports.transformValidation = (area = "input", options = {}) => {
                 // console.log("VALIDATION!!!!!:", validation, "kname!!", k.name);
                 let message;
                 if (validation.message) {
-                  message = validation.message;
+                  message = validation.message.replace(
+                    "<Field>",
+                    "'" + k.name + "'"
+                  );
                 } else if (validationMessages[validation.type]) {
                   message = validationMessages[validation.type].message.replace(
                     "<Field>",
