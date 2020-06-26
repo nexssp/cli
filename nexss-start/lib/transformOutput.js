@@ -78,15 +78,6 @@ module.exports.transformOutput = () =>
         }
 
         const nxsDeleteCache = data.nxsDelete;
-        if (data.nxsField && data) {
-          nxsFieldModule(data, data.nxsField);
-          //process.exit(0) in the module as this is only one field as text
-        }
-
-        if (data.nxsFields) {
-          // below couldn't get to working with nxsFieldsModule
-          data = nxsFieldsModule(data, data.nxsFields);
-        }
 
         if (data.nxsConcat || data.nxsConcatFields) {
           const nxsConcat = data.nxsConcat || data.nxsConcatFields;
@@ -117,6 +108,16 @@ module.exports.transformOutput = () =>
         if (data.nxsOutAs || data.nxsAs) {
           data = nxsRenameModule(data, "nxsOut", data.nxsOutAs || data.nxsAs);
           delete data.nxsAs;
+        }
+
+        if (data.nxsField && data) {
+          nxsFieldModule(data, data.nxsField);
+          //process.exit(0) in the module as this is only one field as text
+        }
+
+        if (data.nxsFields) {
+          // below couldn't get to working with nxsFieldsModule
+          data = nxsFieldsModule(data, data.nxsFields);
         }
 
         delete data["nxsConcat"];
