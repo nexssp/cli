@@ -51,14 +51,15 @@ const nexssFileParser = (content, filename, nxsArgs) => {
       // We remove unnecessary quotes from the parameters of .nexss files.
       for (let [key, value] of Object.entries(args)) {
         if (!Array.isArray(value)) {
-          args[key] = stripEndQuotes(value);
+          if (isNaN(value)) {
+            args[key] = stripEndQuotes(value);
+          }
         } else {
           args[key] = args[key].map((a) => {
             return stripEndQuotes(a);
           });
         }
       }
-
       // delete args._;
       // if (nxsArgs) {
       //   // Object.assign(args, nxsArgs); // if actual parameters  pass to all lines
