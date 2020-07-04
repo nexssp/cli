@@ -161,6 +161,9 @@ const getFiles = (folder, args, env, ccc) => {
   const resultFiles =
     config_files &&
     config_files.map((file) => {
+      if (file.name.startsWith("http")) {
+        return file;
+      }
       const fileCWD = process.cwd();
       // console.log("=============================================");
       // console.log("FFFFFIIILLLLEEEEEEEEEE->", file, "fileCWD:", fileCWD);

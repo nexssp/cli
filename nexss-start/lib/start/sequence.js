@@ -28,8 +28,12 @@ more: https://github.com/nexssp/cli/wiki/Sequences`
   if (!nexssConfig.sequences[seqName]) {
     error(`${seqName} sequence does not exist in the _nexss.yml`);
     console.log("PATH: ", bold(nexssConfig.filePath));
-    // console.log("Sequences: ");
-    // console.log(nexssConfig.sequences);
+    if (nexssConfig.sequences) {
+      console.log("Sequences: ");
+      console.log(
+        require("util").inspect(nexssConfig.sequences, true, 4, true)
+      );
+    }
     process.exit();
   } else {
     return nexssConfig.sequences[seqName];
