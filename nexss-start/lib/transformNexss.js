@@ -118,7 +118,6 @@ module.exports.transformNexss = (
       });
 
       this.worker.stderr.on("data", function (err) {
-        process.nxsErrorExists = true;
         const errorString = err.toString();
 
         // console.error("ERRSTRING: " + err.toString());
@@ -151,6 +150,7 @@ module.exports.transformNexss = (
           });
           // this.errBuffer = "";
         } else {
+          process.nxsErrorExists = true;
           this.errBuffer = this.errBuffer || "";
           this.errBuffer += err.toString();
           // if (this.errBuffer)
