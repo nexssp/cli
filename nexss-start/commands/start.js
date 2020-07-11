@@ -182,10 +182,16 @@ if (cliArgs.server) {
         stream: "transformInput",
         cmd: "in",
       };
-      if (file.args && file.args.nxsInFrom) {
-        transformInParams.inputData = {};
-        transformInParams.inputData.nxsInFrom = file.args.nxsInFrom;
-        delete file.args.nxsInFrom;
+      // if (file.args && file.args.nxsInFrom) {
+      //   transformInParams.inputData = {};
+      //   transformInParams.inputData.nxsInFrom = file.args.nxsInFrom;
+      //   delete file.args.nxsInFrom;
+      // }
+
+      if (file.args) {
+        transformInParams.inputData = file.args;
+        // transformInParams.inputData.nxsInFrom = file.args.nxsInFrom;
+        // delete file.args.nxsInFrom;
       }
 
       nexssResult.push(transformInParams);
@@ -199,7 +205,7 @@ if (cliArgs.server) {
         nexssResult.push({
           stream: "transformHash",
           cmd: file,
-          inputData: fileArgsHash,
+          // inputData: fileArgsHash,
         });
       } else {
         if (parsed.href) {
@@ -312,7 +318,7 @@ if (cliArgs.server) {
                     data: file.data,
                     options: spawnOptions,
                     fileName: path.normalize(fileName),
-                    inputData: fileArgs,
+                    // inputData: fileArgs,
                     cwd: file.path,
                     env: file.env ? file.env : null,
                   });

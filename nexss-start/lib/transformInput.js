@@ -6,7 +6,7 @@ const nxsInModule = require("./input/nxsIn");
 const { nxsDebugData } = require("./output/nxsDebug");
 require("../../lib/strings"); //we load string interpolate
 const { expressionParser } = require("./expressionParser");
-
+const cliArgsParser = require("minimist");
 module.exports.transformInput = (x, y, params) =>
   new Transform({
     // writableObjectMode: true,
@@ -25,14 +25,28 @@ module.exports.transformInput = (x, y, params) =>
         return;
       }
 
+      delete params.env;
+      // console.log("#######################", params);
       if (data) {
+        // We add inputData from the parameters
+        // This is added here as the validation is needed
+        if (params.inputData) {
+          // FIXME: later to make sure everywever is the object, not array.
+          // Array is used on args parameter
+          if (Array.isArray(params.inputData)) {
+            params.inputData = cliArgsParser(params.inputData);
+          }
+
+          Object.assign(data, params.inputData);
+        }
+
         Object.keys(data).forEach((e) => {
           data[e] = expressionParser(data, data[e]);
         });
 
-        if (params && params.inputData && params.inputData.nxsInFrom) {
-          data.nxsInFrom = params.inputData.nxsInFrom;
-        }
+        // if (params && params.inputData && params.inputData.nxsInFrom) {
+        //   data.nxsInFrom = params.inputData.nxsInFrom;
+        // }
 
         data = nxsInModule(data);
 

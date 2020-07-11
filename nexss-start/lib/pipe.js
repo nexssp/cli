@@ -47,6 +47,8 @@ async function run(operations, options = {}) {
           terminalParams = cleanup(terminalParams);
         }
 
+        //console.log(args);
+
         args = args.concat(terminalParams);
       }
 

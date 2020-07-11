@@ -199,18 +199,41 @@ module.exports.transformNexss = (
           callback();
         }
       });
-      try {
-        // console.error(chunk);
-        j = JSON.parse(chunk.toString());
+      let j;
+      if (inputData) {
+        let parsed;
+        if (Array.isArray(inputData)) {
+          inputData = cliArgsParser(inputData);
+        }
 
-        const { expressionParser } = require("./expressionParser");
-        Object.keys(j).forEach((e) => {
-          j[e] = expressionParser(j, j[e]);
-        });
+        try {
+          j = JSON.parse(chunk.toString());
+          let FinalData = Object.assign({}, j, inputData);
 
-        this.worker.stdin.write(Buffer.from(JSON.stringify(j)));
-      } catch (error) {
-        dbg(`ERROR WRITING TO PIPE: ${chunk}`);
+          const { expressionParser } = require("./expressionParser");
+          Object.keys(FinalData).forEach((e) => {
+            FinalData[e] = expressionParser(FinalData, FinalData[e]);
+          });
+
+          this.worker.stdin.write(Buffer.from(JSON.stringify(FinalData)));
+        } catch (error) {
+          inputData.nexssStdin = chunk.toString();
+          this.worker.stdin.write(Buffer.from(JSON.stringify(inputData)));
+        }
+      } else {
+        try {
+          // console.error(chunk);
+          j = JSON.parse(chunk.toString());
+
+          const { expressionParser } = require("./expressionParser");
+          Object.keys(j).forEach((e) => {
+            j[e] = expressionParser(j, j[e]);
+          });
+
+          this.worker.stdin.write(Buffer.from(JSON.stringify(j)));
+        } catch (error) {
+          dbg(`ERROR WRITING TO PIPE: ${chunk}`);
+        }
       }
 
       nxsDebugTitle("Executed: " + this.worker.cmd, j, "yellow");
