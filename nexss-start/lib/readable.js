@@ -6,6 +6,7 @@ if (process.argv[2] === "s" || process.argv[2] === "start") {
   paramNumber = 3;
 }
 const cliArgs = require("minimist")(process.argv.slice(paramNumber));
+const { cleanup } = require("./output/nxsOutputParams");
 // const nxsInModule = require("./input/nxsIn");
 module.exports.readable = (startData) => {
   var s = new Readable({
@@ -79,8 +80,8 @@ module.exports.readable = (startData) => {
   }
 
   delete cliArgs.nxsTime;
-
-  Object.assign(startData, cliArgs);
+  cliArgsCleaned = cleanup(cliArgs);
+  Object.assign(startData, cliArgsCleaned);
 
   // Make sure we are in the right folder.
   // Later change it

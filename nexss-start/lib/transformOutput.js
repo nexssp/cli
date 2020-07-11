@@ -1,5 +1,5 @@
 const { Transform } = require("stream");
-const cliArgs = require("minimist")(process.argv);
+
 const { error, warn, ok } = require("../../lib/log");
 const { bold, red } = require("../../lib/color");
 const nxsFieldModule = require("./output/nxsField");
@@ -15,15 +15,19 @@ const { nxsDebugData } = require("./output/nxsDebug");
 require("../../lib/strings"); //we load string interpolate
 const { expressionParser } = require("./expressionParser");
 
-module.exports.transformOutput = () =>
+module.exports.transformOutput = (x, y, z) =>
   new Transform({
     // writableObjectMode: true,
     transform: (chunk, encoding, callback) => {
       let data = chunk.toString();
-
+      const cliArgs = require("minimist")(y);
+      delete cliArgs._;
       // if (data && data.startsWith("{")) {
       try {
         data = JSON.parse(data);
+        // We add data for nxsField, nxsFields etc.
+        // defined in the nexss-start\lib\output\nxsOutputParams.js
+        Object.assign(data, cliArgs);
       } catch (error) {
         // console.error(
         //   "ERROR in JSON (start/tranformOutput.js): ",

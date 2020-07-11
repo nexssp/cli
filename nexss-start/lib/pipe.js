@@ -11,14 +11,24 @@ const { transformOutput } = require("./transformOutput");
 const { transformHash } = require("./transformHash");
 const { transformRequest } = require("./transformRequest");
 const { readable } = require("./readable");
-
+const { cleanup } = require("./output/nxsOutputParams");
 const util = require("util");
 const pipelineAsync = util.promisify(pipeline);
 
 async function run(operations, options = {}) {
+  // We get last index of transformOutput as some parameters
+  // passed in the commandline directly only should be applied in the
+  // last transform output eg. nxsFields, nxsField etc.
+  let lastIndex;
+  for (let x = 0; x < operations.length; x++) {
+    if (operations[x].stream == "transformOutput") {
+      lastIndex = x;
+    }
+  }
+
   await pipelineAsync(
     // process.stdin,
-    ...operations.map((element) => {
+    ...operations.map((element, index) => {
       let streamName = element.stream || "transformNexss";
       let args = element.args || [];
 
@@ -28,7 +38,19 @@ async function run(operations, options = {}) {
         paramsNumber = 3;
       }
 
-      if (!options.build) args = args.concat(process.argv.slice(paramsNumber));
+      if (!options.build) {
+        let terminalParams = process.argv.slice(paramsNumber);
+        // We filter transformOutput params passed from terminal
+        // This needs to be done as some packages are built from
+        // many modules and transform output streams are used also there.
+        if (index != lastIndex) {
+          terminalParams = cleanup(terminalParams);
+        }
+
+        args = args.concat(terminalParams);
+      }
+
+      // console.log("-----", element.stream, args);
 
       const runOptions = Object.assign({}, options, {
         fileName: element.fileName,
