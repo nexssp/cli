@@ -25,6 +25,16 @@ module.exports.transformOutput = (x, y, z) =>
       // if (data && data.startsWith("{")) {
       try {
         data = JSON.parse(data);
+        if (data.nxsStop) {
+          if (cliArgs.nxsDebug) {
+            console.log(
+              `Nexss Programmer execution stopped by command ${bold(
+                "nxsStop"
+              )}. Eg. in the data there was nxsStop=true`
+            );
+          }
+          process.exit(0);
+        }
         // We add data for nxsField, nxsFields etc.
         // defined in the nexss-start\lib\output\nxsOutputParams.js
         Object.assign(data, cliArgs);
@@ -40,7 +50,7 @@ module.exports.transformOutput = (x, y, z) =>
           // if (!data) {
           //   console.error("NO DATA");
           // }
-
+          data.nxsStop = true;
           callback(null, data);
           // console.log(data);
         }

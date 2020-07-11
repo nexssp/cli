@@ -118,6 +118,7 @@ module.exports.transformNexss = (
       });
 
       this.worker.stderr.on("data", function (err) {
+        process.nxsErrorExists = true;
         const errorString = err.toString();
 
         // console.error("ERRSTRING: " + err.toString());
@@ -191,7 +192,12 @@ module.exports.transformNexss = (
 
       this.worker.on("exit", () => {
         self.end();
-        callback();
+        if (process.nxsErrorExists) {
+          console.log("There was an error during run..", this.worker.cmd);
+          process.exitCode = 1;
+        } else {
+          callback();
+        }
       });
       let j;
       if (inputData) {
