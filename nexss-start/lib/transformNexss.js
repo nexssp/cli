@@ -166,6 +166,7 @@ module.exports.transformNexss = (
           self.push(data.toString().trim().replace(/\n/g, "\n\r"));
           return;
         }
+
         const outputString = data.toString("utf8");
         // On Powershellthere is additional extra line which cousing a lot of headache..
         // Anyways we do not want to run empty line through

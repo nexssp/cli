@@ -72,9 +72,20 @@ if (cliArgs._[0] !== "all") {
   testNames = [oneTest];
 } else {
   testNames = fs.readdirSync(nexssTestsFolder);
+  warn("=============================================================");
+  warn("=============================================================");
+  warn("=============================================================");
+  warn(
+    `Please keep in mind that languages.nexss-test.js needs to be run separately as it is long test which installs all environments etc and test all languages.`
+  );
+  warn("=============================================================");
+  warn("=============================================================");
+  warn("=============================================================");
+
+  testNames = testNames.filter((e) => e.indexOf("languages.nexss-test.js"));
 }
 
-var tests = 1;
+var tests = 0;
 var continuue = 0;
 var totalPerformedTests = 0;
 
@@ -225,14 +236,16 @@ function should(fname, test, regE, options) {
   console.log(`>>> ${camelCase(fname)}: ${bright(green(regE))}`);
   let result, result2, result3, match;
   // console.log(data);
-  data = data.trim();
-  if (regE instanceof RegExp) {
-    result3 = regE.test(data);
-  } else {
-    let regExp = new RegExp(regE, "i");
-    match = regExp.exec(data);
-    result = match && match.length > 1;
-    result2 = data && data.includes(regE);
+  if (data) {
+    data = data.trim();
+    if (regE instanceof RegExp) {
+      result3 = regE.test(data);
+    } else {
+      let regExp = new RegExp(regE, "i");
+      match = regExp.exec(data);
+      result = match && match.length > 1;
+      result2 = data && data.includes(regE);
+    }
   }
 
   let title = "contains";

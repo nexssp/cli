@@ -14,13 +14,13 @@ const nxsInModule = require("./input/nxsIn");
 const { nxsDebugData } = require("./output/nxsDebug");
 require("../../lib/strings"); //we load string interpolate
 const { expressionParser } = require("./expressionParser");
-
+const { cleanup } = require("./output/nxsOutputParams");
 module.exports.transformOutput = (x, y, z) =>
   new Transform({
     // writableObjectMode: true,
     transform: (chunk, encoding, callback) => {
       let data = chunk.toString();
-      const cliArgs = require("minimist")(y);
+      let cliArgs = require("minimist")(y);
       delete cliArgs._;
       // if (data && data.startsWith("{")) {
       try {
@@ -37,6 +37,11 @@ module.exports.transformOutput = (x, y, z) =>
         }
         // We add data for nxsField, nxsFields etc.
         // defined in the nexss-start\lib\output\nxsOutputParams.js
+        //
+        delete cliArgs.nxsTime;
+        // Below is to leave only the params defined in nxsOutputParams like nxsField etc.
+        // For now disabled
+        // cliArgs = cleanup(cliArgs, true);
         Object.assign(data, cliArgs);
       } catch (error) {
         // console.error(

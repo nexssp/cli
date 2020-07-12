@@ -52,7 +52,7 @@ async function run(operations, options = {}) {
         args = args.concat(terminalParams);
       }
 
-      // console.log("-----", element.stream, args);
+      // console.log("-----", element.stream, args, element.inputData);
 
       const runOptions = Object.assign({}, options, {
         fileName: element.fileName,
