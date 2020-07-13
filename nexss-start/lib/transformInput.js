@@ -7,6 +7,9 @@ const { nxsDebugData } = require("./output/nxsDebug");
 require("../../lib/strings"); //we load string interpolate
 const { expressionParser } = require("./expressionParser");
 const cliArgsParser = require("minimist");
+const nxsStop = require("./start/nxsStop");
+const nxsGlobal = require("./input/nxsGlobal");
+const nxsLocal = require("./input/nxsLocal");
 module.exports.transformInput = (x, y, params) =>
   new Transform({
     // writableObjectMode: true,
@@ -51,6 +54,9 @@ module.exports.transformInput = (x, y, params) =>
         data = nxsInModule(data);
 
         nxsDebugData(data, "Input", "blue");
+        nxsGlobal(data);
+        nxsLocal(data);
+        nxsStop(data);
 
         callback(null, JSON.stringify(data));
       }

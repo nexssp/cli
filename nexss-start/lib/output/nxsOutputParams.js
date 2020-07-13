@@ -1,4 +1,10 @@
 module.exports.params = [
+  // Input
+  // "--nxsGlobal",
+  // "--nxsGlobalForce",
+  // "--nxsLocal",
+  // "--nxsLocalForce",
+  // Output
   "--nxsConcat",
   "--nxsConcatAs",
   "--nxsGlue",

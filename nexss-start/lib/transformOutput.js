@@ -15,6 +15,7 @@ const { nxsDebugData } = require("./output/nxsDebug");
 require("../../lib/strings"); //we load string interpolate
 const { expressionParser } = require("./expressionParser");
 const { cleanup } = require("./output/nxsOutputParams");
+const nxsStop = require("./start/nxsStop");
 module.exports.transformOutput = (x, y, z) =>
   new Transform({
     // writableObjectMode: true,
@@ -25,23 +26,16 @@ module.exports.transformOutput = (x, y, z) =>
       // if (data && data.startsWith("{")) {
       try {
         data = JSON.parse(data);
-        if (data.nxsStop) {
-          if (cliArgs.nxsDebug) {
-            console.log(
-              `Nexss Programmer execution stopped by command ${bold(
-                "nxsStop"
-              )}. Eg. in the data there was nxsStop=true`
-            );
-          }
-          process.exit(0);
-        }
+        nxsStop(data);
         // We add data for nxsField, nxsFields etc.
         // defined in the nexss-start\lib\output\nxsOutputParams.js
         //
         delete cliArgs.nxsTime;
-        // Below is to leave only the params defined in nxsOutputParams like nxsField etc.
-        // For now disabled
-        // cliArgs = cleanup(cliArgs, true);
+        delete cliArgs.nxsLocal;
+        delete cliArgs.nxsLocalForce;
+        delete cliArgs.nxsGlobal;
+        delete cliArgs.nxsGlobalForce;
+
         Object.assign(data, cliArgs);
       } catch (error) {
         // console.error(
@@ -141,6 +135,11 @@ module.exports.transformOutput = (x, y, z) =>
 
         delete data["nxsConcat"];
         delete data["nxsJoin"];
+
+        delete data["nxsLocal"];
+        delete data["nxsLocalForce"];
+        delete data["nxsGlobal"];
+        delete data["nxsGlobalForce"];
 
         // if (!cliArgs.nxsPretty) {
         //   console.log(JSON.stringify(data));

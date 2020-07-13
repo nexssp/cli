@@ -4,7 +4,7 @@ module.exports = {
   values,
   tests: [
     {
-      title: "nxs Core Functions located nexss-start/writeableStdout.js",
+      title: "nxs Core funnctions located in stream transformOutput",
       tests: [
         {
           title: "--nxsField",
