@@ -79,6 +79,12 @@ const getFiles = (folder, args, env, ccc) => {
 
   let folderAbsolute = getPath(getName(folder.name));
   if (!folderAbsolute && folder.name !== NEXSS_SPECIAL_CHAR) {
+    if (!folder.filename) {
+      // TODO: Maybe later to add here extra/special functions like:
+      // nexss $#abc, then folder.name = $#abc
+      // see --update function (/lib/core/update.js)
+      return folder;
+    }
     folderAbsolute = path.resolve(folder.filename);
     // console.log("RESOLVED!!!", folderAbsolute);
   }
@@ -149,11 +155,12 @@ const getFiles = (folder, args, env, ccc) => {
 
   if (!Array.isArray(config_files)) {
     console.error(
-      bold("files") +
-        " needs to be an array. Maybe you need to add " +
+      bold(`You must have files: or 'default' sequence to run project.`) +
+        bold("\nfiles") +
+        " needs to be an array. \nMaybe you need to add " +
         red("-") +
-        "\nat the front of the name in the _nexss.yml config file eg.\n" +
-        green(bold("- name: myfile.js"))
+        " at the front of the name in the _nexss.yml config file eg.\n" +
+        green(bold("files:\n  - name: myfile.js"))
     );
     process.exit(0);
   }

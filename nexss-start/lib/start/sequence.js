@@ -25,6 +25,8 @@ more: https://github.com/nexssp/cli/wiki/Sequences`
     process.exit();
   }
 
+  seqName = searchSequence(seqName, nexssConfig.sequences);
+
   if (!nexssConfig.sequences[seqName]) {
     error(`${seqName} sequence does not exist in the _nexss.yml`);
     console.log("PATH: ", bold(nexssConfig.filePath));
@@ -36,7 +38,22 @@ more: https://github.com/nexssp/cli/wiki/Sequences`
     }
     process.exit();
   } else {
+    if (nexssConfig.sequences[seqName].seq) {
+      seqName = nexssConfig.sequences[seqName].seq;
+    }
+
     return nexssConfig.sequences[seqName];
+  }
+};
+
+// search for regular expressions
+const searchSequence = (seqFrom, sequences) => {
+  for (regExpSequence of Object.keys(sequences)) {
+    let r = new RegExp(regExpSequence, "i");
+    // console.log(regExpSequence, ":", seqFrom, r.test(seqFrom));
+    if (r.test(seqFrom)) {
+      return regExpSequence;
+    }
   }
 };
 
