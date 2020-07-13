@@ -162,6 +162,12 @@ const getFiles = (folder, args, env, ccc) => {
     config_files &&
     config_files.map((file) => {
       if (file.name.startsWith("http")) {
+        const name = file.name;
+        const split = file.name.trim().split(" ");
+        file.name = split.shift();
+        if (split.length > 0) {
+          file.args = split;
+        }
         return file;
       }
       const fileCWD = process.cwd();
