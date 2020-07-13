@@ -7,6 +7,13 @@ module.exports = (data) => {
         `Nexss Programmer execution stopped by command ${bold("nxsStop")}.`
       );
     }
+
+    if (data.nxsTime) {
+      const {
+        timeElapsed,
+      } = require("../../../nexss-start/lib/output/nxsTime");
+      timeElapsed(data.nxsTime);
+    }
     process.exit(0);
   }
 };
