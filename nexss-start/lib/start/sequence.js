@@ -34,9 +34,14 @@ more: https://github.com/nexssp/cli/wiki/Sequences`
     console.log("PATH: ", bold(nexssConfig.filePath));
     if (nexssConfig.sequences) {
       console.log("Sequences: ");
-      console.log(
-        require("util").inspect(nexssConfig.sequences, true, 4, true)
-      );
+      // When the server is running we do not display terminal colors, formatting etc
+      if (process.argv.includes("--htmlOutput")) {
+        console.log(nexssConfig.sequences);
+      } else {
+        console.log(
+          require("util").inspect(nexssConfig.sequences, true, 4, true)
+        );
+      }
     }
     process.exit();
   } else {
