@@ -31,6 +31,7 @@ more: https://github.com/nexssp/cli/wiki/Sequences`
   // console.log("FOUND SEQNAME: ", foundSequence);
   if (!nexssConfig.sequences[seqName]) {
     error(`${seqName} sequence does not exist in the _nexss.yml`);
+    error(`searchSequence: ${foundSequence}`);
     console.log("PATH: ", bold(nexssConfig.filePath));
     if (nexssConfig.sequences) {
       console.log("Sequences: ");
@@ -52,8 +53,9 @@ more: https://github.com/nexssp/cli/wiki/Sequences`
     }
     if (!seqBody[0].data) {
       seqBody[0].data = foundSequence.data || passedData;
+    } else {
+      Object.assign(seqBody[0].data, foundSequence.data, passedData);
     }
-
     return seqBody;
   }
 };

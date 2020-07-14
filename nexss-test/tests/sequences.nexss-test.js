@@ -40,9 +40,7 @@ module.exports = {
           title: "Naming Group",
           params: [
             "nexss Nexss/Test/Sequences --seq=2aboutxasdasd",
-            `"found1": "x",
-  "found2": "a",
-  "found3": "sdasd"`,
+            `"found1":"x","found2":"a","found3":"sdasd"`,
           ],
         },
         {
@@ -50,6 +48,13 @@ module.exports = {
           params: [
             "nexss Nexss/Test/Sequences --seq=mytestdata",
             `"myparam1": "overwritten"`,
+          ],
+        },
+        {
+          title: "Sequence parameters with .nexss file",
+          params: [
+            'nexss Nexss/Test/Sequences --seq="openFile/myvar"',
+            `"openFile":"myvar"`,
           ],
         },
       ],

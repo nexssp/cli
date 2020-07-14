@@ -197,6 +197,11 @@ if (cliArgs.server) {
         // delete file.args.nxsInFrom;
       }
 
+      if (file.data) {
+        transformInParams.inputData = file.data;
+        delete file.data;
+      }
+
       nexssResult.push(transformInParams);
       let stream = "transformNexss";
 
