@@ -216,7 +216,8 @@ const getFiles = (folder, args, env, ccc) => {
         // );
         // console.log(subConfig);
         process.chdir(fileCWD);
-        let xxxx = getFiles(file, null, env, subConfig);
+
+        let xxxx = getFiles(file, file.data, env, subConfig);
 
         return xxxx;
       }

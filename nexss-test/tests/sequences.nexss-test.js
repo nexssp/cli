@@ -26,6 +26,25 @@ module.exports = {
             /sequence does not exist in the _nexss.yml/,
           ],
         },
+        {
+          // Parameters are passed
+          title: "Capture Group",
+          params: [
+            "nexss Nexss/Test/Sequences --seq=aboutxasdasd",
+            `"nxsParam_0": "aboutxasdasd",
+  "nxsParam_1": "x",
+  "nxsParam_2": "asdasd"`,
+          ],
+        },
+        {
+          title: "Naming Group",
+          params: [
+            "nexss Nexss/Test/Sequences --seq=2aboutxasdasd",
+            `"found1": "x",
+  "found2": "a",
+  "found3": "sdasd"`,
+          ],
+        },
       ],
     },
   ],

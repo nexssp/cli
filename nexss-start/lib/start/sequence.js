@@ -2,7 +2,7 @@
 // more: https://github.com/nexssp/cli/wiki/Sequences
 const { error } = require("../../../lib/log");
 const { bold } = require("../../../lib/color");
-const getSequence = (seqName, nexssConfig) => {
+const getSequence = (seqName, nexssConfig, passedData) => {
   if (!seqName) {
     return (
       nexssConfig.files ||
@@ -25,8 +25,9 @@ more: https://github.com/nexssp/cli/wiki/Sequences`
     process.exit();
   }
 
-  seqName = searchSequence(seqName, nexssConfig.sequences);
-
+  const foundSequence = searchSequence(seqName, nexssConfig.sequences);
+  seqName = foundSequence && foundSequence.seq;
+  // console.log("FOUND SEQNAME: ", foundSequence);
   if (!nexssConfig.sequences[seqName]) {
     error(`${seqName} sequence does not exist in the _nexss.yml`);
     console.log("PATH: ", bold(nexssConfig.filePath));
@@ -38,21 +39,48 @@ more: https://github.com/nexssp/cli/wiki/Sequences`
     }
     process.exit();
   } else {
-    if (nexssConfig.sequences[seqName].seq) {
-      seqName = nexssConfig.sequences[seqName].seq;
+    const seqBody = nexssConfig.sequences[seqName];
+    if (seqBody.seq) {
+      return getSequence(seqBody.seq, nexssConfig, foundSequence.data);
     }
-
-    return nexssConfig.sequences[seqName];
+    seqBody[0].data = foundSequence.data || passedData;
+    return seqBody;
   }
 };
 
 // search for regular expressions
 const searchSequence = (seqFrom, sequences) => {
+  // We return sequence if exact name exists
+  if (sequences[seqFrom]) {
+    return { seq: seqFrom };
+  }
+  // Sequence as Regular expressions.
+  // Capturing and Named groups available
+  let data = {};
   for (regExpSequence of Object.keys(sequences)) {
     let r = new RegExp(regExpSequence, "i");
-    // console.log(regExpSequence, ":", seqFrom, r.test(seqFrom));
-    if (r.test(seqFrom)) {
-      return regExpSequence;
+    const matches = seqFrom.matchAll(r);
+    const ArrayMatch = Array.from(matches);
+    if (ArrayMatch && ArrayMatch[0]) {
+      if (ArrayMatch[0].groups) {
+        // NAMED GROUP
+        Object.keys(ArrayMatch[0].groups).forEach((e) => {
+          data[e] = ArrayMatch[0].groups[e];
+        });
+
+        return { seq: regExpSequence, data };
+      } else if (ArrayMatch[0].length > 1) {
+        // CAPTURING GROUP
+        let no = 0;
+        for (match of ArrayMatch[0]) {
+          data[`nxsParam_${no}`] = match;
+          no++;
+        }
+        return {
+          seq: regExpSequence,
+          data,
+        };
+      }
     }
   }
 };
