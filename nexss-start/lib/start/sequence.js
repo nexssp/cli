@@ -26,6 +26,7 @@ more: https://github.com/nexssp/cli/wiki/Sequences`
   }
 
   const foundSequence = searchSequence(seqName, nexssConfig.sequences);
+
   seqName = foundSequence && foundSequence.seq;
   // console.log("FOUND SEQNAME: ", foundSequence);
   if (!nexssConfig.sequences[seqName]) {
@@ -40,10 +41,14 @@ more: https://github.com/nexssp/cli/wiki/Sequences`
     process.exit();
   } else {
     const seqBody = nexssConfig.sequences[seqName];
+
     if (seqBody.seq) {
       return getSequence(seqBody.seq, nexssConfig, foundSequence.data);
     }
-    seqBody[0].data = foundSequence.data || passedData;
+    if (!seqBody[0].data) {
+      seqBody[0].data = foundSequence.data || passedData;
+    }
+
     return seqBody;
   }
 };

@@ -45,6 +45,13 @@ module.exports = {
   "found3": "sdasd"`,
           ],
         },
+        {
+          title: "Data in the sequences Overwrite",
+          params: [
+            "nexss Nexss/Test/Sequences --seq=mytestdata",
+            `"myparam1": "overwritten"`,
+          ],
+        },
       ],
     },
   ],

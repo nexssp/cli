@@ -63,8 +63,16 @@ const getFiles = (folder, args, env, ccc) => {
     return;
   }
   const cwd = path.resolve(process.cwd());
+
+  let ArgsParsed = parseName(folder.name).args;
+  if (ArgsParsed) {
+    ArgsParsed = require("minimist")(ArgsParsed); //convert to object
+  }
+
   if (!args) {
-    args = parseName(folder.name).args;
+    args = ArgsParsed;
+  } else {
+    Object.assign(args, ArgsParsed);
   }
 
   // console.log("folder:", folder, "ARGS!!!!!!!!!!", args);

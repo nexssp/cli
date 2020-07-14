@@ -103,6 +103,9 @@ if (
   }
 }
 
+// console.log(require("util").inspect(nexssConfig, true, 10));
+// process.exit(1);
+
 if (!Array.isArray(files)) {
   files = [files];
 }
