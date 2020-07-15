@@ -71,7 +71,8 @@ const searchSequence = (seqFrom, sequences) => {
   let data = {};
   for (regExpSequence of Object.keys(sequences)) {
     let r = new RegExp(regExpSequence, "i");
-    const matches = seqFrom.matchAll(r);
+
+    const matches = (seqFrom + "").matchAll(r);
     const ArrayMatch = Array.from(matches);
 
     if (ArrayMatch && ArrayMatch[0]) {
