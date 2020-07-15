@@ -44,6 +44,13 @@ module.exports = {
           ],
         },
         {
+          title: "Naming Group - with -seq",
+          params: [
+            "nexss Nexss/Test/Sequences --seq=3aboutxasdasd",
+            `"found4":"x","found5":"a","found6":"sdasd"`,
+          ],
+        },
+        {
           title: "Data in the sequences Overwrite",
           params: [
             "nexss Nexss/Test/Sequences --seq=mytestdata",
