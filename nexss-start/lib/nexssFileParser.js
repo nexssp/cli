@@ -7,6 +7,7 @@ function stripEndQuotes(s) {
 }
 
 const nexssFileParser = (content, filename, nxsArgs) => {
+  var { parseArgsStringToArgv } = require("string-argv");
   let lineNumber = 0;
   const nexssProgram = content.toString().trim().split(/\r?\n/);
   const totalLines = nexssProgram.length;
@@ -25,12 +26,13 @@ const nexssFileParser = (content, filename, nxsArgs) => {
         line = line.replace(/(\/\*[^*]*\*\/)|(\/\/[^*]*)/g, "");
         line = line.trim();
       }
-      // split by space but keep ""
-      let splitter = line.split(/\ (?=(?:(?:[^"]*"){2})*[^"]*$)/);
 
+      // console.log(line);
+      // split by space but keep ""
+      // let splitter = line.split(/\ (?=(?:(?:[^(("|')]*"){2})*[^("|')]*$)/);
+      let splitter = parseArgsStringToArgv(line);
       // console.log(line, line.split(/\ (?=(?:(?:[^"]*"){2})*[^"]*$)/));
       const name = splitter.shift();
-
       // Add parameters added to the .nexss program to the last one.
       // if (totalLines === lineNumber && nxsArgs) {
       //   splitter = splitter.concat(nxsArgs);
@@ -39,6 +41,8 @@ const nexssFileParser = (content, filename, nxsArgs) => {
       // Check if some arguments needs to be passed
       // Don't think combining  will all other args will be good in this
       // case.
+
+      //
 
       let args = minimist(splitter);
       if (args._ && args._.length === 0) {
@@ -119,7 +123,6 @@ const nexssFileParser = (content, filename, nxsArgs) => {
     })
 
     .flat();
-
   return files;
 };
 
