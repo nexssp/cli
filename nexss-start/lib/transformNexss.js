@@ -81,13 +81,17 @@ module.exports.transformNexss = (
       process.nexssCWD = cwd;
 
       args = args.remove("--nocache");
-      const argsStrings = args
-        .map((a) => (a.indexOf(" ") > -1 ? `${a.replace("=", "='")}'` : a))
-        .join(" ");
-      const nexssCommand = `${cmd} ${argsStrings}`;
+      // const argsStrings = args.map((a) =>
+      //   a.indexOf(" ") > -1 ? `${a.replace("=", '="')}"` : a
+      // );
+      const argsStrings = args.map((a) =>
+        a.indexOf("=") > -1 ? `${a.replace("=", '="')}"` : a
+      );
+
+      const nexssCommand = `${cmd} ${argsStrings.join(" ")}`;
       process.nexssCMD = nexssCommand;
 
-      this.worker = spawn(cmd, args, options);
+      this.worker = spawn(cmd, argsStrings, options);
 
       this.worker.cmd = nexssCommand;
 

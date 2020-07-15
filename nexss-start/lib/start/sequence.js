@@ -73,6 +73,7 @@ const searchSequence = (seqFrom, sequences) => {
     let r = new RegExp(regExpSequence, "i");
     const matches = seqFrom.matchAll(r);
     const ArrayMatch = Array.from(matches);
+
     if (ArrayMatch && ArrayMatch[0]) {
       if (ArrayMatch[0].groups) {
         // NAMED GROUP
@@ -91,6 +92,10 @@ const searchSequence = (seqFrom, sequences) => {
         return {
           seq: regExpSequence,
           data,
+        };
+      } else {
+        return {
+          seq: regExpSequence,
         };
       }
     }
