@@ -8,7 +8,7 @@ Programmer 2.1.1 - Free, Open Source, Educational Version
 ```
 ```sh
 # Switch between Nexss Programmer versions
-nexss --update master # latest version
+nexss --update master # latest version 2.1.2
 nexss --update 2.1
 nexss --update 2.0
 ```
