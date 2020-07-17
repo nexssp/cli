@@ -74,8 +74,6 @@ For installing some of the compilers **Nexss Programmer** uses fantastic package
 
 ## How to start learning computer programming?
 
-![nexssProgrammer-SelectTemplateExampleCLI](https://user-images.githubusercontent.com/53263666/72731382-ebc4dc80-3b93-11ea-9d84-5ee136ab2e33.png)
-
 - Start **learning PROGRAMMING** within minutes with Nexss PROGRAMMER 2.0 eg. `nexss myprogram.r` OR `nexss myanotherprogram.py` **(nexss file.ext)** and it will download automatically compiler and run Your program.
 - Add files from predefined templates for the languages
 - Build your own tools that other people can use,
