@@ -48,5 +48,6 @@
   ".bas": "https://github.com/nexssp/language_basic.git",
   ".zig": "https://github.com/nexssp/language_zig.git",
   ".m": "https://github.com/nexssp/language_octave.git",
-  ".raku": "https://github.com/nexssp/language_raku.git"
+  ".raku": "https://github.com/nexssp/language_raku.git",
+  ".cr": "https://github.com/nexssp/language_crystal.git"
 }
