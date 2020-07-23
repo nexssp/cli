@@ -4,8 +4,31 @@ Welcome to      ____
 |  ``..      | |______           ``..''              .''                .''
 |      ``..  | |                 ..'`..           ..'                ..'
 |          ``| |___________  ..''      ``.. ....''             ....''
-Programmer 2.1.1 - Free, Open Source, Educational Version
+Programmer 2.1.2 - Free, Open Source, Educational Version
 ```
+
+<p align="center">
+<b><a href="https://github.com/nexssp/cli/wiki/Concept-Overview">Overview</a></b> |
+<b><a href="https://github.com/nexssp/cli/wiki/Nexss-Programmer-Programming-Languages">List of Languages</a></b> |
+<b><a href="https://github.com/nexssp/cli/wiki/Quick-Start">Installation</a></b> |
+<b><a href="https://github.com/nexssp/cli/wiki">Documentation</a></b> |
+<b><a href="https://github.com/nexssp/cli/wiki/Tutorials">Tutorials</a></b>
+</p>
+
+---
+
+<p align="center" >
+    <a href="https://github.com/nexssp/cli/blob/master/LICENSE">
+        <img src="https://img.shields.io/github/license/nexssp/cli?style=for-the-badge" alt="License" />
+    </a>
+    <a href="https://github.com/nexssp/cli">
+        <img src="https://img.shields.io/github/languages/code-size/nexssp/cli?style=for-the-badge" alt="Repository size" />
+    </a>
+    <a href="https://discord.gg/d9xjMEX">
+        <img src="https://img.shields.io/badge/CHAT-ON%20DISCORD-brightgreen?style=for-the-badge" alt="License" />
+    </a>
+</p>
+
 
 ## Value Propositions
 - **Learning Tool** - Students can learn modern and old(history) of the languages and don't have to spend a lot of time finding out about how to install compilers - so Universities, Schools, Individuals - Self-learners etc. More people would start to like programming..
@@ -37,28 +60,6 @@ nexss --update 2.0
 [![Nexss Programmer Presentation](https://img.youtube.com/vi/vs2tXMrZzzs/0.jpg)](https://www.youtube.com/watch?v=vs2tXMrZzzs)
 
 NOTE: _**Nexss Programmer DOES NOT need administrative rights**_ for your operating system so it is very safe. Try it today and save your time!
-
-<p align="center">
-<b><a href="https://github.com/nexssp/cli/wiki/Concept-Overview">Overview</a></b> |
-<b><a href="https://github.com/nexssp/cli/wiki/Nexss-Programmer-Programming-Languages">List of Languages</a></b> |
-<b><a href="https://github.com/nexssp/cli/wiki/Quick-Start">Installation</a></b> |
-<b><a href="https://github.com/nexssp/cli/wiki">Documentation</a></b> |
-<b><a href="https://github.com/nexssp/cli/wiki/Tutorials">Tutorials</a></b>
-</p>
-
----
-
-<p align="center" >
-    <a href="https://github.com/nexssp/cli/blob/master/LICENSE">
-        <img src="https://img.shields.io/github/license/nexssp/cli?style=for-the-badge" alt="License" />
-    </a>
-    <a href="https://github.com/nexssp/cli">
-        <img src="https://img.shields.io/github/languages/code-size/nexssp/cli?style=for-the-badge" alt="Repository size" />
-    </a>
-    <a href="https://discord.gg/d9xjMEX">
-        <img src="https://img.shields.io/badge/CHAT-ON%20DISCORD-brightgreen?style=for-the-badge" alt="License" />
-    </a>
-</p>
 
 Nexss Programmer is the **innovative** and **evolutionary** tool for the programmers with unlimited possibilities. This system allows to combine from almost [50 programming languages](https://github.com/nexssp/cli/wiki/Nexss-Programmer-Programming-Languages) in many different ways.
 
