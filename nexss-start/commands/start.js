@@ -158,6 +158,8 @@ if (cliArgs.server) {
     }
 
     // let nexssResult = [() => "process.stdin"];
+
+    const noStdin = process.argv.includes("--nxsOnly");
     nexssResult.push({ stream: "readable", cmd: startData });
     // { stream: "transformError", cmd: "Some text" }
 
@@ -180,29 +182,30 @@ if (cliArgs.server) {
         );
         process.exit();
       }
+      if (!noStdin) {
+        let transformInParams = {
+          stream: "transformInput",
+          cmd: "in",
+        };
+        // if (file.args && file.args.nxsInFrom) {
+        //   transformInParams.inputData = {};
+        //   transformInParams.inputData.nxsInFrom = file.args.nxsInFrom;
+        //   delete file.args.nxsInFrom;
+        // }
 
-      let transformInParams = {
-        stream: "transformInput",
-        cmd: "in",
-      };
-      // if (file.args && file.args.nxsInFrom) {
-      //   transformInParams.inputData = {};
-      //   transformInParams.inputData.nxsInFrom = file.args.nxsInFrom;
-      //   delete file.args.nxsInFrom;
-      // }
+        if (file.args) {
+          transformInParams.inputData = file.args;
+          // transformInParams.inputData.nxsInFrom = file.args.nxsInFrom;
+          // delete file.args.nxsInFrom;
+        }
 
-      if (file.args) {
-        transformInParams.inputData = file.args;
-        // transformInParams.inputData.nxsInFrom = file.args.nxsInFrom;
-        // delete file.args.nxsInFrom;
+        if (file.data) {
+          transformInParams.inputData = file.data;
+          delete file.data;
+        }
+
+        nexssResult.push(transformInParams);
       }
-
-      if (file.data) {
-        transformInParams.inputData = file.data;
-        delete file.data;
-      }
-
-      nexssResult.push(transformInParams);
       let stream = "transformNexss";
 
       const parsed = url.parse(fileName);

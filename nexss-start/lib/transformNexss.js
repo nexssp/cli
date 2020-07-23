@@ -55,7 +55,13 @@ module.exports.transformNexss = (
 
       let options = Object.assign({});
 
-      options.stdio = ["pipe", "pipe", "pipe"];
+      if (process.argv.includes("--nxsOnly")) {
+        // We get stdin from user.
+        options.stdio = ["inherit", "pipe", "pipe"];
+      } else {
+        options.stdio = ["pipe", "pipe", "pipe"];
+      }
+
       options.detached = false;
       options.shell = true;
       options.cwd = cwd;
@@ -90,9 +96,7 @@ module.exports.transformNexss = (
 
       const nexssCommand = `${cmd} ${argsStrings.join(" ")}`;
       process.nexssCMD = nexssCommand;
-
       this.worker = spawn(cmd, argsStrings, options);
-
       this.worker.cmd = nexssCommand;
 
       try {
@@ -174,6 +178,7 @@ module.exports.transformNexss = (
         const outputString = data.toString("utf8");
         // On Powershellthere is additional extra line which cousing a lot of headache..
         // Anyways we do not want to run empty line through
+        // console.log("outputString", outputString);
         if (outputString !== "\n") {
           self.push(outputString); //.trim removed (some distored output eg blender compiler)
         }
@@ -221,7 +226,7 @@ module.exports.transformNexss = (
       nxsDebugTitle("Executed: " + this.worker.cmd, j, "yellow");
 
       //Below maybe is in wrong placa but AutoIt doesn't work if is not here!
-      this.worker.stdin.end();
+      if (this.worker.stdin) this.worker.stdin.end();
 
       dbg("waiting for ", this.worker.cmd);
     },

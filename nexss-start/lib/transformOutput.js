@@ -73,7 +73,7 @@ module.exports.transformOutput = (x, y, z) =>
       // VERSION 2 MUCH MORE EFFICIENT
       // Twice as if is used for example:
       // nexss $# '${process.env.NEXSS_CACHE_PATH}' --y='${_[0]}'
-      if (data) {
+      if (data !== undefined) {
         // console.log("DATA BEFORE: ", data);
         // data = expressionParser(data);
         // data = expressionParser(data);
