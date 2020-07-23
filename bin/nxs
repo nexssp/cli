@@ -1,0 +1,5 @@
+#more here: https://github.com/nexssp/language_bash/wiki/Replace-Strings-in-Bash---Convert-WSL-Bash-Path-to-Windows-Path-OneLiner
+BASEDIR=$(dirname $0)
+BASEDIR=${BASEDIR///mnt\/c/\C:}
+BASEDIR=${BASEDIR//\//\\}
+powershell.exe -noprofile -ex bypass -File "${BASEDIR}/nexss.ps1" "$@"
