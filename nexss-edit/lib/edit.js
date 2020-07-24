@@ -27,6 +27,12 @@ module.exports.edit = (filename) => {
   }
 
   try {
+    console.log(
+      `For files: ${extension} you are using ${editorSelected.title}`
+    );
+    console.log(`Website: ${editorSelected.website}`);
+    console.log(`License: ${editorSelected.license}`);
+
     require("child_process").execSync(`${editorSelected.command} ${filename}`, {
       stdio: "inherit",
     });
