@@ -185,5 +185,9 @@ function execute(options) {
     }
 
     extraFunctions(options.templatePath);
+    if (cliArgs.edit) {
+      const { edit } = require("../../nexss-edit/lib/edit");
+      edit(options.fileName);
+    }
   }
 }
