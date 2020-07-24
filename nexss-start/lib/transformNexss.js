@@ -24,7 +24,7 @@ const isDebug = process.argv.indexOf("--debug") >= 0;
 const isLearningMode = process.argv.indexOf("--nxsLearning") >= 0;
 const cliArgsParser = require("minimist");
 const { nxsDebugTitle } = require("./output/nxsDebug");
-
+const { timeElapsed } = require("../../nexss-start/lib/output/nxsTime");
 module.exports.transformNexss = (
   cmd, // cmd = ls, node, php or whatever
   args = [], // arguments eg. ["--help", "myfile.php"]
@@ -40,6 +40,10 @@ module.exports.transformNexss = (
 
   return new Transform({
     transform(chunk, encoding, callback) {
+      let startStreamTime;
+      if (process.argv.includes("--nxsTime")) {
+        startStreamTime = process.hrtime();
+      }
       // console.log("INPUT DATA!!!", inputData);
       const self = this;
       if (encoding === "buffer") {
@@ -96,6 +100,12 @@ module.exports.transformNexss = (
 
       const nexssCommand = `${cmd} ${argsStrings.join(" ")}`;
       process.nexssCMD = nexssCommand;
+      let startCompilerTime;
+      //Yes startStreamTime below
+      if (startStreamTime) {
+        // nxsTime
+        startCompilerTime = process.hrtime();
+      }
       this.worker = spawn(cmd, argsStrings, options);
       this.worker.cmd = nexssCommand;
 
@@ -169,7 +179,7 @@ module.exports.transformNexss = (
 
       this.worker.stdout.on("data", function (data) {
         // TODO: Check if trim is ok here
-
+        timeElapsed(startCompilerTime, `Response from ${bold(nexssCommand)}`);
         if (cmd === "bash") {
           self.push(data.toString().trim().replace(/\n/g, "\n\r"));
           return;
@@ -191,8 +201,6 @@ module.exports.transformNexss = (
           parseError(fileName, this.errBuffer, args.includes("--pipeerrors"));
           callback("Error during: " + nexssCommand);
           this.errBuffer = "";
-
-          // console.error(this.errBuffer);
         }
       });
 
@@ -202,6 +210,7 @@ module.exports.transformNexss = (
 
       this.worker.on("exit", () => {
         self.end();
+        // timeElapsed(startStreamTime, "End of Stream");
         if (process.nxsErrorExists) {
           console.log("There was an error during run..", this.worker.cmd);
           process.exitCode = 1;
