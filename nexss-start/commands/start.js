@@ -112,8 +112,6 @@ if (!Array.isArray(files)) {
 
 files = files.filter(Boolean);
 
-// console.error(require("util").inspect(files[0]));
-// process.exit(1);
 const cache = require("../../lib/cache");
 const cacheFileName = "myCache.json";
 let nexssResult = [];

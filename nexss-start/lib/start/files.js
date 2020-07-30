@@ -14,9 +14,9 @@ const loadEnv = (p) => {
     return dotenv.parse(fs.readFileSync(p));
   }
 };
-
+var { parseArgsStringToArgv } = require("string-argv");
 const parseName = (name, incl) => {
-  const arr = name.split(" ");
+  const arr = parseArgsStringToArgv(name);
   let result = []; // was {} ??
   if (incl) result.name = arr[0];
   if (arr.length > 1) {
@@ -55,7 +55,10 @@ package then it is ok, otherwise use different name.`
   return resultPath;
 }
 const { isURL } = require("../../../lib/data/url");
-
+// Move later to separate file, The same is in the nexssFileParser.js
+function stripEndQuotes(s) {
+  return s.replace && s.replace(/(^["|'])|(["|']$)/g, "");
+}
 const getFiles = (folder, args, env, ccc) => {
   //We ommit comments
   // console.log("GET FILES START: ", folder);
@@ -68,13 +71,33 @@ const getFiles = (folder, args, env, ccc) => {
   if (ArgsParsed) {
     ArgsParsed = require("minimist")(ArgsParsed); //convert to object
   }
+  if (ArgsParsed) {
+    for (let [key, value] of Object.entries(ArgsParsed)) {
+      if (!Array.isArray(value)) {
+        if (isNaN(value)) {
+          ArgsParsed[key] = stripEndQuotes(value);
+        }
+      } else {
+        ArgsParsed[key] = ArgsParsed[key].map((a) => {
+          return stripEndQuotes(a);
+        });
+      }
+    }
+  }
 
   if (!args) {
     args = ArgsParsed;
   } else {
     Object.assign(args, ArgsParsed);
   }
-
+  if (args) {
+    if (args._ && args._.length === 0) {
+      delete args._;
+    } else {
+      args.nxsIn = args._;
+      delete args._;
+    }
+  }
   // console.log("folder:", folder, "ARGS!!!!!!!!!!", args);
 
   // const { isURL } = require("../../lib/url");
