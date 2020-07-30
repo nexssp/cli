@@ -70,7 +70,7 @@ const searchSequence = (seqFrom, sequences) => {
   // Capturing and Named groups available
   let data = {};
   for (regExpSequence of Object.keys(sequences)) {
-    let r = new RegExp(regExpSequence, "i");
+    let r = new RegExp(regExpSequence, "ig");
 
     const matches = (seqFrom + "").matchAll(r);
     const ArrayMatch = Array.from(matches);
