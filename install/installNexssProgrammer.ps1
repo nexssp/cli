@@ -1,7 +1,7 @@
 # Nexss Programmer Installer
 # Author: Marcin Polak <mapoart@gmail.com>
 
-Write-Host "Welcome to the Nexss Programmer 2.1.1 Installer" -ForegroundColor Yellow
+Write-Host "Welcome to the Nexss Programmer 2.1.2 Installer" -ForegroundColor Yellow
 Write-Host "It will install Scoop, Node.js (Latest version), git and Nexss Programmer." -ForegroundColor Yellow
 
 # =====================
@@ -145,7 +145,7 @@ if ((!((Get-Command nexss -errorAction SilentlyContinue) -and (nexss -v))) -or (
         rm -r -fo $nexssProgrammerInstallPath
     }
 
-    git clone --recurse-submodules https://github.com/nexssp/cli.git "$nexssProgrammerInstallPath"  
+    git clone --depth=1 --recurse-submodules https://github.com/nexssp/cli.git "$nexssProgrammerInstallPath"  
     $nexssBinPath = "$nexssProgrammerInstallPath/bin/"	
     
     if ($($env:Path).ToLower().Contains($($nexssBinPath).ToLower()) -eq $true) {
