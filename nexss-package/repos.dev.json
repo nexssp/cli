@@ -6,6 +6,7 @@
   "Convert": "https://github.com/nexssp/package_convert.git",
   "Data": "https://github.com/nexssp/package_data.git",
   "Debug": "https://github.com/nexssp/package_debug.git",
+  "Docker": "https://github.com/nexssp/package_docker.git",
   "Download": "https://github.com/nexssp/package_download.git",
   "Email": "https://github.com/nexssp/package_email.git",
   "FS": "https://github.com/nexssp/package_fs.git",
