@@ -41,9 +41,9 @@ function getConfig() {
     process.env.NEXSS_CACHE_PATH ||
     (process.env.NEXSS_CACHE_PATH = normalize(`${NEXSS_HOME_PATH}/cache`));
 
-  const NEXSS_PROCESS_PATH =
-    process.env.NEXSS_PROCESS_PATH ||
-    (process.env.NEXSS_PROCESS_PATH = normalize(`${NEXSS_HOME_PATH}/process`));
+  // const NEXSS_PROCESS_PATH =
+  //   process.env.NEXSS_PROCESS_PATH ||
+  //   (process.env.NEXSS_PROCESS_PATH = normalize(`${NEXSS_HOME_PATH}/process`));
 
   const NEXSS_BACKUP_PATH =
     process.env.NEXSS_BACKUP_PATH ||
@@ -58,18 +58,18 @@ function getConfig() {
     NEXSS_CACHE_PATH,
     NEXSS_PROCESS_PATH,
     NEXSS_LANGUAGES_PATH,
-    NEXSS_APPS_PATH
+    NEXSS_APPS_PATH,
   ];
 
   try {
-    createIfNotExists.forEach(p => {
+    createIfNotExists.forEach((p) => {
       if (!existsSync(p)) {
         mkdirSync(p);
       }
     });
   } catch (error) {
     console.error("There was an error during checking/creating directories:");
-    createIfNotExists.forEach(p => {
+    createIfNotExists.forEach((p) => {
       console.error(p);
     });
     console.error(error);
@@ -80,8 +80,8 @@ function getConfig() {
     ["../nexss-language/languages/config.base.js", NEXSS_LANGUAGES_PATH],
     [
       `../nexss-language/languages/config.${process.platform}.js`,
-      NEXSS_LANGUAGES_PATH
-    ]
+      NEXSS_LANGUAGES_PATH,
+    ],
   ];
 
   try {
@@ -93,7 +93,7 @@ function getConfig() {
     });
   } catch (error) {
     console.error("There was an error during checking/creating directories:");
-    createIfNotExists.forEach(p => {
+    createIfNotExists.forEach((p) => {
       console.error(p);
     });
     console.error(error);
@@ -127,7 +127,7 @@ function getConfig() {
     // NEXSS_PROJECT_CONFIG_PATH,
     // NEXSS_PROJECT_PATH,
     // NEXSS_PROJECT_SRC_PATH,
-    NEXSS_PROJECTS_DB
+    NEXSS_PROJECTS_DB,
   };
 }
 
@@ -158,7 +158,7 @@ const result = Object.assign({}, config, {
   NEXSS_PROJECT_CONFIG_PATH,
   NEXSS_PROJECT_PATH,
   NEXSS_PROJECT_SRC_PATH,
-  NEXSS_CWD: process.cwd()
+  NEXSS_CWD: process.cwd(),
 });
 
 process.env = Object.assign({}, process.env, result);

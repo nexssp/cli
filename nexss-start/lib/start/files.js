@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const { bold, red, green } = require("../../../lib/color");
 const { NEXSS_SPECIAL_CHAR } = require("../../../config/defaults");
 const { getSequence } = require("./sequence");
+const assert = require("assert");
 const loadEnv = (p) => {
   if (!p) {
     p = `./config.env`;
@@ -60,8 +61,8 @@ function stripEndQuotes(s) {
   return s.replace && s.replace(/(^["|'])|(["|']$)/g, "");
 }
 const getFiles = (folder, args, env, ccc) => {
-  //We ommit comments
-  // console.log("GET FILES START: ", folder);
+  assert(folder, "missing path");
+
   if (folder.name.startsWith("//")) {
     return;
   }

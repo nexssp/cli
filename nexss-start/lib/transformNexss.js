@@ -108,22 +108,23 @@ module.exports.transformNexss = (
       }
       this.worker = spawn(cmd, argsStrings, options);
       this.worker.cmd = nexssCommand;
-
-      try {
-        let proc = new Proc(this.worker.pid, {
-          filePath: path.resolve(fileName),
-        });
-        proc.write();
-      } catch (error) {
-        console.error(
-          "Command " +
-            bold(yellow(this.worker.cmd.trim())) +
-            red(
-              " failed.\n(process information saving error. Check if the systax is correct.)"
-            )
-        );
-        process.exit(1);
-      }
+      // let proc = new Proc(this.worker.pid, {
+      //   filePath: path.resolve(fileName) /*required*/,
+      //   exePath: process.nexssGlobalCWD /* command executed from here */,
+      //   command: process.argv.slice(2).join(" "),
+      // });
+      // try {
+      //   proc.write();
+      // } catch (error) {
+      //   console.error(
+      //     "Command " +
+      //       bold(yellow(this.worker.cmd.trim())) +
+      //       red(
+      //         " failed.\n(process information saving error. Check if the systax is correct.)"
+      //       )
+      //   );
+      //   process.exit(1);
+      // }
 
       this.worker.on("error", (err) => {
         // throw Error(err);

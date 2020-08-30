@@ -43,7 +43,6 @@
     "inquirer": "^6.0.0",
     "inquirer-autocomplete-prompt": "^1.0.2",
     "ioredis": "^4.17.3",
-    "is-running": "^2.1.0",
     "js-yaml": "^3.14.0",
     "json-diff": "^0.5.4",
     "minimist": "^1.2.5",
