@@ -26,7 +26,7 @@ if (process.argv[2] && process.argv[2].startsWith("--")) {
   }
 } else {
   let plugin = cliArgs._[0];
-  plugin += "";
+  if (plugin) plugin += "";
   const aliases = require("./aliases.json");
 
   process.title =
