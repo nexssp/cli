@@ -12,11 +12,12 @@ module.exports.transformRequest = (url) =>
       try {
         data = JSON.parse(chunk.toString());
       } catch (error) {
-        console.error(
-          "ERROR in JSON (start/tranformOutput.js): ",
-          chunk.toString()
-        );
-        callback(null, JSON.stringify(data));
+        // if (data) {
+        //   callback(null, JSON.stringify(data));
+        //   return;
+        // }
+
+        data = chunk.toString();
       }
 
       nxsDebugTitle("Nexss Request:" + bold(url), data, "red");
@@ -35,8 +36,17 @@ module.exports.transformRequest = (url) =>
       });
 
       streamRead.on("end", () => {
-        data.nxsOut = wholeData;
-        callback(null, Buffer.from(JSON.stringify(data)));
+        if (!data) {
+          data = {};
+        }
+
+        try {
+          data = JSON.parse(wholeData);
+          callback(null, Buffer.from(wholeData));
+        } catch (error) {
+          data.nxsOut = wholeData;
+          callback(null, Buffer.from(JSON.stringify(data)));
+        }
       });
 
       // streamRead.on("exit", (code, signal) => {
