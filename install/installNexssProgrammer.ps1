@@ -165,6 +165,7 @@ if ((!((Get-Command nexss -errorAction SilentlyContinue) -and (nexss -v))) -or (
     $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User") 
     cd $nexssProgrammerInstallPath
     npm install --production
+    npm fund # help guys to pay for their open source packages.
     cd ..
     nexss
 }
