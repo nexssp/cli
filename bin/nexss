@@ -9,5 +9,5 @@ if grep -qEi "(Microsoft|WSL)" /proc/version &> /dev/null ; then
 	powershell.exe -noprofile -ex bypass -File "${BASEDIR}/nexss.ps1" "$@"
 else
 	# Linux
-    node "${BASEDIR}../nexss.js"
+    node "${BASEDIR}../nexss.js" "$@"
 fi
