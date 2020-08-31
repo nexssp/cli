@@ -10,16 +10,7 @@ let pkgs = [];
 // TODO: To fix below syntac - make more efficient! works for now
 process.chdir(packagesPath);
 
-function spawnOptions(opts) {
-  let result = {};
-  if (process.platform === "win32") {
-    Object.assign(result, { stdio: "inherit" }, opts);
-  } else {
-    Object.assign(result, { stdio: "inherit", shell: "/bin/bash" }, opts);
-  }
-
-  return result;
-}
+const spawnOptions = require("../../config/spawnOptions");
 
 authors.forEach((author) => {
   if (author === "@dev") return;

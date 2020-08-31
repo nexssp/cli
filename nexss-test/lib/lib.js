@@ -26,9 +26,10 @@ function camelCase(text) {
 }
 
 function exe(command, options) {
-  // if (options) {
-  //   console.log(require("util").inspect(options));
-  // }
+  if (process.platform !== "win32") {
+    if (!options) options = {};
+    Object.assign(options, { shell: "/bin/bash" });
+  }
   try {
     return execSync(`${command} --pipeerrors`, options).toString();
   } catch (er) {
@@ -42,9 +43,9 @@ function exe(command, options) {
 var fs = require("fs");
 
 // https://geedew.com/remove-a-directory-that-is-not-empty-in-nodejs/
-var deleteFolderRecursive = function(path) {
+var deleteFolderRecursive = function (path) {
   if (fs.existsSync(path)) {
-    fs.readdirSync(path).forEach(function(file, index) {
+    fs.readdirSync(path).forEach(function (file, index) {
       var curPath = path + "/" + file;
       if (fs.lstatSync(curPath).isDirectory()) {
         // recurse
@@ -66,5 +67,5 @@ module.exports = {
   bright,
   camelCase,
   exe,
-  deleteFolderRecursive
+  deleteFolderRecursive,
 };
