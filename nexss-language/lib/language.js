@@ -84,99 +84,104 @@ module.exports.languageNames = () => {
 
 module.exports.getLang = (ext, recreateCache) => {
   // Cache L1
-  if (process.languages && process.languages[ext]) {
-    return process.languages[ext];
-  }
-  if (!ext) {
-    return false;
-  }
-  let language;
-  const getLanguageCacheName = `nexss_core_getLanguages_${ext}_.json`;
-  if (!recreateCache && cache.exists(getLanguageCacheName, "1y")) {
-    language = cache.readJSON(getLanguageCacheName);
-  } else {
-    language = module.exports.getLanguages(recreateCache);
-    language = language[ext];
-  }
+  if (ext) {
+    
+  
+    if (process.languages && process.languages[ext]) {
+      return process.languages[ext];
+    }
+    
+    let language;
+    const getLanguageCacheName = `nexss_core_getLanguages_${ext}_.json`;
+    if (!recreateCache && cache.exists(getLanguageCacheName, "1y")) {
+      language = cache.readJSON(getLanguageCacheName);
+    } else {
+      language = module.exports.getLanguages(recreateCache);
+      language = language[ext];
+    }
 
-  if (!language) {
-    warn(
-      `New extension '${bold(
-        ext
-      )}', checking online repository for implementation..`
-    );
+    if (!language) {
+      warn(
+        `New extension '${bold(
+          ext
+        )}', checking online repository for implementation..`
+      );
 
-    const langRepositories = require("../repos.json");
+      const langRepositories = require("../repos.json");
 
-    const { ensureInstalled } = require("../../lib/terminal");
+      const { ensureInstalled } = require("../../lib/terminal");
 
-    const config = require(`../../nexss-language/languages/config.${process.platform}`);
+      const config = require(`../../nexss-language/languages/config.${process.platform}`);
 
-    const osPM =
-      config.osPackageManagers[Object.keys(config.osPackageManagers)[0]];
+      const osPM =
+        config.osPackageManagers[Object.keys(config.osPackageManagers)[0]];
+      if (langRepositories[ext]) {
+        ensureInstalled(osPM.keyOfItem, osPM.installation);
+        ensureInstalled("git", `${osPM.install} git`);
 
-    if (langRepositories[ext]) {
-      ensureInstalled(osPM.keyOfItem, osPM.installation);
-      ensureInstalled("git", `${osPM.install} git`);
+        const repoName = require("path").basename(langRepositories[ext]);
+        const repoPath = `${NEXSS_LANGUAGES_PATH}/${repoName}`;
+        const spawnOptions = require("../../config/spawnOptions");
 
-      const repoName = require("path").basename(langRepositories[ext]);
-      const repoPath = `${NEXSS_LANGUAGES_PATH}/${repoName}`;
-      const spawnOptions = require("../../config/spawnOptions");
-      try {
-        require("child_process").execSync(
-          `git clone ${langRepositories[ext]} ${repoPath}`,
-          spawnOptions({
-            stdio: "inherit"
-          })
-        );
         success(`Implementation for '${ext}' has been installed.`);
-        
-      } catch (error) {
-        if ((error + "").indexOf("Command failed: git clone") > -1) {
-          console.error(
-            `Issue with the repository: ${bold(langRepositories[ext])}`
-          );
-
-          process.exit(1)
-        } else {
+        if(require("fs").existsSync(repoPath)){
           console.log(
             "Language seems to be already there. Trying update..",
             error
           );
           try {
             // We trying update the repo with the latest version as already there
-            require("child_process").execSync(`git -C ${repoPath} pull`, {
+            require("child_process").execSync(`git -C ${repoPath} pull`, spawnOptions({
               stdio: "inherit"
-            });
+            }));
           } catch (error) {
             console.error(error);
             process.exit();
           }
+        }else{
+          try {
+            require("child_process").execSync(
+              `git clone ${langRepositories[ext]} ${repoPath}`,
+              spawnOptions({
+                stdio: "inherit"
+              })
+            );
+            
+          } catch (error) {
+            if ((error + "").indexOf("Command failed: git clone") > -1) {
+              console.error(
+                `Issue with the repository: ${bold(langRepositories[ext])}`, error
+              );
+  
+              process.exit(1)
+            } 
+          }
         }
+
+
+        cache.del(`nexss_core_getLanguages__.json`);
+        cache.del(`nexss_core_getLanguages_${ext}_.json`);
+        module.exports.getLanguages(true);
+        language = module.exports.getLang(ext);
+      } else {
+        warn(
+          `Nexss Online Github Repository: Support for language with extension ${ext} has not been found. Please consider installing it manually.`
+        );
+        process.exit(0);
       }
-
-      cache.del(`nexss_core_getLanguages__.json`);
-      cache.del(`nexss_core_getLanguages_${ext}_.json`);
-      module.exports.getLanguages(true);
-      language = module.exports.getLang(ext);
-    } else {
-      warn(
-        `Nexss Online Github Repository: Support for language with extension ${ext} has not been found. Please consider installing it manually.`
-      );
-      process.exit(0);
     }
-  }
 
-  if (!language) {
-    warn(`File with extension ${ext} is not supported.`);
-  }
+    if (!language) {
+      warn(`File with extension ${ext} is not supported.`);
+    }
 
-  cache.writeJSON(getLanguageCacheName, language);
+    cache.writeJSON(getLanguageCacheName, language);
 
-  if (!process.languages) process.languages = {};
-  process.languages[ext] = language;
+    if (!process.languages) process.languages = {};
+    process.languages[ext] = language;
 
   return language;
+}
 };
 
 module.exports.getLangByFilename = (name, recreateCache) => {
