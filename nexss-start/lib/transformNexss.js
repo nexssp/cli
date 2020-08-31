@@ -94,9 +94,17 @@ module.exports.transformNexss = (
       // const argsStrings = args.map((a) =>
       //   a.indexOf(" ") > -1 ? `${a.replace("=", '="')}"` : a
       // );
-      const argsStrings = args.map((a) =>
-        a.indexOf("=") > -1 ? `${a.replace("=", '="')}"` : a
-      );
+      // Later batter code below
+      let argsStrings;
+      if (process.platform === "win32") {
+          argsStrings = args.map((a) =>
+          a.indexOf("=") > -1 ? `${a.replace("=", '="')}"` : a
+        );
+      }else{
+          argsStrings = args.map((a) =>
+          a.indexOf("=") > -1 ? `${a.replace("=", "='")}'` : a
+        );
+      }
 
       const nexssCommand = `${cmd} ${argsStrings.join(" ")}`;
       process.nexssCMD = nexssCommand;

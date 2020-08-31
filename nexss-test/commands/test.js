@@ -9,7 +9,7 @@ const cliArgs = require("minimist")(process.argv.slice(3));
 // TODO: below needs to be rewritten, done in rush
 
 let nexssTestsPath = "./";
-let nexssTestsFolder = `${__dirname}\\..\\tests`;
+let nexssTestsFolder = `${__dirname}/../tests`;
 if (nexssConfig && nexssConfig.filePath) {
   nexssTestsPath = path.dirname(nexssConfig.filePath);
   nexssTestsFolder = `${nexssTestsPath}/test.nexss`;

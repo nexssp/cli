@@ -11,7 +11,9 @@ module.exports.getCompiler = (file) => {
   const fileName = file.name;
   const fileFillPAth = path.join(file.path, file.name);
   const languageDefinition = getLangByFilename(fileName);
-
+  if(!languageDefinition){
+    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+  }
   const extension = path.extname(fileName).slice(1);
   let compiler;
 

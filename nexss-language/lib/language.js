@@ -49,8 +49,12 @@ module.exports.getLanguages = recreateCache => {
   let result = {};
   const files = getLanguagesConfigFiles(NEXSS_PROJECT_PATH);
 
-  for (file of files) {
+  for (file of files) {    
     let content = require(file);
+    if(!content.extensions){
+      console.error("File has no .extensions which should be an array.",file);
+      process.exit(1);
+    }
     content.extensions.forEach(languageExtension => {
       result[languageExtension] = content;
       result[languageExtension]["configFile"] = file;
@@ -117,19 +121,23 @@ module.exports.getLang = (ext, recreateCache) => {
 
       const repoName = require("path").basename(langRepositories[ext]);
       const repoPath = `${NEXSS_LANGUAGES_PATH}/${repoName}`;
+      const spawnOptions = require("../../config/spawnOptions");
       try {
         require("child_process").execSync(
           `git clone ${langRepositories[ext]} ${repoPath}`,
-          {
+          spawnOptions({
             stdio: "inherit"
-          }
+          })
         );
         success(`Implementation for '${ext}' has been installed.`);
+        
       } catch (error) {
         if ((error + "").indexOf("Command failed: git clone") > -1) {
           console.error(
             `Issue with the repository: ${bold(langRepositories[ext])}`
           );
+
+          process.exit(1)
         } else {
           console.log(
             "Language seems to be already there. Trying update..",
