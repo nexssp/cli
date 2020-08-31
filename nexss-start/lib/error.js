@@ -35,7 +35,7 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
 
   const ErrorPre = isAbsolute(filename)
     ? filename
-    : `${process.cwd()}\\${filename}`;
+    : `${process.cwd()}/${filename}`;
 
   if (stdOutput) {
     if (process.argv.includes("--htmlOutput")) {
@@ -79,7 +79,7 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
 
   let solutionNumber = 1;
   if (langInfo.errors) {
-    Object.keys(langInfo.errors).forEach(pattern => {
+    Object.keys(langInfo.errors).forEach((pattern) => {
       let regExp;
       try {
         regExp = new RegExp(pattern, "gis");
@@ -124,7 +124,7 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
       if (ArrayMatch && ArrayMatch[0] && ArrayMatch[0].groups) {
         if (solution && solution.replace) {
           if (ArrayMatch[0].groups) {
-            Object.keys(ArrayMatch[0].groups).forEach(e => {
+            Object.keys(ArrayMatch[0].groups).forEach((e) => {
               const reg = new RegExp(`<${e}>`, "gi");
 
               solution = solution.replace(reg, ArrayMatch[0].groups[e]);
@@ -152,7 +152,7 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
       }
       if (solution) {
         if (replacer) {
-          Object.keys(replacer).forEach(rpl => {
+          Object.keys(replacer).forEach((rpl) => {
             if (solution.replace) {
               solution = solution.replace(new RegExp(rpl, "g"), replacer[rpl]);
             }
@@ -176,9 +176,11 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
           if (process.argv.includes("--htmlOutput")) {
             console.log("<BR/>");
             console.log(
-              `${'<span style="color:green"><BR /><b>Possible solution' +
+              `${
+                '<span style="color:green"><BR /><b>Possible solution' +
                 solutionNumber +
-                "</B>"}: ${solution}</span>`
+                "</B>"
+              }: ${solution}</span>`
             );
           } else {
             if (process.argv.includes("--pipeerrors")) {
