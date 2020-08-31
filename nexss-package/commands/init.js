@@ -9,31 +9,47 @@ const { success } = require("../../lib/log");
 let pkgs = [];
 // TODO: To fix below syntac - make more efficient! works for now
 process.chdir(packagesPath);
-authors.forEach(author => {
+
+function spawnOptions(opts) {
+  let result = {};
+  if (process.platform === "win32") {
+    Object.assign(result, { stdio: "inherit" }, opts);
+  } else {
+    Object.assign(result, { stdio: "inherit", shell: "/bin/bash" }, opts);
+  }
+
+  return result;
+}
+
+authors.forEach((author) => {
   if (author === "@dev") return;
   if (
     author !== "3rdPartyLibraries" &&
     fs.statSync(`${packagesPath}/${author}`).isDirectory()
   ) {
     if (author.indexOf("@") === 0) {
-      fs.readdirSync(`${packagesPath}/${author}`).map(pkg => {
+      fs.readdirSync(`${packagesPath}/${author}`).map((pkg) => {
         if (!fs.existsSync(`${packagesPath}/${author}/${pkg}/_nexss.yml`)) {
           if (fs.statSync(`${packagesPath}/${author}/${pkg}`).isDirectory()) {
-            fs.readdirSync(`${packagesPath}/${author}/${pkg}`).map(details => {
-              console.log(`Starting: ${packagesPath}/${author}/${pkg}`);
-              try {
-                require("child_process").execSync(`nexss cmd init`, {
-                  cwd: `${packagesPath}/${author}/${pkg}/${details}`,
-                  stdio: "inherit"
-                });
-                success(
-                  `Completed init for package ${packagesPath}/${author}/${pkg}/${details}`
-                );
-              } catch (er) {
-                console.error(er);
-                process.exit();
+            fs.readdirSync(`${packagesPath}/${author}/${pkg}`).map(
+              (details) => {
+                console.log(`Starting: ${packagesPath}/${author}/${pkg}`);
+                try {
+                  require("child_process").execSync(
+                    `nexss cmd init`,
+                    spawnOptions({
+                      cwd: `${packagesPath}/${author}/${pkg}/${details}`,
+                    })
+                  );
+                  success(
+                    `Completed init for package ${packagesPath}/${author}/${pkg}/${details}`
+                  );
+                } catch (er) {
+                  console.error(er);
+                  process.exit();
+                }
               }
-            });
+            );
           } else {
             // pkgs.push({
             //   type: "file",
@@ -45,10 +61,12 @@ authors.forEach(author => {
           if (pkg !== "3rdPartyLibraries") {
             console.log(`Starting: ${author}/${pkg}`);
             try {
-              require("child_process").execSync(`nexss cmd init`, {
-                cwd: `${packagesPath}/${author}/${pkg}`,
-                stdio: "inherit"
-              });
+              require("child_process").execSync(
+                `nexss cmd init`,
+                spawnOptions({
+                  cwd: `${packagesPath}/${author}/${pkg}`,
+                })
+              );
             } catch (er) {
               console.error(er);
               process.exit();
@@ -61,17 +79,19 @@ authors.forEach(author => {
         if (author !== "3rdPartyLibraries") {
           try {
             console.log(`Starting: ${author}`);
-            require("child_process").execSync(`nexss cmd init`, {
-              cwd: `${packagesPath}/${author}`,
-              stdio: "inherit"
-            });
+            require("child_process").execSync(
+              `nexss cmd init`,
+              spawnOptions({
+                cwd: `${packagesPath}/${author}`,
+              })
+            );
           } catch (er) {
             console.error(er);
             process.exit();
           }
         }
       }
-      fs.readdirSync(`${packagesPath}/${author}`).map(pkg => {
+      fs.readdirSync(`${packagesPath}/${author}`).map((pkg) => {
         // console.log("pkg!!!!!", pkg);
         // if (author == "Keyboard") console.log("pkg!!!!", pkg);
         // 3rdPartyLibraries is a directory where nexss install additional libs.
@@ -81,10 +101,12 @@ authors.forEach(author => {
             if (pkg !== "3rdPartyLibraries") {
               console.log(`Starting: ${packagesPath}/${author}/${pkg}`);
               try {
-                require("child_process").execSync(`nexss cmd init`, {
-                  cwd: `${packagesPath}/${author}/${pkg}`,
-                  stdio: "inherit"
-                });
+                require("child_process").execSync(
+                  `nexss cmd init`,
+                  spawnOptions({
+                    cwd: `${packagesPath}/${author}/${pkg}`,
+                  })
+                );
               } catch (er) {
                 console.error(er);
                 process.exit();
@@ -102,13 +124,13 @@ if (pkgs.length > 0) {
     var options = {
       // pre: "<",
       // post: ">",
-      extract: function(el) {
+      extract: function (el) {
         return `${el.path} ${el.type}`;
-      }
+      },
     };
     let fuzzy = require("fuzzy");
     let fuzzyResult = fuzzy.filter(cliArgs._.slice(4).join(" "), pkgs, options);
-    pkgs = fuzzyResult.map(function(el) {
+    pkgs = fuzzyResult.map(function (el) {
       return el.original;
     });
     // const pkgs = new FuzzySearch(pkgs, ["type", "path"], {
@@ -119,7 +141,7 @@ if (pkgs.length > 0) {
   if (cliArgs.json) {
     console.log(JSON.stringify(pkgs.flat()));
   } else {
-    pkgs.forEach(e => {
+    pkgs.forEach((e) => {
       console.log(e);
     });
   }
