@@ -4,7 +4,7 @@
 const {
   NEXSS_PROJECT_PATH,
   NEXSS_LANGUAGES_PATH,
-  NEXSS_HOME_PATH
+  NEXSS_HOME_PATH,
 } = require("../../config/config");
 const { join, extname, resolve } = require("path");
 const { warn, di, success } = require("../../lib/log");
@@ -17,7 +17,7 @@ function getLanguagesConfigFiles(projectFolder = "") {
   const languagePathArray = [
     "languages",
     "**",
-    `*.${process.platform}.nexss.config.js`
+    `*.${process.platform}.nexss.config.js`,
   ];
 
   // ../languages/php/win32.nexss.config.js
@@ -40,7 +40,7 @@ function getLanguagesConfigFiles(projectFolder = "") {
   return fg.sync(paths);
 }
 
-module.exports.getLanguages = recreateCache => {
+module.exports.getLanguages = (recreateCache) => {
   const getLanguagesCacheName = `nexss_core_getLanguages__.json`;
   if (!recreateCache && cache.exists(getLanguagesCacheName, "1y")) {
     return cache.readJSON(getLanguagesCacheName);
@@ -49,13 +49,13 @@ module.exports.getLanguages = recreateCache => {
   let result = {};
   const files = getLanguagesConfigFiles(NEXSS_PROJECT_PATH);
 
-  for (file of files) {    
+  for (file of files) {
     let content = require(file);
-    if(!content.extensions){
-      console.error("File has no .extensions which should be an array.",file);
+    if (!content.extensions) {
+      console.error("File has no .extensions which should be an array.", file);
       process.exit(1);
     }
-    content.extensions.forEach(languageExtension => {
+    content.extensions.forEach((languageExtension) => {
       result[languageExtension] = content;
       result[languageExtension]["configFile"] = file;
     });
@@ -74,7 +74,7 @@ module.exports.languageNames = () => {
   if (languages)
     return Object.keys(languages)
       .map(
-        language =>
+        (language) =>
           `${bold(languages[language].extensions[0])} ${yellow(
             bold(languages[language].url.replace("https://", ""))
           )} - ${languages[language].description}`
@@ -85,12 +85,10 @@ module.exports.languageNames = () => {
 module.exports.getLang = (ext, recreateCache) => {
   // Cache L1
   if (ext) {
-    
-  
     if (process.languages && process.languages[ext]) {
       return process.languages[ext];
     }
-    
+
     let language;
     const getLanguageCacheName = `nexss_core_getLanguages_${ext}_.json`;
     if (!recreateCache && cache.exists(getLanguageCacheName, "1y")) {
@@ -124,44 +122,56 @@ module.exports.getLang = (ext, recreateCache) => {
         const spawnOptions = require("../../config/spawnOptions");
 
         success(`Implementation for '${ext}' has been installed.`);
-        if(require("fs").existsSync(repoPath)){
-          console.log(
-            "Language seems to be already there. Trying update..",
-            error
-          );
+        if (require("fs").existsSync(repoPath)) {
+          console.log("Language seems to be already there. Trying update..");
           try {
             // We trying update the repo with the latest version as already there
-            require("child_process").execSync(`git -C ${repoPath} pull`, spawnOptions({
-              stdio: "inherit"
-            }));
-          } catch (error) {
-            console.error(error);
-            process.exit();
-          }
-        }else{
-          try {
             require("child_process").execSync(
-              `git clone ${langRepositories[ext]} ${repoPath}`,
+              `git -C ${repoPath} pull`,
               spawnOptions({
-                stdio: "inherit"
+                stdio: "inherit",
               })
             );
-            
+          } catch (e) {
+            console.error(e);
+            process.exit();
+          }
+        } else {
+          try {
+            require("child_process").execSync(
+              `git clone --depth=1 ${langRepositories[ext]} ${repoPath}`,
+              spawnOptions({
+                stdio: "inherit",
+              })
+            );
           } catch (error) {
             if ((error + "").indexOf("Command failed: git clone") > -1) {
               console.error(
-                `Issue with the repository: ${bold(langRepositories[ext])}`, error
+                `Issue with the repository: ${bold(langRepositories[ext])}`,
+                error
               );
-  
-              process.exit(1)
-            } 
+
+              process.exit(1);
+            }
           }
         }
 
-
         cache.del(`nexss_core_getLanguages__.json`);
         cache.del(`nexss_core_getLanguages_${ext}_.json`);
-        module.exports.getLanguages(true);
+        const x = module.exports.getLanguages(true);
+
+        if (!x[ext]) {
+          const { error } = require("../../lib/log");
+          error(
+            "Error:",
+            bold(ext),
+            "is not implemented for",
+            bold(process.platform),
+            "platform."
+          );
+          process.exit(1);
+        }
+
         language = module.exports.getLang(ext);
       } else {
         warn(
@@ -180,8 +190,8 @@ module.exports.getLang = (ext, recreateCache) => {
     if (!process.languages) process.languages = {};
     process.languages[ext] = language;
 
-  return language;
-}
+    return language;
+  }
 };
 
 module.exports.getLangByFilename = (name, recreateCache) => {

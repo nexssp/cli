@@ -14,7 +14,7 @@ if (!existsSync(`${__dirname}/node_modules`)) {
     cp.execSync(command, {
       stdio: "inherit",
       detached: false,
-      shell: true,
+      shell: process.platform === "win32" ? true : "/bin/bash",
       cwd: __dirname,
     });
   } catch (error) {
@@ -259,7 +259,7 @@ if (process.argv[2] && process.argv[2].startsWith("--")) {
                 cp.execSync(command, {
                   stdio: "inherit",
                   detached: false,
-                  shell: true,
+                  shell: process.platform === "win32" ? true : "/bin/bash",
                   cwd: process.cwd(),
                 });
               } catch (error) {
@@ -350,7 +350,7 @@ if (process.argv[2] && process.argv[2].startsWith("--")) {
               cp.execSync(command, {
                 stdio: "inherit",
                 detached: false,
-                shell: true,
+                shell: process.platform === "win32" ? true : "/bin/bash",
                 cwd: process.cwd(),
               });
             } catch (error) {
@@ -374,7 +374,7 @@ if (process.argv[2] && process.argv[2].startsWith("--")) {
                 cp.execSync(command, {
                   stdio: "inherit",
                   detached: false,
-                  shell: true,
+                  shell: process.platform === "win32" ? true : "/bin/bash",
                   cwd: process.cwd(),
                 });
               } catch (error) {
@@ -448,7 +448,7 @@ To add new file please use command ${bold("nexss file add " + plugin)}`
       cp.execSync(testCommand, {
         stdio: "inherit",
         detached: false,
-        shell: true,
+        shell: process.platform === "win32" ? true : "/bin/bash",
       });
     } catch (error) {
       console.log(`Command failed ${testCommand}`);

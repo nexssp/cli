@@ -3,11 +3,16 @@ const fs = require("fs");
 const { NEXSS_PACKAGES_PATH } = require("../../config/config");
 const packagesPath = `${NEXSS_PACKAGES_PATH}`;
 const cliArgs = require("minimist")(process.argv);
-const authors = fs.readdirSync(packagesPath);
+
 const { success } = require("../../lib/log");
 
 let pkgs = [];
 // TODO: To fix below syntac - make more efficient! works for now
+if (!fs.existsSync(packagesPath)) {
+  console.error("Packages path has not been found.", packagesPath);
+  process.exit(1);
+}
+const authors = fs.readdirSync(packagesPath);
 process.chdir(packagesPath);
 
 const spawnOptions = require("../../config/spawnOptions");
@@ -24,7 +29,7 @@ authors.forEach((author) => {
           if (fs.statSync(`${packagesPath}/${author}/${pkg}`).isDirectory()) {
             fs.readdirSync(`${packagesPath}/${author}/${pkg}`).map(
               (details) => {
-                console.log(`Starting: ${packagesPath}/${author}/${pkg}`);
+                console.log(`Package setup: ${packagesPath}/${author}/${pkg}`);
                 try {
                   require("child_process").execSync(
                     `nexss cmd init`,
@@ -50,7 +55,7 @@ authors.forEach((author) => {
         } else {
           // 3rdPartyLibraries is a directory where nexss install additional libs.
           if (pkg !== "3rdPartyLibraries") {
-            console.log(`Starting: ${author}/${pkg}`);
+            console.log(`Package setup: ${author}/${pkg}`);
             try {
               require("child_process").execSync(
                 `nexss cmd init`,
@@ -69,7 +74,7 @@ authors.forEach((author) => {
       if (fs.existsSync(`${packagesPath}/${author}/_nexss.yml`)) {
         if (author !== "3rdPartyLibraries") {
           try {
-            console.log(`Starting: ${author}`);
+            console.log(`Package setup: ${author}`);
             require("child_process").execSync(
               `nexss cmd init`,
               spawnOptions({
@@ -90,7 +95,7 @@ authors.forEach((author) => {
           // console.log(`${packagesPath}/${author}/${pkg}/_nexss.yml`);
           if (fs.existsSync(`${packagesPath}/${author}/${pkg}/_nexss.yml`)) {
             if (pkg !== "3rdPartyLibraries") {
-              console.log(`Starting: ${packagesPath}/${author}/${pkg}`);
+              console.log(`Package setup: ${packagesPath}/${author}/${pkg}`);
               try {
                 require("child_process").execSync(
                   `nexss cmd init`,

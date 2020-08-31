@@ -1,13 +1,15 @@
 const { bold, green } = require("../../lib/color");
 
-module.exports.installPackages = destinationFolder => {
+module.exports.installPackages = (destinationFolder) => {
   try {
     const repos = require("../repos.dev.json");
     // console.log(repos);
     for (var key in repos) {
-      const command = `git clone --recurse-submodules ${repos[key]} ${destinationFolder}/${key}`;
+      const command = `git clone --depth=1 --recurse-submodules ${repos[key]} ${destinationFolder}/${key}`;
+      console.log(bold(green(`Installing Nexss Programmer package ${key}..`)));
       require("child_process").execSync(command, {
-        stdio: "inherit"
+        stdio: "inherit",
+        shell: process.platform === "win32" ? true : "/bin/bash",
       });
     }
 
@@ -23,7 +25,8 @@ module.exports.installPackages = destinationFolder => {
     );
 
     require("child_process").execSync("nexss pkg init", {
-      stdio: "inherit"
+      stdio: "inherit",
+      shell: process.platform === "win32" ? true : "/bin/bash",
     });
 
     console.log(
