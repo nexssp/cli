@@ -6,11 +6,27 @@
  * Author: Marcin Polak
  * 2018/10/01 initial version
  */
+const cp = require("child_process");
+const { existsSync } = require("fs");
+if(!existsSync("./node_modules")){
+  const command = `npm install`;
+  try {
+    cp.execSync(command, {
+      stdio: "inherit",
+      detached: false,
+      shell: true,
+      cwd: process.cwd(),
+    });
+  } catch (error) {
+    console.log(`Command failed ${command}`);
+  }
+}
 
 const { bold } = require("./lib/color");
 const { NEXSS_SRC_PATH, NEXSS_PACKAGES_PATH } = require("./config/config");
 const { error, info, ok, warn } = require("./lib/log");
-const { existsSync } = require("fs");
+
+
 const { isURL } = require("./lib/data/url");
 const cliArgs = require("minimist")(process.argv.slice(2));
 const { NEXSS_SPECIAL_CHAR } = require("./config/defaults");
@@ -241,7 +257,7 @@ if (process.argv[2] && process.argv[2].startsWith("--")) {
               const command = `scoop bucket add versions && ${languageSelected[whatToSet][toSet].install} && ${languageSelected[whatToSet][toSet].switch}`;
 
               try {
-                require("child_process").execSync(command, {
+                cp.execSync(command, {
                   stdio: "inherit",
                   detached: false,
                   shell: true,
@@ -332,7 +348,7 @@ if (process.argv[2] && process.argv[2].startsWith("--")) {
             const pmArguments = process.argv.slice(3);
             const command = `${compiler.command} ${pmArguments.join(" ")}`;
             try {
-              require("child_process").execSync(command, {
+              cp.execSync(command, {
                 stdio: "inherit",
                 detached: false,
                 shell: true,
@@ -356,7 +372,7 @@ if (process.argv[2] && process.argv[2].startsWith("--")) {
               info(`Execute: ${bold(command)}, cwd: ${process.cwd()}`);
 
               try {
-                require("child_process").execSync(command, {
+                cp.execSync(command, {
                   stdio: "inherit",
                   detached: false,
                   shell: true,
@@ -430,7 +446,7 @@ To add new file please use command ${bold("nexss file add " + plugin)}`
     const testCommand = `nexss test ${testName}`;
 
     try {
-      require("child_process").execSync(testCommand, {
+      cp.execSync(testCommand, {
         stdio: "inherit",
         detached: false,
         shell: true,
