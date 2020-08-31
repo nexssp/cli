@@ -22,7 +22,7 @@ module.exports = {
           type: "shouldContain",
           params: [
             "nexss file add myfile1.js -f -t=helloWorld",
-            `File src\\\\myfile1.js has been created.`,
+            `myfile1.js has been created.`,
             {
               chdir: "MyTestProject"
             }
@@ -43,7 +43,7 @@ module.exports = {
           title: "Add file to the Project (forced)",
           params: [
             "nexss file add myfile1.js -f -t=helloWorld",
-            `OK  File src\\\\myfile1.js has been created.\\nSUCCESS  Done.`
+            `myfile1.js has been created.\\nSUCCESS  Done.`
           ]
         },
         {

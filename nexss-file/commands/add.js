@@ -120,7 +120,7 @@ function execute(options) {
     let templatesPath =
       require("../../nexss-language/lib/template").getTemplatesPaths(
         options.extension
-      ) + `\\${options.template}`;
+      ) + `/${options.template}`;
 
     // options.templatePath = resolve(
     //   dirname(lang.configFile),
