@@ -1,7 +1,7 @@
 # Nexss Programmer Installer
 # Author: Marcin Polak <mapoart@gmail.com>
 
-Write-Host "Welcome to the Nexss Programmer 2.1.2 Installer" -ForegroundColor Yellow
+Write-Host "Welcome to the Nexss Programmer 2.1.3 Installer" -ForegroundColor Yellow
 Write-Host "It will install Scoop, Node.js (Latest version), git and Nexss Programmer." -ForegroundColor Yellow
 
 # =====================
@@ -128,7 +128,7 @@ if (!((Get-Command node.exe -errorAction SilentlyContinue) -and (node.exe -v))) 
 # You need to be in the directory with write permission.
 # for example: Your home directory **c:\Users\YourNickname\**)
 
-Write-Host "Installing Nexss Programmer 2.1.1.."
+Write-Host "Installing Nexss Programmer 2.1.3.."
 if ((!((Get-Command nexss -errorAction SilentlyContinue) -and (nexss -v))) -or (!(Test-Path $nexssProgrammerInstallPath))) {
 
     if ( Test-Path $nexssProgrammerInstallPath) {        
