@@ -1,13 +1,13 @@
 # Linux / WSL / MacOS
 # More here: https://github.com/nexssp/language_bash/wiki/Replace-Strings-in-Bash---Convert-WSL-Bash-Path-to-Windows-Path-OneLiner
 set -e
+BASEDIR=$(dirname $0)
 if grep -qEi "(Microsoft|WSL)" /proc/version &> /dev/null ; then
 	# WSL
-    BASEDIR=$(dirname $0)
 	BASEDIR=${BASEDIR///mnt\/c/\C:}
 	BASEDIR=${BASEDIR//\//\\}
 	powershell.exe -noprofile -ex bypass -File "${BASEDIR}/nexss.ps1" "$@"
 else
 	# Linux
-    node "${BASEDIR}../nexss.js" "$@"
+	node "${BASEDIR}/../nexss.js" "$@"
 fi
