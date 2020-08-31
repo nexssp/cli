@@ -141,7 +141,7 @@ module.exports.getLang = (ext, recreateCache) => {
         }else{
           try {
             require("child_process").execSync(
-              `git clone ${langRepositories[ext]} ${repoPath}`,
+              `git clone --depth=1 ${langRepositories[ext]} ${repoPath}`,
               spawnOptions({
                 stdio: "inherit"
               })
