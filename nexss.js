@@ -8,14 +8,14 @@
  */
 const cp = require("child_process");
 const { existsSync } = require("fs");
-if(!existsSync("./node_modules")){
-  const command = `npm install`;
+if (!existsSync(`${__dirname}/node_modules`)) {
+  const command = `npm install --production`;
   try {
     cp.execSync(command, {
       stdio: "inherit",
       detached: false,
       shell: true,
-      cwd: process.cwd(),
+      cwd: __dirname,
     });
   } catch (error) {
     console.log(`Command failed ${command}`);
@@ -25,7 +25,6 @@ if(!existsSync("./node_modules")){
 const { bold } = require("./lib/color");
 const { NEXSS_SRC_PATH, NEXSS_PACKAGES_PATH } = require("./config/config");
 const { error, info, ok, warn } = require("./lib/log");
-
 
 const { isURL } = require("./lib/data/url");
 const cliArgs = require("minimist")(process.argv.slice(2));
