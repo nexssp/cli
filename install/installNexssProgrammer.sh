@@ -8,7 +8,17 @@ if test -f "$FILE"; then
     fi
     export PATH=~/.nexss/nexssCli:$PATH
     # Below pm replace to match your linux distribution
-    sudo apt install nodejs -y
+
+    if ! command -v node &> /dev/null
+    then
+        curl -sL https://deb.nodesource.com/setup_14.x | sudo bash -
+        sudo apt update
+        sudo apt -y install nodejs npm gcc g++ make
+    else
+        echo Node is installed
+        node -v
+        npm -v
+    fi   
     # First start + install packages
     nexss
 else
