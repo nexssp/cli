@@ -91,7 +91,7 @@ For installing some of the compilers **Nexss Programmer** uses fantastic package
 - Build your own tools that other people can use,
 - Configurable Error handling with suggested solutions,
 - Save time by using as many languages you like for the solution (combined),
-- At the moment **32 programming languages** can be used in one project (and increasing) with provided templates for each language,
+- Over **50 programming languages** can be used in one project (and grow) with provided templates for each language,
 - Predefined/customisable solutions (nexss allow to predefine solutions for errors to fix them quickly),
 - Easy to develop reusable modules and code.
 
@@ -113,8 +113,8 @@ Note: Packages will be installed with the very first run of `nexss` command in y
 
 ### TODO List (New Features)
 
+- **Linux** ~~Innstaller~~, and implement all languages (few are now done.)
 - **MacOS** finish implementation (packages, configurations for all languages) **Work in progress**,
-- **Linux** finish implementation (packages, configurations for all languages) **Work in progress**,
 - Setup builders 'Any language To EXE' and 'Any module to EXE',
 - More packages related to the current needs of the users,
 - More tutorials and practical examples,
