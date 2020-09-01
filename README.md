@@ -52,7 +52,7 @@ Technologies Video: <https://www.youtube.com/watch?v=aUIcR7Qps-A>
 
 ```sh
 # Switch between Nexss Programmer versions
-nexss --update master # latest version 2.1.2
+nexss --update master # latest version 2.1.3
 nexss --update 2.1
 nexss --update 2.0
 ```
