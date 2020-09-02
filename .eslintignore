@@ -4,4 +4,4 @@
 /*.js
 /test/unit/coverage/
 /lib/.history
-
+/node_modules/
