@@ -1,10 +1,12 @@
 ```sh
+npm i @nexssp/cli -g
+
 Welcome to      ____
 |..          | |             ``..      ..''             ..''''             ..''''
 |  ``..      | |______           ``..''              .''                .''
 |      ``..  | |                 ..'`..           ..'                ..'
 |          ``| |___________  ..''      ``.. ....''             ....''
-Programmer 2.1.6 - Free, Open Source, Educational Version
+Programmer
 ```
 
 <p align="center">
