@@ -29,26 +29,28 @@ Programmer 2.1.3 - Free, Open Source, Educational Version
     </a>
 </p>
 
-
 ## Value Propositions
+
 - **Learning Tool** - Students can learn modern and old(history) of the languages and don't have to spend a lot of time finding out about how to install compilers - so Universities, Schools, Individuals - Self-learners etc. More people would start to like programming..
 - **Speed up producing** - Add new file to work with and start from predefined templates, each language have own repo and templates folder,
 - **Speed up learning** - Error/Solution - has engine which parse the errors which can be specified in the Nexss Programmer's language file configuration, so display predefined solutions for particular error,
 - **Automation tool** - allows you to run programs in sequence in different programming languages and also pass variables to the next step (for now there is not implemented easy distributed solution),
-Here are the main features video: https://www.youtube.com/watch?v=z5scbto_yOM
+  Here are the main features video: https://www.youtube.com/watch?v=z5scbto_yOM
 - **Nexss Programmer Projects/Packages** - One Project can run (for now in sequence) - many files or another Nexss Programmer Projects as one solution,
 - **New Scripting Language** - .nexss - Users can create own commands (Nexss Programmer Packages). Each command is a Nexss Programmer package and package can be one file or many files in different languages or combination of files and packages. To create new packages is for more advanced users but .nexss is for people who just want to make solution eg in the office. Example here: AutoPrint - https://nexss.com/en/easy-install-nexss-programmer.html (This example checks your emails for pdf attachments and if any of them contains word invoice it will automatically prints it. - how much time can be saved by 10 lines script)
 - **Build your own language**
 
 ### Notes
+
 For now Nexss Programmer works on all platforms, however all languages are implemented only on Windows.
 
 ### Links
+
 Code Repository: <https://github.com/nexssp/cli> (here)  
 Documentation: <https://github.com/nexssp/cli/wiki>  
 Video(3min): <https://www.youtube.com/watch?v=7WbnYyEnBNk>  
 Features Video: <https://www.youtube.com/watch?v=z5scbto_yOM>  
-Technologies Video: <https://www.youtube.com/watch?v=aUIcR7Qps-A>  
+Technologies Video: <https://www.youtube.com/watch?v=aUIcR7Qps-A>
 
 ```sh
 # Switch between Nexss Programmer versions
@@ -56,27 +58,9 @@ nexss --update master # latest version 2.1.3
 nexss --update 2.1
 nexss --update 2.0
 ```
+
 **Nexss Programmer Presentation** (Youtube video):  
 [![Nexss Programmer Presentation](https://img.youtube.com/vi/vs2tXMrZzzs/0.jpg)](https://www.youtube.com/watch?v=vs2tXMrZzzs)
-
-NOTE: _**Nexss Programmer DOES NOT need administrative rights**_ for your operating system so it is very safe. Try it today and save your time!
-
-Nexss Programmer is the **innovative** and **evolutionary** tool for the programmers with unlimited possibilities. This system allows to combine from almost [50 programming languages](https://github.com/nexssp/cli/wiki/Nexss-Programmer-Programming-Languages) in many different ways.
-
----
-
-## Install by one line in PowerShell !
-
-```sh
-Set-ExecutionPolicy Bypass -Scope Process -Force; iwr -useb nexss.com/installProgrammer | iex
-```
-
-If you are having errors about tls/ssl channel please run first:  
-`[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12`
-
----
-
-NOTE2: **Linux** _(Soon - FOR NOW ONLY WORKS NODEJS)_ and **MacOS** + Swift language _(Soon)_ - **Work In Progress**
 
 ---
 
