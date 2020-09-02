@@ -4,7 +4,7 @@ Welcome to      ____
 |  ``..      | |______           ``..''              .''                .''
 |      ``..  | |                 ..'`..           ..'                ..'
 |          ``| |___________  ..''      ``.. ....''             ....''
-Programmer 2.1.5 - Free, Open Source, Educational Version
+Programmer 2.1.6 - Free, Open Source, Educational Version
 ```
 
 <p align="center">
