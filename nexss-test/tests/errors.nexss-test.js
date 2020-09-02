@@ -27,7 +27,7 @@ module.exports = {
         },
         {
           title: "Check for warning message",
-          params: [null, "Warning from file (Between erros No 1/2 and 2/2)"],
+          params: [null, "Warning from file (Between errors No 1/2 and 2/2)"],
         },
         {
           title: "Check for warning message",

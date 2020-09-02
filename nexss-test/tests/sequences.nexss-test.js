@@ -60,7 +60,9 @@ module.exports = {
         {
           title: "Sequence parameters with .nexss file",
           params: [
-            `nexss Nexss/Test/Sequences --seq='openFile/myvar'`,
+            process.platform === "win32"
+              ? `nexss Nexss/Test/Sequences --seq="openFile/myvar"`
+              : `nexss Nexss/Test/Sequences --seq='openFile/myvar'`,
             `"openFile":"myvar"`,
           ],
         },

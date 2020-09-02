@@ -15,7 +15,7 @@ if ! test -f "$InstallPath"; then
         sudo apt update
         sudo apt -y install nodejs npm gcc g++ make
     else
-        echo Node is installed
+        echo Nodejs is installed
         node -v
         echo NPM
         npm -v
