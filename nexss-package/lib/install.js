@@ -1,8 +1,17 @@
 const { bold, green } = require("../../lib/color");
 
 module.exports.installPackages = (destinationFolder) => {
+  // We make sure git is installed.
+  const { ensureInstalled } = require("../../lib/terminal");
+  const config = require(`../../nexss-language/languages/config.${process.platform}`);
+  const osPM =
+    config.osPackageManagers[Object.keys(config.osPackageManagers)[0]];
+
+  ensureInstalled("git", `${osPM.installCommand} git`);
+
   try {
-    const repos = require("../repos.dev.json");
+    const repos = require("../repos.json");
+
     // console.log(repos);
     for (var key in repos) {
       const command = `git clone --depth=1 --recurse-submodules ${repos[key]} ${destinationFolder}/${key}`;

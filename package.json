@@ -1,7 +1,8 @@
 {
   "name": "@nexssp/cli",
   "author": "Marcin Polak mapoart@gmail.com",
-  "version": "2.1.5",
+  "homepage": "https://nexss.com",
+  "version": "2.1.6",
   "description": "Nexss PROGRAMMER",
   "main": "nexss.js",
   "scripts": {
@@ -30,7 +31,6 @@
   "bugs": {
     "url": "https://github.com/nexssp/cli/issues"
   },
-  "homepage": "https://github.com/nexssp/cli#readme",
   "dependencies": {
     "chalk": "^3.0.0",
     "cli-table3": "^0.5.1",

@@ -31,7 +31,9 @@ function exe(command, options) {
     Object.assign(options, { shell: "/bin/bash" });
   }
   try {
-    return execSync(`${command} --pipeerrors`, options).toString();
+    const r = execSync(`${command} --pipeerrors`, options).toString();
+
+    return r;
   } catch (er) {
     if (process.argv.includes("--errors")) {
       console.error(er);
