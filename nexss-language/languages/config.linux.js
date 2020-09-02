@@ -1,14 +1,14 @@
-let c = require("./config.base");
+let c = require('./config.base');
 c.osPackageManagers = {
-  "apt-get": {
-    installation: "installed.",
-    install: "apt-get -y install <args>"
-  }
+  'apt-get': {
+    installation: 'installed.',
+    install: 'apt-get -y install',
+  },
 };
 c.errors = {
-  "1: (.*?): not found": `apt-get -y install <args>`
+  '1: (.*?): not found': `apt-get -y install`,
 };
 
-c.compilerInstallation = "apt-get -y install <args>";
+c.compilerInstallation = 'apt-get -y install';
 
 module.exports = c;
