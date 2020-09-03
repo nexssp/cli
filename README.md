@@ -1,10 +1,16 @@
 ```sh
+npm i @nexssp/cli -g
+
 Welcome to      ____
 |..          | |             ``..      ..''             ..''''             ..''''
 |  ``..      | |______           ``..''              .''                .''
 |      ``..  | |                 ..'`..           ..'                ..'
 |          ``| |___________  ..''      ``.. ....''             ....''
+<<<<<<< HEAD
 Programmer 2.1.7 - Free, Open Source, Educational Version
+=======
+Programmer
+>>>>>>> 42a8a8f91a8c7569d2274bf6234f7fe269190c69
 ```
 
 **Nexss Programmer** is a cli tool which allows to compile, compose over 50 programming languages.
