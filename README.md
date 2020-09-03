@@ -69,7 +69,6 @@ Note: Packages will be installed with the very first run of `nexss` command in y
 
 - **Linux** ~~Innstaller~~, and implement all languages (few are now done.)
 - **MacOS** finish implementation (packages, configurations for all languages) **Work in progress**,
-- Setup builders 'Any language To EXE' and 'Any module to EXE',
 - More packages related to the current needs of the users,
 - More tutorials and practical examples,
 - Sequences/Applications with voice control,
@@ -79,4 +78,4 @@ Note: Packages will be installed with the very first run of `nexss` command in y
 
 ---
 
-For installing some of the compilers for Windows OS **Nexss Programmer** uses fantastic package manager tool from **Luke Sampson** [SCOOP](https://scoop.sh/)
+For installing some of the compilers for Windows OS, **Nexss Programmer** uses fantastic package manager tool from **Luke Sampson** [SCOOP](https://scoop.sh/)
