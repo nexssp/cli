@@ -4,8 +4,10 @@ Welcome to      ____
 |  ``..      | |______           ``..''              .''                .''
 |      ``..  | |                 ..'`..           ..'                ..'
 |          ``| |___________  ..''      ``.. ....''             ....''
-Programmer 2.1.6 - Free, Open Source, Educational Version
+Programmer 2.1.7 - Free, Open Source, Educational Version
 ```
+
+**Nexss Programmer** is a cli tool which allows to compile, compose over 50 programming languages.
 
 <p align="center">
 <b><a href="https://github.com/nexssp/cli/wiki/Concept-Overview">Overview</a></b> |
@@ -29,48 +31,14 @@ Programmer 2.1.6 - Free, Open Source, Educational Version
     </a>
 </p>
 
-## Value Propositions
-
-- **Learning Tool** - Students can learn modern and old(history) of the languages and don't have to spend a lot of time finding out about how to install compilers - so Universities, Schools, Individuals - Self-learners etc. More people would start to like programming..
-- **Speed up producing** - Add new file to work with and start from predefined templates, each language have own repo and templates folder,
-- **Speed up learning** - Error/Solution - has engine which parse the errors which can be specified in the Nexss Programmer's language file configuration, so display predefined solutions for particular error,
-- **Automation tool** - allows you to run programs in sequence in different programming languages and also pass variables to the next step (for now there is not implemented easy distributed solution),
-  Here are the main features video: https://www.youtube.com/watch?v=z5scbto_yOM
-- **Nexss Programmer Projects/Packages** - One Project can run (for now in sequence) - many files or another Nexss Programmer Projects as one solution,
-- **New Scripting Language** - .nexss - Users can create own commands (Nexss Programmer Packages). Each command is a Nexss Programmer package and package can be one file or many files in different languages or combination of files and packages. To create new packages is for more advanced users but .nexss is for people who just want to make solution eg in the office. Example here: AutoPrint - https://nexss.com/en/easy-install-nexss-programmer.html (This example checks your emails for pdf attachments and if any of them contains word invoice it will automatically prints it. - how much time can be saved by 10 lines script)
-- **Build your own language**
-
-### Notes
-
-For now Nexss Programmer works on all platforms, however all languages are implemented only on Windows.
-
-### Links
-
-Code Repository: <https://github.com/nexssp/cli> (here)  
-Documentation: <https://github.com/nexssp/cli/wiki>  
-Video(3min): <https://www.youtube.com/watch?v=7WbnYyEnBNk>  
-Features Video: <https://www.youtube.com/watch?v=z5scbto_yOM>  
-Technologies Video: <https://www.youtube.com/watch?v=aUIcR7Qps-A>
-
-```sh
-# Switch between Nexss Programmer versions
-nexss --update master # latest version 2.1.3
-nexss --update 2.1
-nexss --update 2.0
-```
-
 **Nexss Programmer Presentation** (Youtube video):  
 [![Nexss Programmer Presentation](https://img.youtube.com/vi/vs2tXMrZzzs/0.jpg)](https://www.youtube.com/watch?v=vs2tXMrZzzs)
 
 ---
 
-For installing some of the compilers **Nexss Programmer** uses fantastic package manager tool from **Luke Sampson** [SCOOP](https://scoop.sh/)
-
----
-
 ## How to start learning computer programming?
 
-- Start **learning PROGRAMMING** within minutes with Nexss PROGRAMMER 2.0 eg. `nexss myprogram.r` OR `nexss myanotherprogram.py` **(nexss file.ext)** and it will download automatically compiler and run Your program.
+- Start **learning PROGRAMMING** within minutes with Nexss PROGRAMMER 2.x eg. `nexss myprogram.r` OR `nexss myanotherprogram.py` **(nexss file.ext)** and it will download automatically compiler and run Your program.
 - Add files from predefined templates for the languages
 - Build your own tools that other people can use,
 - Configurable Error handling with suggested solutions,
@@ -107,10 +75,6 @@ Note: Packages will be installed with the very first run of `nexss` command in y
 - Setup builders (Done on C++, C, Python) to make binaries (much faster ! even 1000x) + Compile Nexss PROGRAMMER packages to binary,
 - Write Automatic Tests.
 
-## Donate [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RP72WY9S6CM4L&source=url)
+---
 
-It is a great pleasure to work on the tools for everyone however it is a huge amount of work and the donations are always part of motivation which helps to move forward. There is still a lot of work to implement **Nexss PROGRAMMER** on the **Linux** and **MacOS**.
-
-Please consider donating to the Nexss Paypal Account
-
-[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RP72WY9S6CM4L&source=url) [![Donate](nexss_kod_qr.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RP72WY9S6CM4L&source=url)
+For installing some of the compilers for Windows OS **Nexss Programmer** uses fantastic package manager tool from **Luke Sampson** [SCOOP](https://scoop.sh/)
