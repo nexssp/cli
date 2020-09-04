@@ -13,28 +13,29 @@ let values = Object.keys(languages);
 module.exports = {
   values,
   testsSelect: [1, 2],
-  startFrom: null, // eg. .cs
+  startFrom: ".bat", // eg. .cs
   endsWith: null, // eg .cs
   omit: [
-    ".html", // No json parsing
-    ".swift",
-    ".tcl",
-    ".d", // dome compiler proble, default.d not found
+    // ".html", // No json parsing
+    ".tcl", // Wrong unicode characters
+    ".pd", // To check
+    // ".d", // dome compiler proble, default.d not found
     ".exs",
-    ".pd",
-    ".hs",
-    ".f90",
-    ".kts", // add json + utf-8
-    ".vbs",
-    ".wsf",
-    ".nexss",
     ".ex",
-    ".java",
-    ".scala", // unicode characters not working
-    // ".json", //implement to free version
+    ".erl", // Compiler needs to be installed during adding a file (compile of lib is needed)
+    ".hs", // Add json in/out templates
+    ".f90", // Add json
+    // ".kts", // add json + utf-8
+    // ".vbs",
+    // ".wsf",
+    // ".nexss",
+    // ".ex",
+    // ".java",
+    // ".scala", // unicode characters not working
+    // // ".json", //implement to free version
     ".bat", //finish the json,
-    ".v",
-    ".clj",
+    // ".v",
+    // ".clj",
   ],
   tests: [
     {
@@ -57,7 +58,7 @@ module.exports = {
         {
           title: "Test Unicode characters",
           type: "shouldContain",
-          params: ["nexss Default${ext} --test", /"test":(.*)"test"/],
+          params: ["nexss Default${ext} --nxsTest", /"test":(.*)"test"/],
         },
       ],
     },
