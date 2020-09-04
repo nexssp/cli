@@ -97,11 +97,11 @@ module.exports.transformNexss = (
       // Later batter code below
       let argsStrings;
       if (process.platform === "win32") {
-          argsStrings = args.map((a) =>
+        argsStrings = args.map((a) =>
           a.indexOf("=") > -1 ? `${a.replace("=", '="')}"` : a
         );
-      }else{
-          argsStrings = args.map((a) =>
+      } else {
+        argsStrings = args.map((a) =>
           a.indexOf("=") > -1 ? `${a.replace("=", "='")}'` : a
         );
       }

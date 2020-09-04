@@ -49,11 +49,9 @@ module.exports.transformOutput = (x, y, z) =>
           // if (!data) {
           //   console.error("NO DATA");
           // }
-          if (!data) {
-            data = {};
-          }
+          data.nxsStopReason = error;
           data.nxsStop = true;
-          callback(null, data);
+          callback(null, JSON.stringify(data));
           // console.log(data);
         }
 
@@ -153,7 +151,12 @@ module.exports.transformOutput = (x, y, z) =>
 
         // console.log(data);
         // self.push(data.toString("utf8").trim());
-
+        if (process.argv.includes("--nxsDataSize")) {
+          const {
+            dataSize,
+          } = require("../../nexss-start/lib/output/nxsDataSize");
+          dataSize(data);
+        }
         nxsDebugData(data, "Output", "cyan");
 
         callback(null, JSON.stringify(data));

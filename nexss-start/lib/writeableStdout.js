@@ -20,7 +20,16 @@ module.exports.writeableStdout = () =>
 
         delete chunk["nexssScript"];
         if (!chunk.nxsPretty) {
-          console.log(JSON.stringify(chunk));
+          if (chunk["nxsDataDisplay"]) {
+            let color = "\u001b[35m"; //grey
+
+            console.error(
+              `${color}Display below only Object keys (--nxsDataDisplay):\x1b[0m`
+            );
+            console.error(JSON.stringify(Object.keys(chunk)));
+          } else {
+            console.log(JSON.stringify(chunk));
+          }
         } else {
           delete chunk["nxsPretty"];
           console.log(JSON.stringify(chunk, null, 2));

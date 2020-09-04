@@ -9,10 +9,12 @@ const { Transform } = require("stream");
 const { createReadStream, existsSync } = require("fs");
 const { extname } = require("path");
 const { nxsDebugTitle } = require("./output/nxsDebug");
+const { timeElapsed } = require("../../nexss-start/lib/output/nxsTime");
+const { bold } = require("../../lib/color");
 
 module.exports.transformFile = (file, x, y) => {
   return new Transform({
-    writableObjectMode: true,
+    //  writableObjectMode: true,
     transform(chunk, encoding, callback) {
       process.chdir(y.cwd);
       process.nexssCWD = y.cwd;
@@ -31,6 +33,9 @@ module.exports.transformFile = (file, x, y) => {
         );
         callback(null, JSON.stringify(data));
       }
+
+      let startCompilerTime = process.hrtime();
+
       nxsDebugTitle("Transforming File: " + file, data, "yellow");
       let streamRead = createReadStream(file);
       let wholeData = "";
@@ -51,6 +56,7 @@ module.exports.transformFile = (file, x, y) => {
           data.nxsOut = wholeData;
         }
         data = JSON.stringify(data);
+        timeElapsed(startCompilerTime, `Read file from ${bold(file)}`);
         callback(null, Buffer.from(data));
       });
 
