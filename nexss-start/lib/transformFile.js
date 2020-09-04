@@ -56,7 +56,7 @@ module.exports.transformFile = (file, x, y) => {
           data.nxsOut = wholeData;
         }
         data = JSON.stringify(data);
-        timeElapsed(startCompilerTime, `Read file from ${bold(file)}`);
+        // timeElapsed(startCompilerTime, `Read file from ${bold(file)}`);
         callback(null, Buffer.from(data));
       });
 

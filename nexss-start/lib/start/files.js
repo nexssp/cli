@@ -95,8 +95,11 @@ const getFiles = (folder, args, env, ccc) => {
     if (args._ && args._.length === 0) {
       delete args._;
     } else {
-      args.nxsIn = args._;
-      delete args._;
+      // To CHECKTHIS.
+      if (!args.nxsIn || args._) {
+        args.nxsIn = args._;
+        delete args._;
+      }
     }
   }
   // console.log("folder:", folder, "ARGS!!!!!!!!!!", args);

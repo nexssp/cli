@@ -76,6 +76,7 @@ const nexssFileParser = (content, filename, nxsArgs) => {
           });
         }
       }
+
       // delete args._;
       // if (nxsArgs) {
       //   // Object.assign(args, nxsArgs); // if actual parameters  pass to all lines
