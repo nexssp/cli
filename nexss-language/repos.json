@@ -26,6 +26,7 @@
   ".hx": "https://github.com/nexssp/language_haxe.git",
   ".java": "https://github.com/nexssp/language_java.git",
   ".kts": "https://github.com/nexssp/language_kotlin.git",
+  ".kt": "https://github.com/nexssp/language_kotlin.git",
   ".rkt": "https://github.com/nexssp/language_racket.git",
   ".rb": "https://github.com/nexssp/language_ruby.git",
   ".scala": "https://github.com/nexssp/language_scala.git",
