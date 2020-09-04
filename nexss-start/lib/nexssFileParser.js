@@ -3,16 +3,25 @@ const minimist = require("minimist");
 const { NEXSS_SPECIAL_CHAR } = require("../../config/defaults");
 
 function stripEndQuotes(s) {
-  if(process.platform==='win32'){
+  if (process.platform === "win32") {
     return s.replace && s.replace(/(^["|'])|(["|']$)/g, "");
   }
   return s;
 }
 
+function preVars(isn) {
+  const { vars } = require("../../config/preVars");
+  Object.keys(vars).forEach((e) => {
+    isn = isn.replace(new RegExp(e, "g"), vars[e]);
+  });
+
+  return isn;
+}
+
 const nexssFileParser = (content, filename, nxsArgs) => {
   var { parseArgsStringToArgv } = require("string-argv");
   let lineNumber = 0;
-  const nexssProgram = content.toString().trim().split(/\r?\n/);
+  const nexssProgram = preVars(content.toString()).trim().split(/\r?\n/);
   const totalLines = nexssProgram.length;
 
   const files = nexssProgram
