@@ -38,7 +38,7 @@ async function run(operations, options = {}) {
         paramsNumber = 3;
       }
 
-      if (!options.build) {
+      if (!options.nxsBuild) {
         let terminalParams = process.argv.slice(paramsNumber);
         // We filter transformOutput params passed from terminal
         // This needs to be done as some packages are built from

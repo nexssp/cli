@@ -22,7 +22,7 @@ module.exports.readable = (startData) => {
   }
 
   // TEST DATA
-  if (cliArgs.test) {
+  if (cliArgs.nxsTest) {
     info("Testing enabled");
     let testDataPassed = cliArgs.testData || cliArgs.testdata;
     if (!testDataPassed) {

@@ -12,7 +12,7 @@ module.exports.transformTest = (
     // writableObjectMode: true,
     // readableObjectMode: true,
     transform(chunk, encoding, callback) {
-      if (cliArgs.test) {
+      if (cliArgs.nxsTest) {
         const testingData = require("../../config/testingData.json");
         let data = "";
         try {
@@ -27,7 +27,7 @@ module.exports.transformTest = (
         }
         if (data) {
           let errorExists;
-          Object.keys(testingData).forEach(k => {
+          Object.keys(testingData).forEach((k) => {
             if (testingData[k] !== data[k]) {
               error(bold(red(testingData[k])), `Not Equal to`);
               error(bold(red(data[k])));
@@ -44,6 +44,6 @@ module.exports.transformTest = (
       }
       if (chunk) callback(null, chunk);
       //   process.stdout.write(`END ERROR TRANSFORMER ${title}\n\n `);
-    }
+    },
   });
 };

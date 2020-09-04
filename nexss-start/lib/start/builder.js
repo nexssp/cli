@@ -23,16 +23,12 @@ module.exports.getBuilder = (file) => {
       languageDefinition.builders[Object.keys(languageDefinition.builders)[0]];
   }
 
-  try {
-    if (typeof builder.build === "function") {
-      cmd = builder.build();
-    } else if (typeof eval(builder.build) === "function") {
-      //During cache we need to eval to get that is function.
-      cmd = eval(builder.build)();
-    } else {
-      cmd = builder.build;
-    }
-  } catch (e) {
+  if (typeof builder.build === "function") {
+    cmd = builder.build();
+  } else if (typeof eval("(" + builder.build + ")") === "function") {
+    //During cache we need to eval to get that is function.
+    cmd = eval("(" + builder.build + ")")();
+  } else {
     cmd = builder.build;
   }
 

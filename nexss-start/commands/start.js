@@ -256,7 +256,10 @@ if (cliArgs.server) {
 
                 let builder;
 
-                if (!builder || (compiler && compiler.args && !cliArgs.build)) {
+                if (
+                  !builder ||
+                  (compiler && compiler.args && !cliArgs.nxsBuild)
+                ) {
                   // We make sure compiler is installed
                   compilerAdded = true;
                   if (compiler.command) {
