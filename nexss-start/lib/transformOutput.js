@@ -49,6 +49,9 @@ module.exports.transformOutput = (x, y, z) =>
           // if (!data) {
           //   console.error("NO DATA");
           // }
+          if (!data) {
+            data = {};
+          }
           data.nxsStop = true;
           callback(null, data);
           // console.log(data);

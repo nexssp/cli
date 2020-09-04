@@ -11,7 +11,7 @@ module.exports.getCompiler = (file) => {
   const fileName = file.name;
   const fileFillPAth = path.join(file.path, file.name);
   const languageDefinition = getLangByFilename(fileName);
-  if(!languageDefinition){
+  if (!languageDefinition) {
     console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
   }
   const extension = path.extname(fileName).slice(1);
@@ -40,7 +40,10 @@ module.exports.getCompiler = (file) => {
     }
   }
 
-  if (file.compiler && !ld_compiler[file.compiler]) {
+  if (
+    file.compiler &&
+    !ld_compiler[file && file.compiler && file.compiler.split(" ")[0]]
+  ) {
     if (cliArgs.verbose) {
       warn(
         `Compiler has been set to ${file.compiler} from file but not exists. Using default one.`
@@ -48,6 +51,7 @@ module.exports.getCompiler = (file) => {
     }
     delete file.compiler;
   }
+
   if (!file.compiler) {
     // GLOBAL COMPILER
     let globalLangConfig;
