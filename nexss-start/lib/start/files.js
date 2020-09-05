@@ -2,7 +2,7 @@ const path = require("path");
 const fs = require("fs");
 const { loadConfigContent } = require("../../../lib/config");
 const dotenv = require("dotenv");
-const { bold, red, green } = require("../../../lib/color");
+const { bold, red, green, blue } = require("../../../lib/color");
 const { NEXSS_SPECIAL_CHAR } = require("../../../config/defaults");
 const { getSequence } = require("./sequence");
 const assert = require("assert");
@@ -190,12 +190,15 @@ const getFiles = (folder, args, env, ccc) => {
 
   if (!Array.isArray(config_files)) {
     console.error(
-      bold(`You must have files: or 'default' sequence to run project.`) +
+      bold(`You need to have files: or 'default' sequence to run project.`) +
         bold("\nfiles") +
         " needs to be an array. \nMaybe you need to add " +
         red("-") +
         " at the front of the name in the _nexss.yml config file eg.\n" +
-        green(bold("files:\n  - name: myfile.js"))
+        green(bold("files:\n  - name: myfile.js")) +
+        blue(
+          `\nmore here: ${bold("https://github.com/nexssp/cli/wiki/Config")}`
+        )
     );
     process.exit(0);
   }

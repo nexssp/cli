@@ -1,5 +1,6 @@
 ```sh
 npm i @nexssp/cli -g
+nexss
 
 Welcome to      ____
 |..          | |             ``..      ..''             ..''''             ..''''
@@ -9,7 +10,7 @@ Welcome to      ____
 Programmer
 ```
 
-**Nexss Programmer** is a cli tool which allows to compile, compose over 50 programming languages.
+**Nexss Programmer** is a cli tool which allows to compile, compose over **50** programming languages.
 
 <p align="center">
 <b><a href="https://github.com/nexssp/cli/wiki/Concept-Overview">Overview</a></b> |
