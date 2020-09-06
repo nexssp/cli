@@ -13,7 +13,7 @@ let values = Object.keys(languages);
 module.exports = {
   values,
   testsSelect: [1, 2],
-  startFrom: null, // eg. .cs
+  startFrom: ".hy", // eg. .cs
   endsWith: null, // eg .cs
   omit:
     process.platform === "win32"
@@ -24,35 +24,63 @@ module.exports = {
           // ".html",
           ".tcl", // Wrong unicode characters
           ".pd", // To check
+          ".ps1",
           // ".d", // dome compiler proble, default.d not found
           ".exs",
           ".ex",
           ".erl", // Compiler needs to be installed during adding a file (compile of lib is needed)
-          ".hs", // TO IMPLEMENT defalt, helloWorld
-          ".f90", // TO IMPLEMENT defalt, helloWorld
-          ".v", // TO IMPLEMENT defalt, helloWorld
-          ".coco", // TO IMPLEMENT defalt, helloWorld
-          ".hy", // TO IMPLEMENT defalt, helloWorld
-          ".bas", // TO IMPLEMENT defalt, helloWorld
-          ".zig", // TO IMPLEMENT defalt, helloWorld
-          ".m", // Octave: TO IMPLEMENT defalt, helloWorld
-          ".adb", // Ada: TO IMPLEMENT defalt, helloWorld (filename must be default not Default!)
+          ".hs", // TO IMPLEMENT default, helloWorld
+          ".f90", // TO IMPLEMENT default, helloWorld
+          ".v", // TO IMPLEMENT default, helloWorld
+          ".coco", // TO IMPLEMENT default, helloWorld
+          ".hy", // TO IMPLEMENT default, helloWorld
+          ".bas", // TO IMPLEMENT default, helloWorld
+          ".zig", // TO IMPLEMENT default, helloWorld
+          ".m", // Octave: TO IMPLEMENT default, helloWorld
+          ".adb", // Ada: TO IMPLEMENT default, helloWorld (filename must be default not Default!)
           ".kts", //Kotlin: // add json + utf-8
           ".kt", //Kotlin: // add json + utf-8
           ".scala", // unicode characters not working
-          ".vbs", // TO IMPLEMENT defalt, helloWorld
-          ".wsf", // TO IMPLEMENT defalt, helloWorld
+          ".vbs", // TO IMPLEMENT default, helloWorld
+          ".wsf", // TO IMPLEMENT default, helloWorld
           ".bat", //finish the json,
           ".html", // is used only for templates
         ]
       : [
-          // NOT IMPLEMENTED ON LINUX/MAC
+          ".html", // is used only for templates
+          // NOT AVAILABLE ON LINUX/MAC
           ".ahk",
           ".au3",
           ".vbs",
           ".wsf",
           ".pd",
+          ".bat",
+          // Other issues
           ".jl", // issues with the permissions etc. look later
+          ".ps1", //Shows Error on nexss my.ps1 --nocache --nxsTest --x=123 ### ERROR on linux.
+          ".cs", //Sometimes shows dotnet-script not found
+          ".ex", // Better install
+          ".exs",
+          ".erl", // TO implement
+          ".hs", // TO implement
+          ".hx", // TO implement
+          ".java", // TO implement,
+          ".kts", // TO IMPLEMENT default, helloWorld
+          ".kt", // TO IMPLEMENT default, helloWorld
+          ".rb", // TO implement
+          ".scala", // TO implement
+          ".nim", // TO implement
+          ".hy", // TO implement
+          ".coco", // TO IMPLEMENT default, helloWorld
+          ".coco", // TO IMPLEMENT default, helloWorld
+          ".f90", // TO IMPLEMENT default, helloWorld
+          ".d", // ACtivate function / make it automatic
+          ".v", // TO implement
+          ".bas", // TO implement
+          ".zig", // TO implement
+          ".m", // TO implement
+          ".raku", // finish installer
+          ".adb", // Ada: TO IMPLEMENT default, helloWorld (filename must be default not Default!)
         ],
   tests: [
     {
