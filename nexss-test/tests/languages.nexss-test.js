@@ -52,6 +52,7 @@ module.exports = {
           ".vbs",
           ".wsf",
           ".pd",
+          ".jl", // issues with the permissions etc. look later
         ],
   tests: [
     {

@@ -68,7 +68,13 @@ module.exports.transformNexss = (
       }
 
       options.detached = false;
-      options.shell = true;
+      if (process.platform === "win32") {
+        options.shell = true;
+      } else {
+        options.shell = "/bin/bash";
+      }
+
+      options.maxBuffer = 10485760; // 10 * 1024 * 1024;
       options.cwd = cwd;
       options.env = "SEE: process.env";
 
