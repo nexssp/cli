@@ -13,30 +13,46 @@ let values = Object.keys(languages);
 module.exports = {
   values,
   testsSelect: [1, 2],
-  startFrom: ".bat", // eg. .cs
+  startFrom: null, // eg. .cs
   endsWith: null, // eg .cs
-  omit: [
-    // ".html", // No json parsing
-    ".tcl", // Wrong unicode characters
-    ".pd", // To check
-    // ".d", // dome compiler proble, default.d not found
-    ".exs",
-    ".ex",
-    ".erl", // Compiler needs to be installed during adding a file (compile of lib is needed)
-    ".hs", // Add json in/out templates
-    ".f90", // Add json
-    // ".kts", // add json + utf-8
-    // ".vbs",
-    // ".wsf",
-    // ".nexss",
-    // ".ex",
-    // ".java",
-    // ".scala", // unicode characters not working
-    // // ".json", //implement to free version
-    ".bat", //finish the json,
-    // ".v",
-    // ".clj",
-  ],
+  omit:
+    process.platform === "win32"
+      ? [
+          // NOT IMPLEMENTED
+          ".swift", // is not implemented on windows yet
+          // OTHER ISSUES
+          // ".html",
+          ".tcl", // Wrong unicode characters
+          ".pd", // To check
+          // ".d", // dome compiler proble, default.d not found
+          ".exs",
+          ".ex",
+          ".erl", // Compiler needs to be installed during adding a file (compile of lib is needed)
+          ".hs", // TO IMPLEMENT defalt, helloWorld
+          ".f90", // TO IMPLEMENT defalt, helloWorld
+          ".v", // TO IMPLEMENT defalt, helloWorld
+          ".coco", // TO IMPLEMENT defalt, helloWorld
+          ".hy", // TO IMPLEMENT defalt, helloWorld
+          ".bas", // TO IMPLEMENT defalt, helloWorld
+          ".zig", // TO IMPLEMENT defalt, helloWorld
+          ".m", // Octave: TO IMPLEMENT defalt, helloWorld
+          ".adb", // Ada: TO IMPLEMENT defalt, helloWorld (filename must be default not Default!)
+          ".kts", //Kotlin: // add json + utf-8
+          ".kt", //Kotlin: // add json + utf-8
+          ".scala", // unicode characters not working
+          ".vbs", // TO IMPLEMENT defalt, helloWorld
+          ".wsf", // TO IMPLEMENT defalt, helloWorld
+          ".bat", //finish the json,
+          ".html", // is used only for templates
+        ]
+      : [
+          // NOT IMPLEMENTED ON LINUX/MAC
+          ".ahk",
+          ".au3",
+          ".vbs",
+          ".wsf",
+          ".pd",
+        ],
   tests: [
     {
       title: "Test Compilers",

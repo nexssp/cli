@@ -1,4 +1,4 @@
-const { error, warn } = require("../../lib/log");
+const { error, warn, isErrorPiped } = require("../../lib/log");
 const { bold, yellow, blue } = require("../../lib/color");
 const { getLangByFilename } = require("../../nexss-language/lib/language");
 const { normalize, isAbsolute, extname, dirname } = require("path");
@@ -46,7 +46,7 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
         )}</span>`
       );
     } else {
-      if (process.argv.includes("--pipeerrors")) {
+      if (isErrorPiped) {
         console.log(`ERROR ${ErrorPre}:${bold(errorBody)}`);
       } else {
         console.error(`ERROR ${ErrorPre}:${bold(errorBody)}`);
@@ -183,14 +183,14 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
               }: ${solution}</span>`
             );
           } else {
-            if (process.argv.includes("--pipeerrors")) {
+            if (isErrorPiped) {
               console.log(`Possible solution ${solutionNumber}: ${solution}`);
             } else {
               console.error(`Possible solution ${solutionNumber}: ${solution}`);
             }
           }
         } else {
-          if (process.argv.includes("--pipeerrors")) {
+          if (isErrorPiped) {
             console.log(
               yellow(
                 `Possible solution ${solutionNumber}: ${bold(yellow(solution))}`

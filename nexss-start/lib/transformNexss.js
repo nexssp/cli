@@ -9,6 +9,7 @@ const {
   ok,
   info,
   trace,
+  isErrorPiped,
 } = require("../../lib/log");
 const { colorizer } = require("./colorizer");
 const { bold, yellow, red } = require("../../lib/color");
@@ -91,6 +92,8 @@ module.exports.transformNexss = (
       process.nexssCWD = cwd;
 
       args = args.remove("--nocache");
+      args = args.remove("--nxsPipeErrors");
+      args = args.remove("--nxsTest");
       // const argsStrings = args.map((a) =>
       //   a.indexOf(" ") > -1 ? `${a.replace("=", '="')}"` : a
       // );
@@ -158,7 +161,7 @@ module.exports.transformNexss = (
               nexssError = nexssError.substring(1);
               nexssError = nexssError.split(":");
               let type = nexssError.shift();
-              if (args.includes("--pipeerrors")) {
+              if (isErrorPiped) {
                 console.log(nexssError.join(":").trim());
               } else {
                 switch (type) {
@@ -171,7 +174,7 @@ module.exports.transformNexss = (
                 eval(type)(colorizer(nexssError.join(":").trim()));
               }
             } else {
-              parseError(fileName, element, args.includes("--pipeerrors"));
+              parseError(fileName, element, args.includes("--nxsPipeErrors"));
             }
             // console.error("##############element!!!", element);
           });
@@ -207,7 +210,11 @@ module.exports.transformNexss = (
 
       this.worker.stderr.on("end", function () {
         if (this.errBuffer) {
-          parseError(fileName, this.errBuffer, args.includes("--pipeerrors"));
+          parseError(
+            fileName,
+            this.errBuffer,
+            args.includes("--nxsPipeErrors")
+          );
           callback("Error during: " + nexssCommand);
           this.errBuffer = "";
         }

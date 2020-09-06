@@ -31,7 +31,7 @@ function exe(command, options) {
     Object.assign(options, { shell: "/bin/bash" });
   }
   try {
-    const r = execSync(`${command} --pipeerrors`, options).toString();
+    const r = execSync(`${command} --nxsPipeErrors`, options).toString();
 
     return r;
   } catch (er) {

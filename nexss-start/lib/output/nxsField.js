@@ -7,7 +7,7 @@ module.exports = (data, field) => {
       delete data.htmlOutput;
       delete data.nxsField;
       delete data.nexssScript;
-      delete data.pipeerrors;
+      delete data.nxsPipeErrors;
       delete data.quiet;
       console.log(data);
     }

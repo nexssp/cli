@@ -1,6 +1,6 @@
 const { Transform } = require("stream");
 
-const { error, warn, ok } = require("../../lib/log");
+const { error, warn, ok, isErrorPiped } = require("../../lib/log");
 const { bold, red } = require("../../lib/color");
 const nxsFieldModule = require("./output/nxsField");
 const nxsFieldsModule = require("./output/nxsFields");
@@ -42,7 +42,7 @@ module.exports.transformOutput = (x, y, z) =>
         //   "ERROR in JSON (start/tranformOutput.js): ",
         //   chunk.toString()
         // );
-        if (process.argv.indexOf("--pipeerrors") >= 0) {
+        if (isErrorPiped) {
           console.log(data);
         } else {
           // callback has been disabled for the wrong JSON (??)

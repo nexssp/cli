@@ -1,6 +1,6 @@
 const { Transform } = require("stream");
 const cliArgs = require("minimist")(process.argv);
-const { error, warn, ok } = require("../../lib/log");
+const { error, warn, ok, isErrorPiped } = require("../../lib/log");
 const { bold, red } = require("../../lib/color");
 const nxsInModule = require("./input/nxsIn");
 const { nxsDebugData } = require("./output/nxsDebug");
@@ -19,7 +19,7 @@ module.exports.transformInput = (x, y, params) =>
       try {
         data = JSON.parse(data);
       } catch (error) {
-        if (process.argv.indexOf("--pipeerrors") >= 0) {
+        if (isErrorPiped) {
           console.log(data);
         } else {
           callback(null, data);
