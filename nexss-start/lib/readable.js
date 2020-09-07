@@ -53,7 +53,7 @@ module.exports.readable = (startData) => {
     Object.assign(startData, testData);
   }
   // STDIN -trim just to avoid extra params from JSON
-  const stdinRead = require("../lib/stdin")().trim();
+  const stdinRead = require("./stdin")().trim();
   let dataStdin = {};
   if (stdinRead) {
     try {
