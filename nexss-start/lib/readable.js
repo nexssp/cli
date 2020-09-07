@@ -53,19 +53,28 @@ module.exports.readable = (startData) => {
     Object.assign(startData, testData);
   }
   // STDIN -trim just to avoid extra params from JSON
-  if (!Boolean(process.stdout.isTTY)) {
-    const stdinRead = require("./stdin")().trim();
-    let dataStdin = {};
-    if (stdinRead) {
-      try {
-        dataStdin = JSON.parse(stdinRead);
-      } catch (error) {
-        dataStdin.nexssStdin = stdinRead;
-      }
-
-      Object.assign(startData, dataStdin);
-    }
+  let stdinRead;
+  switch (process.platform) {
+    case "win32":
+      stdinRead = require("./stdin")[process.platform]().trim();
+      break;
+    default:
+      stdinRead = require("./stdin")["linux"]().trim();
+      break;
   }
+
+  let dataStdin = {};
+  if (stdinRead) {
+    try {
+      dataStdin = JSON.parse(stdinRead);
+    } catch (error) {
+      dataStdin.nexssStdin = stdinRead;
+    }
+
+    Object.assign(startData, dataStdin);
+  }
+
+  // console.error("NEXSS/info:", stdinRead, "end");
 
   const { expressionParser } = require("../lib/expressionParser");
   Object.keys(startData).forEach((e) => {
