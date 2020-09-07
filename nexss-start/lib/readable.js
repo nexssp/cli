@@ -53,16 +53,18 @@ module.exports.readable = (startData) => {
     Object.assign(startData, testData);
   }
   // STDIN -trim just to avoid extra params from JSON
-  const stdinRead = require("./stdin")().trim();
-  let dataStdin = {};
-  if (stdinRead) {
-    try {
-      dataStdin = JSON.parse(stdinRead);
-    } catch (error) {
-      dataStdin.nexssStdin = stdinRead;
-    }
+  if (!Boolean(process.stdout.isTTY)) {
+    const stdinRead = require("./stdin")().trim();
+    let dataStdin = {};
+    if (stdinRead) {
+      try {
+        dataStdin = JSON.parse(stdinRead);
+      } catch (error) {
+        dataStdin.nexssStdin = stdinRead;
+      }
 
-    Object.assign(startData, dataStdin);
+      Object.assign(startData, dataStdin);
+    }
   }
 
   const { expressionParser } = require("../lib/expressionParser");
