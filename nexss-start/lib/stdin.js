@@ -9,7 +9,12 @@ module.exports = () => {
   var chunks = [];
   try {
     do {
-      var chunk = readFileSync(0, "utf8");
+      var chunk;
+      if (process.platform !== "win32") {
+        chunk = readFileSync("/dev/stdin").toString();
+      } else {
+        chunk = readFileSync(0, "utf8");
+      }
       chunks.push(chunk);
     } while (chunk.length);
   } catch (error) {
