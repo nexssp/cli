@@ -175,7 +175,7 @@ module.exports.getLang = (ext, recreateCache) => {
         }
 
         language = module.exports.getLang(ext);
-        if (process.platform === "win32") {
+        if (process.platform !== "win32") {
           if (language.dist !== distName) {
             // This is different distribution probably no setup for other then Ubuntu
             warn(
