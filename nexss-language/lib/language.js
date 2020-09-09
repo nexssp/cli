@@ -181,17 +181,17 @@ module.exports.getLang = (ext, recreateCache) => {
             warn(
               `Your linux distribution ${bold(
                 distName
-              )} is not configured for ${bold(
+              )} is not configured for the extension ${bold(
                 ext
               )}. Default configuration will be used (It may appears with errors and finally not working properly). To see configuration use 'nexss ${bold(
-                ext
+                ext.replace(".", "")
               )} config'`
             );
           }
         }
       } else {
         warn(
-          `Nexss Online Github Repository: Support for language with extension ${ext} has not been found. Please consider installing it manually.`
+          `Nexss online Github repository: Support for language with extension ${ext} has not been found. Please consider installing it manually.`
         );
         process.exit(0);
       }
