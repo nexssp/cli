@@ -10,6 +10,7 @@ const { join, extname, resolve } = require("path");
 const { warn, di, success } = require("../../lib/log");
 const { bold, yellow } = require("../../lib/color");
 const cache = require("../../lib/cache");
+const { lang } = require("moment");
 
 function getLanguagesConfigFiles(projectFolder = "") {
   let paths = [];
@@ -159,23 +160,35 @@ module.exports.getLang = (ext, recreateCache) => {
         cache.del(`nexss_core_getLanguages__.json`);
         cache.del(`nexss_core_getLanguages_${ext}_.json`);
         const x = module.exports.getLanguages(true);
-
+        const { dist } = require("../../lib/osys");
+        const distName = dist();
         if (!x[ext]) {
-          const { dist } = require("../../lib/osys");
-          const distName = dist();
           const { error } = require("../../lib/log");
           error(
             "Error:",
             bold(ext),
             "is not implemented for",
             bold(process.platform) + (distName ? " " + distName : ""),
-
             "platform."
           );
           process.exit(1);
         }
 
         language = module.exports.getLang(ext);
+        if (process.platform === "win32") {
+          if (language.dist !== distName) {
+            // This is different distribution probably no setup for other then Ubuntu
+            warn(
+              `Your linux distribution ${bold(
+                distName
+              )} is not configured for ${bold(
+                ext
+              )}. Default configuration will be used (It may appears with errors and finally not working properly). To see configuration use 'nexss ${bold(
+                ext
+              )} config'`
+            );
+          }
+        }
       } else {
         warn(
           `Nexss Online Github Repository: Support for language with extension ${ext} has not been found. Please consider installing it manually.`
