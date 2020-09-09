@@ -10,5 +10,5 @@ c.errors = {
 };
 
 c.compilerInstallation = "apt-get -y install";
-
+c.dist = "Ubuntu";
 module.exports = c;
