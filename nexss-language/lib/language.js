@@ -161,12 +161,15 @@ module.exports.getLang = (ext, recreateCache) => {
         const x = module.exports.getLanguages(true);
 
         if (!x[ext]) {
+          const { dist } = require("../../lib/osys");
+          const distName = dist();
           const { error } = require("../../lib/log");
           error(
             "Error:",
             bold(ext),
             "is not implemented for",
-            bold(process.platform),
+            bold(process.platform) + (distName ? " " + distName : ""),
+
             "platform."
           );
           process.exit(1);
