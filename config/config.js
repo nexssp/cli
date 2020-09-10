@@ -1,4 +1,3 @@
-process.env.NODE_ENV = "development";
 require("../lib/helper");
 const { join, dirname, normalize } = require("path");
 const cache = require("../lib/cache");
@@ -51,7 +50,9 @@ function getConfig() {
 
   const NEXSS_PROJECTS_DB = normalize(`${NEXSS_HOME_PATH}/projects.json`);
 
-  const NEXSS_SRC_PATH = join(__dirname, ".."); //Nexss source engine path
+  const NEXSS_SRC_PATH =
+    process.env.NEXSS_SRC_PATH ||
+    (process.env.NEXSS_SRC_PATH = join(__dirname, ".."));
   // Make sure directories are there
   const createIfNotExists = [
     NEXSS_HOME_PATH,
