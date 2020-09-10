@@ -4,6 +4,7 @@ const { NEXSS_SRC_PATH } = require("../config/config.js");
 const { bold, grey } = require("../lib/color");
 const { invert } = require("../lib/helper");
 const aliases = invert(require("../aliases.json"));
+require("../lib/arrays"); // array flat / nodejs 10
 const os = require("os");
 // console.log(path.dirname(path.dirname(process.execPath)));
 (async () => {
