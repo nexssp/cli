@@ -45,13 +45,9 @@ module.exports.transformOutput = (x, y, z) =>
         if (isErrorPiped) {
           console.log(data);
         } else {
-          // callback has been disabled for the wrong JSON (??)
-          // if (!data) {
-          //   console.error("NO DATA");
-          // }
           data.nxsStopReason = error;
           data.nxsStop = true;
-          callback(null, JSON.stringify(data));
+          callback(null, data); //JSON stringify?
           // console.log(data);
         }
 
