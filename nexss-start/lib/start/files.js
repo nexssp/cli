@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const { bold, red, green, blue } = require("../../../lib/color");
 const { NEXSS_SPECIAL_CHAR } = require("../../../config/defaults");
 const { getSequence } = require("./sequence");
+require("../../../lib/arrays"); // array flat / nodejs 10
 const assert = require("assert");
 const loadEnv = (p) => {
   if (!p) {

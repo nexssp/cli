@@ -37,7 +37,7 @@ authors.forEach((author) => {
                 );
                 try {
                   require("child_process").execSync(
-                    `git pull origin master`,
+                    `git pull --rebase origin master`,
                     spawnOptions({
                       cwd: `${packagesPath}/${author}/${pkg}/${details}`,
                       stdio: "inherit",
@@ -69,7 +69,7 @@ authors.forEach((author) => {
             console.log(`${bold(green("Update package"))}: ${author}/${pkg}`);
             try {
               require("child_process").execSync(
-                `git pull origin master`,
+                `git pull --rebase origin master`,
                 spawnOptions({
                   cwd: `${packagesPath}/${author}/${pkg}`,
                   stdio: "inherit",
@@ -89,7 +89,7 @@ authors.forEach((author) => {
           try {
             console.log(`${bold(green("Update package"))}: ${author}`);
             require("child_process").execSync(
-              `git pull origin master`,
+              `git pull --rebase origin master`,
               spawnOptions({
                 cwd: `${packagesPath}/${author}`,
                 stdio: "inherit",
@@ -115,7 +115,7 @@ authors.forEach((author) => {
               );
               try {
                 require("child_process").execSync(
-                  `git pull origin master`,
+                  `git pull --rebase origin master`,
                   spawnOptions({
                     cwd: `${packagesPath}/${author}/${pkg}`,
                     stdio: "inherit",
