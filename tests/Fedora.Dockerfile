@@ -1,4 +1,4 @@
-FROM centos:latest
+FROM Fedora:latest
 
 RUN yum update
 
