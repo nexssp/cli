@@ -52,6 +52,7 @@ module.exports.getLanguages = (recreateCache) => {
 
   for (file of files) {
     let content = require(file);
+
     if (!content.extensions) {
       console.error("File has no .extensions which should be an array.", file);
       process.exit(1);
@@ -123,6 +124,7 @@ module.exports.getLang = (ext, recreateCache) => {
         const spawnOptions = require("../../config/spawnOptions");
 
         success(`Implementation for '${ext}' has been installed.`);
+
         if (require("fs").existsSync(repoPath)) {
           console.log("Language seems to be already there. Trying update..");
           try {

@@ -88,8 +88,6 @@ authors.forEach((author) => {
         }
       }
       fs.readdirSync(`${packagesPath}/${author}`).map((pkg) => {
-        // console.log("pkg!!!!!", pkg);
-        // if (author == "Keyboard") console.log("pkg!!!!", pkg);
         // 3rdPartyLibraries is a directory where nexss install additional libs.
         if (fs.statSync(`${packagesPath}/${author}/${pkg}`).isDirectory()) {
           // console.log(`${packagesPath}/${author}/${pkg}/_nexss.yml`);

@@ -9,7 +9,6 @@ const expressionParser2 = (data) => {
     jsON = jsON.replace(ps.match, ps.replace);
   });
 
-  // console.log("!!!JSON!!!!!", jsON);
   let errors = new Set();
   let inter;
   try {
@@ -39,7 +38,6 @@ const expressionParser2 = (data) => {
     process.exit(0);
   }
 
-  // console.log("!!!!!!!!!!!!", inter);
   return JSON.parse(inter.replace(/\\/g, "\\\\"));
 };
 

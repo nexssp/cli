@@ -7,22 +7,24 @@ const authors = fs.readdirSync(packagesPath);
 
 let pkgs = [];
 // TODO: To fix below syntac - make more efficient! works for now
-authors.forEach(author => {
+authors.forEach((author) => {
   if (
     author !== "3rdPartyLibraries" &&
     fs.statSync(`${packagesPath}/${author}`).isDirectory()
   ) {
     if (author.indexOf("@") === 0) {
-      fs.readdirSync(`${packagesPath}/${author}`).map(pkg => {
+      fs.readdirSync(`${packagesPath}/${author}`).map((pkg) => {
         if (!fs.existsSync(`${packagesPath}/${author}/${pkg}/_nexss.yml`)) {
           if (fs.statSync(`${packagesPath}/${author}/${pkg}`).isDirectory()) {
-            fs.readdirSync(`${packagesPath}/${author}/${pkg}`).map(details => {
-              pkgs.push({ type: "pkg", path: `${author}/${pkg}/${details}` });
-            });
+            fs.readdirSync(`${packagesPath}/${author}/${pkg}`).map(
+              (details) => {
+                pkgs.push({ type: "pkg", path: `${author}/${pkg}/${details}` });
+              }
+            );
           } else {
             pkgs.push({
               type: "file",
-              path: `${packagesPath}/${author}/${pkg}`
+              path: `${packagesPath}/${author}/${pkg}`,
             });
           }
         } else {
@@ -30,7 +32,7 @@ authors.forEach(author => {
           if (pkg !== "3rdPartyLibraries") {
             pkgs.push({
               type: "pkg",
-              path: `${author}/${pkg}`
+              path: `${author}/${pkg}`,
             });
           }
         }
@@ -40,21 +42,18 @@ authors.forEach(author => {
         if (author !== "3rdPartyLibraries") {
           pkgs.push({
             type: "pkg",
-            path: `${author}`
+            path: `${author}`,
           });
         }
       }
-      fs.readdirSync(`${packagesPath}/${author}`).map(pkg => {
-        // console.log("pkg!!!!!", pkg);
-        // if (author == "Keyboard") console.log("pkg!!!!", pkg);
-        // 3rdPartyLibraries is a directory where nexss install additional libs.
+      fs.readdirSync(`${packagesPath}/${author}`).map((pkg) => {
         if (fs.statSync(`${packagesPath}/${author}/${pkg}`).isDirectory()) {
           // console.log(`${packagesPath}/${author}/${pkg}/_nexss.yml`);
           if (fs.existsSync(`${packagesPath}/${author}/${pkg}/_nexss.yml`)) {
             if (pkg !== "3rdPartyLibraries") {
               pkgs.push({
                 type: "pkg",
-                path: `${author}/${pkg}`
+                path: `${author}/${pkg}`,
               });
             }
           }
@@ -69,13 +68,13 @@ if (pkgs.length > 0) {
     var options = {
       // pre: "<",
       // post: ">",
-      extract: function(el) {
+      extract: function (el) {
         return `${el.path} ${el.type}`;
-      }
+      },
     };
     let fuzzy = require("fuzzy");
     let fuzzyResult = fuzzy.filter(cliArgs._.slice(4).join(" "), pkgs, options);
-    pkgs = fuzzyResult.map(function(el) {
+    pkgs = fuzzyResult.map(function (el) {
       return el.original;
     });
     // const pkgs = new FuzzySearch(pkgs, ["type", "path"], {
@@ -86,7 +85,7 @@ if (pkgs.length > 0) {
   if (cliArgs.json) {
     console.log(JSON.stringify(pkgs.flat()));
   } else {
-    pkgs.forEach(e => {
+    pkgs.forEach((e) => {
       console.log(e);
     });
   }

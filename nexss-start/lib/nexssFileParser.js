@@ -49,7 +49,6 @@ const nexssFileParser = (content, filename, nxsArgs) => {
       // if (totalLines === lineNumber && nxsArgs) {
       //   splitter = splitter.concat(nxsArgs);
       // }
-      // console.log("splitter!!!", splitter);
       // Check if some arguments needs to be passed
       // Don't think combining  will all other args will be good in this
       // case.
@@ -130,7 +129,7 @@ const nexssFileParser = (content, filename, nxsArgs) => {
         return f;
       } else {
         // console.log(
-        //   "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!NO RESULT."
+        //   "NO RESULT."
         // );
       }
     })

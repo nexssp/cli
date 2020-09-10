@@ -7,7 +7,7 @@ const nexssConfig = require("../../lib/config").loadConfigContent();
 const cliArgs = require("minimist")(process.argv.slice(3));
 
 // TODO: below needs to be rewritten, done in rush
-
+const out = (txt) => (cliArgs.onlyErrors ? "" : console.log(txt));
 let nexssTestsPath = "./";
 let nexssTestsFolder = `${__dirname}/../tests`;
 if (nexssConfig && nexssConfig.filePath) {
@@ -33,7 +33,7 @@ const availTests = (testsPath) => {
     if (e.pop() !== "js") {
       return;
     }
-    console.log(bold(e.shift()), ...e);
+    out(bold(e.shift()), ...e);
   });
   process.exit();
 };
@@ -42,16 +42,16 @@ if (cliArgs._.length === 0) {
   // We check location of the config file as in that folder there is a test.nexss folder with the tests..
 
   if (nexssConfig) {
-    console.log(`You are in the Nexss Programmer Project. `);
+    out(`You are in the Nexss Programmer Project. `);
     if (fs.existsSync(nexssTestsFolder)) {
-      console.log(`Tests Folder: ${bold(path.normalize(nexssTestsFolder))}`);
+      out(`Tests Folder: ${bold(path.normalize(nexssTestsFolder))}`);
       availTests(nexssTestsFolder);
       process.exit();
     } else {
       warn("No available tests for this project.");
     }
   } else {
-    console.log(green("Available global tests:"));
+    out(green("Available global tests:"));
     availTests();
   }
 
@@ -72,15 +72,9 @@ if (cliArgs._[0] !== "all") {
   testNames = [oneTest];
 } else {
   testNames = fs.readdirSync(nexssTestsFolder);
-  warn("=============================================================");
-  warn("=============================================================");
-  warn("=============================================================");
   warn(
     `Please keep in mind that languages.nexss-test.js needs to be run separately as it is long test which installs all environments etc and test all languages.`
   );
-  warn("=============================================================");
-  warn("=============================================================");
-  warn("=============================================================");
 
   testNames = testNames.filter((e) => e.indexOf("languages.nexss-test.js"));
 }
@@ -96,7 +90,7 @@ testNames.forEach((test) => {
     availTests(nexssTestsFolder);
     process.exit();
   }
-  console.log(green(`STARTING ${test}`));
+  out(green(`STARTING ${test}`));
   const testsDef = require(test);
   const startFrom = testsDef.startFrom;
   const endsWith = testsDef.endsWith;
@@ -113,7 +107,7 @@ testNames.forEach((test) => {
   if (!fs.existsSync(testPath)) {
     fs.mkdirSync(testPath);
   }
-  console.log(`Temp Folder Destination: ${testPath}`);
+  out(`Temp Folder Destination: ${testPath}`);
   process.chdir(testPath);
 
   global.currentExtension = null;
@@ -124,24 +118,23 @@ testNames.forEach((test) => {
   testsDef.values.forEach((ext) => {
     global.currentExtension = ext;
 
-    console.log("===========================================================");
-    if (ext !== "Nexss")
-      console.log(yellow(`Testing \x1b[1m${bright(ext)}\x1b[0m`));
+    out("===========================================================");
+    if (ext !== "Nexss") out(yellow(`Testing \x1b[1m${bright(ext)}\x1b[0m`));
 
     if (continuue || ext === startFrom || !startFrom) {
       continuue = 1;
 
       if (omit && omit.includes(ext)) {
-        console.log(`\x1b[1m${bright(ext)} Ommitted\x1b[0m`);
+        out(`\x1b[1m${bright(ext)} Ommitted\x1b[0m`);
         continuue = 1;
         return;
       }
 
       testsDef.tests.forEach((test) => {
-        console.log(bold(green(test.title)));
+        out(bold(green(test.title)));
 
         if (test.chdir) {
-          console.log(`Changing global subdir to: ${test.chdir}`);
+          out(`Changing global subdir to: ${test.chdir}`);
           process.chdir(test.chdir);
         }
 
@@ -163,13 +156,10 @@ testNames.forEach((test) => {
             }
           }
 
-          console.log("===========================================");
-          console.log(
-            yellow(bright(`TEST ${tests}`)),
-            yellow(evalTS(subtest.title))
-          );
+          out("===========================================");
+          out(yellow(bright(`TEST ${tests}`)), yellow(evalTS(subtest.title)));
 
-          console.log(`===========================================`);
+          out(`===========================================`);
           eval(subtest.type || "shouldContain")(
             ...subtest.params.map((p) => {
               if ((p !== null && typeof p === "object") || subtest.notEval) {
@@ -185,7 +175,7 @@ testNames.forEach((test) => {
       });
 
       if (endsWith && endsWith.includes(ext)) {
-        console.log(yellow(`End`));
+        out(yellow(`End`));
         process.exit(1);
         return;
       }
@@ -211,7 +201,7 @@ function shouldContain(test, regE, options) {
 function should(fname, test, regE, options) {
   // TODO: To rewrite it, now works
   if (options && options.chdir) {
-    console.log(`Changing Dir to: ${options.chdir}`);
+    out(`Changing Dir to: ${options.chdir}`);
     process.chdir(options.chdir);
   }
 
@@ -221,21 +211,21 @@ function should(fname, test, regE, options) {
       console.error("You need to specify REGEXP or STRING for the first test.");
       process.exit();
     }
-    console.log(
+    out(
       grey(`Using cached result of previous command: ${bold(process.testTest)}`)
     );
     data = process.testData;
   } else {
     data = process.testData = exe(test);
     process.testTest = test;
-    console.log(`${green(bright(test))} `);
+    out(`${green(bright(test))} `);
   }
 
-  // console.log("return: ", test, data);
+  // out("return: ", test, data);
 
-  console.log(`>>> ${camelCase(fname)}: ${bright(green(regE))}`);
+  out(`>>> ${camelCase(fname)}: ${bright(green(regE))}`);
   let result, result2, result3, match;
-  // console.log(data);
+  // out(data);
   if (data) {
     data = data.trim();
     if (regE instanceof RegExp) {
@@ -255,20 +245,20 @@ function should(fname, test, regE, options) {
     result3 = !result3;
   }
 
-  // console.log("Results: ", result, result2, result3);
+  // out("Results: ", result, result2, result3);
 
-  // console.log(result);
-  // console.log(result2);
+  // out(result);
+  // out(result2);
   if (result && !regE instanceof RegExp) {
-    console.log(green(bright("PASSED")));
+    out(green(bright("PASSED")));
     // console.error(yellow(data));
     return match;
   } else if (result2 && !(regE instanceof RegExp)) {
-    console.log(green(bright("PASSED")));
+    out(green(bright("PASSED")));
     // console.error(yellow(data));
     return data;
   } else if (result3) {
-    console.log(green(bright("PASSED")));
+    out(green(bright("PASSED")));
     // console.error(yellow(data));
     return data;
   }
@@ -292,6 +282,6 @@ function should(fname, test, regE, options) {
 
 function test2(ext) {
   const c = `nexss randomfile${ext}`;
-  console.log(`Test2: ${c}`);
+  out(`Test2: ${c}`);
   return c;
 }

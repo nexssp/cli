@@ -26,10 +26,12 @@ function camelCase(text) {
 }
 
 function exe(command, options) {
+  options = options || {};
   if (process.platform !== "win32") {
-    if (!options) options = {};
     Object.assign(options, { shell: "/bin/bash" });
   }
+
+  options.maxBuffer = 10485760; // 10*default
   try {
     const r = execSync(`${command} --nxsPipeErrors`, options).toString();
 
