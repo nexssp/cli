@@ -13,14 +13,14 @@ cache.clean("nexss_core_getLanguages_*");
 process.chdir(NEXSS_LANGUAGES_PATH);
 
 const languages = fs.readdirSync(".");
-languages.forEach(langDir => {
+languages.forEach((langDir) => {
   console.log(yellow(`Updating ${langDir}..`));
-  const command = `git pull`;
+  const command = `git pull --rebase`;
   if (fs.existsSync(`${langDir}/.git`)) {
     try {
       require("child_process").execSync(command, {
         cwd: langDir,
-        stdio: "inherit"
+        stdio: "inherit",
       });
       success(`Language updated`);
     } catch (er) {
