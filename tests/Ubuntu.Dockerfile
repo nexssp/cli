@@ -10,10 +10,6 @@ RUN apt-get update && \
 
 RUN curl -sL https://deb.nodesource.com/setup | bash -
 RUN apt-get update
-RUN apt-get install nodejs -y --force-yes
+RUN apt-get install git nodejs -y --force-yes
 
-ADD . /usr/src/
-WORKDIR /usr/src/
-
-RUN npm install -y @nexss/cli -g
-CMD ["nexss", "test","all"]
+CMD ["/bin/bash"]

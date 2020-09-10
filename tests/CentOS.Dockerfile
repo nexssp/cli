@@ -1,17 +1,10 @@
-FROM centos:latest
-
-RUN yum update
-
+FROM centos
 # optional 
-RUN yum install -y gcc-c++ make
+RUN yum install -y gcc-c++ make 
+# required
+RUN yum install -y which git
 
 RUN curl -sL https://rpm.nodesource.com/setup_14.x | bash -
-RUN yum install nodejs npm -y --force-yes
+RUN yum install -y nodejs
 
-ADD . /usr/src/
-WORKDIR /usr/src/
-
-# which is needed
-RUN yum install -y which
-RUN npm install -y @nexss/cli -g
-CMD ["nexss", "test","all"]
+CMD ["/bin/bash"]

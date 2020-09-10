@@ -3,6 +3,10 @@ const { error, ok } = require("../lib/log");
 const { bold } = require("../lib/color");
 const execSync = require("child_process").execSync;
 const buildNocache = "--no-cache";
+const dockerFile = "CentOS.Dockerfile"; //"Alpine3.12.Dockerfile";
+const imageName = `nexss:${dockerFile}`;
+
+// =====================================================================
 console.log(`
 Nexss Programmer uses docker to test it for different OS distributions.
 If the test is not starting quickly, means that your docker-machine is not working or 
@@ -52,12 +56,10 @@ function createImage(imageName, dockerFile) {
   } catch (e) {
     console.log(e);
     console.log("There was an error during:", cmd);
+    process.exit(1);
   }
 }
 
-// test
-const dockerFile = "Arch.Dockerfile"; //"Alpine3.12.Dockerfile";
-const imageName = `nexss:${dockerFile}`;
 if (!imageExists(imageName)) {
   //   error(`NEXSS:error/image does not exist: ${imageName}, creating it..`);
   createImage(imageName, dockerFile);
@@ -66,37 +68,33 @@ if (!imageExists(imageName)) {
 }
 
 try {
-  var nodeResult = execSync(
-    `docker run -t ${imageName} nexss test all --onlyErrors`,
+  var res = execSync(
+    // You can build packages inside the container, for dev whatever is needed.
+    `docker run -d -t ${imageName} npm i @nexssp/cli -g && nexss && nexss test all --onlyErrors`,
     {
       stdio: ["inherit"],
-      maxBuffer: 10485760,
     }
   );
 
-  const containerId = nodeResult.toString().trim();
+  const containerId = res.toString().trim();
   if (containerId) {
-    console.error(`Container created: ${containerId}`);
+    console.log(`Container created: ${containerId}`);
     let sleep = "ping 127.0.0.1 -n 2 2> nul";
     if (process.platform !== "win32") {
       sleep = "sleep 2";
     }
 
     try {
-      const c = `${sleep} && docker logs ${containerId}`;
-      console.log("RUUUUNNN!!!", c);
-      var dockerLog = execSync(c, {
-        maxBuffer: 10485760,
+      const logCommand = `${sleep} && docker logs ${containerId}`;
+      var dockerLog = execSync(logCommand, {
         shell: true,
         stdio: ["inherit"],
       });
       console.log(`Container: ${containerId}`);
       console.log("LOG:", dockerLog.toString());
     } catch (e) {
-      console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
       console.log("containerID", containerId);
       console.log(e);
-      process.exit;
     }
   } else {
     console.log(
@@ -106,5 +104,3 @@ try {
 } catch (e) {
   console.log(e);
 }
-
-// console.log(imageExists("archlinux:latest"));

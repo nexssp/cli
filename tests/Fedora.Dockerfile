@@ -11,10 +11,7 @@ RUN dnf update -y && \
 RUN curl -sL https://rpm.nodesource.com/setup_14.x | bash -
 RUN dnf install nodejs npm -y --force-yes
 
-ADD . /usr/src/
-WORKDIR /usr/src/
-
-# which is needed
+# required for Nexss Programmer
 RUN dnf install -y which procps
-RUN npm install -y @nexss/cli -g
-CMD ["nexss", "test","all"]
+
+CMD ["/bin/bash"]

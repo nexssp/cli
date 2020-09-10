@@ -1,4 +1,4 @@
-FROM alpine:3.12
+FROM alpine
 
 RUN apk add --update --no-cache \
     nodejs npm git bash
@@ -6,6 +6,6 @@ RUN apk add --update --no-cache \
 # ADD . /usr/src/
 # WORKDIR /usr/src/
 
-RUN npm install -y @nexssp/cli -g
-RUN nexss
+# RUN npm install -y @nexssp/cli -g
+# RUN nexss
 CMD ["/bin/bash"]
