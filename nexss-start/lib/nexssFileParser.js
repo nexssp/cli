@@ -3,10 +3,7 @@ const minimist = require("minimist");
 const { NEXSS_SPECIAL_CHAR } = require("../../config/defaults");
 
 function stripEndQuotes(s) {
-  if (process.platform === "win32") {
-    return s.replace && s.replace(/(^["|'])|(["|']$)/g, "");
-  }
-  return s;
+  return s.replace && s.replace(/(^["|'])|(["|']$)/g, "");
 }
 
 function preVars(isn) {
