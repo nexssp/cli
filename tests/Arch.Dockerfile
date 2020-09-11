@@ -1,13 +1,5 @@
 FROM archlinux
 
-RUN pacman -Sy --noconfirm git nodejs npm which
+RUN pacman -Sy --noconfirm git nodejs npm
 
-ADD . /usr/src/
-WORKDIR /usr/src/
-
-# RUN npm install @nexssp/cli -g
-# RUN nexss
-# RUN nexss l u
-
-# CMD ["nexss", "test","all"]
 CMD ["/bin/bash"]
