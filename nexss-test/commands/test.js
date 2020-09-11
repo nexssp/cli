@@ -1,5 +1,14 @@
 const { bright, exe, camelCase } = require("../lib/lib");
-const { yellow, green, red, bold, purple, grey } = require("../../lib/color");
+const {
+  yellow,
+  green,
+  red,
+  bold,
+  purple,
+  grey,
+  blue,
+  magenta,
+} = require("../../lib/color");
 const { error, warn } = require("../../lib/log");
 const fs = require("fs");
 const path = require("path");
@@ -7,9 +16,9 @@ const nexssConfig = require("../../lib/config").loadConfigContent();
 const cliArgs = require("minimist")(process.argv.slice(3));
 
 // TODO: below needs to be rewritten, done in rush
-const out = (txt) => (cliArgs.onlyErrors ? "" : console.log(txt));
+const out = (...txt) => (cliArgs.onlyErrors ? "" : console.log(...txt));
 let nexssTestsPath = "./";
-let nexssTestsFolder = `${__dirname}/../tests`;
+let nexssTestsFolder = `${__dirname}/../../tests`;
 if (nexssConfig && nexssConfig.filePath) {
   nexssTestsPath = path.dirname(nexssConfig.filePath);
   nexssTestsFolder = `${nexssTestsPath}/test.nexss`;
@@ -76,7 +85,10 @@ if (cliArgs._[0] !== "all") {
     `Please keep in mind that languages.nexss-test.js needs to be run separately as it is long test which installs all environments etc and test all languages.`
   );
 
-  testNames = testNames.filter((e) => e.indexOf("languages.nexss-test.js"));
+  testNames = testNames.filter(
+    (e) =>
+      e.indexOf("languages.nexss-test.js") && e.indexOf("nexss-test.js") >= 1
+  );
 }
 
 var tests = 0;
@@ -90,7 +102,7 @@ testNames.forEach((test) => {
     availTests(nexssTestsFolder);
     process.exit();
   }
-  out(green(`STARTING ${test}`));
+  out(blue(`STARTING ${test}`));
   const testsDef = require(test);
   const startFrom = testsDef.startFrom;
   const endsWith = testsDef.endsWith;
@@ -131,7 +143,7 @@ testNames.forEach((test) => {
       }
 
       testsDef.tests.forEach((test) => {
-        out(bold(green(test.title)));
+        // out(bold(blue(`TEST: ${test.title}`)));
 
         if (test.chdir) {
           out(`Changing global subdir to: ${test.chdir}`);
@@ -160,6 +172,7 @@ testNames.forEach((test) => {
           out(yellow(bright(`TEST ${tests}`)), yellow(evalTS(subtest.title)));
 
           out(`===========================================`);
+
           eval(subtest.type || "shouldContain")(
             ...subtest.params.map((p) => {
               if ((p !== null && typeof p === "object") || subtest.notEval) {
@@ -218,7 +231,7 @@ function should(fname, test, regE, options) {
   } else {
     data = process.testData = exe(test);
     process.testTest = test;
-    out(`${green(bright(test))} `);
+    out(`${red(bright(test))} `);
   }
 
   // out("return: ", test, data);
@@ -250,15 +263,15 @@ function should(fname, test, regE, options) {
   // out(result);
   // out(result2);
   if (result && !regE instanceof RegExp) {
-    out(green(bright("PASSED")));
+    out(magenta(bright("TEST OK!\n")));
     // console.error(yellow(data));
     return match;
   } else if (result2 && !(regE instanceof RegExp)) {
-    out(green(bright("PASSED")));
+    out(magenta(bright("TEST OK!\n")));
     // console.error(yellow(data));
     return data;
   } else if (result3) {
-    out(green(bright("PASSED")));
+    out(magenta(bright("TEST OK!\n")));
     // console.error(yellow(data));
     return data;
   }

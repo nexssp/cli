@@ -14,8 +14,8 @@ module.exports = {
           title: "Create New Project",
           params: [
             "nexss project new MyTestProject -f",
-            "SUCCESS  Project 'MyTestProject' is ready."
-          ]
+            "SUCCESS  Project 'MyTestProject' is ready.",
+          ],
         },
         {
           title: "Add file to the Project",
@@ -24,31 +24,31 @@ module.exports = {
             "nexss file add myfile1.js -f -t=helloWorld",
             `myfile1.js has been created.`,
             {
-              chdir: "MyTestProject"
-            }
-          ]
+              chdir: "MyTestProject",
+            },
+          ],
         },
         {
           title: "Display Project info",
-          params: ["nexss p i", `Name: MyTestProject`]
+          params: ["nexss p i", `Name: MyTestProject`],
         },
         {
           title: "Add file to the Project (already exists)",
           params: [
             "nexss file add myfile1.js",
-            `File already exists: myfile1.js`
-          ]
+            `File already exists: myfile1.js`,
+          ],
         },
         {
           title: "Add file to the Project (forced)",
           params: [
             "nexss file add myfile1.js -f -t=helloWorld",
-            `myfile1.js has been created.\\nSUCCESS  Done.`
-          ]
+            `myfile1.js has been created.\\nSUCCESS  Done.`,
+          ],
         },
         {
           title: "Check project info",
-          params: ["nexss project info", `Current Project`]
+          params: ["nexss project info", `Current Project`],
         },
         {
           title: "Check",
@@ -60,11 +60,11 @@ INFO  Description: description
 INFO  Keywords: mykeyword1,mykeyword2
 INFO  Repo: repository
 INFO  Editor: editor
-INFO  Note: note`
-          ]
-        }
-      ]
-    }
+INFO  Note: note`,
+          ],
+        },
+      ],
+    },
     // {
     //   title: "nexss-command",
     //   onError: "stop", // global value
@@ -79,5 +79,5 @@ INFO  Note: note`
     //     }
     //   ]
     // }
-  ]
+  ],
 };
