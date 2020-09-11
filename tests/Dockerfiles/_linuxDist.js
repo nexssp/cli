@@ -1,9 +1,21 @@
 // Testing Nexss Programmer in different Linux distributions
 const { error, ok } = require("../../lib/log");
-const { bold } = require("../../lib/color");
+const { bold, yellow } = require("../../lib/color");
 const execSync = require("child_process").execSync;
 const buildNocache = "--no-cache";
-const dockerFile = "Oracle7.Dockerfile"; //"Alpine3.12.Dockerfile";
+
+if (!process.argv[2]) {
+  console.error("You need to pass dockerFile filename as argument.");
+  console.error("you can pass --color for colored output");
+  process.exit(1);
+} else if (require("fs").existsSync()) {
+  console.error(`${bold(dockerFile)} does not exists`);
+  process.exit(1);
+}
+
+let dockerFile = process.argv[2].replace(/\.\\/, "");
+console.log("Dockerfile:", yellow(dockerFile));
+
 const imageName = `nexss:${dockerFile}`;
 
 // =====================================================================

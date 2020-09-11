@@ -1,4 +1,4 @@
-FROM centos
+FROM centos:7
 # optional 
 RUN yum install -y gcc-c++ make 
 # required
