@@ -1,6 +1,6 @@
 // Testing Nexss Programmer in different Linux distributions
-const { error, ok } = require("../lib/log");
-const { bold } = require("../lib/color");
+const { error, ok } = require("../../lib/log");
+const { bold } = require("../../lib/color");
 const execSync = require("child_process").execSync;
 const buildNocache = "--no-cache";
 const dockerFile = "Oracle7.Dockerfile"; //"Alpine3.12.Dockerfile";
