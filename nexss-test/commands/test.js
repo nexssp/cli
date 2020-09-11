@@ -9,7 +9,7 @@ const {
   blue,
   magenta,
 } = require("../../lib/color");
-const { error, warn } = require("../../lib/log");
+const { error, warn, ok } = require("../../lib/log");
 const fs = require("fs");
 const path = require("path");
 const nexssConfig = require("../../lib/config").loadConfigContent();
@@ -81,8 +81,9 @@ if (cliArgs._[0] !== "all") {
   testNames = [oneTest];
 } else {
   testNames = fs.readdirSync(nexssTestsFolder);
+
   warn(
-    `Please keep in mind that languages.nexss-test.js needs to be run separately as it is long test which installs all environments etc and test all languages.`
+    `Please notice that languages.nexss-test.js needs to be run separately (not included in the 'all' tests) as it is long test which installs all environments etc and test all languages.`
   );
 
   testNames = testNames.filter(
@@ -94,7 +95,7 @@ if (cliArgs._[0] !== "all") {
 var tests = 0;
 var continuue = 0;
 var totalPerformedTests = 0;
-
+ok("Starting tests.. Please wait..");
 testNames.forEach((test) => {
   test = `${nexssTestsFolder}/${test}`;
   if (!fs.existsSync(test)) {
