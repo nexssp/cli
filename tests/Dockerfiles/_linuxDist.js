@@ -3,6 +3,7 @@ const { error, ok } = require("../../lib/log");
 const { bold, yellow } = require("../../lib/color");
 const execSync = require("child_process").execSync;
 const buildNocache = "--no-cache";
+const path = require("path");
 
 if (!process.argv[2]) {
   console.error("You need to pass dockerFile filename as argument.");
@@ -79,11 +80,24 @@ if (!imageExists(imageName)) {
   console.log(`image exist: ${imageName}`);
 }
 
+function pathToDocker(p) {
+  return p
+    .replace(/^(.):(.*)/, function ($0, $1, $2) {
+      return "\\\\" + $1.toLowerCase() + $2;
+    })
+    .replace(/\\/g, "/");
+}
+
+const pathNexssCli = pathToDocker(path.resolve(process.cwd(), "../../"));
+const pathDotNexss = pathToDocker(path.join(require("os").homedir(), ".nexss"));
+const command = `docker run -i -d -v ${pathNexssCli}:/nexssCli -v ${pathDotNexss}:/root/.nexss -v /root/.nexss/cache -e DEBIAN_FRONTEND=noninteractive -t ${imageName} /bin/bash -c "cd nexssCli && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && mkdir /work && cd /work && /bin/bash" `;
+
 try {
   var res = execSync(
     // You can build packages inside the container, for dev whatever is needed.
     // `docker run -d -t ${imageName} npm i @nexssp/cli -g && nexss && nexss test all --onlyErrors`,
-    `docker run -d -t ${imageName} bin/sh -c "git clone --depth=1 https://github.com/nexssp/cli.git && cd cli && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && nexss && nexss test errors"`,
+    // `docker run -d -t ${ imageName} bin/sh -c "git clone --depth=1 https://github.com/nexssp/cli.git && cd cli && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && nexss && nexss test errors"`,
+    command,
     {
       stdio: ["inherit"],
     }
