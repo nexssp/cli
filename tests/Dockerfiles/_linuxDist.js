@@ -83,7 +83,7 @@ try {
   var res = execSync(
     // You can build packages inside the container, for dev whatever is needed.
     // `docker run -d -t ${imageName} npm i @nexssp/cli -g && nexss && nexss test all --onlyErrors`,
-    `docker run -d -t ${imageName} bin/sh -c "git clone --depth=1 https://github.com/nexssp/cli.git && cd cli && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && nexss && nexss test all --onlyErrors"`,
+    `docker run -d -t ${imageName} bin/sh -c "git clone --depth=1 https://github.com/nexssp/cli.git && cd cli && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && nexss && nexss test errors"`,
     {
       stdio: ["inherit"],
     }

@@ -40,7 +40,7 @@ module.exports.transformNexss = (
   // console.error("TRANSFORM NEXSSS!!!!!", fileName);
 
   return new Transform({
-    transform(chunk, encoding, callback) {
+    async transform(chunk, encoding, callback) {
       let startStreamTime;
       if (process.argv.includes("--nxsTime")) {
         startStreamTime = process.hrtime();
@@ -97,20 +97,20 @@ module.exports.transformNexss = (
       // console.log(args);
       process.nexssCWD = cwd;
 
-      args = args.remove("--nocache");
-      args = args.remove("--nxsPipeErrors");
-      args = args.remove("--nxsTest");
+      args2 = args.remove("--nocache");
+      args2 = args2.remove("--nxsPipeErrors");
+      args2 = args2.remove("--nxsTest");
       // const argsStrings = args.map((a) =>
       //   a.indexOf(" ") > -1 ? `${a.replace("=", '="')}"` : a
       // );
       // Later batter code below
       let argsStrings;
       if (process.platform === "win32") {
-        argsStrings = args.map((a) =>
+        argsStrings = args2.map((a) =>
           a.indexOf("=") > -1 ? `${a.replace("=", '="')}"` : a
         );
       } else {
-        argsStrings = args.map((a) =>
+        argsStrings = args2.map((a) =>
           a.indexOf("=") > -1 ? `${a.replace("=", "='")}'` : a
         );
       }
@@ -123,7 +123,7 @@ module.exports.transformNexss = (
         // nxsTime
         startCompilerTime = process.hrtime();
       }
-      this.worker = spawn(cmd, argsStrings, options);
+      this.worker = await spawn(cmd, argsStrings, options);
       this.worker.cmd = nexssCommand;
       // let proc = new Proc(this.worker.pid, {
       //   filePath: path.resolve(fileName) /*required*/,
@@ -221,7 +221,11 @@ module.exports.transformNexss = (
             this.errBuffer,
             args.includes("--nxsPipeErrors")
           );
-          callback("Error during: " + nexssCommand);
+          if (!process.argv.includes("--nxsPipeErrors")) {
+            callback("Error during: " + nexssCommand);
+          } else {
+            // callback(null, "Error during5: " + nexssCommand);
+          }
           this.errBuffer = "";
         }
       });
@@ -233,7 +237,10 @@ module.exports.transformNexss = (
       this.worker.on("exit", () => {
         self.end();
         // timeElapsed(startStreamTime, "End of Stream");
-        if (process.nxsErrorExists) {
+        if (
+          process.nxsErrorExists &&
+          !process.argv.includes("--nxsPipeErrors")
+        ) {
           console.log("There was an error during run..", this.worker.cmd);
           process.exitCode = 1;
         } else {

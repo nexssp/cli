@@ -47,12 +47,8 @@ async function run(operations, options = {}) {
           terminalParams = cleanup(terminalParams);
         }
 
-        //console.log(args);
-
         args = args.concat(terminalParams);
       }
-
-      // console.log("-----", element.stream, args, element.inputData);
 
       const runOptions = Object.assign({}, options, {
         fileName: element.fileName,
@@ -69,26 +65,10 @@ async function run(operations, options = {}) {
       }
       runOptions.env = Object.assign({}, process.env, element.env);
 
-      // console.log(runOptions);
-      // process.exit(1);
-      // if (streamName === "transformValidation") {
-      //   delete runOptions.env;
-      //   // console.log("run options", runOptions);
-      // }
       if (element.cmd) {
-        // console.log("========================1");
-        // let ro = runOptions;
-        // delete ro.env;
-        // console.error("first", ro);
-
         return eval(streamName)(element.cmd, args, runOptions);
       } else {
-        if (typeof element === "function") {
-          return eval(element)(runOptions);
-          // console.error("second", strResult);
-        } else {
-          return eval(element)(runOptions);
-        }
+        return eval(element)(runOptions);
       }
     })
   )
@@ -105,12 +85,8 @@ async function run(operations, options = {}) {
       // based on language - this can be used maybe to better debug ?
       console.error("Nexss Programmer: ", err);
       // console.error("Nexss last error: ", process.cwd());
-      process.exit();
+      process.exitCode = 1;
     });
-
-  // console.timeEnd("nexss");
-  // WARNING!!!!! here was process.exit(0)
-  // but didn't show the whole error so return (should be return not process.exit)
   return;
 }
 

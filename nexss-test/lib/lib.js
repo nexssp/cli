@@ -37,10 +37,10 @@ function exe(command, options) {
 
     return r;
   } catch (er) {
-    if (process.argv.includes("--errors")) {
-      console.error(er);
-    }
-    if (options && options.stopOnErrors) process.exit(1);
+    // if (process.argv.includes("--errors")) {
+    //   console.error(er);
+    // }
+    // if (options && options.stopOnErrors) process.exitCode = 1;
   }
 }
 

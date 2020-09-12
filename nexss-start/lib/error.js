@@ -1,7 +1,7 @@
-const { error, warn, isErrorPiped } = require("../../lib/log");
-const { bold, yellow, blue } = require("../../lib/color");
+const { error, isErrorPiped } = require("../../lib/log");
+const { bold, yellow } = require("../../lib/color");
 const { getLangByFilename } = require("../../nexss-language/lib/language");
-const { normalize, isAbsolute, extname, dirname } = require("path");
+const { isAbsolute, dirname } = require("path");
 const { existsSync } = require("fs");
 const { colorizer } = require("./colorizer");
 
@@ -10,29 +10,7 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
   if (errorBody && errorBody.trim) {
     errorBody = errorBody.trim();
   }
-  const filenameStore = filename;
   const langInfo = getLangByFilename(filename);
-  // exit codes, to display in bash last command $?
-  // console.log(langInfo.compiler.split(" ")[0]);
-
-  // We display error to standard output eg --server
-  // console.log(errorBody);
-  // if (
-  //   !errorBody.includes(`${filename}.exe`) &&
-  //   errorBody.includes(
-  //     "is not recognized as an internal or external command"
-  //   ) &&
-  //   extname(filename) !== ".bat"
-  // ) {
-  //   warn(
-  //     bold(
-  //       yellow("RESTART YOUR TERMINAL:") +
-  //         "You may need to restart your teminal in order to continue without issues."
-  //     )
-  //   );
-  //   process.exit(1);
-  // }
-
   const ErrorPre = isAbsolute(filename)
     ? filename
     : `${process.cwd()}/${filename}`;
@@ -132,12 +110,6 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
           }
         }
       } else if (ArrayMatch && ArrayMatch[0] && ArrayMatch[0].length > 1) {
-        //console.log("find: ", pattern);
-        //console.log(match);
-        // We display errors to standard output (eg --server)
-
-        // langInfo.packagesMap contains the mapping so we can display right
-        // package name
         let am = ArrayMatch[0][1];
         if (solution.replace) {
           solution = solution

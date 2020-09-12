@@ -8,7 +8,7 @@ RUN apt-get update && \
     build-essential \
     python-all
 
-RUN curl -sL https://deb.nodesource.com/setup | bash -
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
 RUN apt-get update
 RUN apt-get install git nodejs -y --force-yes
 

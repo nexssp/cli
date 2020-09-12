@@ -95,7 +95,7 @@ if (cliArgs._[0] !== "all") {
 var tests = 0;
 var continuue = 0;
 var totalPerformedTests = 0;
-ok("Starting tests.. Please wait..");
+ok("Starting tests.. Please wait.. (no output)");
 testNames.forEach((test) => {
   test = `${nexssTestsFolder}/${test}`;
   if (!fs.existsSync(test)) {
