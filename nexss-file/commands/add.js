@@ -149,7 +149,7 @@ function execute(options) {
           throw err;
         }
       }
-      ok(`File ${bold(normalize(filePath))} has been created.`);
+      ok(`File ${yellow(bold(normalize(filePath)))} has been created.`);
 
       // cliArgs.noconfig - no config modification
       if (!cliArgs.noconfig && NEXSS_PROJECT_CONFIG_PATH) {
