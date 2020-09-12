@@ -13,7 +13,7 @@ let values = Object.keys(languages);
 module.exports = {
   values,
   testsSelect: [1, 2],
-  startFrom: ".hy", // eg. .cs
+  startFrom: null, // eg. .cs
   endsWith: null, // eg .cs
   omit:
     process.platform === "win32"
@@ -47,6 +47,8 @@ module.exports = {
           ".html", // is used only for templates
         ]
       : [
+          ".cpp", // Oracle Linux 8 does dont have rapid json in the main repo
+          ".cc",
           ".html", // is used only for templates
           // NOT AVAILABLE ON LINUX/MAC
           ".ahk",
