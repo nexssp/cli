@@ -112,17 +112,28 @@ if (
     // To use lang specific commands use
     // `nexss js install OR nexss php install` NOT!-> nexss .js install
     if (plugin.split(".").length === 1 && languageSelected) {
-      if (process.argv[3] === "install") {
+      if (
+        process.argv[3] === "install" &&
+        (!process.argv[4] || process.argv[4] === "--")
+      ) {
+        if (process.argv[4] === "--") {
+          delete process.argv[4];
+        }
         console.log(`installing ${languageSelected.title}, please wait..`);
         const { getCompiler } = require("./nexss-start/lib/start/compiler");
         const compiler = getCompiler({
           path: "",
           name: `test${languageSelected.extensions[0]}`,
         });
-
+        const builder =
+          languageSelected &&
+          languageSelected.builders &&
+          languageSelected.builders[Object.keys(languageSelected.builders)[0]];
         let pmArguments = process.argv.slice(4);
         pmArguments = pmArguments.filter((e) => e !== "--nocache");
-        const command = `${compiler.install} ${pmArguments.join(" ")}`;
+        const command = `${
+          compiler && compiler.install ? compiler.install : builder.install
+        } ${pmArguments.join(" ")}`;
 
         try {
           cp.execSync(command, {
