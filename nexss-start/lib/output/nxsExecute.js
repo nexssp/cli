@@ -2,14 +2,14 @@ module.exports = (data) => {
   let nxsExecuteFieldAs = data.nxsExecuteFieldAs;
   delete data.nxsExecuteFieldAs;
 
-  var sss = require("child_process").spawnSync;
+  var { spawnSync } = require("child_process");
   var arrayCommands = data.nxsExecute.trim().split(" ");
   delete data.nxsExecute;
   const command = arrayCommands.shift();
 
-  var ExecuteCommandObject = sss(command, arrayCommands, {
+  var ExecuteCommandObject = spawnSync(command, arrayCommands, {
     detached: false,
-    shell: true,
+    shell: process.platform !== "win32" ? "/bin/bash" : true,
     input: JSON.stringify(data),
     stdio: "pipe",
   });
