@@ -3,14 +3,14 @@ const { error, success, info, ok } = require("../../lib/log");
 const { yellow, red, bold } = require("../../lib/color");
 const { which } = require("../../lib/terminal");
 const fs = require("fs");
-module.exports.extraFunctions = templatePath => {
+module.exports.extraFunctions = (templatePath) => {
   // Extra operation for the template like installations, files copy, info
   if (fs.existsSync(`${templatePath}.js`)) {
     console.log("Additional files and commands for this file. Please wait..");
     const extraOptions = require(`${templatePath}.js`);
     const files = extraOptions.files || [];
     const path = require("path");
-    files.forEach(element => {
+    files.forEach((element) => {
       const elementPath = path.join(path.dirname(templatePath), element);
       const destinationPath = NEXSS_PROJECT_SRC_PATH
         ? path.join(NEXSS_PROJECT_SRC_PATH, path.dirname(element))
@@ -40,14 +40,31 @@ ${
     let commands = extraOptions.commands;
 
     if (commands && commands.forEach) {
+      const {
+        replaceCommandByDist,
+        dist,
+      } = require(`${process.env.NEXSS_SRC_PATH}/lib/osys`);
+
+      // const distName = dist();
+
+      // TODO: Later to cleanup this config file !!
+      // switch (distName) {
+      //   default:
+      //     languageConfig.compilers.ruby.install = replaceCommandByDist(
+      //       languageConfig.compilers.ruby.install
+      //     );
+      //     break;
+      // }
+
       // FIXME: to check this part!!
-      commands.forEach(cmd => {
+      commands.forEach((cmd2) => {
         // TODO: better error handling
         // console.log(cmd);
+        cmd = replaceCommandByDist(cmd2);
         if (cmd) {
           try {
             require("child_process").execSync(`${cmd}`, {
-              stdio: "inherit"
+              stdio: "inherit",
             });
           } catch (err) {
             error("==========================================================");
@@ -82,7 +99,7 @@ ${
     const descriptions = extraOptions.descriptions || [];
     if (descriptions.length > 0) {
       // warn("Some information about installed packages.");
-      descriptions.forEach(desc => {
+      descriptions.forEach((desc) => {
         info(bold("Info from additional third party libraries package:"));
         info(desc);
       });
