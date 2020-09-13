@@ -180,9 +180,13 @@ module.exports.transformNexss = (
                 eval(type)(colorizer(nexssError.join(":").trim()));
               }
             } else {
-              parseError(fileName, element, args.includes("--nxsPipeErrors"));
+              parseError(
+                fileName,
+                element,
+                args.includes("--nxsPipeErrors"),
+                process.nexssCWD
+              );
             }
-            // console.error("##############element!!!", element);
           });
           // this.errBuffer = "";
         } else {
@@ -219,10 +223,11 @@ module.exports.transformNexss = (
           parseError(
             fileName,
             this.errBuffer,
-            args.includes("--nxsPipeErrors")
+            args.includes("--nxsPipeErrors"),
+            process.nexssCWD
           );
           if (!process.argv.includes("--nxsPipeErrors")) {
-            callback("Error during: " + nexssCommand);
+            callback(red("Error: ") + bold(nexssCommand));
           } else {
             // callback(null, "Error during5: " + nexssCommand);
           }
@@ -241,7 +246,7 @@ module.exports.transformNexss = (
           process.nxsErrorExists &&
           !process.argv.includes("--nxsPipeErrors")
         ) {
-          console.log("There was an error during run..", this.worker.cmd);
+          // console.log("There was an error during run..", this.worker.cmd);
           process.exitCode = 1;
         } else {
           callback();

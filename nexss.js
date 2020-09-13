@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 
 /*
- * Title: Nexss CLI
- * Description: Nexss CLI with plugin and help fw
- * Author: Marcin Polak
+ * Title: Nexss Programmer CLI
+ * Author: Marcin Polak / nexss.com
  * 2018/10/01 initial version
  */
 const cp = require("child_process");

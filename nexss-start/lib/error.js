@@ -6,14 +6,12 @@ const { existsSync } = require("fs");
 const { colorizer } = require("./colorizer");
 
 // more here: https://github.com/nexssp/cli/wiki/Errors-Solutions
-module.exports.parseError = (filename, errorBody, stdOutput) => {
+module.exports.parseError = (filename, errorBody, stdOutput, cwd) => {
   if (errorBody && errorBody.trim) {
     errorBody = errorBody.trim();
   }
   const langInfo = getLangByFilename(filename);
-  const ErrorPre = isAbsolute(filename)
-    ? filename
-    : `${process.cwd()}/${filename}`;
+  const ErrorPre = isAbsolute(filename) ? filename : `${cwd}/${filename}`;
 
   if (stdOutput) {
     if (process.argv.includes("--htmlOutput")) {
@@ -48,7 +46,9 @@ module.exports.parseError = (filename, errorBody, stdOutput) => {
   }
 
   // We check errors based on the pattern in the languages definition
-  const nexssConfig = require("../../lib/config").loadConfigContent();
+  const nexssConfig = require("../../lib/config").loadConfigContent(
+    `${cwd}/_nexss.yml`
+  );
   langInfo.errors = Object.assign(
     {},
     langInfo.errors,

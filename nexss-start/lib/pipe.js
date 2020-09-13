@@ -12,6 +12,7 @@ const { transformHash } = require("./transformHash");
 const { transformRequest } = require("./transformRequest");
 const { readable } = require("./readable");
 const { cleanup } = require("./output/nxsOutputParams");
+const { blue, bold } = require("../../lib/color");
 const util = require("util");
 const pipelineAsync = util.promisify(pipeline);
 
@@ -83,7 +84,7 @@ async function run(operations, options = {}) {
     .catch((err) => {
       // This is handled by nexss transform as all errors are parsed
       // based on language - this can be used maybe to better debug ?
-      console.error("Nexss Programmer: ", err);
+      console.error(blue("\nNexss Programmer: "), err);
       // console.error("Nexss last error: ", process.cwd());
       process.exitCode = 1;
     });
