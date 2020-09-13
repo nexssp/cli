@@ -112,6 +112,31 @@ if (
     // To use lang specific commands use
     // `nexss js install OR nexss php install` NOT!-> nexss .js install
     if (plugin.split(".").length === 1 && languageSelected) {
+      if (process.argv[3] === "install") {
+        console.log(`installing ${languageSelected.title}, please wait..`);
+        const { getCompiler } = require("./nexss-start/lib/start/compiler");
+        const compiler = getCompiler({
+          path: "",
+          name: `test${languageSelected.extensions[0]}`,
+        });
+
+        let pmArguments = process.argv.slice(4);
+        pmArguments = pmArguments.filter((e) => e !== "--nocache");
+        const command = `${compiler.install} ${pmArguments.join(" ")}`;
+
+        try {
+          cp.execSync(command, {
+            stdio: "inherit",
+            detached: false,
+            shell: process.platform === "win32" ? true : "/bin/bash",
+            cwd: process.cwd(),
+          });
+        } catch (error) {
+          console.log(`Command failed ${command}`);
+        }
+        return;
+      }
+
       const pm =
         languageSelected.languagePackageManagers[
           Object.keys(languageSelected.languagePackageManagers)[0]
