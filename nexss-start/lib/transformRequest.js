@@ -1,52 +1,48 @@
 const { Transform } = require("stream");
-const cliArgs = require("minimist")(process.argv);
-const { dbg, warn, ok } = require("../../lib/log");
-const { bold, red } = require("../../lib/color");
-const request = require("request");
+const { bold } = require("../../lib/color");
+const axios = require("axios");
 const { nxsDebugTitle } = require("../lib/output/nxsDebug");
 module.exports.transformRequest = (url) =>
   new Transform({
     transform: (chunk, encoding, callback) => {
       let data;
-
+      if (encoding === "buffer") {
+        chunk = chunk.toString();
+      }
       try {
-        data = JSON.parse(chunk.toString());
+        data = JSON.parse(chunk);
       } catch (error) {
-        // if (data) {
-        //   callback(null, JSON.stringify(data));
-        //   return;
-        // }
-
-        data = chunk.toString();
+        data = chunk;
       }
 
       nxsDebugTitle("Nexss Request:" + bold(url), data, "red");
 
-      let streamRead = request(url);
+      axios({ url, responseType: "stream" }).then((response) => {
+        const axiosStream = response.data;
 
-      // console.log(chunk.toString());
-      let wholeData = "";
-      streamRead.on("data", (d) => {
-        wholeData += d;
-        // callback(null, data);
-      });
+        let wholeData = "";
+        axiosStream.on("data", (d) => {
+          wholeData += d;
+          // callback(null, data);
+        });
 
-      streamRead.on("error", (er) => {
-        callback(er);
-      });
+        axiosStream.on("error", (er) => {
+          callback(er);
+        });
 
-      streamRead.on("end", () => {
-        if (!data) {
-          data = {};
-        }
+        axiosStream.on("end", () => {
+          if (!data) {
+            data = {};
+          }
 
-        try {
-          data = JSON.parse(wholeData);
-          callback(null, Buffer.from(wholeData));
-        } catch (error) {
-          data.nxsOut = wholeData;
-          callback(null, Buffer.from(JSON.stringify(data)));
-        }
+          try {
+            data = JSON.parse(wholeData);
+            callback(null, Buffer.from(wholeData));
+          } catch (error) {
+            data.nxsOut = wholeData;
+            callback(null, Buffer.from(JSON.stringify(data)));
+          }
+        });
       });
 
       // streamRead.on("exit", (code, signal) => {
@@ -58,6 +54,5 @@ module.exports.transformRequest = (url) =>
     },
     flush(cb) {
       cb();
-      // console.log("flush!!!!!");
     },
   });

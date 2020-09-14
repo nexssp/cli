@@ -47,7 +47,7 @@
     "js-yaml": "^3.14.0",
     "json-diff": "^0.5.4",
     "minimist": "^1.2.5",
-    "moment": "^2.27.0",
+    "moment": "^2.28.0",
     "pkg": "^4.4.9",
     "string-argv": "^0.3.1"
   },
