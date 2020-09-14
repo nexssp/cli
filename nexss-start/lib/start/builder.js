@@ -8,6 +8,13 @@ module.exports.getBuilder = (file) => {
 
   const languageDefinition = getLangByFilename(fileName);
 
+  let builder;
+
+  if (languageDefinition) {
+    builder =
+      languageDefinition.builders[Object.keys(languageDefinition.builders)[0]];
+  }
+  if (!builder) return;
   if (!fs.existsSync(`_nexss`)) {
     try {
       fs.mkdirSync(`_nexss`, { recursive: true });
@@ -15,14 +22,6 @@ module.exports.getBuilder = (file) => {
       if (err.code !== "EEXIST") throw err;
     }
   }
-
-  let builder;
-
-  if (languageDefinition) {
-    builder =
-      languageDefinition.builders[Object.keys(languageDefinition.builders)[0]];
-  }
-
   try {
     if (typeof builder.build === "function") {
       cmd = builder.build();
@@ -37,7 +36,7 @@ module.exports.getBuilder = (file) => {
   }
 
   if (!cmd) cmd = builder.cmd;
-  ensureInstalled(cmd, builder.install);
+  // ensureInstalled(cmd, builder.install);
 
   return builder;
 };

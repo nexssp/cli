@@ -1,26 +1,24 @@
 const PROCESS_CWD = process.cwd();
+const { NEXSS_SPECIAL_CHAR } = require("../../config/defaults");
 const path = require("path");
-const { info, error, warn, di, dg, dy, dbg } = require("../../lib/log");
+const { error, warn, di, dg, dbg } = require("../../lib/log");
 // const dotenv = require("dotenv");
 const { inspect } = require("util"),
-  { yellow, bold, green } = require("../../lib/color"),
+  fs = require("fs"),
+  url = require("url"),
+  { yellow } = require("../../lib/color"),
   { startServer } = require("../../lib/server");
 const { ensureInstalled, pathWinToLinux } = require("../../lib/terminal");
-const fs = require("fs");
-const { existsSync, lstatSync } = require("fs");
 const { isURL } = require("../../lib/data/url");
-const url = require("url");
-const { NEXSS_SPECIAL_CHAR } = require("../../config/defaults");
+const { getFiles } = require("../lib/start/files");
 
 const globalConfigPath = require("os").homedir() + "/.nexss/config.json";
 
-if (require("fs").existsSync(globalConfigPath)) {
+if (fs.existsSync(globalConfigPath)) {
   process.nexssGlobalConfig = require(globalConfigPath);
 } else {
   process.nexssGlobalConfig = { languages: {} };
 }
-
-const { getFiles } = require("../lib/start/files");
 
 // nexss s OR nexss start is ommiting
 let paramNumber = 2;
@@ -45,15 +43,6 @@ if (fileOrDirectory) {
   ) {
     if (fs.existsSync(fileOrDirectory)) {
       const nexssProgram = fs.readFileSync(fileOrDirectory);
-
-      // console.log(
-      //   "nexssProgram:",
-      //   nexssProgram,
-      //   "fileOrDirectory:",
-      //   fileOrDirectory,
-      //   "cliArgs:",
-      //   cliArgs
-      // );
       files = require("../lib/nexssFileParser")(
         nexssProgram,
         fileOrDirectory,
@@ -79,11 +68,7 @@ if (fileOrDirectory) {
     files = getFiles(firstParam);
   }
 }
-// console.log("start 74: FINAL FILES:", files);
-// process.exit(1);
 
-// console.log(files);
-// process.exit(1);
 const { loadConfigContent } = require("../../lib/config");
 
 let nexssConfig;
@@ -92,10 +77,10 @@ if (
   !isURL(fileOrDirectory) &&
   !fileOrDirectory.startsWith(NEXSS_SPECIAL_CHAR)
 ) {
-  if (lstatSync(fileOrDirectory).isFile()) {
+  if (fs.lstatSync(fileOrDirectory).isFile()) {
     const dirname = path.dirname(fileOrDirectory);
     const configFileDirname = `${dirname}/_nexss.yml`;
-    if (existsSync(configFileDirname) && lstatSync(configFileDirname)) {
+    if (fs.existsSync(configFileDirname) && fs.lstatSync(configFileDirname)) {
       nexssConfig = loadConfigContent(configFileDirname);
     }
   } else {
@@ -138,14 +123,11 @@ if (cliArgs.server) {
       debug: (nexssConfig && nexssConfig.debug) || cliArgs.debug,
     };
 
-    if (nexssConfig && nexssConfig.data) {
+    if (nexssConfig && nexssConfig.data)
       Object.assign(startData, nexssConfig.data);
-    }
 
     if (cliArgs.debug) di(`startData: ${yellow(inspect(startData))}`);
 
-    // const globalBuild = (nexssConfig && nexssConfig.build) || undefined;
-    const globalDisabled = nexssConfig && nexssConfig.disabled;
     nexssBuild.push({ stream: "readable", cmd: startData });
 
     if (cliArgs.debug) {

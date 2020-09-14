@@ -21,7 +21,7 @@ if (!existsSync(`${__dirname}/node_modules`)) {
   }
 }
 
-const { bold } = require("./lib/color");
+const { bold, yellow, blue } = require("./lib/color");
 const { NEXSS_SRC_PATH, NEXSS_PACKAGES_PATH } = require("./config/config");
 const { error, info, ok, warn } = require("./lib/log");
 
@@ -106,52 +106,78 @@ if (
   // FIXME: file system issue here ? TO REVIEW
   if (!existsSync(`${NEXSS_SRC_PATH}/nexss-${plugin}/nexssPlugin.js`)) {
     const { getLangByFilename } = require("./nexss-language/lib/language");
+
     // We check if thiscan be language specified action like
     // --> eg. nexss js install socketio
     const languageSelected = getLangByFilename(`example.${plugin}`, true);
     // To use lang specific commands use
     // `nexss js install OR nexss php install` NOT!-> nexss .js install
     if (plugin.split(".").length === 1 && languageSelected) {
-      if (
-        process.argv[3] === "install" &&
-        (!process.argv[4] || process.argv[4] === "--")
-      ) {
-        if (process.argv[4] === "--") {
-          delete process.argv[4];
-        }
-        console.log(`installing ${languageSelected.title}, please wait..`);
-        const { getCompiler } = require("./nexss-start/lib/start/compiler");
-        const compiler = getCompiler({
+      const { getCompiler } = require("./nexss-start/lib/start/compiler");
+      const compiler = getCompiler({
+        path: "",
+        name: `test${languageSelected.extensions[0]}`,
+      });
+      let builder;
+      if (!compiler) {
+        const { getBuilder } = require("./nexss-start/lib/start/builder");
+        builder = getBuilder({
           path: "",
           name: `test${languageSelected.extensions[0]}`,
         });
-        const builder =
-          languageSelected &&
-          languageSelected.builders &&
-          languageSelected.builders[Object.keys(languageSelected.builders)[0]];
-        let pmArguments = process.argv.slice(4);
-        pmArguments = pmArguments.filter((e) => e !== "--nocache");
-        const command = `${
-          compiler && compiler.install ? compiler.install : builder.install
-        } ${pmArguments.join(" ")}`;
+      }
 
-        try {
-          cp.execSync(command, {
-            stdio: "inherit",
-            detached: false,
-            shell: process.platform === "win32" ? true : "/bin/bash",
-            cwd: process.cwd(),
-          });
-        } catch (error) {
-          console.log(`Command failed ${command}`);
+      let pmArguments = process.argv.slice(4);
+      pmArguments = pmArguments.filter((e) => e !== "--nocache");
+
+      const installCommand = `${
+        compiler && compiler.install ? compiler.install : builder.install
+      } ${pmArguments.join(" ")}`;
+
+      const command = `${
+        compiler && compiler.install ? compiler.command : builder.command
+      } ${pmArguments.join(" ")}`;
+
+      if (
+        process.argv[3] === "install" &&
+        (!process.argv[4] ||
+          process.argv[4] === "--" ||
+          process.argv[4] === "--nocache" ||
+          process.argv[4] === "--debug")
+      ) {
+        if (process.argv[4] === "--" || process.argv[4] === "--nocache") {
+          delete process.argv[4];
         }
+        console.log(
+          `installing ${yellow(bold(languageSelected.title))}, please wait..`
+        );
+
+        const { ensureInstalled } = require("./lib/terminal");
+
+        let p = ensureInstalled(command, installCommand, { verbose: true });
+        if (p) {
+          console.log(
+            `${blue(bold(languageSelected.title))} is installed at:\n${p}`
+          );
+        }
+        // try {
+        //   cp.execSync(command, {
+        //     stdio: "inherit",
+        //     detached: false,
+        //     shell: process.platform === "win32" ? true : "/bin/bash",
+        //     cwd: process.cwd(),
+        //   });
+        // } catch (error) {
+        //   console.log(`Command failed ${command}`);
+        // }
         return;
       }
 
-      const pm =
-        languageSelected.languagePackageManagers[
-          Object.keys(languageSelected.languagePackageManagers)[0]
-        ];
+      const pm = languageSelected.languagePackageManagers
+        ? languageSelected.languagePackageManagers[
+            Object.keys(languageSelected.languagePackageManagers)[0]
+          ]
+        : null;
 
       cliArgs._.shift();
       const argument = cliArgs._.shift();

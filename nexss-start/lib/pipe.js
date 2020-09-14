@@ -17,6 +17,7 @@ const util = require("util");
 const pipelineAsync = util.promisify(pipeline);
 
 async function run(operations, options = {}) {
+  // console.time(blue("Nexss Programmer"));
   // We get last index of transformOutput as some parameters
   // passed in the commandline directly only should be applied in the
   // last transform output eg. nxsFields, nxsField etc.
@@ -74,12 +75,7 @@ async function run(operations, options = {}) {
     })
   )
     .then((e) => {
-      // console.log(e);
-      // if (!options.quiet) {
-      //   spin.succeed("Completed Nexss Sequence.");
-      //   spin.stop();
-      //   console.timeEnd("nexss");
-      // }
+      // console.timeEnd(blue("Nexss Programmer"));
     })
     .catch((err) => {
       // This is handled by nexss transform as all errors are parsed
