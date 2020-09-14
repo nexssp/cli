@@ -32,6 +32,7 @@
     "url": "https://github.com/nexssp/cli/issues"
   },
   "dependencies": {
+    "axios": "^0.20.0",
     "chalk": "^3.0.0",
     "cli-table3": "^0.5.1",
     "copy-dir": "^1.3.0",
@@ -48,7 +49,6 @@
     "minimist": "^1.2.5",
     "moment": "^2.27.0",
     "pkg": "^4.4.9",
-    "request": "^2.88.2",
     "string-argv": "^0.3.1"
   },
   "devDependencies": {
