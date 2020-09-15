@@ -170,7 +170,12 @@ testNames.forEach((test) => {
           }
 
           out("===========================================");
-          out(yellow(bright(`TEST ${tests}`)), yellow(evalTS(subtest.title)));
+          out(
+            yellow(bright(`TEST ${tests}`)),
+            subtest.title.indexOf("$") === -1
+              ? subtest.title
+              : yellow(evalTS(subtest.title))
+          );
 
           out(`===========================================`);
 
@@ -281,12 +286,22 @@ function should(fname, test, regE, options) {
     red(bright(`=======================================================`))
   );
 
-  console.error(red(bright(`But ${title}: `)));
   // Highlight the string which should not be there
   if (fname === "shouldNotContain") {
     data = data.replace(regE, bold(purple(regE)));
   }
-  console.error(data);
+
+  if (!data) {
+    console.error(red(bright(`But is empty.`)));
+    console.error(
+      `Maybe try run the function which couse the issue directly from Nexss Programmer.\n${green(
+        bold(test)
+      )}`
+    );
+  } else {
+    console.error(red(bright(`But ${title}: `)));
+    console.error(data);
+  }
   console.error(
     red(bright(`=======================================================`))
   );
