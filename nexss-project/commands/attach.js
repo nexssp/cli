@@ -1,5 +1,5 @@
 const { warn, info } = require("../../lib/log");
-const { bold, green } = require("../../lib/color");
+const { bold, green } = require("../../lib/ansi");
 const { existsSync, writeFileSync } = require("fs");
 const path = require("path");
 const inquirer = require("inquirer");
@@ -10,7 +10,7 @@ inquirer.registerPrompt(
 const cliArgs = require("minimist")(process.argv.slice(3));
 const {
   NEXSS_PROJECT_CONFIG_PATH,
-  NEXSS_PROJECTS_DB
+  NEXSS_PROJECTS_DB,
 } = require("../../config/config");
 
 // if (process.argv.length > 4) {
@@ -45,7 +45,7 @@ if (configContent && configContent.name) {
       type: "input",
       name: "projectName",
       message: "Enter project name",
-      default: path.basename(process.cwd())
+      default: path.basename(process.cwd()),
     });
   }
 }
@@ -57,7 +57,7 @@ if (cliArgs.description) {
     type: "input",
     name: "description",
     message: "Enter description",
-    default: cliArgs.description
+    default: cliArgs.description,
   });
 }
 
@@ -68,7 +68,7 @@ if (cliArgs.keywords) {
   questions.push({
     type: "input",
     name: "keywords",
-    message: "Enter keywords (for searching)"
+    message: "Enter keywords (for searching)",
   });
 }
 
@@ -79,7 +79,7 @@ if (cliArgs.repo) {
   questions.push({
     type: "input",
     name: "repo",
-    message: "Enter repository"
+    message: "Enter repository",
   });
 }
 
@@ -91,7 +91,7 @@ if (cliArgs.editor) {
     type: "input",
     name: "editor",
     message: "Enter code editor command",
-    default: "code ."
+    default: "code .",
   });
 }
 if (cliArgs.note) {
@@ -101,14 +101,14 @@ if (cliArgs.note) {
   questions.push({
     type: "input",
     name: "note",
-    message: "Enter extra note"
+    message: "Enter extra note",
   });
 }
 
 if (questions.length === 0) {
   attachProject(answersFromParams);
 } else {
-  inquirer.prompt(questions).then(function(answers) {
+  inquirer.prompt(questions).then(function (answers) {
     answers = Object.assign(answers, answersFromParams);
     attachProject(answers);
   });

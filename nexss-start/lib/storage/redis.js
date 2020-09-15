@@ -1,9 +1,9 @@
 const { nohup } = require("./nohup");
 const { ensureInstalled, which } = require("./terminal");
 const { warn, error, success, di } = require("./log");
-const { bold } = require("./color");
+const { bold } = require("./ansi");
 
-module.exports.checkRedis = comm => {
+module.exports.checkRedis = (comm) => {
   di("Checking communication channels / Redis");
 
   if (comm) {
@@ -27,7 +27,7 @@ module.exports.checkRedis = comm => {
           break;
       }
     }
-	
+
     try {
       var Redis = require("ioredis");
     } catch (error) {
@@ -40,7 +40,7 @@ module.exports.checkRedis = comm => {
     const password = comm.password || null;
 
     this.redis = new Redis({ port, host, password });
-    this.redis.on("error", err => {
+    this.redis.on("error", (err) => {
       error(bold(err));
       warn("Starting Redis Server..");
       nohup("redis-server");

@@ -1,0 +1,33 @@
+// Comments are like that
+// # Print to terminals with colors
+Output/Log "${bold(yellow('Welcome'))} to ${bold(blueBG(black('Nexss Programmer')))} ${bold(green(nexss))}" 
+Output/Log "You can use many many colors easy. There are few ${redBG('colors')}" "${up(bold(5))}"
+// # Special 2 characters
+$# --myvar="$# Easy setup vars" --accessEnv="${process.env.NEXSS_SRC_PATH}" --caclulations="${1+1} = ${6-5}"
+$# --typeOfVars=${typeof(colors)} --listValues=${Object.values(colors)}
+$# --displayArrays=${Object.values(colors).forEach(e=>console.log(global[e](e)))}
+
+Output/Log "${bold(magentaBG('All available colors'))}"
+
+Output/Log "${red('My')}"
+$# --colors="dddddddddddddd${fs.existsSync('test1.nexss1')}" 
+
+// Data - Memory
+Output/Log "${blueBG(black('Data manipulation'))}" "You can manipulate data by packages but also built in Nexss Programmer Functions"
+
+
+
+// Data - Persistent / JSON and also soon: SQLite, MySQL, OracleDB
+// Below will create myvariable in the json storage. 
+// Keep in mind that storage will be in the current folder if not specified.
+Storage/JSON/Set myvariable "this is loooong value which is a second parameter.."
+$# --myvariable="z" // we clean the variable
+Storage/JSON/Get myvariable
+Output/Log "This parameter"
+// Output/Log ${clearScreen()}
+// Benchmarking
+// --nxsTime
+// Output/End --_if=${myvariable} "End of the script.." "${up('THis is a text which will be written up')}"
+
+// Debug
+// Debug --nxsDebug OR Debug OR Id --nxsDebug

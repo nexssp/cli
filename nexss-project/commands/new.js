@@ -2,7 +2,7 @@ const { warn, info, error, success } = require("../../lib/log");
 const cliArgs = require("minimist")(process.argv.slice(3));
 const fs = require("fs");
 const path = require("path");
-const { yellow, bold } = require("../../lib/color");
+const { yellow, bold } = require("../../lib/ansi");
 const copydir = require("copy-dir");
 const currentPath = process.cwd();
 

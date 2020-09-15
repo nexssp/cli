@@ -9,7 +9,7 @@ const {
   magenta,
   cyan,
   white,
-} = require("../../../lib/color");
+} = require("../../../lib/ansi");
 module.exports.nxsDebugTitle = (title, data, color) => {
   if (data && data["nxsDebug"]) {
     if (!color) color = "white";

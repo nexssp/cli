@@ -2,7 +2,7 @@ const path = require("path");
 const fs = require("fs");
 const { loadConfigContent } = require("../../../lib/config");
 const dotenv = require("dotenv");
-const { bold, red, green, blue } = require("../../../lib/color");
+const { bold, red, green, blue } = require("../../../lib/ansi");
 const { NEXSS_SPECIAL_CHAR } = require("../../../config/defaults");
 const { getSequence } = require("./sequence");
 require("../../../lib/arrays"); // array flat / nodejs 10

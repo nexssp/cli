@@ -16,6 +16,11 @@ function preVars(isn) {
 }
 
 const nexssFileParser = (content, filename, nxsArgs) => {
+  const path = require("path");
+  if (!path.isAbsolute(filename)) {
+    filename = path.resolve(filename);
+  }
+
   var { parseArgsStringToArgv } = require("string-argv");
   let lineNumber = 0;
   const nexssProgram = preVars(content.toString()).trim().split(/\r?\n/);

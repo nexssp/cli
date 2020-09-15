@@ -2,12 +2,12 @@ const fs = require("fs");
 const path = require("path");
 const copydir = require("copy-dir");
 const { warn, info, hr, header } = require("../../lib/log");
-const { bold, red, yellow, green } = require("../../lib/color");
+const { bold, red, yellow, green } = require("../../lib/ansi");
 const exists = fs.existsSync;
 
 const {
   NEXSS_PROJECTS_DB,
-  NEXSS_PROJECT_CONFIG_PATH
+  NEXSS_PROJECT_CONFIG_PATH,
 } = require("../../config/config");
 const { loadConfigContent } = require("../../lib/config");
 let nexssConfig = loadConfigContent(NEXSS_PROJECT_CONFIG_PATH);
@@ -19,7 +19,7 @@ header();
 if (exists(NEXSS_PROJECTS_DB)) {
   if (search) console.log(`Searching: ${yellow(bold(search))}`);
   const projects = require(NEXSS_PROJECTS_DB);
-  Object.keys(projects).forEach(e => {
+  Object.keys(projects).forEach((e) => {
     if (search) {
       search = search.toLowerCase();
       if (

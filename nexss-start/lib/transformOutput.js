@@ -1,7 +1,7 @@
 const { Transform } = require("stream");
 
 const { error, warn, ok, isErrorPiped } = require("../../lib/log");
-const { bold, red } = require("../../lib/color");
+const { bold, red } = require("../../lib/ansi");
 const nxsFieldModule = require("./output/nxsField");
 const nxsFieldsModule = require("./output/nxsFields");
 const nxsConcatModule = require("./output/nxsConcat");

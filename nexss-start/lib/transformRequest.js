@@ -1,5 +1,5 @@
 const { Transform } = require("stream");
-const { bold } = require("../../lib/color");
+const { bold } = require("../../lib/ansi");
 const axios = require("axios");
 const { nxsDebugTitle } = require("../lib/output/nxsDebug");
 module.exports.transformRequest = (url) =>

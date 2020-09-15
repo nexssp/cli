@@ -1,7 +1,7 @@
 const fs = require("fs");
 const fse = require("fs-extra");
 
-// const { bold, blue, yellow, green } = require("../../lib/color");
+// const { bold, blue, yellow, green } = require("../../lib/ansi");
 // const { success, ok, error } = require("../../lib/log");
 const { addTimeStampToFilename } = require("../../lib/fs");
 
@@ -23,16 +23,16 @@ function deleteFile(filename) {
     message:
       "Do you really want to delete file " +
       filename +
-      "? Backup will be automatically done by adding timestamp at the end of file.."
+      "? Backup will be automatically done by adding timestamp at the end of file..",
   });
 
-  inquirer.prompt(questions).then(function(answers) {
+  inquirer.prompt(questions).then(function (answers) {
     if (answers.delete) {
       //const nexssConfig = require("./lib/nexss-config")();
 
       const {
         loadConfigContent,
-        saveConfigContent
+        saveConfigContent,
       } = require("../../lib/config");
 
       let configContent = loadConfigContent(NEXSS_PROJECT_CONFIG_PATH);

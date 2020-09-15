@@ -1,5 +1,5 @@
-const { red, yellow, green, bold } = require("../../lib/color");
-module.exports.colorizer = txt => {
+const { red, yellow, green, bold } = require("../../lib/ansi");
+module.exports.colorizer = (txt) => {
   if (txt.startsWith("OK")) {
     return green(txt);
   } else if (txt.startsWith("INFO")) {

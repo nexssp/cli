@@ -12,7 +12,7 @@ const {
   isErrorPiped,
 } = require("../../lib/log");
 const { colorizer } = require("./colorizer");
-const { bold, yellow, red } = require("../../lib/color");
+const { bold, yellow, red } = require("../../lib/ansi");
 require("../../lib/arrays");
 const { spawn } = require("child_process");
 const { is } = require("../../lib/data/guard");

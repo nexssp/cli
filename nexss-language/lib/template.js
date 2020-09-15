@@ -2,7 +2,7 @@ const nexssLanguages = require("../../nexss-language/lib/language");
 const { getFiles } = require("../../lib/fs");
 const { join, extname, dirname } = require("path");
 const { error } = require("../../lib/log");
-const { bold } = require("../../lib/color");
+const { bold } = require("../../lib/ansi");
 
 module.exports.templateNames = (arg) => {
   if (arg) {

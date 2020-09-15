@@ -1,6 +1,7 @@
 const parserSyntax = require("./parserSyntax");
 const { error } = require("../../lib/log");
-const { red, bold, blue, yellow } = require("../../lib/color");
+const { red, bold, blue, yellow } = require("../../lib/ansi");
+
 const expressionParser2 = (data) => {
   if (!data) return data;
   let jsON = JSON.stringify(data);

@@ -1,4 +1,4 @@
-const { green, yellow, bold } = require("../../lib/color");
+const { green, yellow, bold } = require("../../lib/ansi");
 const { NEXSS_PROJECT_CONFIG_PATH } = require("../../config/config");
 
 const { loadConfigContent } = require("../../lib/config");
@@ -21,7 +21,7 @@ function listCommands() {
     )
   );
 
-  commands.map(e =>
+  commands.map((e) =>
     console.log(`${bold(e.name)} - ${yellow(bold(e.command))}`)
   );
 }

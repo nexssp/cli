@@ -1,7 +1,7 @@
 module.exports = (data) => {
   if (data.nxsStop) {
     const cliArgs = require("minimist")(process.argv);
-    const { bold, red } = require("../../../lib/color");
+    const { bold, red } = require("../../../lib/ansi");
     r = 0;
     if (data.nxsStopReason) {
       console.log(

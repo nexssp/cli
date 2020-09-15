@@ -1,5 +1,5 @@
 const { success, warn } = require("../../lib/log");
-const { bold } = require("../../lib/color");
+const { bold } = require("../../lib/ansi");
 
 const { NEXSS_PROJECT_CONFIG_PATH } = require("../../config/config");
 if (!NEXSS_PROJECT_CONFIG_PATH) {

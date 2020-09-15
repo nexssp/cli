@@ -1,5 +1,5 @@
 const { Transform } = require("stream");
-const { yellow } = require("../../lib/color");
+const { yellow } = require("../../lib/ansi");
 const { di } = require("../../lib/log");
 const { inspect } = require("util");
 module.exports.transformError = (
@@ -25,6 +25,6 @@ module.exports.transformError = (
       //   );
       if (chunk) callback(null, chunk);
       //   process.stdout.write(`END ERROR TRANSFORMER ${title}\n\n `);
-    }
+    },
   });
 };

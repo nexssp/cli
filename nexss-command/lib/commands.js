@@ -1,7 +1,7 @@
 const { NEXSS_PROJECT_CONFIG_PATH } = require("../../config/config");
 const { loadConfigContent } = require("../../lib/config");
 let configContent = loadConfigContent(NEXSS_PROJECT_CONFIG_PATH);
-const { red, yellow, bold, green } = require("../../lib/color");
+const { red, yellow, bold, green } = require("../../lib/ansi");
 
 function listCommands() {
   const commands = configContent.commands;
@@ -18,9 +18,9 @@ function listCommands() {
 
   const Table = require("cli-table3");
   var table = new Table({
-    head: [green("name"), green("command")]
+    head: [green("name"), green("command")],
   });
-  commands.forEach(cmd => {
+  commands.forEach((cmd) => {
     table.push([bold(yellow(cmd.name)), bold(cmd.command)]);
   });
 

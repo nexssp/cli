@@ -21,13 +21,14 @@ if (!existsSync(`${__dirname}/node_modules`)) {
   }
 }
 
-const { bold, yellow, blue } = require("./lib/color");
+const { bold, yellow, blue } = require("./lib/ansi");
 const { NEXSS_SRC_PATH, NEXSS_PACKAGES_PATH } = require("./config/config");
 const { error, info, ok, warn } = require("./lib/log");
 
 const { isURL } = require("./lib/data/url");
 const cliArgs = require("minimist")(process.argv.slice(2));
 const { NEXSS_SPECIAL_CHAR } = require("./config/defaults");
+require("./config/globals");
 process.nexssGlobalCWD = process.cwd();
 process.title =
   "nexss (" +
@@ -79,7 +80,7 @@ if (
     `There CANNOT be the same name for plugin and package. PLEASE CHANGE THE PACKAGE NAME!`
   );
   error(`Nexss Programmer will not continue until it is done.`);
-  process.exit(1);
+  return;
 }
 
 //we check if first parameter is folder or plugin

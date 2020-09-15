@@ -1,4 +1,4 @@
-const { bold, green } = require("../../lib/color");
+const { bold, green } = require("../../lib/ansi");
 
 module.exports.installPackages = (destinationFolder) => {
   // We make sure git is installed.

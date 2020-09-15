@@ -1,7 +1,7 @@
 const fs = require("fs");
 // Display default commands
 const { NEXSS_SRC_PATH } = require("../config/config.js");
-const { bold, grey } = require("../lib/color");
+const { bold, grey } = require("../lib/ansi");
 const { invert } = require("../lib/helper");
 const aliases = invert(require("../aliases.json"));
 require("../lib/arrays"); // array flat / nodejs 10

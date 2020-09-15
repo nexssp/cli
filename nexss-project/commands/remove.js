@@ -1,10 +1,10 @@
 //removes project from the list
 const { error, success } = require("../../lib/log");
-const { bold } = require("../../lib/color");
+const { bold } = require("../../lib/ansi");
 const fs = require("fs");
 const {
   NEXSS_PROJECTS_DB,
-  NEXSS_PROJECT_CONFIG_PATH
+  NEXSS_PROJECT_CONFIG_PATH,
 } = require("../../config/config");
 const { loadConfigContent } = require("../../lib/config");
 let nexssConfig = loadConfigContent(NEXSS_PROJECT_CONFIG_PATH);

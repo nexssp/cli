@@ -1,5 +1,5 @@
 const { success, error } = require("../../lib/log");
-const { bold } = require("../../lib/color");
+const { bold } = require("../../lib/ansi");
 const { stop } = require("../../lib/proc");
 const pid = process.argv[4];
 

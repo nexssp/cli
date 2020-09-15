@@ -1,4 +1,4 @@
-const { bold } = require("../lib/color");
+const { bold } = require("../lib/ansi");
 module.exports = () => {
   console.log(`${bold("wsl")} command has not been found.`);
   console.log(

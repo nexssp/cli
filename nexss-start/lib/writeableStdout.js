@@ -42,7 +42,9 @@ module.exports.writeableStdout = () =>
         if (process.argv.indexOf("--nxsModule") >= 0) {
           console.log(JSON.stringify({ nxsOut: chunk }));
         } else {
-          process.stdout.write(chunk);
+          console.log(
+            typeof chunk === "object" ? JSON.stringify(chunk) : chunk
+          );
         }
       }
 
