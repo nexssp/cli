@@ -45,13 +45,11 @@ module.exports.transformNexss = (
       if (process.argv.includes("--nxsTime")) {
         startStreamTime = process.hrtime();
       }
-      // console.log("INPUT DATA!!!", inputData);
+
       const self = this;
       if (encoding === "buffer") {
         chunk = chunk.toString();
       }
-
-      dbg(`Chunk size: ${chunk.length}, trimmed: ${chunk.trim().length}`);
 
       if (chunk === "\u0003") {
         // process.exit();

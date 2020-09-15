@@ -38,14 +38,17 @@ function getPath(fileOrFolder) {
       fileOrFolder !== "." &&
       fs.existsSync(`${process.env.NEXSS_PACKAGES_PATH}/${fileOrFolder}`)
     ) {
-      console.error(
-        bold(
-          `Warning: You have folder on your project: ${fileOrFolder}. 
+      if (process.cwd() !== process.env.NEXSS_PACKAGES_PATH) {
+        console.error(
+          bold(
+            `Warning: You have folder on your project: ${fileOrFolder}. 
 There is also Nexss Programmer package name called with the same. 
 If this is overwrite of standard Nexss Programmer 
 package then it is ok, otherwise use different name.`
-        )
-      );
+          )
+        );
+      }
+
       if (!process.nxsErrors) process.nxsErrors = {};
       process.nxsErrors[fileOrFolder] = true;
     }

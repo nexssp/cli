@@ -158,7 +158,11 @@ module.exports.transformOutput = (x, y, z) =>
         }
         nxsDebugData(data, "Output", "cyan");
 
-        callback(null, JSON.stringify(data));
+        if (typeof data === "object") {
+          data = JSON.stringify(data);
+        }
+
+        callback(null, data);
       }
       // } else {
       //   callback(null, data);

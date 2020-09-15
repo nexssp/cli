@@ -98,10 +98,14 @@ module.exports.readable = (startData) => {
 
   // Make sure we are in the right folder.
   // Later change it
-  if (require("fs").existsSync(startData.cwd) && !cliArgs)
-    process.chdir(startData.cwd);
+  // if (require("fs").existsSync(startData.cwd) && !cliArgs)
+  //   process.chdir(startData.cwd);
   // startData = nxsInModule(startData);
-
+  if (process.NexssFilePath && process.NexssFilePath !== ".") {
+    // data.__dirname = process.NexssFilePath;
+    if (!startData["__dirname"]) startData["__dirname"] = process.cwd();
+    startData.cwd = process.NexssFilePath;
+  }
   s.push(JSON.stringify(startData));
   s.push(null);
   return s;

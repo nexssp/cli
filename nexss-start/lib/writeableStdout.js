@@ -28,7 +28,9 @@ module.exports.writeableStdout = () =>
             );
             console.error(JSON.stringify(Object.keys(chunk)));
           } else {
-            console.log(JSON.stringify(chunk));
+            console.log(
+              typeof chunk === "object" ? JSON.stringify(chunk) : chunk
+            );
           }
         } else {
           delete chunk["nxsPretty"];
