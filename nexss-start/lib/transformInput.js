@@ -58,6 +58,10 @@ module.exports.transformInput = (x, y, params) =>
         nxsLocal(data);
         nxsStop(data);
 
+        if (process.NexssFilePath && process.NexssFilePath !== ".") {
+          // data.__dirname = process.NexssFilePath;
+          data.cwd = process.NexssFilePath;
+        }
         callback(null, JSON.stringify(data));
       }
     },

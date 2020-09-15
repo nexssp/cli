@@ -123,6 +123,7 @@ module.exports.transformNexss = (
         // nxsTime
         startCompilerTime = process.hrtime();
       }
+
       this.worker = await spawn(cmd, argsStrings, options);
       this.worker.cmd = nexssCommand;
       // let proc = new Proc(this.worker.pid, {

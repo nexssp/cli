@@ -15,7 +15,7 @@ const { bold } = require("../../lib/color");
 module.exports.transformFile = (file, x, y) => {
   return new Transform({
     //  writableObjectMode: true,
-    transform(chunk, encoding, callback) {
+    async transform(chunk, encoding, callback) {
       process.chdir(y.cwd);
       process.nexssCWD = y.cwd;
       if (!existsSync(file)) {
@@ -50,8 +50,15 @@ module.exports.transformFile = (file, x, y) => {
 
       streamRead.on("end", () => {
         if (extname(file) === ".json") {
-          const jsonToObj = JSON.parse(wholeData);
-          data = Object.assign({}, data, jsonToObj);
+          try {
+            const jsonToObj = JSON.parse(wholeData);
+            data = Object.assign({}, data, jsonToObj);
+          } catch (e) {
+            data.nxsStopReason = `Issue with json file: ${file}\n ERROR: ${e}`;
+            data.nxsStop = true;
+
+            callback(JSON.stringify(data));
+          }
         } else {
           data.nxsOut = wholeData;
         }

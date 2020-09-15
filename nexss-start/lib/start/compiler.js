@@ -4,7 +4,8 @@ const path = require("path");
 // if it is in the globalConfig ./nexss/config.json
 //
 const fs = require("fs");
-const { info, warn } = require("../../../lib/log");
+const { info, warn, error } = require("../../../lib/log");
+const { exit } = require("process");
 const cliArgs = require("minimist")(process.argv.slice(2));
 
 module.exports.getCompiler = (file) => {
@@ -12,8 +13,21 @@ module.exports.getCompiler = (file) => {
   const fileFillPAth = path.join(file.path, file.name);
   const languageDefinition = getLangByFilename(fileName);
   if (!languageDefinition) {
-    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+    // TODO: ?? Execute shell commands? return false and pass shell commands?
+    // We check if we can run this.
+    // maybe later here to execute just shell comands......
+
+    // try {
+    //   console.log(process.argv, file);
+    //   const res = require("child_process").execSync("dir").toString();
+    //   console.log(res);
+    // } catch (e) {
+    //   console.log(e);
+    // }
+    error("There is an issue", file);
+    process.exit(1);
   }
+
   const extension = path.extname(fileName).slice(1);
   let compiler;
 

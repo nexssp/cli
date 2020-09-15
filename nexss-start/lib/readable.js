@@ -1,4 +1,5 @@
 const { Readable } = require("stream");
+const fs = require("../../lib/fs");
 const { info, error } = require("../../lib/log");
 
 let paramNumber = 2;
@@ -17,6 +18,7 @@ module.exports.readable = (startData) => {
   startData.nexss = `FREE/OPENSOURCE ${nexssVersion}`;
   startData.start = +new Date();
   startData.cwd = process.nexssGlobalCWD;
+
   if (cliArgs.nxsTime) {
     startData.nxsTime = process.hrtime();
   }
@@ -96,7 +98,8 @@ module.exports.readable = (startData) => {
 
   // Make sure we are in the right folder.
   // Later change it
-  process.chdir(startData.cwd);
+  if (require("fs").existsSync(startData.cwd) && !cliArgs)
+    process.chdir(startData.cwd);
   // startData = nxsInModule(startData);
 
   s.push(JSON.stringify(startData));

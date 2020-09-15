@@ -45,9 +45,12 @@ module.exports.transformOutput = (x, y, z) =>
         if (isErrorPiped) {
           console.log(data);
         } else {
+          if (!data) {
+            data = {};
+          }
           data.nxsStopReason = error;
           data.nxsStop = true;
-          callback(null, data); //JSON stringify?
+          callback(null, JSON.stringify(data)); //JSON stringify?
           // console.log(data);
         }
 

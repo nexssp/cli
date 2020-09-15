@@ -27,6 +27,8 @@ async function run(operations, options = {}) {
       lastIndex = x;
     }
   }
+  // Below is for relative dirs in the .nexss files
+  // This will need to be changed to the distributed systems
 
   await pipelineAsync(
     // process.stdin,
@@ -56,6 +58,13 @@ async function run(operations, options = {}) {
         fileName: element.fileName,
         cwd: element.cwd,
       });
+      // if (process.NexssFilePath) {
+      //   if (!runOptions.inputData) {
+      //     runOptions.inputData = {};
+      //   }
+
+      //   runOptions.inputData."" = process.NexssFilePath;
+      // }
 
       runOptions.inputData = element.inputData;
       if (element.data) {

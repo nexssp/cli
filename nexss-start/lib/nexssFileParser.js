@@ -81,6 +81,7 @@ const nexssFileParser = (content, filename, nxsArgs) => {
       // }
 
       let pathFilename = require("path").dirname(filename);
+      process.NexssFilePath = pathFilename;
 
       // console.log("==========================================================");
       // console.log("name:        ", name);
