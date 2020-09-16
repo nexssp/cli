@@ -29,9 +29,7 @@ module.exports = {
           ".swift", // is not implemented on windows yet
           // OTHER ISSUES
           // ".html",
-          ".pd", // To check
-          ".ps1",
-          // ".d", // dome compiler proble, default.d not found
+          ".pd", // This language might be removed..
           ".exs",
           ".ex",
           ".erl", // Compiler needs to be installed during adding a file (compile of lib is needed)

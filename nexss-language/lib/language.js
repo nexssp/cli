@@ -117,7 +117,10 @@ module.exports.getLang = (ext, recreateCache) => {
         config.osPackageManagers[Object.keys(config.osPackageManagers)[0]];
       if (langRepositories[ext]) {
         ensureInstalled(osPM.keyOfItem, osPM.installation);
-        ensureInstalled("git", `${osPM.install} git`);
+        ensureInstalled(
+          "git",
+          `${osPM.install ? osPM.install : osPM.installCommand} git`
+        );
 
         const repoName = require("path").basename(langRepositories[ext]);
         const repoPath = `${NEXSS_LANGUAGES_PATH}/${repoName}`;

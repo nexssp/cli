@@ -30,6 +30,6 @@ Output/Log "This parameter"
 // Benchmarking
 // --nxsTime
 // Output/End --_if=${myvariable} "End of the script.." "${up('THis is a text which will be written up')}"
-
+Output/End --_memory="${mem().rss/(1024*1024)}" "${red(`${_memory}`)} MB."
 // Debug
 // Debug --nxsDebug OR Debug OR Id --nxsDebug
