@@ -1,16 +1,18 @@
-// Comments are like that
 // # Print to terminals with colors
 Output/Log "${bold(yellow('Welcome'))} to ${bold(blueBG(black('Nexss Programmer')))} ${bold(green(nexss))}" 
-Output/Log "You can use many many colors easy. There are few ${redBG('colors')}" "${up(bold(5))}"
+Output/Log "You can use many many colors easy. There are few ${redBG('colors')}" //"${up(bold(5))}"
 // # Special 2 characters
-$# --myvar="$# Easy setup vars" --accessEnv="${process.env.NEXSS_SRC_PATH}" --caclulations="${1+1} = ${6-5}"
+$# --myvar="$# Easy setup vars" --accessEnv="${process.env.NEXSS_SRC_PATH}" --caclulations="${1+1} = ${6-4}"
 $# --typeOfVars=${typeof(colors)} --listValues=${Object.values(colors)}
-$# --displayArrays=${Object.values(colors).forEach(e=>console.log(global[e](e)))}
+// $# --displayArrays=${Object.values(colors).forEach(e=>console.log(global[e](e)))}
+$# --_displayArrays=${dev_colors()}
+
 
 Output/Log "${bold(magentaBG('All available colors'))}"
 
-Output/Log "${red('My')}"
-$# --colors="dddddddddddddd${fs.existsSync('test1.nexss1')}" 
+Output/Log "${red('This is some red text')}"
+
+Output/Log "You can check if file exists:$ {fs.existsSync('test1.nexss1')}: ${fs.existsSync('test1.nexss1')}" 
 
 // Data - Memory
 Output/Log "${blueBG(black('Data manipulation'))}" "You can manipulate data by packages but also built in Nexss Programmer Functions"
