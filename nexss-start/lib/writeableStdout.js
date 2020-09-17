@@ -1,6 +1,7 @@
 const { Writable } = require("stream");
 const { timeElapsed } = require("../lib/output/nxsTime");
 // const isDebug = process.argv.indexOf("--validate") >= 0;
+const { isJson } = require("../../lib/data/json");
 module.exports.writeableStdout = () =>
   new Writable({
     write: (chunk, encoding, callback) => {
@@ -27,32 +28,28 @@ module.exports.writeableStdout = () =>
                 ? JSON.stringify(chunk)
                 : chunk;
 
-            process.stdout.write(
-              require("json-colorizer")(chunk, {
-                colors: {
-                  STRING_KEY: "green.bold",
-                  STRING_LITERAL: "yellow.bold",
-                  NUMBER_LITERAL: "blue.bold",
-                },
-              })
-            );
+            if (isJson(chunk)) {
+              process.stdout.write(
+                require("json-colorizer")(chunk, {
+                  colors: {
+                    STRING_KEY: "green.bold",
+                    STRING_LITERAL: "yellow.bold",
+                    NUMBER_LITERAL: "blue.bold",
+                  },
+                })
+              );
+            } else {
+              process.stdout.write(chunk);
+            }
           }
         } else {
           delete chunk["nxsPretty"];
-          console.log(
-            require("json-colorizer")(chunk, {
-              pretty: true,
-              colors: {
-                STRING_KEY: "green.bold",
-                STRING_LITERAL: "yellow.bold",
-                NUMBER_LITERAL: "blue.bold",
-              },
-            })
-          );
+          console.log(chunk);
         }
 
         timeElapsed(chunk.nxsTime);
       } catch (error) {
+        console.log("-------------------------------------------error", error);
         if (process.argv.indexOf("--nxsModule") >= 0) {
           process.stdout.write(JSON.stringify({ nxsOut: chunk }));
         } else {
@@ -60,8 +57,11 @@ module.exports.writeableStdout = () =>
             typeof chunk === "object" || typeof chunk === "number"
               ? JSON.stringify(chunk)
               : chunk;
-
-          process.stdout.write(require("json-colorizer")(chunk));
+          if (isJson(chunk)) {
+            process.stdout.write(require("json-colorizer")(chunk));
+          } else {
+            process.stdout.write(chunk);
+          }
         }
       }
 
