@@ -31,16 +31,21 @@ function exe(command, options) {
     Object.assign(options, { shell: "/bin/bash" });
   }
 
-  options.maxBuffer = 10485760; // 10*default
+  options.maxBuffer = 52428800; // 10*default
   try {
     const r = execSync(`${command} --nxsPipeErrors`, options).toString();
 
     return r;
   } catch (er) {
-    // if (process.argv.includes("--errors")) {
-    //   console.error(er);
-    // }
-    // if (options && options.stopOnErrors) process.exitCode = 1;
+    // err.stdout;
+    // err.stderr;
+    // err.pid;
+    // err.signal;
+    // err.status;
+    if (process.argv.includes("--errors")) {
+      console.error(er);
+    }
+    if (options && options.stopOnErrors) process.exitCode = 1;
   }
 }
 

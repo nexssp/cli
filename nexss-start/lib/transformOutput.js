@@ -161,7 +161,7 @@ module.exports.transformOutput = (x, y, z) =>
         if (typeof data === "object") {
           data = JSON.stringify(data);
         }
-
+        data += ""; //Incase it is a string
         callback(null, data);
       }
       // } else {

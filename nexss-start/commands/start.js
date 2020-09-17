@@ -88,9 +88,6 @@ if (
   }
 }
 
-// console.log(require("util").inspect(nexssConfig, true, 10));
-// process.exit(1);
-
 if (!Array.isArray(files)) {
   files = [files];
 }
@@ -407,16 +404,7 @@ if (cliArgs.server) {
   process.chdir(PROCESS_CWD); //TODO: Later to recheck folder changing on getFiles + mess cleanup
   // Recheck the Serialize (later remove??)
   nexssResult = json.parse(json.stringify(nexssResult));
-  // const util = require("util");
-  // console.log("r", util.inspect(nexssResult, false, null, true));
-  // process.exit(1);
-  // console.log(nexssBuild);
-  // process.exit(1);
   dg(`Executing..`);
-
-  // TODO: We revert back the current dir if there are any changes (should not be)
-  // To review
-  // process.chdir(process.nexssGlobalCWD);
 
   if (cliArgs.nxsBuild) {
     let buildFilename = "./build.nexss.json";
@@ -434,9 +422,6 @@ if (cliArgs.server) {
     console.log(JSON.stringify(nexssResult, null, 2));
     process.exit(0);
   }
-
-  // console.log(nexssResult);
-  // process.exit(1);
 
   run(nexssResult, { quiet: !cliArgs.verbose }).catch((e) => console.error(e));
 }

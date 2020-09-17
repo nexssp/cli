@@ -84,7 +84,7 @@ async function run(operations, options = {}) {
     })
   )
     .then((e) => {
-      // console.timeEnd(blue("Nexss Programmer"));
+      console.log("\n");
     })
     .catch((err) => {
       // This is handled by nexss transform as all errors are parsed

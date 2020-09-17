@@ -5,9 +5,12 @@
  * Author: Marcin Polak / nexss.com
  * 2018/10/01 initial version
  */
+require("./config/globals");
 const cp = require("child_process");
-const { existsSync } = require("fs");
-if (!existsSync(`${__dirname}/node_modules`)) {
+const fs = require("fs");
+const cliArgs = require("minimist")(process.argv.slice(2));
+// Let's install it if is not yet
+if (!fs.existsSync(`${__dirname}/node_modules`)) {
   const command = `npm install --production`;
   try {
     cp.execSync(command, {
@@ -22,13 +25,12 @@ if (!existsSync(`${__dirname}/node_modules`)) {
 }
 
 const { bold, yellow, blue } = require("./lib/ansi");
-const { NEXSS_SRC_PATH, NEXSS_PACKAGES_PATH } = require("./config/config");
-const { error, info, ok, warn } = require("./lib/log");
 
-const { isURL } = require("./lib/data/url");
-const cliArgs = require("minimist")(process.argv.slice(2));
+const { error, info, ok, warn } = require("./lib/log");
+const { NEXSS_SRC_PATH, NEXSS_PACKAGES_PATH } = require("./config/config");
 const { NEXSS_SPECIAL_CHAR } = require("./config/defaults");
-require("./config/globals");
+const { isURL } = require("./lib/data/url");
+
 process.nexssGlobalCWD = process.cwd();
 process.title =
   "nexss (" +
@@ -43,10 +45,9 @@ if (process.argv[2] && process.argv[2].startsWith("--")) {
   const f = process.argv[2].slice(2);
   const functionsFolder = `./lib/core/${f}.js`;
 
-  if (existsSync(`${__dirname}${functionsFolder.slice(1)}`)) {
+  if (fs.existsSync(`${__dirname}${functionsFolder.slice(1)}`)) {
     const functionRun = require(functionsFolder);
     functionRun();
-    process.exitCode = 1;
     return;
   }
 }
@@ -69,8 +70,8 @@ if (!plugin.startsWith(NEXSS_SPECIAL_CHAR) && (!plugin || plugin === "help")) {
 
 // During development you can create package name as plugin which is not allowed.
 if (
-  existsSync(`${NEXSS_SRC_PATH}/nexss-${plugin}/`) &&
-  existsSync(`${NEXSS_PACKAGES_PATH}/${plugin}`)
+  fs.existsSync(`${NEXSS_SRC_PATH}/nexss-${plugin}/`) &&
+  fs.existsSync(`${NEXSS_PACKAGES_PATH}/${plugin}`)
 ) {
   error("NEXSS DEVELOPER WARNING !");
   error(
@@ -90,14 +91,14 @@ if (
 let fileOrFolderExists;
 if (
   plugin.startsWith(NEXSS_SPECIAL_CHAR) ||
-  existsSync(plugin) ||
+  fs.existsSync(plugin) ||
   isURL(plugin)
 ) {
   fileOrFolderExists = plugin;
   process.argv[2] = plugin;
   process.argv[1] = "start";
   plugin = "start";
-} else if (existsSync(`${NEXSS_PACKAGES_PATH}/${plugin}`)) {
+} else if (fs.existsSync(`${NEXSS_PACKAGES_PATH}/${plugin}`)) {
   // cliArgs._[2] = `${NEXSS_PACKAGES_PATH}/${plugin}`;
   fileOrFolderExists = `${NEXSS_PACKAGES_PATH}/${plugin}`;
   process.argv[2] = `${NEXSS_PACKAGES_PATH}/${plugin}`;
@@ -105,7 +106,7 @@ if (
   plugin = "start";
 } else {
   // FIXME: file system issue here ? TO REVIEW
-  if (!existsSync(`${NEXSS_SRC_PATH}/nexss-${plugin}/nexssPlugin.js`)) {
+  if (!fs.existsSync(`${NEXSS_SRC_PATH}/nexss-${plugin}/nexssPlugin.js`)) {
     const { getLangByFilename } = require("./nexss-language/lib/language");
 
     // We check if thiscan be language specified action like
@@ -215,13 +216,12 @@ if (
 
               error(`Use ${bold("compiler, builder, packageManager or pm")}`);
 
-              process.exit();
-              break;
+              return;
           }
 
           let config;
           const configPath = require("os").homedir() + "/.nexss/config.json";
-          if (require("fs").existsSync(configPath)) {
+          if (fs.existsSync(configPath)) {
             config = require(configPath);
           } else {
             config = { languages: {} };
@@ -310,7 +310,7 @@ if (
             ][toSet].install.replace(/install/g, "reset");
           }
 
-          require("fs").writeFileSync(configPath, JSON.stringify(config));
+          fs.writeFileSync(configPath, JSON.stringify(config));
 
           if (languageSelected[whatToSet][toSet]) {
             //Reseting to the version
@@ -335,7 +335,6 @@ if (
           );
 
           process.exit(0);
-          break;
         case "compilers":
           console.log(languageSelected.compilers);
           process.exit(0);
@@ -467,7 +466,7 @@ try {
 let command = cliArgs._[1] || undefined;
 
 let commandAliases = {};
-if (existsSync(`${NEXSS_SRC_PATH}/nexss-${plugin}/aliases.json`)) {
+if (fs.existsSync(`${NEXSS_SRC_PATH}/nexss-${plugin}/aliases.json`)) {
   commandAliases = require(`${NEXSS_SRC_PATH}/nexss-${plugin}/aliases.json`);
   if (commandAliases[command]) {
     command = commandAliases[command];
@@ -478,7 +477,7 @@ if (existsSync(`${NEXSS_SRC_PATH}/nexss-${plugin}/aliases.json`)) {
 if (process.argv[4] === "help") {
   //help for command
   try {
-    const helpContent = require("fs").readFileSync(
+    const helpContent = fs.readFileSync(
       `${NEXSS_SRC_PATH}/nexss-${plugin}/commands/${command}.md`
     );
     console.info(helpContent.toString());
@@ -510,7 +509,6 @@ if (fileOrFolderExists && process.argv[3] === "test") {
   } catch (error) {
     console.log(`Command failed ${testCommand}`);
   }
-
   return;
 }
 
@@ -519,9 +517,8 @@ switch (command) {
     try {
       // Plugin hel
       if (fileOrFolderExists) {
-        const fs = require("fs");
         if (fs.existsSync(`${fileOrFolderExists}/README.md`)) {
-          const helpContent = require("fs").readFileSync(
+          const helpContent = fs.readFileSync(
             `${fileOrFolderExists}/README.md`
           );
           console.info(helpContent.toString());
@@ -536,7 +533,7 @@ switch (command) {
         return;
       }
 
-      const helpContent = require("fs").readFileSync(
+      const helpContent = fs.readFileSync(
         `${NEXSS_SRC_PATH}/nexss-${plugin}/help.md`
       );
       console.info(helpContent.toString());
@@ -556,7 +553,7 @@ switch (command) {
         plugin !== "edit"
       ) {
         if (
-          require("fs").existsSync(
+          fs.existsSync(
             `${NEXSS_SRC_PATH}/nexss-${plugin}/commands/${command}.js`
           )
         ) {
@@ -571,11 +568,13 @@ switch (command) {
       } else {
         //We check if there is command with the same name as plugin to run it
         if (
-          existsSync(`${NEXSS_SRC_PATH}/nexss-${plugin}/commands/${plugin}.js`)
+          fs.existsSync(
+            `${NEXSS_SRC_PATH}/nexss-${plugin}/commands/${plugin}.js`
+          )
         ) {
           require(`./nexss-${plugin}/commands/${plugin}.js`);
         } else {
-          let helpContent = require("fs").readFileSync(
+          let helpContent = fs.readFileSync(
             `${NEXSS_SRC_PATH}/nexss-${plugin}/help.md`
           );
           // console.log(`./nexss-${plugin}/commands/*.md`);
@@ -608,7 +607,7 @@ example to display help 'nexss ${plugin} ${filesList[0]} help'`;
     } catch (err) {
       console.error(err);
       // console.log(process.cwd());
-      const helpContent = require("fs").readFileSync(
+      const helpContent = fs.readFileSync(
         `${NEXSS_SRC_PATH}/nexss-${plugin}/help.md`
       );
       console.info(helpContent.toString());

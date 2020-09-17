@@ -12,12 +12,6 @@ module.exports.writeableStdout = () =>
       try {
         chunk = JSON.parse(chunk);
 
-        // We hide variables started with _
-        // like username, password etc. replaced by ****
-        // Object.keys(chunk).forEach((e) => {
-        //   if (e.length > 1 && e.startsWith("_")) chunk[e] = "*****";
-        // });
-
         delete chunk["nexssScript"];
         if (!chunk.nxsPretty) {
           if (chunk["nxsDataDisplay"]) {
@@ -28,13 +22,33 @@ module.exports.writeableStdout = () =>
             );
             console.error(JSON.stringify(Object.keys(chunk)));
           } else {
-            console.log(
-              typeof chunk === "object" ? JSON.stringify(chunk) : chunk
+            chunk =
+              typeof chunk === "object" || typeof chunk === "number"
+                ? JSON.stringify(chunk)
+                : chunk;
+
+            process.stdout.write(
+              require("json-colorizer")(chunk, {
+                colors: {
+                  STRING_KEY: "green.bold",
+                  STRING_LITERAL: "yellow.bold",
+                  NUMBER_LITERAL: "blue.bold",
+                },
+              })
             );
           }
         } else {
           delete chunk["nxsPretty"];
-          console.log(JSON.stringify(chunk, null, 2));
+          console.log(
+            require("json-colorizer")(chunk, {
+              pretty: true,
+              colors: {
+                STRING_KEY: "green.bold",
+                STRING_LITERAL: "yellow.bold",
+                NUMBER_LITERAL: "blue.bold",
+              },
+            })
+          );
         }
 
         timeElapsed(chunk.nxsTime);
@@ -42,9 +56,12 @@ module.exports.writeableStdout = () =>
         if (process.argv.indexOf("--nxsModule") >= 0) {
           process.stdout.write(JSON.stringify({ nxsOut: chunk }));
         } else {
-          process.stdout.write(
-            typeof chunk === "object" ? JSON.stringify(chunk) : chunk
-          );
+          chunk =
+            typeof chunk === "object" || typeof chunk === "number"
+              ? JSON.stringify(chunk)
+              : chunk;
+
+          process.stdout.write(require("json-colorizer")(chunk));
         }
       }
 

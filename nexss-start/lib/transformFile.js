@@ -15,7 +15,7 @@ const { bold } = require("../../lib/ansi");
 module.exports.transformFile = (file, x, y) => {
   return new Transform({
     //  writableObjectMode: true,
-    async transform(chunk, encoding, callback) {
+    transform(chunk, encoding, callback) {
       process.chdir(y.cwd);
       process.nexssCWD = y.cwd;
       if (!existsSync(file)) {

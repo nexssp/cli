@@ -117,6 +117,16 @@ const getFiles = (folder, args, env, ccc) => {
   }
 
   let folderAbsolute = getPath(getName(folder.name));
+  // Each package can have platform dependent code. For example
+  // IF in the Id package is folder Linux, it will be run instead of main
+  // You can use symlinks to make it more DRY
+  if (folderAbsolute) {
+    const platformDependedPath = path.join(folderAbsolute, process.platform);
+    if (fs.existsSync(platformDependedPath)) {
+      folderAbsolute = platformDependedPath;
+    }
+  }
+
   if (!folderAbsolute && folder.name !== NEXSS_SPECIAL_CHAR) {
     if (!folder.filename) {
       // TODO: Maybe later to add here extra/special functions like:

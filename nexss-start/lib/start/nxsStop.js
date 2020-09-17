@@ -7,8 +7,9 @@ module.exports = (data) => {
       console.log(
         `Nexss Programmer execution stopped by command ${bold(
           "nxsStop"
-        )}. \n  Reason: ${bold(red(data.nxsStopReason))}`
+        )}. \n  Reason: ${bold(red(JSON.stringify(data.nxsStopReason)))}`
       );
+
       r = 1;
     }
 

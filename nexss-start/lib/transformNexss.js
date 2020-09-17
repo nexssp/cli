@@ -37,10 +37,8 @@ module.exports.transformNexss = (
     env,
   } = defaultExecuteOptions
 ) => {
-  // console.error("TRANSFORM NEXSSS!!!!!", fileName);
-
   return new Transform({
-    async transform(chunk, encoding, callback) {
+    transform(chunk, encoding, callback) {
       let startStreamTime;
       if (process.argv.includes("--nxsTime")) {
         startStreamTime = process.hrtime();
@@ -49,11 +47,6 @@ module.exports.transformNexss = (
       const self = this;
       if (encoding === "buffer") {
         chunk = chunk.toString();
-      }
-
-      if (chunk === "\u0003") {
-        // process.exit();
-        throw "User exited CTRL+C.";
       }
 
       let options = Object.assign({});
@@ -72,7 +65,6 @@ module.exports.transformNexss = (
         options.shell = "/bin/bash";
       }
 
-      options.maxBuffer = 10485760; // 10 * 1024 * 1024;
       options.cwd = cwd;
       options.env = "SEE: process.env";
 
@@ -92,16 +84,12 @@ module.exports.transformNexss = (
       options.env = env;
       // args = args.filter(e => e !== "--test");
 
-      // console.log(args);
       process.nexssCWD = cwd;
 
       args2 = args.remove("--nocache");
       args2 = args2.remove("--nxsPipeErrors");
       args2 = args2.remove("--nxsTest");
-      // const argsStrings = args.map((a) =>
-      //   a.indexOf(" ") > -1 ? `${a.replace("=", '="')}"` : a
-      // );
-      // Later batter code below
+
       let argsStrings;
       if (process.platform === "win32") {
         argsStrings = args2.map((a) =>
@@ -122,26 +110,8 @@ module.exports.transformNexss = (
         startCompilerTime = process.hrtime();
       }
 
-      this.worker = await spawn(cmd, argsStrings, options);
+      this.worker = spawn(cmd, argsStrings, options);
       this.worker.cmd = nexssCommand;
-      // let proc = new Proc(this.worker.pid, {
-      //   filePath: path.resolve(fileName) /*required*/,
-      //   exePath: process.nexssGlobalCWD /* command executed from here */,
-      //   command: process.argv.slice(2).join(" "),
-      // });
-      // try {
-      //   proc.write();
-      // } catch (error) {
-      //   console.error(
-      //     "Command " +
-      //       bold(yellow(this.worker.cmd.trim())) +
-      //       red(
-      //         " failed.\n(process information saving error. Check if the systax is correct.)"
-      //       )
-      //   );
-      //   process.exit(1);
-      // }
-
       this.worker.on("error", (err) => {
         // throw Error(err);
         switch (err.code) {
@@ -154,9 +124,6 @@ module.exports.transformNexss = (
 
       this.worker.stderr.on("data", function (err) {
         const errorString = err.toString();
-
-        // console.error("ERRSTRING: " + err.toString());
-
         if (errorString.includes("NEXSS/")) {
           const exploded = errorString.split("NEXSS");
           exploded.forEach((element) => {
@@ -201,8 +168,10 @@ module.exports.transformNexss = (
       this.worker.stdout.on("data", function (data) {
         // TODO: Check if trim is ok here
         timeElapsed(startCompilerTime, `Response from ${bold(nexssCommand)}`);
+
         if (cmd === "bash") {
-          self.push(data.toString().trim().replace(/\n/g, "\n\r"));
+          // self.push(data.toString().trim().replace(/\n/g, "\n\r"));
+          self.push(data);
           return;
         }
 
@@ -246,11 +215,12 @@ module.exports.transformNexss = (
           !process.argv.includes("--nxsPipeErrors")
         ) {
           // console.log("There was an error during run..", this.worker.cmd);
-          process.exitCode = 1;
+          return;
         } else {
           callback();
         }
       });
+
       try {
         // console.error(chunk);
         j = JSON.parse(chunk.toString());
@@ -267,7 +237,6 @@ module.exports.transformNexss = (
 
       nxsDebugTitle("Executed: " + this.worker.cmd, j, "yellow");
 
-      //Below maybe is in wrong placa but AutoIt doesn't work if is not here!
       if (this.worker.stdin) this.worker.stdin.end();
 
       dbg("waiting for ", this.worker.cmd);
