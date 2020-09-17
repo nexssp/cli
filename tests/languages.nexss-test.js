@@ -27,12 +27,13 @@ module.exports = {
       ? [
           // NOT IMPLEMENTED
           ".swift", // is not implemented on windows yet
+          ".pd", // This language might be removed..
           // OTHER ISSUES
           // ".html",
-          ".pd", // This language might be removed..
-          ".exs",
-          ".ex",
-          ".erl", // Compiler needs to be installed during adding a file (compile of lib is needed)
+
+          ".exs", // Something wrong during mix..
+          ".ex", // Something wrong during mix..
+          ".erl", // not finished..
           ".hs", // TO IMPLEMENT default, helloWorld
           ".f90", // TO IMPLEMENT default, helloWorld
           ".v", // TO IMPLEMENT default, helloWorld
