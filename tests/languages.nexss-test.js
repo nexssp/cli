@@ -60,6 +60,9 @@ module.exports = {
           // NOT AVAILABLE ON LINUX/MAC
 
           // Other issues
+          ".exs", // Something wrong during mix..
+          ".ex", // Something wrong during mix..
+          ".erl",
           ".jl", // issues with the permissions etc. look later
           ".cs", //Sometimes shows dotnet-script not found
           ".hs", // TO implement

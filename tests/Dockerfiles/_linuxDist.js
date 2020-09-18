@@ -1,6 +1,6 @@
 // Testing Nexss Programmer in different Linux distributions
 const { error, ok } = require("../../lib/log");
-const { bold, yellow } = require("../../lib/ansi");
+const { bold, yellow } = require("@nexssp/ansi");
 const execSync = require("child_process").execSync;
 const buildNocache = "--no-cache";
 const path = require("path");
@@ -25,16 +25,20 @@ Nexss Programmer uses docker to test it for different OS distributions.
 If the test is not starting quickly, means that your docker-machine is not working or 
 your environment is not setup properly
 Troubleshooting: 
-1st Check if the docker machine is running
-    docker-machine start
+${bold("1st")} Check if the docker machine is running and check ip
+    docker-machine start && docker-machine ip
 
-2nd Setup environment, run below command for your shell
+${bold("2nd")} Setup environment, run below command for your shell 
+WSL:
+    eval $(docker-machine.exe env docker-host --shell wsl ) && export DOCKER_CERT_PATH=$(wslpath $DOCKER_CERT_PATH)
 Powershell:
     docker-machine.exe env --shell powershell default | Invoke-Expression
 Cmd
     $(docker-machine env default) | Invoke-Expression
 Bash etc.
     $(docker-machine env default) | bash
+${bold("3rd")}
+To connect to diferrent machine use: docker -H <host:port>
 `);
 
 // Checks if docker image exists.
