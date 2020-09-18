@@ -1,7 +1,7 @@
 const { Transform } = require("stream");
 const cliArgs = require("minimist")(process.argv);
 const { error, warn, ok, isErrorPiped } = require("../../lib/log");
-const { bold, red } = require("../../lib/ansi");
+const { bold, red } = require("@nexssp/ansi");
 const nxsInModule = require("./input/nxsIn");
 const { nxsDebugData } = require("./output/nxsDebug");
 require("../../lib/strings"); //we load string interpolate

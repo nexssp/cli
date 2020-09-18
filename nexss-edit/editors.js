@@ -1,5 +1,5 @@
 module.exports = {
-  notepadplusplus: {
+  atom: {
     install: "scoop install atom",
     listExtensions: "",
     installExtension: "",
@@ -10,7 +10,7 @@ module.exports = {
     website: "https://atom.io/",
     license: "MIT (https://spdx.org/licenses/MIT.html)",
   },
-  atom: {
+  notepadplusplus: {
     install: "scoop install notepadplusplus",
     listExtensions: "",
     installExtension: "",

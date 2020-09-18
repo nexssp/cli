@@ -12,7 +12,7 @@ const { transformHash } = require("./transformHash");
 const { transformRequest } = require("./transformRequest");
 const { readable } = require("./readable");
 const { cleanup } = require("./output/nxsOutputParams");
-const { blue, bold } = require("../../lib/ansi");
+const { blue, bold } = require("@nexssp/ansi");
 const util = require("util");
 const pipelineAsync = util.promisify(pipeline);
 

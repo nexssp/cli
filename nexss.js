@@ -5,6 +5,7 @@
  * Author: Marcin Polak / nexss.com
  * 2018/10/01 initial version
  */
+
 require("./config/globals");
 const cp = require("child_process");
 const fs = require("fs");
@@ -24,7 +25,7 @@ if (!fs.existsSync(`${__dirname}/node_modules`)) {
   }
 }
 
-const { bold, yellow, blue } = require("./lib/ansi");
+const { bold, yellow, blue } = require("@nexssp/ansi");
 
 const { error, info, ok, warn } = require("./lib/log");
 const { NEXSS_SRC_PATH, NEXSS_PACKAGES_PATH } = require("./config/config");

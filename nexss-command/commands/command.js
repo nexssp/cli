@@ -1,7 +1,7 @@
 const { NEXSS_PROJECT_CONFIG_PATH } = require("../../config/config");
 const { loadConfigContent } = require("../../lib/config");
 let configContent = loadConfigContent(NEXSS_PROJECT_CONFIG_PATH);
-const { bold } = require("../../lib/ansi");
+const { bold } = require("@nexssp/ansi");
 
 const { spawn } = require("child_process");
 const { listCommands } = require("../lib/commands");

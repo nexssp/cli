@@ -10,7 +10,7 @@ const { createReadStream, existsSync } = require("fs");
 const { extname } = require("path");
 const { nxsDebugTitle } = require("./output/nxsDebug");
 const { timeElapsed } = require("../../nexss-start/lib/output/nxsTime");
-const { bold } = require("../../lib/ansi");
+const { bold } = require("@nexssp/ansi");
 
 module.exports.transformFile = (file, x, y) => {
   return new Transform({

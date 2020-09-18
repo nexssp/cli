@@ -6,7 +6,7 @@ const { NEXSS_PROJECT_CONFIG_PATH } = require("../../config/config");
 const nexssConfig = loadConfigContent(NEXSS_PROJECT_CONFIG_PATH);
 
 const { warn, info } = require("../../lib/log");
-const { bold, green, yellow, grey } = require("../../lib/ansi");
+const { bold, green, yellow, grey } = require("@nexssp/ansi");
 const cliArgs = require("minimist")(process.argv.slice(4));
 
 if (nexssConfig) {

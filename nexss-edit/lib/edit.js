@@ -1,6 +1,6 @@
 module.exports.edit = (filename) => {
   const { error } = require("../../lib/log");
-  const { bold } = require("../../lib/ansi");
+  const { bold } = require("@nexssp/ansi");
   const extension = require("path").extname(filename);
   const { getLangByFilename } = require("../../nexss-language/lib/language");
   const languageSelected = getLangByFilename(`example.${extension}`, true);

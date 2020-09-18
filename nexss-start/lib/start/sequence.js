@@ -1,7 +1,7 @@
 // SEQUENCES
 // more: https://github.com/nexssp/cli/wiki/Sequences
 const { error } = require("../../../lib/log");
-const { bold } = require("../../../lib/ansi");
+const { bold } = require("@nexssp/ansi");
 const getSequence = (seqName, nexssConfig, passedData) => {
   if (!seqName) {
     return (

@@ -8,7 +8,7 @@ const {
 } = require("../../config/config");
 const { join, extname, resolve } = require("path");
 const { warn, di, success } = require("../../lib/log");
-const { bold, yellow } = require("../../lib/ansi");
+const { bold, yellow } = require("@nexssp/ansi");
 const cache = require("../../lib/cache");
 const { lang } = require("moment");
 

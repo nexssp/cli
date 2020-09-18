@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const copydir = require("copy-dir");
 const { warn, info, hr, header } = require("../../lib/log");
-const { bold, red, yellow, green } = require("../../lib/ansi");
+const { bold, red, yellow, green } = require("@nexssp/ansi");
 const exists = fs.existsSync;
 
 const {

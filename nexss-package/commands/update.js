@@ -3,7 +3,7 @@ const fs = require("fs");
 const { NEXSS_PACKAGES_PATH } = require("../../config/config");
 const packagesPath = `${NEXSS_PACKAGES_PATH}`;
 const cliArgs = require("minimist")(process.argv);
-const { bold, green } = require("../../lib/ansi");
+const { bold, green } = require("@nexssp/ansi");
 if (!fs.existsSync(packagesPath)) {
   console.log(
     `Packages path ${bold(packagesPath)} does not exist. Installing..`

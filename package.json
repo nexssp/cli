@@ -2,11 +2,11 @@
   "name": "@nexssp/cli",
   "author": "Marcin Polak mapoart@gmail.com",
   "homepage": "https://nexss.com",
-  "version": "2.1.26",
+  "version": "2.1.27",
   "description": "Nexss PROGRAMMER",
   "main": "nexss.js",
   "scripts": {
-    "test": "",
+    "test": "jest --env=node --verbose ./tests/Jest/",
     "prepare": "npm test",
     "postinstall": "",
     "postuninstall": ""
@@ -23,6 +23,7 @@
     "url": "git+ssh://git@github.com/nexssp/cli.git"
   },
   "keywords": [
+    "development",
     "programming",
     "innovation",
     "nexss"
@@ -32,6 +33,8 @@
     "url": "https://github.com/nexssp/cli/issues"
   },
   "dependencies": {
+    "@nexssp/os": "^0.1.0",
+    "@nexssp/ansi": "^1.0.3",
     "axios": "^0.20.0",
     "cli-table3": "^0.5.1",
     "copy-dir": "^1.3.0",
@@ -52,6 +55,7 @@
     "string-argv": "^0.3.1"
   },
   "devDependencies": {
+    "jest": "^26.4.2",
     "sharp": "^0.25.4"
   }
 }

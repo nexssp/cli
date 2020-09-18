@@ -1,7 +1,7 @@
 const { nohup } = require("./nohup");
 const { ensureInstalled, which } = require("./terminal");
 const { warn, error, success, di } = require("./log");
-const { bold } = require("./ansi");
+const { bold } = require("@nexssp/ansi");
 
 module.exports.checkRedis = (comm) => {
   di("Checking communication channels / Redis");

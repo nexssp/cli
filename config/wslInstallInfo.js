@@ -1,4 +1,4 @@
-const { bold } = require("../lib/ansi");
+const { bold } = require("@nexssp/ansi");
 module.exports = () => {
   console.log(`${bold("wsl")} command has not been found.`);
   console.log(

@@ -15,7 +15,7 @@ module.exports.readable = (startData) => {
   });
   s._read = () => {};
   const nexssVersion = require("../../package.json").version;
-  startData.nexss = `FREE/OPENSOURCE ${nexssVersion}`;
+  startData.nexss = `${nexssVersion}`;
   startData.start = +new Date();
   startData.cwd = process.nexssGlobalCWD;
 

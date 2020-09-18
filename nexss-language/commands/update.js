@@ -2,7 +2,7 @@ const fs = require("fs");
 // const dirTree = require("directory-tree");
 const { NEXSS_LANGUAGES_PATH } = require("../../config/config");
 const { success, warn, error } = require("../../lib/log");
-const { yellow, bold } = require("../../lib/ansi");
+const { yellow, bold } = require("@nexssp/ansi");
 const cliArgs = require("minimist")(process.argv);
 
 const fg = require("fast-glob");

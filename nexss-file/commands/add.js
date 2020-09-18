@@ -8,7 +8,7 @@ const {
 } = require("path");
 const cliArgs = require("minimist")(process.argv.slice(3));
 const { searchData } = require("../../lib/search");
-const { yellow, bold } = require("../../lib/ansi");
+const { yellow, bold } = require("@nexssp/ansi");
 const { error, ok, success, info } = require("../../lib/log");
 const {
   NEXSS_PROJECT_SRC_PATH,

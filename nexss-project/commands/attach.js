@@ -1,5 +1,5 @@
 const { warn, info } = require("../../lib/log");
-const { bold, green } = require("../../lib/ansi");
+const { bold, green } = require("@nexssp/ansi");
 const { existsSync, writeFileSync } = require("fs");
 const path = require("path");
 const inquirer = require("inquirer");

@@ -1,5 +1,5 @@
 const find = require("find-process");
-const { green, bold, yellow } = require("../../lib/ansi");
+const { green, bold, yellow } = require("@nexssp/ansi");
 const { error } = require("../../lib/log");
 let whatToFind = process.argv[4];
 

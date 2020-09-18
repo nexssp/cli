@@ -1,6 +1,6 @@
 //removes project from the list
 const { error, success } = require("../../lib/log");
-const { bold } = require("../../lib/ansi");
+const { bold } = require("@nexssp/ansi");
 const fs = require("fs");
 const {
   NEXSS_PROJECTS_DB,

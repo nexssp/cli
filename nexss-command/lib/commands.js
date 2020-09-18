@@ -1,7 +1,7 @@
 const { NEXSS_PROJECT_CONFIG_PATH } = require("../../config/config");
 const { loadConfigContent } = require("../../lib/config");
 let configContent = loadConfigContent(NEXSS_PROJECT_CONFIG_PATH);
-const { red, yellow, bold, green } = require("../../lib/ansi");
+const { red, yellow, bold, green } = require("@nexssp/ansi");
 
 function listCommands() {
   const commands = configContent.commands;

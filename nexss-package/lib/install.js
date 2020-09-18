@@ -1,4 +1,4 @@
-const { bold, green } = require("../../lib/ansi");
+const { bold, green } = require("@nexssp/ansi");
 
 module.exports.installPackages = (destinationFolder) => {
   // We make sure git is installed.

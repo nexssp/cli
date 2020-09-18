@@ -1,6 +1,6 @@
 const parserSyntax = require("./parserSyntax");
 const { error } = require("../../lib/log");
-const { red, bold, blue, yellow } = require("../../lib/ansi");
+const { red, bold, blue, yellow } = require("@nexssp/ansi");
 
 const expressionParser2 = (data) => {
   if (!data) return data;

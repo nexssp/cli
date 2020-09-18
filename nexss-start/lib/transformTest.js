@@ -1,5 +1,5 @@
 const { Transform } = require("stream");
-const { red, bold } = require("../../lib/ansi");
+const { red, bold } = require("@nexssp/ansi");
 const { warn, ok, error } = require("../../lib/log");
 const cliArgs = require("minimist")(process.argv);
 const { inspect } = require("util");

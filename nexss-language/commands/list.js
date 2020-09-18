@@ -6,7 +6,7 @@
  * 2019/08/12 modified for version 2.
  */
 
-const { bold, yellow, green } = require("../../lib/ansi");
+const { bold, yellow, green } = require("@nexssp/ansi");
 const { info } = require("../../lib/log");
 
 const languages = require("../lib/language");

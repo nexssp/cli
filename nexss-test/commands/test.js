@@ -8,7 +8,7 @@ const {
   grey,
   blue,
   magenta,
-} = require("../../lib/ansi");
+} = require("@nexssp/ansi");
 const { error, warn, ok } = require("../../lib/log");
 const fs = require("fs");
 const path = require("path");

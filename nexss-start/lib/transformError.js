@@ -1,5 +1,5 @@
 const { Transform } = require("stream");
-const { yellow } = require("../../lib/ansi");
+const { yellow } = require("@nexssp/ansi");
 const { di } = require("../../lib/log");
 const { inspect } = require("util");
 module.exports.transformError = (

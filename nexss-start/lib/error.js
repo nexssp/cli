@@ -1,5 +1,5 @@
 const { error, isErrorPiped } = require("../../lib/log");
-const { bold, yellow } = require("../../lib/ansi");
+const { bold, yellow } = require("@nexssp/ansi");
 const { getLangByFilename } = require("../../nexss-language/lib/language");
 const { isAbsolute, dirname } = require("path");
 const { existsSync } = require("fs");

@@ -8,7 +8,7 @@
 
 const imageWith = 100;
 
-const { bold, yellow, green } = require("../../lib/ansi");
+const { bold, yellow, green } = require("@nexssp/ansi");
 const { info } = require("../../lib/log");
 const { dirname, join, extname } = require("path");
 const {

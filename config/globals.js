@@ -1,4 +1,4 @@
-Object.assign(global, require("../lib/ansi"));
+Object.assign(global, require("@nexssp/ansi"));
 
 const dev_colors = require("../lib/core/dev-colors");
 

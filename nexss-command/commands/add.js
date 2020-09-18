@@ -7,7 +7,7 @@ let configContent = loadConfigContent(NEXSS_PROJECT_CONFIG_PATH);
 const commandName = process.argv[4];
 const commandToAdd = process.argv.slice(5).join(" ");
 
-const { green } = require("../../lib/ansi");
+const { green } = require("@nexssp/ansi");
 
 if (!process.argv[4]) {
   error("Please enter command name.");
