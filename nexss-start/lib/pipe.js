@@ -84,7 +84,7 @@ async function run(operations, options = {}) {
     })
   )
     .then((e) => {
-      console.log("\n");
+      // console.log("\n");
     })
     .catch((err) => {
       // This is handled by nexss transform as all errors are parsed
