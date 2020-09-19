@@ -33,7 +33,6 @@
     "url": "https://github.com/nexssp/cli/issues"
   },
   "dependencies": {
-    "@nexssp/os": "^0.1.0",
     "@nexssp/ansi": "^1.0.3",
     "axios": "^0.20.0",
     "cli-table3": "^0.5.1",
