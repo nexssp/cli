@@ -1,10 +1,6 @@
 // Main Globals
 
 const PROCESS_CWD = process.cwd();
-// Adding colors etc
-Object.assign(global, require("@nexssp/ansi"));
-// Log functions
-
 const dev_colors = require("../lib/core/dev-colors");
 const fs = require("fs");
 const functions = {

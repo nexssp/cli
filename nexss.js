@@ -25,6 +25,7 @@ if (!fs.existsSync(`${__dirname}/node_modules`)) {
   }
 }
 
+Object.assign(global, require("@nexssp/ansi"));
 const log = require("@nexssp/logdebug");
 log.db("Starting Nexss Programmer..");
 
