@@ -9,7 +9,7 @@
 if (!require("fs").existsSync(`${__dirname}/node_modules`)) {
   const command = `npm install --production`;
   try {
-    cp.execSync(command, {
+    require("child_process").execSync(command, {
       stdio: "inherit",
       detached: false,
       shell: process.platform === "win32" ? true : "/bin/bash",
