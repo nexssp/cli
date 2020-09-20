@@ -29,15 +29,18 @@ module.exports.writeableStdout = () =>
                 : chunk;
 
             if (isJson(chunk)) {
-              process.stdout.write(
-                require("json-colorizer")(chunk, {
-                  colors: {
-                    STRING_KEY: "green.bold",
-                    STRING_LITERAL: "yellow.bold",
-                    NUMBER_LITERAL: "blue.bold",
-                  },
-                })
-              );
+              const coloredJson = require("json-colorizer")(chunk, {
+                colors: {
+                  STRING_KEY: "green.bold",
+                  STRING_LITERAL: "yellow.bold",
+                  NUMBER_LITERAL: "blue.bold",
+                },
+              });
+              if (process.platform === "win32") {
+                process.stdout.write(coloredJson);
+              } else {
+                console.log(coloredJson);
+              }
             } else {
               process.stdout.write(chunk);
             }
