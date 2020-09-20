@@ -8,9 +8,6 @@
 
 require("./config/globals");
 
-const log = require("@nexssp/logdebug");
-log.db("Starting Nexss Programmer..");
-
 const cliArgs = require("minimist")(process.argv.slice(2));
 // Let's install it if is not yet
 if (!fs.existsSync(`${__dirname}/node_modules`)) {
@@ -27,6 +24,9 @@ if (!fs.existsSync(`${__dirname}/node_modules`)) {
     console.log(`Command failed ${command}`);
   }
 }
+
+const log = require("@nexssp/logdebug");
+log.db("Starting Nexss Programmer..");
 
 const { bold, yellow, blue } = require("@nexssp/ansi");
 

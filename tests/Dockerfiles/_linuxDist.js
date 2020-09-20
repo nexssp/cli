@@ -94,10 +94,10 @@ function pathToDocker(p) {
 const pathNexssCli = pathToDocker(path.resolve(process.cwd(), "../../"));
 const pathDotNexss = pathToDocker(path.join(require("os").homedir(), ".nexss"));
 // const command = `docker run -d -t ${imageName} bash -c "npm i @nexssp/cli -g && nexss && nexss test all --onlyErrors && /bin/bash`;
-const command = `docker run -i -d -v ${pathNexssCli}:/nexssCli -v ${pathDotNexss}:/root/.nexss -v /root/.nexss/cache -e DEBIAN_FRONTEND=noninteractive -t ${imageName} /bin/bash -c "cd nexssCli && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && mkdir /work && cd /work && /bin/bash" `;
+// const command = `docker run -i -d -v ${pathNexssCli}:/nexssCli -v ${pathDotNexss}:/root/.nexss -v /root/.nexss/cache -e DEBIAN_FRONTEND=noninteractive -t ${imageName} /bin/bash -c "cd nexssCli && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && mkdir /work && cd /work && /bin/bash" `;
 // const command = `docker run -d -it ${imageName} bash -c "npm i @nexssp/cli -g && nexss && /bin/bash`;
 // const command = `docker run -d -t ${imageName} bin/sh -c "git clone --depth=1 https://github.com/nexssp/cli.git && cd cli && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && nexss && nexss test errors"`;
-// const command = `docker run -d -it ${imageName} bin/sh`;
+const command = `docker run -d -it ${imageName} bin/sh`;
 try {
   var res = execSync(
     // You can build packages inside the container, for dev whatever is needed.
