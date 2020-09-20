@@ -1,6 +1,6 @@
 const fs = require("fs");
 // We make sure application is installed.
-if (!fs.existsSync(`${__dirname}/node_modules`)) {
+if (!fs.existsSync(`${__dirname}/../node_modules`)) {
   const command = `npm install --production`;
   try {
     cp.execSync(command, {
