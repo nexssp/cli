@@ -9,21 +9,6 @@
 require("./config/globals");
 
 const cliArgs = require("minimist")(process.argv.slice(2));
-// Let's install it if is not yet
-if (!fs.existsSync(`${__dirname}/node_modules`)) {
-  log.dy("node_modules folder seems to be not there. Installing..");
-  const command = `npm install --production`;
-  try {
-    cp.execSync(command, {
-      stdio: "inherit",
-      detached: false,
-      shell: process.platform === "win32" ? true : "/bin/bash",
-      cwd: __dirname,
-    });
-  } catch (error) {
-    console.log(`Command failed ${command}`);
-  }
-}
 
 Object.assign(global, require("@nexssp/ansi"));
 const log = require("@nexssp/logdebug");

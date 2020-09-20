@@ -1,8 +1,22 @@
-// Main Globals
+const fs = require("fs");
+// We make sure application is installed.
+if (!fs.existsSync(`${__dirname}/node_modules`)) {
+  const command = `npm install --production`;
+  try {
+    cp.execSync(command, {
+      stdio: "inherit",
+      detached: false,
+      shell: process.platform === "win32" ? true : "/bin/bash",
+      cwd: __dirname,
+    });
+  } catch (error) {
+    console.log(`Command failed ${command}`);
+  }
+}
 
 const PROCESS_CWD = process.cwd();
 const dev_colors = require("../lib/core/dev-colors");
-const fs = require("fs");
+
 const functions = {
   fs, // https://nodejs.org/api/fs.html
   path: require("path"), // https://nodejs.org/api/path.html
