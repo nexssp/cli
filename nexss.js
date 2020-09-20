@@ -5,6 +5,20 @@
  * Author: Marcin Polak / nexss.com
  * 2018/10/01 initial version
  */
+// We make sure application is installed
+if (!fs.existsSync(`${__dirname}/node_modules`)) {
+  const command = `npm install --production`;
+  try {
+    cp.execSync(command, {
+      stdio: "inherit",
+      detached: false,
+      shell: process.platform === "win32" ? true : "/bin/bash",
+      cwd: __dirname,
+    });
+  } catch (error) {
+    console.log(`Command failed ${command}`);
+  }
+}
 
 require("./config/globals");
 
