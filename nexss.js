@@ -7,11 +7,14 @@
  */
 
 require("./config/globals");
-const cp = require("child_process");
-const fs = require("fs");
+
+const log = require("@nexssp/logdebug");
+log.db("Starting Nexss Programmer..");
+
 const cliArgs = require("minimist")(process.argv.slice(2));
 // Let's install it if is not yet
 if (!fs.existsSync(`${__dirname}/node_modules`)) {
+  log.dy("node_modules folder seems to be not there. Installing..");
   const command = `npm install --production`;
   try {
     cp.execSync(command, {
@@ -27,7 +30,9 @@ if (!fs.existsSync(`${__dirname}/node_modules`)) {
 
 const { bold, yellow, blue } = require("@nexssp/ansi");
 
-const { error, info, ok, warn } = require("./lib/log");
+const { error, info, ok, warn, dy } = require("@nexssp/logdebug");
+// TODO: change error, info, ok, warn by log.error, log.info, log.ok, log.warn
+
 const { NEXSS_SRC_PATH, NEXSS_PACKAGES_PATH } = require("./config/config");
 const { NEXSS_SPECIAL_CHAR } = require("./config/defaults");
 const { isURL } = require("./lib/data/url");
@@ -41,11 +46,14 @@ process.title =
   ") " +
   process.argv.slice(2).join(" ") +
   "";
+
+log.d("Set the process title: ", process.title);
+
 // Core functions like version, update. All are located ./lib/core
 if (process.argv[2] && process.argv[2].startsWith("--")) {
   const f = process.argv[2].slice(2);
   const functionsFolder = `./lib/core/${f}.js`;
-
+  log.db(`Loading core --${f} function`);
   if (fs.existsSync(`${__dirname}${functionsFolder.slice(1)}`)) {
     const functionRun = require(functionsFolder);
     functionRun();

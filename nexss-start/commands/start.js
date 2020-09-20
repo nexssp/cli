@@ -1,24 +1,13 @@
-const PROCESS_CWD = process.cwd();
 const { NEXSS_SPECIAL_CHAR } = require("../../config/defaults");
-const path = require("path");
-const { error, warn, di, dg, dbg } = require("../../lib/log");
+const { error, warn, di, dg, dbg } = require("@nexssp/logdebug");
 // const dotenv = require("dotenv");
 const { inspect } = require("util"),
-  fs = require("fs"),
   url = require("url"),
   { yellow } = require("@nexssp/ansi"),
   { startServer } = require("../../lib/server");
 const { ensureInstalled, pathWinToLinux } = require("../../lib/terminal");
 const { isURL } = require("../../lib/data/url");
 const { getFiles } = require("../lib/start/files");
-
-const globalConfigPath = require("os").homedir() + "/.nexss/config.json";
-
-if (fs.existsSync(globalConfigPath)) {
-  process.nexssGlobalConfig = require(globalConfigPath);
-} else {
-  process.nexssGlobalConfig = { languages: {} };
-}
 
 // nexss s OR nexss start is ommiting
 let paramNumber = 2;
@@ -164,16 +153,9 @@ if (cliArgs.server) {
           stream: "transformInput",
           cmd: "in",
         };
-        // if (file.args && file.args.nxsInFrom) {
-        //   transformInParams.inputData = {};
-        //   transformInParams.inputData.nxsInFrom = file.args.nxsInFrom;
-        //   delete file.args.nxsInFrom;
-        // }
 
         if (file.args) {
           transformInParams.inputData = file.args;
-          // transformInParams.inputData.nxsInFrom = file.args.nxsInFrom;
-          // delete file.args.nxsInFrom;
         }
 
         if (file.data) {
@@ -189,11 +171,9 @@ if (cliArgs.server) {
       if (parsed.hash) {
         const fileArgsHash = file.args;
         delete file.args;
-        // console.log(fileArgsHash);
         nexssResult.push({
           stream: "transformHash",
           cmd: file,
-          // inputData: fileArgsHash,
         });
       } else {
         if (parsed.href) {
