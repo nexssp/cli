@@ -6,7 +6,7 @@
  * 2018/10/01 initial version
  */
 // We make sure application is installed
-if (!fs.existsSync(`${__dirname}/node_modules`)) {
+if (!require("fs").existsSync(`${__dirname}/node_modules`)) {
   const command = `npm install --production`;
   try {
     cp.execSync(command, {
