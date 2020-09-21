@@ -9,7 +9,10 @@ module.exports.writeableStdout = () =>
       if (encoding === "buffer") {
         chunk = chunk.toString();
       }
-
+      require("fs").appendFileSync(
+        path.join(__dirname, "../../logs/", "stdin.log"),
+        +new Date() + " WRITE: " + JSON.stringify(chunk, null, 2) + "\n"
+      );
       try {
         chunk = JSON.parse(chunk);
 

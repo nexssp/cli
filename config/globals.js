@@ -1,3 +1,4 @@
+Object.assign(global, require("@nexssp/ansi"));
 const fs = require("fs");
 // We make sure application is installed.
 const PROCESS_CWD = process.cwd();

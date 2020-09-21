@@ -64,6 +64,11 @@ module.exports.readable = (startData) => {
       stdinRead = require("./stdin")["linux"]().trim();
       break;
   }
+  // LOG stdin read
+  // require("fs").appendFileSync(
+  //   path.join(__dirname, "../../logs/", "stdin.log"),
+  //   +new Date() + " READ: " + JSON.stringify(stdinRead, null, 2) + "\n"
+  // );
 
   let dataStdin = {};
   if (stdinRead) {
