@@ -2,7 +2,7 @@
   "name": "@nexssp/cli",
   "author": "Marcin Polak mapoart@gmail.com",
   "homepage": "https://nexss.com",
-  "version": "2.1.32",
+  "version": "2.1.33",
   "description": "Nexss PROGRAMMER",
   "main": "nexss.js",
   "bin": {
