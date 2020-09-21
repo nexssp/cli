@@ -1,4 +1,4 @@
-const { bold, green } = require("@nexssp/ansi");
+const { bold, green, yellow } = require("@nexssp/ansi");
 
 module.exports.installPackages = (destinationFolder) => {
   // We make sure git is installed.
@@ -15,7 +15,9 @@ module.exports.installPackages = (destinationFolder) => {
     // console.log(repos);
     for (var key in repos) {
       const command = `git clone --depth=1 --recurse-submodules ${repos[key]} ${destinationFolder}/${key}`;
-      console.log(bold(green(`Installing Nexss Programmer package ${key}..`)));
+      console.log(
+        bold(green(`Installing Nexss Programmer package ${yellow(key)}..`))
+      );
       require("child_process").execSync(command, {
         stdio: "inherit",
         shell: process.platform === "win32" ? true : "/bin/bash",
