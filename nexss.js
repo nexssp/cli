@@ -6,6 +6,7 @@
  * 2018/10/01 initial version
  */
 // We make sure application is installed
+const cp = require("child_process");
 if (!require("fs").existsSync(`${__dirname}/node_modules`)) {
   const command = `npm install --production`;
   try {
@@ -172,7 +173,7 @@ if (
           );
         }
         // try {
-        //   cp.execSync(command, {
+        //   cp.execSync( d, {
         //     stdio: "inherit",
         //     detached: false,
         //     shell: process.platform === "win32" ? true : "/bin/bash",
