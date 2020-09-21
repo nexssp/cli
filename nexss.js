@@ -413,7 +413,7 @@ if (
           const pmArguments = process.argv.slice(4);
           const command = `${action} ${pmArguments.join(" ")}`;
 
-          info(`Execute: ${bold(command)}, cwd: ${process.cwd()}`);
+          log.info(`Execute: ${bold(command)}, cwd: ${process.cwd()}`);
 
           try {
             cp.execSync(command, {
@@ -428,7 +428,7 @@ if (
         }
       }
     } else {
-      info(`No actions for '${plugin}'`);
+      log.info(`No actions for '${plugin}'`);
     }
   } else {
     // File not found OR no actions can be performed
