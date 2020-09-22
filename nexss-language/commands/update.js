@@ -4,6 +4,7 @@ const { NEXSS_LANGUAGES_PATH } = require("../../config/config");
 const { success, warn, error } = require("../../lib/log");
 const { yellow, bold } = require("@nexssp/ansi");
 const cliArgs = require("minimist")(process.argv);
+const { ensureInstalled } = require("../../lib/terminal");
 
 const fg = require("fast-glob");
 
@@ -11,6 +12,12 @@ const cache = require("../../lib/cache");
 cache.clean("nexss_core_getLanguages_*");
 
 process.chdir(NEXSS_LANGUAGES_PATH);
+
+const config = require(`../../nexss-language/languages/config.${process.platform}`);
+const osPM = config.osPackageManagers[Object.keys(config.osPackageManagers)[0]];
+
+ensureInstalled("git", `${osPM.installCommand} git`);
+const spawnOptions = require("../../config/spawnOptions");
 
 const languages = fs.readdirSync(".");
 languages.forEach((langDir) => {
@@ -22,12 +29,24 @@ languages.forEach((langDir) => {
         cwd: langDir,
         stdio: "inherit",
       });
+      const packageJson = require("path").join(langDir, "package.json");
+      if (fs.existsSync(packageJson)) {
+        require("child_process").execSync(
+          `npm install`,
+          spawnOptions({
+            stdio: "inherit",
+            cwd: langDir,
+          })
+        );
+      }
+
       success(`Language updated`);
     } catch (er) {
       console.log(
         `There was an error on command: ${bold(command)}, folder: ${bold(
           langDir
-        )}`
+        )}`,
+        er
       );
       // error(er);
       process.exit();

@@ -11,6 +11,7 @@ const { warn, di, success } = require("../../lib/log");
 const { bold, yellow, red } = require("@nexssp/ansi");
 const cache = require("../../lib/cache");
 const { lang } = require("moment");
+const fs = require("../../lib/fs");
 
 function getLanguagesConfigFiles(projectFolder = "") {
   let paths = [];
@@ -57,11 +58,13 @@ module.exports.getLanguages = (recreateCache) => {
     } catch (e) {
       console.error(
         bold(red("! >>> There is an issue with the file:")),
-        bold(file)
+        bold(file),
+        bold(e)
       );
+      process.exit(1);
     }
 
-    if (!content.extensions) {
+    if (!content || !content.extensions) {
       console.error("File has no .extensions which should be an array.", file);
       process.exit(1);
     }
@@ -146,6 +149,20 @@ module.exports.getLang = (ext, recreateCache) => {
                 stdio: "inherit",
               })
             );
+            const repoPathPackageJson = require("path").join(
+              repoPath,
+              "package.json"
+            );
+
+            // This language has extra packages, we install/update them
+            if (fs.existsSync(repoPathPackageJson)) {
+              require("child_process").execSync(
+                `npm install`,
+                spawnOptions({
+                  stdio: "inherit",
+                })
+              );
+            }
           } catch (e) {
             console.error(e);
             process.exit();
@@ -158,6 +175,16 @@ module.exports.getLang = (ext, recreateCache) => {
                 stdio: "inherit",
               })
             );
+
+            // This language has extra packages, we install them
+            if (fs.existsSync(repoPathPackageJson)) {
+              require("child_process").execSync(
+                `npm install`,
+                spawnOptions({
+                  stdio: "inherit",
+                })
+              );
+            }
           } catch (error) {
             if ((error + "").indexOf("Command failed: git clone") > -1) {
               console.error(
