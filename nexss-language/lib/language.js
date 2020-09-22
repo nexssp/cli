@@ -155,7 +155,7 @@ module.exports.getLang = (ext, recreateCache) => {
             );
 
             // This language has extra packages, we install/update them
-            if (fs.existsSync(repoPathPackageJson)) {
+            if (require("fs").existsSync(repoPathPackageJson)) {
               require("child_process").execSync(
                 `npm install`,
                 spawnOptions({
@@ -177,7 +177,7 @@ module.exports.getLang = (ext, recreateCache) => {
             );
 
             // This language has extra packages, we install them
-            if (fs.existsSync(repoPathPackageJson)) {
+            if (require("fs").existsSync(repoPathPackageJson)) {
               require("child_process").execSync(
                 `npm install`,
                 spawnOptions({
