@@ -192,7 +192,7 @@ module.exports.transformNexss = (
             fileName,
             this.errBuffer,
             args.includes("--nxsPipeErrors"),
-            process.nexssCWD
+            process.cwd()
           );
           if (!process.argv.includes("--nxsPipeErrors")) {
             callback(red("Error: ") + bold(nexssCommand));

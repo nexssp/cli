@@ -145,7 +145,7 @@ if (
       );
 
       const { ensureInstalled } = require("./lib/terminal");
-
+      console.log("ensuringinstalled!!");
       let p = ensureInstalled(command, installCommand, { verbose: true });
       if (p) {
         console.log(

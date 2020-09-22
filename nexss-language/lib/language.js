@@ -8,7 +8,7 @@ const {
 } = require("../../config/config");
 const { join, extname, resolve } = require("path");
 const { warn, di, success } = require("../../lib/log");
-const { bold, yellow } = require("@nexssp/ansi");
+const { bold, yellow, red } = require("@nexssp/ansi");
 const cache = require("../../lib/cache");
 const { lang } = require("moment");
 
@@ -51,7 +51,15 @@ module.exports.getLanguages = (recreateCache) => {
   const files = getLanguagesConfigFiles(NEXSS_PROJECT_PATH);
 
   for (file of files) {
-    let content = require(file);
+    let content;
+    try {
+      content = require(file);
+    } catch (e) {
+      console.error(
+        bold(red("! >>> There is an issue with the file:")),
+        bold(file)
+      );
+    }
 
     if (!content.extensions) {
       console.error("File has no .extensions which should be an array.", file);

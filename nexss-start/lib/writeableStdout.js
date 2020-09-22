@@ -32,7 +32,7 @@ module.exports.writeableStdout = () =>
                 : chunk;
 
             if (isJson(chunk)) {
-              const coloredJson = require("json-colorizer")(chunk, {
+              const coloredJson = require("json-colorizer")(chunk + "", {
                 colors: {
                   STRING_KEY: "green.bold",
                   STRING_LITERAL: "yellow.bold",
@@ -45,7 +45,7 @@ module.exports.writeableStdout = () =>
                 console.log(coloredJson);
               }
             } else {
-              process.stdout.write(chunk);
+              process.stdout.write(chunk + "");
             }
           }
         } else {

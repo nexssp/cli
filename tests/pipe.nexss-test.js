@@ -12,6 +12,13 @@ module.exports = {
       notEval: true, // Means that parameters will not be evaluated (like below it ${..} will be passed)
       tests: [
         {
+          title: "nxsExecute Subpipe",
+          params: [
+            `nexss Id --nxsExecute="nexss Id --nxsAs=MY1 | nexss Id --nxsAs=MY2"`,
+            /"MY1":".*".*"MY2":".*"/,
+          ],
+        },
+        {
           title: "Simply Pipe",
           params: [
             "nexss Id --nxsAs=MY1 | nexss Id --nxsAs=MY2",

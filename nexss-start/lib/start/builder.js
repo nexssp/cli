@@ -36,7 +36,7 @@ module.exports.getBuilder = (file) => {
   }
 
   if (!cmd) cmd = builder.cmd;
-  // ensureInstalled(cmd, builder.install);
+  ensureInstalled(cmd, builder.install);
 
   return builder;
 };
