@@ -96,9 +96,11 @@ var tests = 0;
 var continuue = 0;
 var totalPerformedTests = 0;
 ok("Starting tests.. Please wait.. (no output)");
-const selected = cliArgs._;
-if(selected.length>0){
-    warn("You have selected tests: ",selected.join(","));
+let selected = [];
+
+if (cliArgs._.length > 0) {
+  selected = cliArgs._;
+  warn("You have selected tests: ", selected.join(","));
 }
 testNames.forEach((test) => {
   test = `${nexssTestsFolder}/${test}`;
@@ -108,13 +110,12 @@ testNames.forEach((test) => {
     process.exit();
   }
   out(blue(`STARTING ${test}`));
-  
+
   const testsDef = require(test);
-  const startFrom = selected.length>0?null:testsDef.startFrom;
-  const endsWith = selected.length>0?null:testsDef.endsWith;
-  const omit = selected.length>0?null:testsDef.omit;
- 
-  
+  const startFrom = selected.length > 0 ? null : testsDef.startFrom;
+  const endsWith = selected.length > 0 ? null : testsDef.endsWith;
+  const omit = selected.length > 0 ? null : testsDef.omit;
+
   // const lang = JSON.parse(exe("nexss py info --json"));
   // console.log(lang.title);
   // process.exit(1);
@@ -135,18 +136,18 @@ testNames.forEach((test) => {
   if (!testsDef.values) {
     testsDef.values = ["Nexss"];
   }
-  
-  if(selected){
-      testsDef.values = selected;
+
+  if (selected.length > 0) {
+    testsDef.values = selected;
   }
-  
+
   testsDef.values.forEach((ext) => {
     global.currentExtension = ext;
 
     out("===========================================================");
     if (ext !== "Nexss") out(yellow(`Testing \x1b[1m${bright(ext)}\x1b[0m`));
 
-    if (selected.includes(ext) || !selected.includes(ext) && (continuue || ext === startFrom || !startFrom)) {
+    if (continuue || ext === startFrom || !startFrom) {
       continuue = 1;
 
       if (omit && omit.includes(ext)) {

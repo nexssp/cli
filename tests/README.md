@@ -8,6 +8,7 @@ There is a test which needs to be run separately (languages) as it's take a lot 
 nexss test all --onlyErrors # onlyErros show only errors during run, so much less output
 nexss test languages # This can take long time if it needs to install all compilers
 nexss test
+nexss test languages .js .r .pl # now you can select
 ```
 
 ## Per project
