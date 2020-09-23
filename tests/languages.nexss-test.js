@@ -65,6 +65,7 @@ module.exports = {
           ".erl",
           ".jl", // issues with the permissions etc. look later
           ".cs", //Sometimes shows dotnet-script not found
+          ".dart", //Some of the linux dist are not implemented
           ".hs", // TO implement
           ".java", // TO implement,
           ".kts", // TO IMPLEMENT default, helloWorld

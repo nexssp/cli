@@ -9,12 +9,12 @@ const {
   blue,
   magenta,
 } = require("@nexssp/ansi");
-const { error, warn, ok } = require("../../lib/log");
+const { error, warn, ok } = require("@nexssp/logdebug");
 const fs = require("fs");
 const path = require("path");
 const nexssConfig = require("../../lib/config").loadConfigContent();
 const cliArgs = require("minimist")(process.argv.slice(3));
-
+const testType = cliArgs._.shift();
 // TODO: below needs to be rewritten, done in rush
 const out = (...txt) => (cliArgs.onlyErrors ? "" : console.log(...txt));
 let nexssTestsPath = "./";
@@ -47,7 +47,7 @@ const availTests = (testsPath) => {
   process.exit();
 };
 
-if (cliArgs._.length === 0) {
+if (!testType) {
   // We check location of the config file as in that folder there is a test.nexss folder with the tests..
 
   if (nexssConfig) {
@@ -71,8 +71,8 @@ if (cliArgs._.length === 0) {
 }
 let testName;
 
-if (cliArgs._[0] !== "all") {
-  const oneTest = `${cliArgs._[0]}.nexss-test.js`;
+if (testType !== "all") {
+  const oneTest = `${testType}.nexss-test.js`;
   if (!fs.existsSync(`${nexssTestsFolder}/${oneTest}`)) {
     warn(`Test ${bold(oneTest)} does not exist`);
     availTests(nexssTestsFolder);
@@ -96,6 +96,10 @@ var tests = 0;
 var continuue = 0;
 var totalPerformedTests = 0;
 ok("Starting tests.. Please wait.. (no output)");
+const selected = cliArgs._;
+if(selected.length>0){
+    warn("You have selected tests: ",selected.join(","));
+}
 testNames.forEach((test) => {
   test = `${nexssTestsFolder}/${test}`;
   if (!fs.existsSync(test)) {
@@ -104,10 +108,13 @@ testNames.forEach((test) => {
     process.exit();
   }
   out(blue(`STARTING ${test}`));
+  
   const testsDef = require(test);
-  const startFrom = testsDef.startFrom;
-  const endsWith = testsDef.endsWith;
-  const omit = testsDef.omit;
+  const startFrom = selected.length>0?null:testsDef.startFrom;
+  const endsWith = selected.length>0?null:testsDef.endsWith;
+  const omit = selected.length>0?null:testsDef.omit;
+ 
+  
   // const lang = JSON.parse(exe("nexss py info --json"));
   // console.log(lang.title);
   // process.exit(1);
@@ -128,13 +135,18 @@ testNames.forEach((test) => {
   if (!testsDef.values) {
     testsDef.values = ["Nexss"];
   }
+  
+  if(selected){
+      testsDef.values = selected;
+  }
+  
   testsDef.values.forEach((ext) => {
     global.currentExtension = ext;
 
     out("===========================================================");
     if (ext !== "Nexss") out(yellow(`Testing \x1b[1m${bright(ext)}\x1b[0m`));
 
-    if (continuue || ext === startFrom || !startFrom) {
+    if (selected.includes(ext) || !selected.includes(ext) && (continuue || ext === startFrom || !startFrom)) {
       continuue = 1;
 
       if (omit && omit.includes(ext)) {

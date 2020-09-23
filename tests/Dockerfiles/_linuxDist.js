@@ -1,6 +1,6 @@
 // Testing Nexss Programmer in different Linux distributions
 const { error, ok } = require("../../lib/log");
-const { bold, yellow } = require("@nexssp/ansi");
+const { bold, yellow, magenta, blue } = require("@nexssp/ansi");
 const execSync = require("child_process").execSync;
 const buildNocache = "--no-cache";
 const path = require("path");
@@ -9,9 +9,25 @@ if (!process.argv[2]) {
   console.error("You need to pass dockerFile filename as argument.");
   console.error("you can pass --color for colored output");
   process.exit(1);
-} else if (require("fs").existsSync()) {
-  console.error(`${bold(dockerFile)} does not exists`);
+} else if (!require("fs").existsSync(process.argv[2])) {
+  console.error(`${bold(process.argv[2])} does not exists`);
   process.exit(1);
+}
+
+if (!process.argv[3]) {
+  console.error(`You haven't selected the type of run:
+1) ${blue("local")} - create virtual dists to local environment
+2) ${blue("clone")} - clones from the repository
+3) ${blue("empty")} - nothing is installed, just nodejs, npm.
+4) ${blue("npminstall")} - installs from ${magenta("LIVE")}, npm i @nexssp/cli
+example: ${yellow("nexss " + require("path").basename(__filename) + " local")}
+`);
+  process.exit(1);
+}
+const opts = ["local", "clone", "empty", "npminstall"];
+if (!opts.includes(process.argv[3])) {
+  console.error(`You can only pass ${opts.join(", ")}`);
+  process.exit(0);
 }
 
 let dockerFile = process.argv[2].replace(/\.\\/, "");
@@ -29,13 +45,13 @@ ${bold("1st")} Check if the docker machine is running and check ip
     docker-machine start && docker-machine ip
 
 ${bold("2nd")} Setup environment, run below command for your shell 
-WSL:
+${blue(bold("WSL"))}:
     eval $(docker-machine.exe env docker-host --shell wsl ) && export DOCKER_CERT_PATH=$(wslpath $DOCKER_CERT_PATH)
-Powershell:
+${blue(bold("Powershell"))}:
     docker-machine.exe env --shell powershell default | Invoke-Expression
-Cmd
+${blue(bold("cmd"))}
     $(docker-machine env default) | Invoke-Expression
-Bash etc.
+${blue(bold("Bash"))} etc.
     $(docker-machine env default) | bash
 ${bold("3rd")}
 To connect to diferrent machine use: docker -H <host:port>
@@ -94,11 +110,29 @@ function pathToDocker(p) {
 const pathNexssCli = pathToDocker(path.resolve(process.cwd(), "../../"));
 const pathDotNexss = pathToDocker(path.join(require("os").homedir(), ".nexss"));
 const pathWork = pathToDocker(path.join(require("os").homedir(), ".nexssWork"));
-// const command = `docker run -d -t ${imageName} bash -c "npm i @nexssp/cli -g && nexss && nexss test all --onlyErrors && mkdir /work && cd /work && /bin/bash`;
-//const command = `docker run -i -d -v ${pathWork}:/work -v ${pathNexssCli}:/nexssCli -v ${pathDotNexss}:/root/.nexss -v /root/.nexss/cache -e DEBIAN_FRONTEND=noninteractive -t ${imageName} /bin/bash -c "cd /nexssCli && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && cd /work && /bin/bash" `;
-// const command = `docker run -d -it ${imageName} bash -c "npm i @nexssp/cli -g && nexss && mkdir /work && cd /work && /bin/bash`;
-const command = `docker run -d -it ${imageName} bin/sh -c "git clone --depth=1 https://github.com/nexssp/cli.git && cd cli && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && /bin/bash"`;
-// const command = `docker run -d -it ${imageName} bin/sh`;
+
+let command;
+switch (process.argv[3]) {
+  case "local":
+    command = `docker run -i -d -v ${pathWork}:/work -v ${pathNexssCli}:/nexssCli -v ${pathDotNexss}:/root/.nexss -v /root/.nexss/cache -e DEBIAN_FRONTEND=noninteractive -t ${imageName} /bin/bash -c "cd /nexssCli && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && cd /work && /bin/bash" `;
+    break;
+  case "clone":
+    command = `docker run -d -it ${imageName} bin/sh -c "git clone --depth=1 https://github.com/nexssp/cli.git && cd cli && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && /bin/bash"`;
+    break;
+  case "empty":
+    command = `docker run -d -it ${imageName} bin/sh`;
+    break;
+  case "npminstall":
+    command = `docker run -d -it ${imageName} bash -c "npm i @nexssp/cli -g && nexss && mkdir /work && cd /work && /bin/bash`;
+  default:
+    break;
+}
+
+// const
+//const
+// const
+//const
+// const
 try {
   var res = execSync(
     // You can build packages inside the container, for dev whatever is needed.
