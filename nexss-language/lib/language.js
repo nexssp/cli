@@ -7,10 +7,10 @@ const {
   NEXSS_HOME_PATH,
 } = require("../../config/config");
 const { join, extname, resolve } = require("path");
-const { warn, di, success } = require("../../lib/log");
+const { warn, di, success } = require("@nexssp/logdebug");
 const { bold, yellow, red } = require("@nexssp/ansi");
 const cache = require("../../lib/cache");
-const { lang } = require("moment");
+// const { lang } = require("moment");
 const fs = require("../../lib/fs");
 
 function getLanguagesConfigFiles(projectFolder = "") {
@@ -138,28 +138,41 @@ module.exports.getLang = (ext, recreateCache) => {
         const spawnOptions = require("../../config/spawnOptions");
 
         success(`Implementation for '${ext}' has been installed.`);
+        const repoPathPackageJson = require("path").join(
+          repoPath,
+          "package.json"
+        );
 
+        const repoPathNodeModules = require("path").join(
+          repoPath,
+          "node_modules"
+        );
         if (require("fs").existsSync(repoPath)) {
-          console.log("Language seems to be already there. Trying update..");
+          console.log(
+            `Language seems to be already there. Updating repo silently at:\n${bold(
+              repoPath
+            )}`
+          );
           try {
             // We trying update the repo with the latest version as already there
             require("child_process").execSync(
-              `git -C ${repoPath} pull`,
+              `git -C ${repoPath} pull -q`,
               spawnOptions({
                 stdio: "inherit",
               })
             );
-            const repoPathPackageJson = require("path").join(
-              repoPath,
-              "package.json"
-            );
 
             // This language has extra packages, we install/update them
-            if (require("fs").existsSync(repoPathPackageJson)) {
+            if (
+              require("fs").existsSync(repoPathPackageJson) &&
+              !require("fs").existsSync(repoPathNodeModules)
+            ) {
+              console.log(`Installing packages for ${repoPath}`);
               require("child_process").execSync(
                 `npm install`,
                 spawnOptions({
                   stdio: "inherit",
+                  cwd: repoPath,
                 })
               );
             }
@@ -177,14 +190,13 @@ module.exports.getLang = (ext, recreateCache) => {
             );
 
             // This language has extra packages, we install them
-            if (require("fs").existsSync(repoPathPackageJson)) {
-              require("child_process").execSync(
-                `npm install`,
-                spawnOptions({
-                  stdio: "inherit",
-                })
-              );
-            }
+            require("child_process").execSync(
+              `npm install`,
+              spawnOptions({
+                stdio: "inherit",
+                cwd: repoPath,
+              })
+            );
           } catch (error) {
             if ((error + "").indexOf("Command failed: git clone") > -1) {
               console.error(

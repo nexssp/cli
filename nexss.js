@@ -35,11 +35,12 @@ log.d("Set the process title: ", process.title);
 
 // Core functions like version, update. All are located ./lib/core
 // Example: nexss --env, or nexss --version
-if (process.argv[2] && process.argv[2].startsWith("--")) {
-  const f = process.argv[2].slice(2);
+
+if (process.argv[2] && process.argv[2].startsWith("-")) {
+  const f = process.argv[2];
   const functionsFolder = `./lib/core/${f}.js`;
-  log.db(`Loading core --${f} function`);
-  if (fs.existsSync(`${__dirname}${functionsFolder.slice(1)}`)) {
+  log.db(`Loading core${f} function, ${functionsFolder}`);
+  if (fs.existsSync(path.resolve(__dirname, functionsFolder))) {
     const functionRun = require(functionsFolder);
     functionRun();
     return;
@@ -122,16 +123,8 @@ if (
     let pmArguments = process.argv.slice(4);
     pmArguments = pmArguments.filter((e) => e !== "--nocache");
 
-    const installCommand = `${
-      compiler && compiler.install ? compiler.install : builder.install
-    } ${pmArguments.join(" ")}`;
-
-    const command = `${
-      compiler && compiler.install ? compiler.command : builder.command
-    } ${pmArguments.join(" ")}`;
-
     if (
-      process.argv[3] === "install" &&
+      (process.argv[3] === "install" || process.argv[3] === "uninstall") &&
       (!process.argv[4] ||
         process.argv[4] === "--" ||
         process.argv[4] === "--nocache" ||
@@ -140,18 +133,34 @@ if (
       if (process.argv[4] === "--" || process.argv[4] === "--nocache") {
         delete process.argv[4];
       }
-      console.log(
-        `installing ${yellow(bold(languageSelected.title))}, please wait..`
-      );
 
-      const { ensureInstalled } = require("./lib/terminal");
+      if (process.argv[3] === "install") {
+        const installCommand = `${
+          compiler && compiler.install ? compiler.install : builder.install
+        } ${pmArguments.join(" ")}`;
 
-      let p = ensureInstalled(command, installCommand, { verbose: true });
-      if (p) {
+        const command = `${
+          compiler && compiler.install ? compiler.command : builder.command
+        } ${pmArguments.join(" ")}`;
+
         console.log(
-          `${blue(bold(languageSelected.title))} is installed at:\n${p}`
+          `installing ${yellow(bold(languageSelected.title))}, please wait..`
         );
+
+        const { ensureInstalled } = require("./lib/terminal");
+
+        let p = ensureInstalled(command, installCommand, { verbose: true });
+        if (p) {
+          console.log(
+            `${blue(bold(languageSelected.title))} is installed at:\n${p}`
+          );
+        }
+      } else {
+        //uninstall
+
+        console.log(`Uninstalling is here`);
       }
+
       // try {
       //   cp.execSync(command, {
       //     stdio: "inherit",
@@ -600,11 +609,12 @@ example to display help 'nexss ${plugin} ${filesList[0]} help'`;
       // cmd.default();
     } catch (err) {
       log.error(err);
+      console.log(err);
       // console.log(process.cwd());
-      const helpContent = fs.readFileSync(
-        `${NEXSS_SRC_PATH}/nexss-${plugin}/help.md`
-      );
-      console.info(helpContent.toString());
+      // const helpContent = fs.readFileSync(
+      //   `${NEXSS_SRC_PATH}/nexss-${plugin}/help.md`
+      // );
+      // console.info(helpContent.toString());
     }
     break;
 }

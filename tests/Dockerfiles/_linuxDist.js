@@ -111,19 +111,22 @@ const pathNexssCli = pathToDocker(path.resolve(process.cwd(), "../../"));
 const pathDotNexss = pathToDocker(path.join(require("os").homedir(), ".nexss"));
 const pathWork = pathToDocker(path.join(require("os").homedir(), ".nexssWork"));
 
+// There are some issues with the Swift on docker containers so we need to run docker in --privileged mode.
+const privileged = "--privileged";
+
 let command;
 switch (process.argv[3]) {
   case "local":
-    command = `docker run -i -d -v ${pathWork}:/work -v ${pathNexssCli}:/nexssCli -v ${pathDotNexss}:/root/.nexss -v /root/.nexss/cache -e DEBIAN_FRONTEND=noninteractive -t ${imageName} /bin/bash -c "cd /nexssCli && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && cd /work && /bin/bash" `;
+    command = `docker run ${privileged} -i -d -v ${pathWork}:/work -v ${pathNexssCli}:/nexssCli -v ${pathDotNexss}:/root/.nexss -v /root/.nexss/cache -e DEBIAN_FRONTEND=noninteractive -t ${imageName} /bin/bash -c "cd /nexssCli && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && cd /work && /bin/bash" `;
     break;
   case "clone":
-    command = `docker run -d -it ${imageName} bin/sh -c "git clone --depth=1 https://github.com/nexssp/cli.git && cd cli && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && /bin/bash"`;
+    command = `docker run ${privileged} -d -it ${imageName} bin/sh -c "git clone --depth=1 https://github.com/nexssp/cli.git && cd cli && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && /bin/bash"`;
     break;
   case "empty":
-    command = `docker run -d -it ${imageName} bin/sh`;
+    command = `docker run ${privileged} -d -it ${imageName} bin/sh`;
     break;
   case "npminstall":
-    command = `docker run -d -it ${imageName} bash -c "npm i @nexssp/cli -g && nexss && mkdir /work && cd /work && /bin/bash`;
+    command = `docker run ${privileged} -d -it ${imageName} bash -c "npm i @nexssp/cli -g && nexss && mkdir /work && cd /work && /bin/bash`;
   default:
     break;
 }

@@ -4,7 +4,7 @@ const { NEXSS_PACKAGES_PATH } = require("../../config/config");
 const packagesPath = `${NEXSS_PACKAGES_PATH}`;
 const cliArgs = require("minimist")(process.argv);
 
-const { success } = require("../../lib/log");
+const { success } = require("@nexssp/logdebug");
 
 let pkgs = [];
 // TODO: To fix below syntac - make more efficient! works for now

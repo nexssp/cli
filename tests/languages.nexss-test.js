@@ -10,13 +10,45 @@ let values = Object.keys(languages);
 
 //values = [];
 // values = values.slice(1, 30);
-let linuxOmmit = [".html", ".ahk", ".au3", ".vbs", ".wsf", ".pd", ".bat"];
+let linuxOmmit = [
+  ".html",
+  ".ahk",
+  ".au3",
+  ".vbs",
+  ".wsf",
+  ".pd",
+  ".bat", // Above are not on Windows
+  // ====================
+  ".d",
+  ".v",
+  ".clj",
+  ".coco",
+  ".swift",
+  ".hy",
+  ".bas",
+];
 linuxOmmit.push(".rs"); //issue with extra running the command after install. make it automatic
 switch (os.name()) {
+  case os.distros.DEBIAN:
+    linuxOmmit.push(".ex"); // /tmp/Nexss-test-ek2lfe/Default.ex: ** (Mix) Could not find an SCM for dependency :json from MyApp.Mixfile
+    linuxOmmit.push(".exs");
+    linuxOmmit.push(".cs");
+    linuxOmmit.push(".erl");
+    linuxOmmit.push(".hs");
+    linuxOmmit.push(".java"); // error: package org.json does not exist
+    linuxOmmit.push(".kts");
+    linuxOmmit.push(".kt");
+    linuxOmmit.push(".scala"); // make installer
+    linuxOmmit.push(".f90"); //  implement helloworld/defult templates.
+    // .r language - need to be start again for no errors - see
+    linuxOmmit.push(".groovy"); // /root/.sdkman/bin/sdkman-init.sh: No such file or directory
+    linuxOmmit.push(".swift"); // destination path 'yaourt' already exists
+    break;
   case os.distros.AMAZON:
     // issue with installing JSON:PP
     linuxOmmit.push(".pl");
     linuxOmmit.push(".cpp");
+    linuxOmmit.push(".clj"); // installer not working lein not found
     linuxOmmit.push(".cc");
     linuxOmmit.push(".tcl"); // package require json - notfound /tclib???
     linuxOmmit.push(".jl"); // make shows error about tar,bsd tar....
@@ -33,6 +65,22 @@ switch (os.name()) {
   case os.distros.ALPINE:
     // issue with installing JSON:PP
     linuxOmmit.push(".clj"); // installer not working lein not found
+    linuxOmmit.push(".cc"); // installer not working lein not found
+    linuxOmmit.push(".jl"); // installer not working lein not found
+    linuxOmmit.push(".cs"); // dotnet not found
+    linuxOmmit.push(".java"); // error: package org.json does not exist
+    linuxOmmit.push(".ex"); //  Dependency specified in the wrong format: {:json, "~> 1.2"}
+    linuxOmmit.push(".exs"); //  Dependency specified in the wrong format: {:json, "~> 1.2"}
+    linuxOmmit.push(".erl"); //
+    linuxOmmit.push(".hs"); //
+    linuxOmmit.push(".kts");
+    linuxOmmit.push(".kt"); // to implement installers// to implement installers
+    linuxOmmit.push(".rkt"); // not seen,path??
+    linuxOmmit.push(".groovy"); // /root/.sdkman/bin/sdkman-init.sh: No such file or directory
+    linuxOmmit.push(".scala"); // make installer
+    linuxOmmit.push(".dart");
+    linuxOmmit.push(".f90"); //  implement helloworld/defult templates.
+    // linuxOmmit.push(".f90"); //  implement helloworld/defult templates.
     break;
   case os.distros.ARCH:
     // issue with installing JSON:PP
