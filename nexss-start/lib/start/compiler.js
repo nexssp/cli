@@ -25,6 +25,16 @@ module.exports.getCompiler = (file) => {
     //   console.log(e);
     // }
     error("There is an issue", file);
+    error(
+      "Maybe there is a program with the same name as command of Nexss Programmer?"
+    );
+    error(
+      "Eg. You execute `nexss " +
+        process.argv[2] +
+        " install` and you are in the folder with the `" +
+        process.argv[2] +
+        "` program."
+    );
     process.exit(1);
   }
 
