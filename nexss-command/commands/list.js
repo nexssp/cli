@@ -8,7 +8,13 @@ listCommands();
 process.exit(0);
 
 function listCommands() {
+  // There is platform specific commands. We use
+  if (configContent.commands[process.platform]) {
+    configContent.commands = configContent.commands[process.platform];
+  }
+
   const commands = configContent.commands;
+
   if (!commands) {
     console.log(
       yellow(`No available commands. (use eg. nexss cmd add *name* ls -l)`)
