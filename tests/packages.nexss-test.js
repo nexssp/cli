@@ -1,4 +1,4 @@
-function getLanguagesConfigFiles(folder = "") {
+function getPackagesPaths(folder = "") {
   let paths = [];
   const fg = require("fast-glob");
   const languagePathArray = ["**", `*-test.nexss`];
@@ -15,7 +15,7 @@ function getLanguagesConfigFiles(folder = "") {
   return fg.sync(paths);
 }
 
-let values = getLanguagesConfigFiles();
+let values = getPackagesPaths();
 module.exports = {
   values,
   startFrom: "",
