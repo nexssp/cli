@@ -36,7 +36,7 @@ if (process.argv[3]) {
     const os = require("@nexssp/os");
     const tags = os.tags("command-");
 
-    let commandFinal = CommandToRun;
+    let commandFinal = CommandToRun.command;
     if (process.platform !== "win32") {
       if (CommandToRun[tags[0]]) {
         // For distributions we replace apt-get install/update/remove to the correct ones distributions eg. yum,zypper,dnf etc etc..

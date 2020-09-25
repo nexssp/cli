@@ -24,19 +24,18 @@ function listCommands() {
   var table = new Table({
     head: [green("name"), green("command")],
   });
+  if (Array.isArray(commands))
+    commands.forEach((cmd) => {
+      let command = cmd.command;
+      const name = cmd.name;
+      if (cmd[tags[0]]) {
+        command = cmd[tags[0]];
+      } else if (cmd[tags[1]]) {
+        command = cmd[tags[1]];
+      }
 
-  commands.forEach((cmd) => {
-    console.log(cmd);
-    let command = cmd.command;
-    const name = cmd.name;
-    if (cmd[tags[0]]) {
-      command = cmd[tags[0]];
-    } else if (cmd[tags[1]]) {
-      command = cmd[tags[1]];
-    }
-
-    table.push([bold(yellow(name)), bold(os.replacePMByDistro(command))]);
-  });
+      table.push([bold(yellow(name)), bold(os.replacePMByDistro(command))]);
+    });
 
   console.log(table.toString());
 }
