@@ -10,7 +10,6 @@ const { join, extname, resolve } = require("path");
 const { warn, di, success } = require("@nexssp/logdebug");
 const { bold, yellow, red } = require("@nexssp/ansi");
 const cache = require("../../lib/cache");
-// const { lang } = require("moment");
 const fs = require("../../lib/fs");
 
 function getLanguagesConfigFiles(projectFolder = "") {
