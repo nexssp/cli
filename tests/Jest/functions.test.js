@@ -2,22 +2,22 @@ let path = require("path");
 let exec = require("child_process").exec;
 
 describe("Testing nexss", () => {
-  test("--version", async (done) => {
-    await cli(["--version"], ".").then((e) => {
+  test("-version", async (done) => {
+    await cli(["-version"], ".").then((e) => {
       expect(e.stdout).toMatch(/\d+.\d+.\d+/);
     });
     done();
   });
 
   test("-dev-colors", async (done) => {
-    await cli(["--dev-colors"], ".").then((e) => {
+    await cli(["-dev-colors"], ".").then((e) => {
       expect(e.stdout).toMatch(/^.*bold.*/);
     });
     done();
   });
 
   test("-env", async (done) => {
-    await cli(["--env"], ".").then((e) => {
+    await cli(["-env"], ".").then((e) => {
       expect(e.stdout).toContain("Environment");
     });
     done();
