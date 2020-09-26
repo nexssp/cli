@@ -15,13 +15,15 @@ if (["add", "delete", "list"].includes(process.argv[3])) {
   require(`./${process.argv[3]}.js`);
 }
 
-// We check if there is platform related code
-if (configContent.commands[process.platform]) {
-  configContent.commands = configContent.commands[process.platform];
-}
-
-if (process.argv[3]) {
+if (!configContent.commands) {
+  console.log(`No commands have been found.`);
+} else if (process.argv[3]) {
   // Find command in the config by the name
+
+  // We check if there is platform related code
+  if (configContent.commands[process.platform]) {
+    configContent.commands = configContent.commands[process.platform];
+  }
 
   let CommandToRun = configContent.findByProp(
     "commands",
@@ -56,7 +58,6 @@ if (process.argv[3]) {
     // commandArray.shift();
 
     // Execute command and display in the stdio
-
     const sp = exec(commandFinal, {
       stdio: ["inherit", "pipe", "pipe"],
       shell: process.platform === "win32" ? true : "/bin/bash",

@@ -6,6 +6,24 @@ const {
   isAbsolute,
   normalize,
 } = require("path");
+
+// config.push
+Object.defineProperty(Object.prototype, "push", {
+  enumerable: false,
+  value: function push(location, what) {
+    if (!this[location]) {
+      this[location] = [];
+    }
+
+    if (!Array.isArray(this[location])) {
+      // if this is not array convert to array to add new value
+      this[location] = [this[location]];
+    }
+
+    this[location].push(what);
+  },
+});
+
 const cliArgs = require("minimist")(process.argv.slice(3));
 const { searchData } = require("../../lib/search");
 const { yellow, bold } = require("@nexssp/ansi");
@@ -80,6 +98,7 @@ nexss file add myprogram.js --template=helloWorld
   );
 
   const { templateNames } = require("../../nexss-language/lib/template");
+
   questions.push({
     type: "autocomplete",
     name: "template",
