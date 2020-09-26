@@ -9,14 +9,14 @@ describe("Testing nexss", () => {
     done();
   });
 
-  test("--dev-colors", async (done) => {
+  test("-dev-colors", async (done) => {
     await cli(["--dev-colors"], ".").then((e) => {
       expect(e.stdout).toMatch(/^.*bold.*/);
     });
     done();
   });
 
-  test("--env", async (done) => {
+  test("-env", async (done) => {
     await cli(["--env"], ".").then((e) => {
       expect(e.stdout).toContain("Environment");
     });
