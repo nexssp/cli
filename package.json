@@ -36,6 +36,7 @@
     "@nexssp/ansi": "^1.0.7",
     "@nexssp/logdebug": "^1.0.4",
     "@nexssp/os": "^1.0.18",
+    "@nexssp/packunpack": "^1.0.5",
     "axios": "^0.20.0",
     "cli-table3": "^0.6.0",
     "copy-dir": "^1.3.0",

@@ -18,7 +18,7 @@ process.chdir(packagesPath);
 const spawnOptions = require("../../config/spawnOptions");
 
 authors.forEach((author) => {
-  if (author === "@dev") return;
+  if (author === "@dev" || author === "@nexssp") return;
   if (
     author !== "3rdPartyLibraries" &&
     fs.statSync(`${packagesPath}/${author}`).isDirectory()
