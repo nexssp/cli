@@ -81,6 +81,8 @@ if (
 }
 
 let fileOrFolderExists;
+
+const packageName = plugin.split("/")[0];
 if (
   plugin.startsWith(NEXSS_SPECIAL_CHAR) ||
   fs.existsSync(plugin) ||
@@ -92,12 +94,12 @@ if (
   plugin = "start";
 } else if (
   fs.existsSync(`${NEXSS_PACKAGES_PATH}/${plugin}`) ||
-  require("./nexss-package/repos.json")[plugin]
+  require("./nexss-package/repos.json")[packageName]
 ) {
-  if (!fs.existsSync(`${NEXSS_PACKAGES_PATH}/${plugin}`)) {
+  if (!fs.existsSync(`${NEXSS_PACKAGES_PATH}/${packageName}`)) {
     // Installs package if is not downloaded.
     const { installPackages } = require("./nexss-package/lib/install");
-    installPackages(NEXSS_PACKAGES_PATH, plugin);
+    installPackages(NEXSS_PACKAGES_PATH, packageName);
   }
   fileOrFolderExists = `${NEXSS_PACKAGES_PATH}/${plugin}`;
   process.argv[2] = `${NEXSS_PACKAGES_PATH}/${plugin}`;
