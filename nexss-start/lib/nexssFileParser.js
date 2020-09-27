@@ -1,7 +1,8 @@
 const { getFiles } = require("./start/files");
 const minimist = require("minimist");
 const { NEXSS_SPECIAL_CHAR } = require("../../config/defaults");
-
+const { error } = require("@nexssp/logdebug");
+const { bold, yellow } = require("@nexssp/ansi");
 function stripEndQuotes(s) {
   return s.replace && s.replace(/(^["|'])|(["|']$)/g, "");
 }
@@ -95,6 +96,27 @@ const nexssFileParser = (content, filename, nxsArgs) => {
       // console.log("path:        ", pathFilename);
       // console.log("args:        ", args);
       if (name) {
+        const pname = name.split("/")[0];
+        // If this is package and is not installed install
+        if (require("../../nexss-package/repos.json")[pname]) {
+          if (
+            !require("fs").existsSync(
+              `${process.env.NEXSS_PACKAGES_PATH}/${pname}`
+            )
+          ) {
+            console.log(`Installing package ${bold(pname)}..`);
+
+            const {
+              installPackages,
+            } = require("../../nexss-package/lib/install");
+            installPackages(process.env.NEXSS_PACKAGES_PATH, pname);
+          } else {
+            console.log(`Package ${name} is there`);
+          }
+        } else {
+          console.log(`${pname} does not exist  `);
+        }
+        //=========================================================
         let f = getFiles(
           {
             name,
@@ -104,6 +126,9 @@ const nexssFileParser = (content, filename, nxsArgs) => {
           },
           args
         );
+
+        // console.log(f);
+        // process.exit(1);
 
         // When run - .nexss first is look at local folder then remote (eg. packages)
 
@@ -116,10 +141,14 @@ const nexssFileParser = (content, filename, nxsArgs) => {
           if (!require("fs").existsSync(toCheck)) {
             f.path = pathFilename;
             toCheck = require("path").join(f.path, f.name);
-            if (!require("fs").existsSync(toCheck)) {
-              console.error(
-                "File does not exist in local and remote folders (where file is located).",
-                toCheck
+            const repos = require("../../nexss-package/repos.json");
+            if (
+              !require("fs").existsSync(toCheck) &&
+              !repos[f.name.split("/")[0]]
+            ) {
+              error(
+                bold("\nFile does not exist in local and remote folders:\n"),
+                bold(yellow(toCheck))
               );
             }
           }

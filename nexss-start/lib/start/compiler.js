@@ -4,13 +4,15 @@ const path = require("path");
 // if it is in the globalConfig ./nexss/config.json
 //
 const fs = require("fs");
-const { info, warn, error } = require("../../../lib/log");
+const { info, warn, error, db } = require("../../../lib/log");
+const { bold } = require("@nexssp/ansi");
 const { exit } = require("process");
 const cliArgs = require("minimist")(process.argv.slice(2));
 
 module.exports.getCompiler = (file) => {
   const fileName = file.name;
   const fileFillPAth = path.join(file.path, file.name);
+  db(`>>> Checking language for: ${bold(fileName)}`);
   const languageDefinition = getLangByFilename(fileName);
   if (!languageDefinition) {
     // TODO: ?? Execute shell commands? return false and pass shell commands?
