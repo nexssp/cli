@@ -111,10 +111,10 @@ const nexssFileParser = (content, filename, nxsArgs) => {
             } = require("../../nexss-package/lib/install");
             installPackages(process.env.NEXSS_PACKAGES_PATH, pname);
           } else {
-            console.log(`Package ${name} is there`);
+            // console.log(`Package ${name} is there`);
           }
         } else {
-          console.log(`${pname} does not exist  `);
+          // console.log(`${pname} does not exist  `);
         }
         //=========================================================
         let f = getFiles(

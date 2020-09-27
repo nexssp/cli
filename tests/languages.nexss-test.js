@@ -104,6 +104,7 @@ switch (os.name()) {
     linuxOmmit.push(".pl"); // Some issues with JSON:PP
     linuxOmmit.push(".cpp"); // No CMAKE_CXX_COMPILER could be found
     linuxOmmit.push(".cc"); // No CMAKE_CXX_COMPILER could be found
+    linuxOmmit.push(".lua"); // Re-check - should work
     break;
 
   default:
