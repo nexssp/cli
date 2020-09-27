@@ -38,7 +38,7 @@
   "dependencies": {
     "@nexssp/ansi": "^1.0.7",
     "@nexssp/logdebug": "^1.0.4",
-    "@nexssp/os": "^1.0.18",
+    "@nexssp/os": "^1.0.19",
     "@nexssp/packunpack": "^1.0.6",
     "axios": "^0.20.0",
     "cli-table3": "^0.6.0",
