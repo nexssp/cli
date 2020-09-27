@@ -7,10 +7,9 @@ const {
   NEXSS_HOME_PATH,
 } = require("../../config/config");
 const { join, extname, resolve } = require("path");
-const { warn, di, success } = require("@nexssp/logdebug");
+const { warn, success, info } = require("@nexssp/logdebug");
 const { bold, yellow, red } = require("@nexssp/ansi");
 const cache = require("../../lib/cache");
-const fs = require("../../lib/fs");
 
 function getLanguagesConfigFiles(projectFolder = "") {
   let paths = [];
@@ -111,10 +110,14 @@ module.exports.getLang = (ext, recreateCache) => {
     }
 
     if (!language) {
-      warn(
-        `New extension '${bold(
-          ext
-        )}', checking online repository for implementation..`
+      console.log(
+        green(
+          bold(
+            `New extension '${bold(
+              ext
+            )}', checking online repository for implementation..`
+          )
+        )
       );
 
       const langRepositories = require("../repos.json");
@@ -135,8 +138,6 @@ module.exports.getLang = (ext, recreateCache) => {
         const repoName = require("path").basename(langRepositories[ext]);
         const repoPath = `${NEXSS_LANGUAGES_PATH}/${repoName}`;
         const spawnOptions = require("../../config/spawnOptions");
-
-        success(`Implementation for '${ext}' has been installed.`);
         const repoPathPackageJson = require("path").join(
           repoPath,
           "package.json"
@@ -189,13 +190,19 @@ module.exports.getLang = (ext, recreateCache) => {
             );
 
             // This language has extra packages, we install them
-            require("child_process").execSync(
-              `npm install`,
-              spawnOptions({
-                stdio: "inherit",
-                cwd: repoPath,
-              })
-            );
+
+            if (
+              require("fs").existsSync(repoPathPackageJson) &&
+              !require("fs").existsSync(repoPathNodeModules)
+            ) {
+              require("child_process").execSync(
+                `npm install`,
+                spawnOptions({
+                  stdio: "inherit",
+                  cwd: repoPath,
+                })
+              );
+            }
           } catch (error) {
             if ((error + "").indexOf("Command failed: git clone") > -1) {
               console.error(
@@ -207,6 +214,8 @@ module.exports.getLang = (ext, recreateCache) => {
             }
           }
         }
+
+        info(`Implementation for '${ext}' has been installed.`);
 
         cache.del(`nexss_core_getLanguages__.json`);
         cache.del(`nexss_core_getLanguages_${ext}_.json`);

@@ -17,14 +17,15 @@ if (!process.argv[2]) {
 if (!process.argv[3]) {
   console.error(`You haven't selected the type of run:
 1) ${blue("local")} - create virtual dists to local environment
-2) ${blue("clone")} - clones from the repository
-3) ${blue("empty")} - nothing is installed, just nodejs, npm.
-4) ${blue("npminstall")} - installs from ${magenta("LIVE")}, npm i @nexssp/cli
+2) ${blue("local-empty")} - clones but fresh start
+3) ${blue("clone")} - clones from the repository
+4) ${blue("empty")} - nothing is installed, just nodejs, npm.
+5) ${blue("npminstall")} - installs from ${magenta("LIVE")}, npm i @nexssp/cli
 example: ${yellow("nexss " + require("path").basename(__filename) + " local")}
 `);
   process.exit(1);
 }
-const opts = ["local", "clone", "empty", "npminstall"];
+const opts = ["local", "local-empty", "clone", "empty", "npminstall"];
 if (!opts.includes(process.argv[3])) {
   console.error(`You can only pass ${opts.join(", ")}`);
   process.exit(0);
@@ -43,7 +44,6 @@ your environment is not setup properly
 Troubleshooting: 
 ${bold("1st")} Check if the docker machine is running and check ip
     docker-machine start && docker-machine ip
-
 ${bold("2nd")} Setup environment, run below command for your shell 
 ${blue(bold("WSL"))}:
     eval $(docker-machine.exe env docker-host --shell wsl ) && export DOCKER_CERT_PATH=$(wslpath $DOCKER_CERT_PATH)
@@ -113,20 +113,24 @@ const pathWork = pathToDocker(path.join(require("os").homedir(), ".nexssWork"));
 
 // There are some issues with the Swift on docker containers so we need to run docker in --privileged mode.
 const privileged = "--privileged";
+const detached = "-d"; // "-d";
 
 let command;
 switch (process.argv[3]) {
   case "local":
-    command = `docker run ${privileged} -i -d -v ${pathWork}:/work -v ${pathNexssCli}:/nexssCli -v ${pathDotNexss}:/root/.nexss -v /root/.nexss/cache -e DEBIAN_FRONTEND=noninteractive -t ${imageName} /bin/bash -c "cd /nexssCli && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && cd /work && /bin/bash" `;
+    command = `docker run ${privileged} -i ${detached} -v ${pathWork}:/work -v ${pathNexssCli}:/nexssCli -v ${pathDotNexss}:/root/.nexss -v /root/.nexss/cache -e DEBIAN_FRONTEND=noninteractive -t ${imageName} /bin/bash -c "cd /nexssCli && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && cd /work && /bin/bash" `;
+    break;
+  case "local-empty":
+    command = `docker run ${privileged} -i ${detached} -v /work -v ${pathNexssCli}:/nexssCli -v /root/.nexss/cache -e DEBIAN_FRONTEND=noninteractive -t ${imageName} /bin/bash -c "cd /nexssCli && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && cd /work && /bin/bash" `;
     break;
   case "clone":
-    command = `docker run ${privileged} -d -it ${imageName} bin/sh -c "git clone --depth=1 https://github.com/nexssp/cli.git && cd cli && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && /bin/bash"`;
+    command = `docker run ${privileged} ${detached} -it -v /work ${imageName} bin/sh -c "git clone --depth=1 https://github.com/nexssp/cli.git && cd cli && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && cd /work && /bin/bash"`;
     break;
   case "empty":
-    command = `docker run ${privileged} -d -it ${imageName} bin/sh`;
+    command = `docker run ${privileged} ${detached} -it ${imageName} bin/sh`;
     break;
   case "npminstall":
-    command = `docker run ${privileged} -d -it ${imageName} bash -c "npm i @nexssp/cli -g && nexss && mkdir /work && cd /work && /bin/bash`;
+    command = `docker run ${privileged} ${detached} -it ${imageName} bash -c "npm i @nexssp/cli -g && nexss && mkdir /work && cd /work && /bin/bash`;
   default:
     break;
 }
@@ -161,8 +165,9 @@ try {
         shell: true,
         stdio: ["inherit"],
       });
-      console.log(`Container: ${containerId}`);
+      console.log(`Container: ${bold(containerId)}`);
       console.log("LOG:", dockerLog.toString());
+      console.log(blue(`docker attach ${bold(containerId)}`));
     } catch (e) {
       console.log("containerID", containerId);
       console.log(e);

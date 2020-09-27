@@ -26,8 +26,10 @@ function listCommands() {
       `Available predefined commands in _nexss.yml: (usage: nexss cmd *name*)`
     )
   );
-
+  const os = require("@nexssp/os");
   commands.map((e) =>
-    console.log(`${bold(e.name)} - ${yellow(bold(e.command))}`)
+    console.log(
+      `${bold(e.name)} - ${yellow(bold(os.replacePMByDistro(e.command)))}`
+    )
   );
 }

@@ -248,15 +248,14 @@ function should(fname, test, regE, options) {
     );
     data = process.testData;
   } else {
+    process.testTest = test;
+    out(`${red(bright(test))} `);
     // data = process.testData = exe(test);
     // We make sure there are no terminal colors signs as tests fails..
     data = process.testData = exe(test).replace(
       /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
       ""
     );
-
-    process.testTest = test;
-    out(`${red(bright(test))} `);
   }
 
   // out("return: ", test, data);

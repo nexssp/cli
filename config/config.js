@@ -101,15 +101,12 @@ function getConfig() {
     process.exit();
   }
   try {
-    if (!existsSync(NEXSS_PACKAGES_PATH)) {
-      console.log(
-        bold(
-          "Downloading nexss packages (Only at first start of Nexss Programmer).. Please wait.."
-        )
-      );
-
+    if (!existsSync(`${NEXSS_PACKAGES_PATH}/Nexss`)) {
+      console.log(bold("Installing Nexss main package.."));
+      // Auto install of packages
       require("../nexss-package/lib/install").installPackages(
-        NEXSS_PACKAGES_PATH
+        NEXSS_PACKAGES_PATH,
+        "Nexss"
       );
     }
   } catch (error) {

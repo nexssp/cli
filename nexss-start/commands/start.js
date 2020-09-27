@@ -1,16 +1,16 @@
 Nexss();
 
 function Nexss() {
-  const { NEXSS_SPECIAL_CHAR } = require("../../config/defaults");
-  const { error, warn, di, dg, dbg } = require("@nexssp/logdebug");
-  // const dotenv = require("dotenv");
-  const { inspect } = require("util"),
-    url = require("url"),
+  const { NEXSS_SPECIAL_CHAR } = require("../../config/defaults"),
+    { error, warn, di, dg, dbg } = require("@nexssp/logdebug"),
+    // const dotenv = require("dotenv");
+    { inspect } = require("util"),
     { yellow } = require("@nexssp/ansi"),
-    { startServer } = require("../../lib/server");
-  const { ensureInstalled, pathWinToLinux } = require("../../lib/terminal");
-  const { isURL } = require("../../lib/data/url");
-  const { getFiles } = require("../lib/start/files");
+    { startServer } = require("../../lib/server"),
+    { ensureInstalled, pathWinToLinux } = require("../../lib/terminal"),
+    { isURL } = require("../../lib/data/url"),
+    { getFiles } = require("../lib/start/files"),
+    url = require("url");
 
   // nexss s OR nexss start is ommiting
   let paramNumber = 2;

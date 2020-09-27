@@ -7,19 +7,18 @@
 // We make sure application is installed
 const { npmInstallRun } = require("./lib/npm");
 npmInstallRun();
-
 require("./config/globals");
+
 const cliArgs = require("minimist")(process.argv.slice(2));
-// const { error, info, ok, warn, dy } = require("@nexssp/logdebug");
-const log = require("@nexssp/logdebug");
 const { bold, yellow, blue } = require("@nexssp/ansi");
-const cp = require("child_process");
+const cp = require("child_process"),
+  log = require("@nexssp/logdebug");
 
 log.db("Starting Nexss Programmer..");
 
-const { NEXSS_SRC_PATH, NEXSS_PACKAGES_PATH } = require("./config/config");
-const { NEXSS_SPECIAL_CHAR } = require("./config/defaults");
-const { isURL } = require("./lib/data/url");
+const { NEXSS_SRC_PATH, NEXSS_PACKAGES_PATH } = require("./config/config"),
+  { NEXSS_SPECIAL_CHAR } = require("./config/defaults"),
+  { isURL } = require("./lib/data/url");
 
 process.nexssGlobalCWD = process.cwd();
 process.title =
@@ -91,8 +90,15 @@ if (
   process.argv[2] = plugin;
   process.argv[1] = "start";
   plugin = "start";
-} else if (fs.existsSync(`${NEXSS_PACKAGES_PATH}/${plugin}`)) {
-  // cliArgs._[2] = `${NEXSS_PACKAGES_PATH}/${plugin}`;
+} else if (
+  fs.existsSync(`${NEXSS_PACKAGES_PATH}/${plugin}`) ||
+  require("./nexss-package/repos.json")[plugin]
+) {
+  if (!fs.existsSync(`${NEXSS_PACKAGES_PATH}/${plugin}`)) {
+    // Installs package if is not downloaded.
+    const { installPackages } = require("./nexss-package/lib/install");
+    installPackages(NEXSS_PACKAGES_PATH, plugin);
+  }
   fileOrFolderExists = `${NEXSS_PACKAGES_PATH}/${plugin}`;
   process.argv[2] = `${NEXSS_PACKAGES_PATH}/${plugin}`;
   process.argv[1] = "start";
@@ -402,6 +408,8 @@ if (
           path: "",
           name: `test${languageSelected.extensions[0]}`,
         });
+        const { ensureInstalled } = require("./lib/terminal");
+        ensureInstalled(compiler.command, compiler.install);
 
         const pmArguments = process.argv.slice(3);
         const command = `${compiler.command} ${pmArguments.join(" ")}`;

@@ -1,11 +1,15 @@
 # Nexss Package
 
-Manage packages for Nexss Programmer 2.0
+Manage packages for Nexss Programmer
 
 ## Modify global Nexss PROGRAMMER packages
 
 ```sh
 nexss pkg add Blender --saveNexss # You can modify code from now in your folder and use it for your project.
+nexss pkg init
+nexss pkg init Id # Run command init on the Id (installs package)
+nexss pkg install Id # installs package (Id cannot exists in the NEXSS_PACKAGES_PATH)
+nexss pkg install all # installs all packages
 ```
 
 ## Examples

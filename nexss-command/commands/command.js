@@ -2,7 +2,7 @@ const { NEXSS_PROJECT_CONFIG_PATH } = require("../../config/config");
 const { loadConfigContent } = require("../../lib/config");
 let configContent = loadConfigContent(NEXSS_PROJECT_CONFIG_PATH);
 const { bold, blue, yellow, red, magenta } = require("@nexssp/ansi");
-
+const { db } = require("@nexssp/logdebug");
 const { exec } = require("child_process");
 const { listCommands } = require("../lib/commands");
 if (!configContent) {
@@ -16,7 +16,7 @@ if (["add", "delete", "list"].includes(process.argv[3])) {
 }
 
 if (!configContent.commands) {
-  console.log(`No commands have been found.`);
+  db(`No commands have been found.`);
 } else if (process.argv[3]) {
   // Find command in the config by the name
 
@@ -51,12 +51,13 @@ if (!configContent.commands) {
       }
     }
 
+    //Make sure
+
     // We get the first command for spawn
     // const commandArray = CommandToRun;
     // .command.split(" ");
     // let commandToRun = commandArray[0];
     // commandArray.shift();
-
     // Execute command and display in the stdio
     const sp = exec(commandFinal, {
       stdio: ["inherit", "pipe", "pipe"],
@@ -73,16 +74,26 @@ if (!configContent.commands) {
     });
     sp.stderr.on("end", function () {
       if (errorString) {
-        console.error(red(bold("Error in commands:\n")));
-        console.error(bold(magenta(errorString)));
-        console.error(
-          `Command ${CommandToRun.name} with issue: `,
-          bold(blue(require("util").inspect(CommandToRun)))
-        );
-        console.error(`All commands available..`);
-        console.error(
-          bold(yellow(require("util").inspect(configContent.commands)))
-        );
+        if (errorString.indexOf("No repository field") > -1) {
+          console.log(
+            blue(
+              `NOTE: Please put repository name in the package.json of package ${bold(
+                green(process.argv[4])
+              )}`
+            )
+          );
+        } else {
+          console.error(red(bold("Error in commands:\n")));
+          console.error(bold(magenta(errorString)));
+          console.error(
+            `Command ${CommandToRun.name} with issue: `,
+            bold(blue(require("util").inspect(CommandToRun)))
+          );
+          console.error(`All commands available..`);
+          console.error(
+            bold(yellow(require("util").inspect(configContent.commands)))
+          );
+        }
       }
     });
   } else {

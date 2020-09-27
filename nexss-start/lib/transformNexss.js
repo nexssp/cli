@@ -64,7 +64,7 @@ module.exports.transformNexss = (
       } else {
         options.shell = "/bin/bash";
       }
-
+      cwd = eval("`" + cwd.replace(/\\/g, "/") + "`");
       options.cwd = cwd;
       options.env = "SEE: process.env";
 

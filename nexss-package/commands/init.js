@@ -12,10 +12,26 @@ if (!fs.existsSync(packagesPath)) {
   console.error("Packages path has not been found.", packagesPath);
   process.exit(1);
 }
-const authors = fs.readdirSync(packagesPath);
+let authors = fs.readdirSync(packagesPath);
 process.chdir(packagesPath);
 
 const spawnOptions = require("../../config/spawnOptions");
+
+if (process.argv[4]) {
+  // console.log(`You have selected package: ${bold(process.argv[4])}`);
+  if (!fs.existsSync(`${process.env.NEXSS_PACKAGES_PATH}/${process.argv[4]}`)) {
+    console.error(
+      `Package ${red(
+        process.argv[4]
+      )} not found. To install new packages eg: ${green(
+        bold(` nexss pkg install ${process.argv[4]}`)
+      )}`
+    );
+    process.exitCode = 1;
+    return;
+  }
+  authors = [process.argv[4]];
+}
 
 authors.forEach((author) => {
   if (author === "@dev" || author === "@nexssp") return;
@@ -29,10 +45,12 @@ authors.forEach((author) => {
           if (fs.statSync(`${packagesPath}/${author}/${pkg}`).isDirectory()) {
             fs.readdirSync(`${packagesPath}/${author}/${pkg}`).map(
               (details) => {
-                console.log(`Package setup: ${packagesPath}/${author}/${pkg}`);
+                console.log(
+                  `${blue("Package setup:")} ${packagesPath}/${author}/${pkg}`
+                );
                 try {
                   require("child_process").execSync(
-                    `nexss cmd init`,
+                    `nexss cmd init ${author}/${pkg}`,
                     spawnOptions({
                       cwd: `${packagesPath}/${author}/${pkg}/${details}`,
                     })
@@ -55,10 +73,10 @@ authors.forEach((author) => {
         } else {
           // 3rdPartyLibraries is a directory where nexss install additional libs.
           if (pkg !== "3rdPartyLibraries") {
-            console.log(`Package setup: ${author}/${pkg}`);
+            console.log(`${blue("Package setup:")} ${author}/${pkg}`);
             try {
               require("child_process").execSync(
-                `nexss cmd init`,
+                `nexss cmd init ${author}/${pkg}`,
                 spawnOptions({
                   cwd: `${packagesPath}/${author}/${pkg}`,
                 })
@@ -74,9 +92,9 @@ authors.forEach((author) => {
       if (fs.existsSync(`${packagesPath}/${author}/_nexss.yml`)) {
         if (author !== "3rdPartyLibraries") {
           try {
-            console.log(`Package setup: ${author}`);
+            console.log(`${blue("Package setup:")} ${author}`);
             require("child_process").execSync(
-              `nexss cmd init`,
+              `nexss cmd init ${author}`,
               spawnOptions({
                 cwd: `${packagesPath}/${author}`,
               })
@@ -93,10 +111,12 @@ authors.forEach((author) => {
           // console.log(`${packagesPath}/${author}/${pkg}/_nexss.yml`);
           if (fs.existsSync(`${packagesPath}/${author}/${pkg}/_nexss.yml`)) {
             if (pkg !== "3rdPartyLibraries") {
-              console.log(`Package setup: ${packagesPath}/${author}/${pkg}`);
+              console.log(
+                `${blue("Package setup:")} ${packagesPath}/${author}/${pkg}`
+              );
               try {
                 require("child_process").execSync(
-                  `nexss cmd init`,
+                  `nexss cmd init ${author}/${pkg}`,
                   spawnOptions({
                     cwd: `${packagesPath}/${author}/${pkg}`,
                   })
@@ -140,7 +160,7 @@ if (pkgs.length > 0) {
     });
   }
 } else {
-  console.warn(`No packages found at ${NEXSS_PACKAGES_PATH}`);
+  // console.warn(`No packages found at ${NEXSS_PACKAGES_PATH}`);
 }
 
 // packages = packages || [];
