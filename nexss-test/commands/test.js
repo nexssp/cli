@@ -99,7 +99,8 @@ ok("Starting tests.. Please wait.. (no output)");
 let selected = [];
 
 if (cliArgs._.length > 0) {
-  selected = cliArgs._;
+  selected = cliArgs._.map((e) => (e.indexOf(".") < 0 ? `.${e}` : e));
+
   warn("You have selected tests: ", selected.join(","));
 }
 testNames.forEach((test) => {

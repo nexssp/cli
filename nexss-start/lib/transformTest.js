@@ -3,11 +3,13 @@ const { red, bold } = require("@nexssp/ansi");
 const { warn, ok, error } = require("../../lib/log");
 const cliArgs = require("minimist")(process.argv);
 const { inspect } = require("util");
+
 module.exports.transformTest = (
   title = "no title",
   args = [],
   options = {}
 ) => {
+  const { cleanTerminalColors } = require("../../lib/terminal");
   return new Transform({
     // writableObjectMode: true,
     // readableObjectMode: true,
@@ -28,7 +30,10 @@ module.exports.transformTest = (
         if (data) {
           let errorExists;
           Object.keys(testingData).forEach((k) => {
-            if (testingData[k] !== data[k]) {
+            if (
+              cleanTerminalColors(testingData[k] + "") !==
+              cleanTerminalColors(data[k] + "")
+            ) {
               error(bold(red(testingData[k])), `Not Equal to`);
               error(bold(red(data[k])));
               errorExists = true;

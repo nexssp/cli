@@ -100,7 +100,10 @@ switch (os.name()) {
     linuxOmmit.push(".v"); // v command not found - installed but path issue
     linuxOmmit.push(".clj"); // works but lein exec issue..
     linuxOmmit.push(".coco"); // works but lein exec issue..
-
+  case os.distros.ORACLE:
+    linuxOmmit.push(".pl"); // Some issues with JSON:PP
+    linuxOmmit.push(".cpp"); // No CMAKE_CXX_COMPILER could be found
+    linuxOmmit.push(".cc"); // No CMAKE_CXX_COMPILER could be found
     break;
 
   default:
