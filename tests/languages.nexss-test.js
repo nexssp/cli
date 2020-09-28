@@ -65,6 +65,7 @@ switch (os.name()) {
   case os.distros.ALPINE:
     // issue with installing JSON:PP
     linuxOmmit.push(".clj"); // installer not working lein not found
+    linuxOmmit.push(".cpp"); // Error relocating /root/.nexssApps/vcpkg/downloads/tools/cmake-3.17.2-linux/cmake-3.17.2-Linux-x86_64/bin/cmake: gnu_dev_minor: symbol not found
     linuxOmmit.push(".cc"); // installer not working lein not found
     linuxOmmit.push(".jl"); // installer not working lein not found
     linuxOmmit.push(".cs"); // dotnet not found

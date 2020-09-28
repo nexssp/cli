@@ -28,6 +28,8 @@ if (nexssConfig && nexssConfig.filePath) {
   }
 }
 
+const os = require("@nexssp/os");
+
 const availTests = (testsPath) => {
   if (!testsPath) testsPath = nexssTestsFolder;
   if (!fs.existsSync(testsPath)) {
@@ -92,11 +94,26 @@ if (testType !== "all") {
   );
 }
 
+logToFile(`Logging Test: ${testType}, ${os.name()}`);
+
 var tests = 0;
 var continuue = 0;
 var totalPerformedTests = 0;
 ok("Starting tests.. Please wait.. (no output)");
 let selected = [];
+
+const stopOnError = false; // false - We take the raport...
+function logToFile(data) {
+  const LogFile = path.join(
+    __dirname,
+    "../../logs/",
+    "TEST-" + os.name() + os.v() + ".log"
+  );
+  return require("fs").appendFileSync(
+    LogFile,
+    +new Date() + " " + JSON.stringify(data, null, 2) + "\n"
+  );
+}
 
 if (cliArgs._.length > 0) {
   selected = cliArgs._.map((e) => (e.indexOf(".") < 0 ? `.${e}` : e));
@@ -152,6 +169,7 @@ testNames.forEach((test) => {
       continuue = 1;
 
       if (omit && omit.includes(ext)) {
+        logToFile(`${ext} - ommited ->`);
         out(`\x1b[1m${bright(ext)} Ommitted\x1b[0m`);
         continuue = 1;
         return;
@@ -192,7 +210,7 @@ testNames.forEach((test) => {
           );
 
           out(`===========================================`);
-
+          logToFile(ext);
           eval(subtest.type || "shouldContain")(
             ...subtest.params.map((p) => {
               if ((p !== null && typeof p === "object") || subtest.notEval) {
@@ -253,10 +271,14 @@ function should(fname, test, regE, options) {
     out(`${red(bright(test))} `);
     // data = process.testData = exe(test);
     // We make sure there are no terminal colors signs as tests fails..
-    data = process.testData = exe(test).replace(
-      /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
-      ""
-    );
+    const r = exe(test);
+    data = process.testData =
+      r && r.replace
+        ? exe(test).replace(
+            /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
+            ""
+          )
+        : r;
   }
 
   // out("return: ", test, data);
@@ -321,11 +343,16 @@ function should(fname, test, regE, options) {
     console.error(red(bright(`But ${title}: `)));
     console.error(data);
   }
+
+  logToFile(require("util").inspect(data));
+
   console.error(
     red(bright(`=======================================================`))
   );
   console.error("process.cwd()", process.cwd());
-  process.exit(0);
+  if (stopOnError) {
+    process.exit(0);
+  }
 }
 
 function test2(ext) {
