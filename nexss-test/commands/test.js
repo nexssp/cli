@@ -107,7 +107,7 @@ function logToFile(data) {
   const LogFile = path.join(
     __dirname,
     "../../logs/",
-    "TEST-" + os.name() + os.v() + ".log"
+    "TEST-" + os.name().replace("/", "_") + os.v() + ".log"
   );
   return require("fs").appendFileSync(
     LogFile,

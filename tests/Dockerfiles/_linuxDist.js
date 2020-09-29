@@ -15,17 +15,32 @@ if (!process.argv[2]) {
 }
 
 if (!process.argv[3]) {
-  console.error(`You haven't selected the type of run:
-1) ${blue("local")} - create virtual dists to local environment
-2) ${blue("local-empty")} - clones but fresh start
-3) ${blue("clone")} - clones from the repository
-4) ${blue("empty")} - nothing is installed, just nodejs, npm.
-5) ${blue("npminstall")} - installs from ${magenta("LIVE")}, npm i @nexssp/cli
-example: ${yellow("nexss " + require("path").basename(__filename) + " local")}
+  console.log(`\nYou haven't selected the type of run:
+1) ${blue("local")} - create virtual discs to local environment
+2) ${blue("local-testlangs")} - run all language tests
+3) ${blue("local-empty")} - local but fresh start / clean cache folder
+4) ${blue("clone")} - clones from the repository
+5) ${blue("empty")} - nothing is installed, just nodejs, npm.
+6) ${blue("npminstall")} - installs from ${magenta(
+    "LIVE"
+  )}, npm i @nexssp/cli -g
+\nexample: ${yellow(
+    "nexss " +
+      require("path").basename(__filename) +
+      ` ${process.argv[2]}` +
+      " local"
+  )}
 `);
   process.exit(1);
 }
-const opts = ["local", "local-empty", "clone", "empty", "npminstall"];
+const opts = [
+  "local",
+  "local-empty",
+  "clone",
+  "empty",
+  "npminstall",
+  "local-testlangs",
+];
 if (!opts.includes(process.argv[3])) {
   console.error(`You can only pass ${opts.join(", ")}`);
   process.exit(0);
@@ -119,6 +134,9 @@ let command;
 switch (process.argv[3]) {
   case "local":
     command = `docker run ${privileged} -i ${detached} -v ${pathWork}:/work -v ${pathNexssCli}:/nexssCli -v ${pathDotNexss}:/root/.nexss -v /root/.nexss/cache -e DEBIAN_FRONTEND=noninteractive -t ${imageName} /bin/bash -c "cd /nexssCli && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && cd /work && /bin/bash" `;
+    break;
+  case "local-testlangs":
+    command = `docker run ${privileged} -i ${detached} -v ${pathWork}:/work -v ${pathNexssCli}:/nexssCli -v ${pathDotNexss}:/root/.nexss -v /root/.nexss/cache -e DEBIAN_FRONTEND=noninteractive -t ${imageName} /bin/bash -c "cd /nexssCli && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && cd /work && nexss test languages && /bin/bash" `;
     break;
   case "local-empty":
     command = `docker run ${privileged} -i ${detached} -v /work -v ${pathNexssCli}:/nexssCli -v /root/.nexss/cache -e DEBIAN_FRONTEND=noninteractive -t ${imageName} /bin/bash -c "cd /nexssCli && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && cd /work && /bin/bash" `;

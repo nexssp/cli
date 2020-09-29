@@ -46,7 +46,6 @@ switch (os.name()) {
     break;
   case os.distros.AMAZON:
     // issue with installing JSON:PP
-    linuxOmmit.push(".pl");
     linuxOmmit.push(".cpp");
     linuxOmmit.push(".clj"); // installer not working lein not found
     linuxOmmit.push(".cc");
@@ -102,7 +101,6 @@ switch (os.name()) {
     linuxOmmit.push(".clj"); // works but lein exec issue..
     linuxOmmit.push(".coco"); // works but lein exec issue..
   case os.distros.ORACLE:
-    linuxOmmit.push(".pl"); // Some issues with JSON:PP
     linuxOmmit.push(".cpp"); // No CMAKE_CXX_COMPILER could be found
     linuxOmmit.push(".cc"); // No CMAKE_CXX_COMPILER could be found
     linuxOmmit.push(".lua"); // Re-check - should work
