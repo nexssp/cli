@@ -18,6 +18,7 @@ const { cleanup } = require("./output/nxsOutputParams");
 const nxsStop = require("./start/nxsStop");
 module.exports.transformOutput = (x, y, z) =>
   new Transform({
+    highWaterMark: require("../../config/defaults").highWaterMark,
     // writableObjectMode: true,
     transform: (chunk, encoding, callback) => {
       let data = chunk.toString();

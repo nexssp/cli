@@ -6,6 +6,7 @@ const { inspect } = require("util");
 const validationMessages = require("./validationMessages");
 module.exports.transformValidation = (area = "input", options = {}) => {
   return new Transform({
+    highWaterMark: require("../../config/defaults").highWaterMark,
     writableObjectMode: true,
     // readableObjectMode: true,
     transform(chunk, encoding, callback) {

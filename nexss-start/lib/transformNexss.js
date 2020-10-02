@@ -15,15 +15,9 @@ const { colorizer } = require("./colorizer");
 const { bold, yellow, red } = require("@nexssp/ansi");
 require("../../lib/arrays");
 const { spawn } = require("child_process");
-const { is } = require("../../lib/data/guard");
 const { defaultExecuteOptions } = require("../../config/defaults");
-const { Proc } = require("../../lib/proc");
-const path = require("path");
-// const { promisify } = require("util");
 const { parseError } = require("./error");
-const isDebug = process.argv.indexOf("--debug") >= 0;
 const isLearningMode = process.argv.indexOf("--nxsLearning") >= 0;
-const cliArgsParser = require("minimist");
 const { nxsDebugTitle } = require("./output/nxsDebug");
 const { timeElapsed } = require("../../nexss-start/lib/output/nxsTime");
 module.exports.transformNexss = (
@@ -38,6 +32,7 @@ module.exports.transformNexss = (
   } = defaultExecuteOptions
 ) => {
   return new Transform({
+    highWaterMark: require("../../config/defaults").highWaterMark,
     transform(chunk, encoding, callback) {
       let startStreamTime;
       if (process.argv.includes("--nxsTime")) {
@@ -109,16 +104,19 @@ module.exports.transformNexss = (
         // nxsTime
         startCompilerTime = process.hrtime();
       }
-
+      options.maxBuffer = 1024 * 1024 * 100;
+      options.highWaterMark = 1024 * 1024 * 100;
       this.worker = spawn(cmd, argsStrings, options);
       this.worker.cmd = nexssCommand;
       this.worker.on("error", (err) => {
         // throw Error(err);
         switch (err.code) {
           case "ENOENT":
-            throw `${err.path} not found. Command: ${cmd} ${args.join(" ")}`;
+            throw `TRANSFORM_nexss:${
+              err.path
+            } not found. Command: ${cmd} ${args.join(" ")}`;
           default:
-            throw `Failed to start subprocess. ${err}`;
+            throw `TRANSFORM_nexss:Failed to start subprocess. ${err}`;
         }
       });
 
@@ -167,6 +165,10 @@ module.exports.transformNexss = (
 
       this.worker.stdout.on("data", function (data) {
         // TODO: Check if trim is ok here
+
+        dy(
+          `TranformNexss: Worker: size of data received: ${data.length}, cmd: ${process.nexssCMD}`
+        );
         timeElapsed(startCompilerTime, `Response from ${bold(nexssCommand)}`);
 
         if (cmd === "bash") {
@@ -176,7 +178,7 @@ module.exports.transformNexss = (
         }
 
         const outputString = data.toString("utf8");
-        // On Powershellthere is additional extra line which cousing a lot of headache..
+        // On Powershell there is additional extra line which cousing a lot of headache..
         // Anyways we do not want to run empty line through
         // console.log("outputString", outputString);
         if (outputString !== "\n") {
@@ -239,7 +241,7 @@ module.exports.transformNexss = (
 
       if (this.worker.stdin) this.worker.stdin.end();
 
-      dbg("waiting for ", this.worker.cmd);
+      dy("waiting for: ", this.worker.cmd);
     },
     flush(cb) {
       cb();

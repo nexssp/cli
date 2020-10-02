@@ -329,6 +329,7 @@ if (
               detached: false,
               shell: process.platform === "win32" ? true : "/bin/bash",
               cwd: process.cwd(),
+              maxBuffer: 1024 * 1024 * 100,
             });
           } catch (error) {
             console.log(
@@ -421,6 +422,7 @@ if (
             detached: false,
             shell: process.platform === "win32" ? true : "/bin/bash",
             cwd: process.cwd(),
+            maxBuffer: 1024 * 1024 * 100,
           });
         } catch (error) {
           console.log(`Command failed ${command}`);
@@ -441,6 +443,7 @@ if (
               detached: false,
               shell: process.platform === "win32" ? true : "/bin/bash",
               cwd: process.cwd(),
+              maxBuffer: 1024 * 1024 * 100,
             });
           } catch (error) {
             console.log(`Command failed ${command}`);
@@ -514,6 +517,7 @@ if (fileOrFolderExists && process.argv[3] === "test") {
       stdio: "inherit",
       detached: false,
       shell: process.platform === "win32" ? true : "/bin/bash",
+      maxBuffer: 1024 * 1024 * 100,
     });
   } catch (error) {
     console.log(`Command failed ${testCommand}`);

@@ -4,15 +4,13 @@ const { timeElapsed } = require("../lib/output/nxsTime");
 const { isJson } = require("../../lib/data/json");
 module.exports.writeableStdout = () =>
   new Writable({
+    highWaterMark: require("../../config/defaults").highWaterMark,
     write: (chunk, encoding, callback) => {
       // Display single value
       if (encoding === "buffer") {
         chunk = chunk.toString();
       }
-      // require("fs").appendFileSync(
-      //   path.join(__dirname, "../../logs/", "stdin.log"),
-      //   +new Date() + " WRITE: " + JSON.stringify(chunk, null, 2) + "\n"
-      // );
+
       try {
         chunk = JSON.parse(chunk);
 

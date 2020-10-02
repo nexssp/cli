@@ -4,6 +4,7 @@ const axios = require("axios");
 const { nxsDebugTitle } = require("../lib/output/nxsDebug");
 module.exports.transformRequest = (url) =>
   new Transform({
+    highWaterMark: require("../../config/defaults").highWaterMark,
     transform: (chunk, encoding, callback) => {
       let data;
       if (encoding === "buffer") {

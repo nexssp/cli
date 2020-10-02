@@ -14,6 +14,7 @@ const { bold } = require("@nexssp/ansi");
 
 module.exports.transformFile = (file, x, y) => {
   return new Transform({
+    highWaterMark: require("../../config/defaults").highWaterMark,
     //  writableObjectMode: true,
     transform(chunk, encoding, callback) {
       process.chdir(y.cwd);

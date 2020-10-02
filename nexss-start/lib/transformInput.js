@@ -13,6 +13,7 @@ const nxsLocal = require("./input/nxsLocal");
 module.exports.transformInput = (x, y, params) =>
   new Transform({
     // writableObjectMode: true,
+    highWaterMark: require("../../config/defaults").highWaterMark,
     transform: (chunk, encoding, callback) => {
       let data = chunk.toString();
 

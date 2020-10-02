@@ -11,6 +11,7 @@ module.exports.transformTest = (
 ) => {
   const { cleanTerminalColors } = require("../../lib/terminal");
   return new Transform({
+    highWaterMark: require("../../config/defaults").highWaterMark,
     // writableObjectMode: true,
     // readableObjectMode: true,
     transform(chunk, encoding, callback) {

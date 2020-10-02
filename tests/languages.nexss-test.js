@@ -17,98 +17,90 @@ let linuxOmmit = [
   ".vbs",
   ".wsf",
   ".pd",
-  ".bat", // Above are not on Windows
+  ".bat", // Above are not on Linux
   // ====================
-  ".d",
-  ".v",
-  ".clj",
-  ".coco",
-  ".swift",
-  ".hy",
-  ".bas",
 ];
-linuxOmmit.push(".rs"); //issue with extra running the command after install. make it automatic
-switch (os.name()) {
-  case os.distros.DEBIAN:
-    linuxOmmit.push(".ex"); // /tmp/Nexss-test-ek2lfe/Default.ex: ** (Mix) Could not find an SCM for dependency :json from MyApp.Mixfile
-    linuxOmmit.push(".exs");
-    linuxOmmit.push(".cs");
-    linuxOmmit.push(".erl");
-    linuxOmmit.push(".hs");
-    linuxOmmit.push(".java"); // error: package org.json does not exist
-    linuxOmmit.push(".kts");
-    linuxOmmit.push(".kt");
-    linuxOmmit.push(".scala"); // make installer
-    linuxOmmit.push(".f90"); //  implement helloworld/defult templates.
-    // .r language - need to be start again for no errors - see
-    linuxOmmit.push(".groovy"); // /root/.sdkman/bin/sdkman-init.sh: No such file or directory
-    linuxOmmit.push(".swift"); // destination path 'yaourt' already exists
-    break;
-  case os.distros.AMAZON:
-    // issue with installing JSON:PP
-    linuxOmmit.push(".cpp");
-    linuxOmmit.push(".clj"); // installer not working lein not found
-    linuxOmmit.push(".cc");
-    linuxOmmit.push(".tcl"); // package require json - notfound /tclib???
-    linuxOmmit.push(".jl"); // make shows error about tar,bsd tar....
-    linuxOmmit.push(".ex"); //  Dependency specified in the wrong format: {:json, "~> 1.2"}
-    linuxOmmit.push(".exs"); //  Dependency specified in the wrong format: {:json, "~> 1.2"}
-    linuxOmmit.push(".erl"); //  escript: exception error: undefined function mochijson2:decode/1
-    linuxOmmit.push(".hs"); //  implement default/hellow worls stdin/out json
-    linuxOmmit.push(".java"); // error: package org.json does not exist
-    linuxOmmit.push(".kts");
-    linuxOmmit.push(".kt"); // to implement installers// to implement installers
-    linuxOmmit.push(".rkt"); // not seen,path??
-    linuxOmmit.push(".scala"); // make installer
-    break;
-  case os.distros.ALPINE:
-    // issue with installing JSON:PP
-    linuxOmmit.push(".clj"); // installer not working lein not found
-    linuxOmmit.push(".cpp"); // Error relocating /root/.nexssApps/vcpkg/downloads/tools/cmake-3.17.2-linux/cmake-3.17.2-Linux-x86_64/bin/cmake: gnu_dev_minor: symbol not found
-    linuxOmmit.push(".cc"); // installer not working lein not found
-    linuxOmmit.push(".jl"); // installer not working lein not found
-    linuxOmmit.push(".cs"); // dotnet not found
-    linuxOmmit.push(".java"); // error: package org.json does not exist
-    linuxOmmit.push(".ex"); //  Dependency specified in the wrong format: {:json, "~> 1.2"}
-    linuxOmmit.push(".exs"); //  Dependency specified in the wrong format: {:json, "~> 1.2"}
-    linuxOmmit.push(".erl"); //
-    linuxOmmit.push(".hs"); //
-    linuxOmmit.push(".kts");
-    linuxOmmit.push(".kt"); // to implement installers// to implement installers
-    linuxOmmit.push(".rkt"); // not seen,path??
-    linuxOmmit.push(".groovy"); // /root/.sdkman/bin/sdkman-init.sh: No such file or directory
-    linuxOmmit.push(".scala"); // make installer
-    linuxOmmit.push(".dart");
-    linuxOmmit.push(".f90"); //  implement helloworld/defult templates.
-    // linuxOmmit.push(".f90"); //  implement helloworld/defult templates.
-    break;
-  case os.distros.ARCH:
-    // issue with installing JSON:PP
-    linuxOmmit.push(".cs"); // installer not working lein not found // The framework 'Microsoft.NETCore.App', version '2.1.0' was not found
-    linuxOmmit.push(".ex"); // Could not find Hex, which is needed to build dependency :json
-    linuxOmmit.push(".exs"); // The same as above Could not find Hex, which is needed to build dependency :json
-    linuxOmmit.push(".erl"); //  exception error: undefined function mochijson2:decode/1
-    linuxOmmit.push(".go"); // Errors occurred, no packages were upgraded.
-    linuxOmmit.push(".hs"); // Implement HelloWorld/Default templates
-    linuxOmmit.push(".java"); // error: package org.json does not exist
-    linuxOmmit.push(".kts"); // OpenJDK 64-Bit Server VM warning: Options -Xverify:none and -noverify were deprecated in JDK 13 and will likely be removed in a future release
-    linuxOmmit.push(".kt");
-    linuxOmmit.push(".f90"); // Implement JSON - helloWorld/Default templates
-    linuxOmmit.push(".d"); // source ~/dlang/dmd-2.093.1/activate - make it automatic
-    linuxOmmit.push(".groovy"); // /root/.sdkman/bin/sdkman-init.sh: No such file or directory
-    linuxOmmit.push(".swift"); // destination path 'yaourt' already exists
-    linuxOmmit.push(".v"); // v command not found - installed but path issue
-    linuxOmmit.push(".clj"); // works but lein exec issue..
-    linuxOmmit.push(".coco"); // works but lein exec issue..
-  case os.distros.ORACLE:
-    linuxOmmit.push(".cpp"); // No CMAKE_CXX_COMPILER could be found
-    linuxOmmit.push(".cc"); // No CMAKE_CXX_COMPILER could be found
-    linuxOmmit.push(".lua"); // Re-check - should work
-    break;
+// switch (os.name()) {
+//   case os.distros.DEBIAN:
+//     linuxOmmit.push(".ex"); // /tmp/Nexss-test-ek2lfe/Default.ex: ** (Mix) Could not find an SCM for dependency :json from MyApp.Mixfile
+//     linuxOmmit.push(".exs");
+//     linuxOmmit.push(".cs");
+//     linuxOmmit.push(".erl");
+//     linuxOmmit.push(".hs");
+//     linuxOmmit.push(".java"); // error: package org.json does not exist
+//     linuxOmmit.push(".kts");
+//     linuxOmmit.push(".kt");
+//     linuxOmmit.push(".scala"); // make installer
+//     linuxOmmit.push(".f90"); //  implement helloworld/defult templates.
+//     // .r language - need to be start again for no errors - see
+//     linuxOmmit.push(".groovy"); // /root/.sdkman/bin/sdkman-init.sh: No such file or directory
+//     linuxOmmit.push(".swift"); // destination path 'yaourt' already exists
+//     break;
+//   case os.distros.AMAZON:
+//     // issue with installing JSON:PP
+//     linuxOmmit.push(".cpp");
+//     linuxOmmit.push(".clj"); // installer not working lein not found
+//     linuxOmmit.push(".cc");
+//     linuxOmmit.push(".tcl"); // package require json - notfound /tclib???
+//     linuxOmmit.push(".jl"); // make shows error about tar,bsd tar....
+//     linuxOmmit.push(".ex"); //  Dependency specified in the wrong format: {:json, "~> 1.2"}
+//     linuxOmmit.push(".exs"); //  Dependency specified in the wrong format: {:json, "~> 1.2"}
+//     linuxOmmit.push(".erl"); //  escript: exception error: undefined function mochijson2:decode/1
+//     linuxOmmit.push(".hs"); //  implement default/hellow worls stdin/out json
+//     linuxOmmit.push(".java"); // error: package org.json does not exist
+//     linuxOmmit.push(".kts");
+//     linuxOmmit.push(".kt"); // to implement installers// to implement installers
+//     linuxOmmit.push(".rkt"); // not seen,path??
+//     linuxOmmit.push(".scala"); // make installer
+//     break;
+//   case os.distros.ALPINE:
+//     // issue with installing JSON:PP
+//     linuxOmmit.push(".clj"); // installer not working lein not found
+//     linuxOmmit.push(".cpp"); // Error relocating /root/.nexssApps/vcpkg/downloads/tools/cmake-3.17.2-linux/cmake-3.17.2-Linux-x86_64/bin/cmake: gnu_dev_minor: symbol not found
+//     linuxOmmit.push(".cc"); // installer not working lein not found
+//     linuxOmmit.push(".jl"); // installer not working lein not found
+//     linuxOmmit.push(".cs"); // dotnet not found
+//     linuxOmmit.push(".java"); // error: package org.json does not exist
+//     linuxOmmit.push(".ex"); //  Dependency specified in the wrong format: {:json, "~> 1.2"}
+//     linuxOmmit.push(".exs"); //  Dependency specified in the wrong format: {:json, "~> 1.2"}
+//     linuxOmmit.push(".erl"); //
+//     linuxOmmit.push(".hs"); //
+//     linuxOmmit.push(".kts");
+//     linuxOmmit.push(".kt"); // to implement installers// to implement installers
+//     linuxOmmit.push(".rkt"); // not seen,path??
+//     linuxOmmit.push(".groovy"); // /root/.sdkman/bin/sdkman-init.sh: No such file or directory
+//     linuxOmmit.push(".scala"); // make installer
+//     linuxOmmit.push(".dart");
+//     linuxOmmit.push(".f90"); //  implement helloworld/defult templates.
+//     // linuxOmmit.push(".f90"); //  implement helloworld/defult templates.
+//     break;
+//   case os.distros.ARCH:
+//     // issue with installing JSON:PP
+//     linuxOmmit.push(".cs"); // installer not working lein not found // The framework 'Microsoft.NETCore.App', version '2.1.0' was not found
+//     linuxOmmit.push(".ex"); // Could not find Hex, which is needed to build dependency :json
+//     linuxOmmit.push(".exs"); // The same as above Could not find Hex, which is needed to build dependency :json
+//     linuxOmmit.push(".erl"); //  exception error: undefined function mochijson2:decode/1
+//     linuxOmmit.push(".go"); // Errors occurred, no packages were upgraded.
+//     linuxOmmit.push(".hs"); // Implement HelloWorld/Default templates
+//     linuxOmmit.push(".java"); // error: package org.json does not exist
+//     linuxOmmit.push(".kts"); // OpenJDK 64-Bit Server VM warning: Options -Xverify:none and -noverify were deprecated in JDK 13 and will likely be removed in a future release
+//     linuxOmmit.push(".kt");
+//     linuxOmmit.push(".f90"); // Implement JSON - helloWorld/Default templates
+//     linuxOmmit.push(".d"); // source ~/dlang/dmd-2.093.1/activate - make it automatic
+//     linuxOmmit.push(".groovy"); // /root/.sdkman/bin/sdkman-init.sh: No such file or directory
+//     linuxOmmit.push(".swift"); // destination path 'yaourt' already exists
+//     linuxOmmit.push(".v"); // v command not found - installed but path issue
+//     linuxOmmit.push(".clj"); // works but lein exec issue..
+//     linuxOmmit.push(".coco"); // works but lein exec issue..
+//   case os.distros.ORACLE:
+//     linuxOmmit.push(".cpp"); // No CMAKE_CXX_COMPILER could be found
+//     linuxOmmit.push(".cc"); // No CMAKE_CXX_COMPILER could be found
+//     linuxOmmit.push(".lua"); // Re-check - should work
+//     break;
 
-  default:
-    break;
-}
+//   default:
+//     break;
+// }
 
 module.exports = {
   values,

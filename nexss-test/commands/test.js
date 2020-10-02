@@ -269,6 +269,7 @@ function should(fname, test, regE, options) {
   } else {
     process.testTest = test;
     out(`${red(bright(test))} `);
+    logToFile(` >>>>>>> ${test} <<<<<<<`);
     // data = process.testData = exe(test);
     // We make sure there are no terminal colors signs as tests fails..
     const r = exe(test);

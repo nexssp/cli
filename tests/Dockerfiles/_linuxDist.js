@@ -49,7 +49,7 @@ if (!opts.includes(process.argv[3])) {
 let dockerFile = process.argv[2].replace(/\.\\/, "");
 console.log("Dockerfile:", yellow(dockerFile));
 
-const imageName = `nexss:${dockerFile}`;
+const imageName = `nexss:${dockerFile.replace(".Dockerfile", "")}`;
 
 // =====================================================================
 console.log(`
@@ -153,11 +153,6 @@ switch (process.argv[3]) {
     break;
 }
 
-// const
-//const
-// const
-//const
-// const
 try {
   var res = execSync(
     // You can build packages inside the container, for dev whatever is needed.

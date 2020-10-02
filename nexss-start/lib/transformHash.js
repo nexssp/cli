@@ -5,6 +5,7 @@ const { NEXSS_SPECIAL_CHAR } = require("../../config/defaults");
 
 module.exports.transformHash = (cmd, inputData, options) =>
   new Transform({
+    highWaterMark: require("../../config/defaults").highWaterMark,
     // writableObjectMode: true,
     transform: (chunk, encoding, callback) => {
       const n = cmd.name.replace(NEXSS_SPECIAL_CHAR, "");

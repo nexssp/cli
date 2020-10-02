@@ -1,9 +1,14 @@
+// Nexss Programmer
+// Environment setup - config.js
+// NEXSS_HOME_PATH, NEXSS_APPS_PATH, NEXSS_LANGUAGES_PATH,
+// NEXSS_PACKAGES_PATH, NEXSS_CACHE_PATH, NEXSS_BACKUP_PATH,
+// NEXSS_SRC_PATH, NEXSS_PROJECTS_DB
 require("../lib/helper");
 const { join, dirname, normalize } = require("path");
 const cache = require("../lib/cache");
 const { homedir } = require("os");
 const { existsSync } = require("fs");
-const { bold, yellow, white } = require("@nexssp/ansi");
+const { bold } = require("@nexssp/ansi");
 // User home directory for .nexss eg: C:\Users\mapoart\.nexss
 const home = homedir();
 
@@ -16,7 +21,6 @@ function getConfig() {
   const { existsSync, mkdirSync, copyFileSync } = require("fs");
 
   // NEXSS PATHS
-
   const NEXSS_APPS_PATH =
     process.env.NEXSS_APPS_PATH ||
     (process.env.NEXSS_APPS_PATH = normalize(`${home}/.nexssApps`));
@@ -40,10 +44,6 @@ function getConfig() {
     process.env.NEXSS_CACHE_PATH ||
     (process.env.NEXSS_CACHE_PATH = normalize(`${NEXSS_HOME_PATH}/cache`));
 
-  // const NEXSS_PROCESS_PATH =
-  //   process.env.NEXSS_PROCESS_PATH ||
-  //   (process.env.NEXSS_PROCESS_PATH = normalize(`${NEXSS_HOME_PATH}/process`));
-
   const NEXSS_BACKUP_PATH =
     process.env.NEXSS_BACKUP_PATH ||
     (process.env.NEXSS_BACKUP_PATH = normalize(`${NEXSS_HOME_PATH}/backup`));
@@ -53,11 +53,11 @@ function getConfig() {
   const NEXSS_SRC_PATH =
     process.env.NEXSS_SRC_PATH ||
     (process.env.NEXSS_SRC_PATH = join(__dirname, ".."));
+
   // Make sure directories are there
   const createIfNotExists = [
     NEXSS_HOME_PATH,
     NEXSS_CACHE_PATH,
-    // NEXSS_PROCESS_PATH,
     NEXSS_LANGUAGES_PATH,
     NEXSS_APPS_PATH,
   ];
@@ -120,11 +120,7 @@ function getConfig() {
     NEXSS_CACHE_PATH,
     NEXSS_LANGUAGES_PATH,
     NEXSS_PACKAGES_PATH,
-    // NEXSS_PROCESS_PATH,
     NEXSS_BACKUP_PATH,
-    // NEXSS_PROJECT_CONFIG_PATH,
-    // NEXSS_PROJECT_PATH,
-    // NEXSS_PROJECT_SRC_PATH,
     NEXSS_PROJECTS_DB,
   };
 }

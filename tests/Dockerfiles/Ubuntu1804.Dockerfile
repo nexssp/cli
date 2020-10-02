@@ -2,17 +2,17 @@ FROM ubuntu:18.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && \
-    apt-get install -y --force-yes \
+RUN apt update && \
+    apt install -y \
     curl \
     apt-transport-https \
     lsb-release \
     build-essential \
     python-all
 
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
-RUN apt-get update
-RUN apt-get install git nodejs -y --force-yes
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
+    apt update && \
+    apt install git nodejs -y
 
 ENV DEBIAN_FRONTEND=interactive
 

@@ -12,6 +12,7 @@ const { cleanup } = require("./output/nxsOutputParams");
 module.exports.readable = (startData) => {
   var s = new Readable({
     objectMode: true,
+    highWaterMark: require("../../config/defaults").highWaterMark,
   });
   s._read = () => {};
   const nexssVersion = require("../../package.json").version;

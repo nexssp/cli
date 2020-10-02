@@ -24,6 +24,9 @@ module.exports = (data, concatSeparator) => {
   }
   delete data["nxsGlue"];
   delete data["nxsJoin"];
-  data[CONCAT_RESULTS] = data[CONCAT_RESULTS].join(concatSeparator);
+  data[CONCAT_RESULTS] =
+    data[CONCAT_RESULTS] && data[CONCAT_RESULTS].join
+      ? data[CONCAT_RESULTS].join(concatSeparator)
+      : CONCAT_RESULTS;
   return data;
 };
