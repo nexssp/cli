@@ -1,9 +1,9 @@
-const { Transform } = require("stream");
-const { bold } = require("@nexssp/ansi");
-const axios = require("axios");
-const { nxsDebugTitle } = require("../lib/output/nxsDebug");
-module.exports.transformRequest = (url) =>
-  new Transform({
+module.exports.transformRequest = (url) => {
+  const { Transform } = require("stream");
+  const { bold } = require("@nexssp/ansi");
+  const axios = require("axios");
+  const { nxsDebugTitle } = require("../lib/output/nxsDebug");
+  return new Transform({
     highWaterMark: require("../../config/defaults").highWaterMark,
     transform: (chunk, encoding, callback) => {
       let data;
@@ -57,3 +57,4 @@ module.exports.transformRequest = (url) =>
       cb();
     },
   });
+};

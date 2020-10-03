@@ -1,10 +1,9 @@
-const { Transform } = require("stream");
-const cliArgs = require("minimist")(process.argv.slice(2));
-const { info, warn, error } = require("../../lib/log");
-const { NEXSS_SPECIAL_CHAR } = require("../../config/defaults");
-
-module.exports.transformHash = (cmd, inputData, options) =>
-  new Transform({
+module.exports.transformHash = (cmd, inputData, options) => {
+  const { Transform } = require("stream");
+  const cliArgs = require("minimist")(process.argv.slice(2));
+  const { info, warn, error } = require("../../lib/log");
+  const { NEXSS_SPECIAL_CHAR } = require("../../config/defaults");
+  return new Transform({
     highWaterMark: require("../../config/defaults").highWaterMark,
     // writableObjectMode: true,
     transform: (chunk, encoding, callback) => {
@@ -12,7 +11,7 @@ module.exports.transformHash = (cmd, inputData, options) =>
 
       if (cliArgs.nxsComments) {
         if (n.length === 0) {
-          info(xxx.inputData._.join(" "));
+          info(inputData._.join(" "));
         } else {
           const splitter = n.split(":");
           if (splitter.length === 1) {
@@ -37,18 +36,6 @@ module.exports.transformHash = (cmd, inputData, options) =>
         newData[e] = expressionParser(newData, newData[e]);
       });
       callback(null, Buffer.from(JSON.stringify(newData)));
-
-      //console.log(n);
-      //const zzz = minimist(inputData);
-
-      // console.log(minimist(inputData));
-      // console.log(xxx);
-      // console.error(chunk.toString());
-
-      // callback(null, chunk);
-
-      // callback(null, JSON.stringify(data));
     },
-
-    // if (chunk) callback(null, chunk);
   });
+};

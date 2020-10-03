@@ -72,7 +72,7 @@ if (!testType) {
   process.exit();
 }
 let testName;
-
+stopOnError = false;
 if (testType !== "all") {
   const oneTest = `${testType}.nexss-test.js`;
   if (!fs.existsSync(`${nexssTestsFolder}/${oneTest}`)) {
@@ -82,6 +82,7 @@ if (testType !== "all") {
   }
   testNames = [oneTest];
 } else {
+  stopOnError = true; // false - We take the raport...
   testNames = fs.readdirSync(nexssTestsFolder);
 
   warn(
@@ -102,7 +103,6 @@ var totalPerformedTests = 0;
 ok("Starting tests.. Please wait.. (no output)");
 let selected = [];
 
-const stopOnError = false; // false - We take the raport...
 function logToFile(data) {
   const LogFile = path.join(
     __dirname,

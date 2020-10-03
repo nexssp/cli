@@ -71,8 +71,16 @@ module.exports.parseError = (filename, errorBody, stdOutput, cwd) => {
         );
         process.exit(0);
       }
+      let match;
+      // matchAll is from NodeJS 12s
+      if (process.versions.node.split(".")[0] * 1 < 12) {
+        const matchAll = require("string.prototype.matchall");
+        matchAll.shim();
+      }
+
+      match = errorBody.matchAll(regExp);
+
       // let regExp = new RegExp(pattern, "gi");
-      let match = errorBody.matchAll(regExp);
 
       var solution;
       if (

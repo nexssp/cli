@@ -1,23 +1,23 @@
-const { Transform } = require("stream");
+module.exports.transformOutput = (x, y, z) => {
+  const { Transform } = require("stream");
 
-const { error, warn, ok, isErrorPiped } = require("../../lib/log");
-const { bold, red } = require("@nexssp/ansi");
-const nxsFieldModule = require("./output/nxsField");
-const nxsFieldsModule = require("./output/nxsFields");
-const nxsConcatModule = require("./output/nxsConcat");
-const nxsGlueModule = require("./output/nxsGlue");
-const nxsConcatAsModule = require("./output/nxsConcatAs");
-const nxsDeleteModule = require("./output/nxsDelete");
-const nxsRenameModule = require("./output/nxsRename");
-const nxsSelectModule = require("./output/nxsSelect");
-const nxsInModule = require("./input/nxsIn");
-const { nxsDebugData } = require("./output/nxsDebug");
-require("../../lib/strings"); //we load string interpolate
-const { expressionParser } = require("./expressionParser");
-const { cleanup } = require("./output/nxsOutputParams");
-const nxsStop = require("./start/nxsStop");
-module.exports.transformOutput = (x, y, z) =>
-  new Transform({
+  const { error, warn, ok, isErrorPiped } = require("../../lib/log");
+  const { bold, red } = require("@nexssp/ansi");
+  const nxsFieldModule = require("./output/nxsField");
+  const nxsFieldsModule = require("./output/nxsFields");
+  const nxsConcatModule = require("./output/nxsConcat");
+  const nxsGlueModule = require("./output/nxsGlue");
+  const nxsConcatAsModule = require("./output/nxsConcatAs");
+  const nxsDeleteModule = require("./output/nxsDelete");
+  const nxsRenameModule = require("./output/nxsRename");
+  const nxsSelectModule = require("./output/nxsSelect");
+  // const nxsInModule = require("./input/nxsIn");
+  const { nxsDebugData } = require("./output/nxsDebug");
+  require("../../lib/strings"); //we load string interpolate
+  const { expressionParser } = require("./expressionParser");
+  const { cleanup } = require("./output/nxsOutputParams");
+  const nxsStop = require("./start/nxsStop");
+  return new Transform({
     highWaterMark: require("../../config/defaults").highWaterMark,
     // writableObjectMode: true,
     transform: (chunk, encoding, callback) => {
@@ -171,3 +171,4 @@ module.exports.transformOutput = (x, y, z) =>
       // if (chunk) callback(null, chunk);
     },
   });
+};

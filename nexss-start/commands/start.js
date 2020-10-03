@@ -392,6 +392,7 @@ function Nexss() {
 
     // console.log(nexssBuild);
     process.chdir(PROCESS_CWD); //TODO: Later to recheck folder changing on getFiles + mess cleanup
+
     // Recheck the Serialize (later remove??)
     nexssResult = json.parse(json.stringify(nexssResult));
     dg("Executing..");

@@ -1,9 +1,10 @@
-const { Writable } = require("stream");
-const { timeElapsed } = require("../lib/output/nxsTime");
-// const isDebug = process.argv.indexOf("--validate") >= 0;
-const { isJson } = require("../../lib/data/json");
-module.exports.writeableStdout = () =>
-  new Writable({
+module.exports.writeableStdout = () => {
+  const { Writable } = require("stream");
+  const { timeElapsed } = require("../lib/output/nxsTime");
+  // const isDebug = process.argv.indexOf("--validate") >= 0;
+  const { isJson } = require("../../lib/data/json");
+
+  return new Writable({
     highWaterMark: require("../../config/defaults").highWaterMark,
     write: (chunk, encoding, callback) => {
       // Display single value
@@ -74,3 +75,4 @@ module.exports.writeableStdout = () =>
       callback();
     },
   });
+};

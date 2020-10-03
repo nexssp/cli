@@ -1,14 +1,13 @@
-const { Transform } = require("stream");
-const { red, bold } = require("@nexssp/ansi");
-const { warn, ok, error } = require("../../lib/log");
-const cliArgs = require("minimist")(process.argv);
-const { inspect } = require("util");
-
 module.exports.transformTest = (
   title = "no title",
   args = [],
   options = {}
 ) => {
+  const { Transform } = require("stream");
+  const { red, bold } = require("@nexssp/ansi");
+  const { warn, ok, error } = require("../../lib/log");
+  const cliArgs = require("minimist")(process.argv);
+  const { inspect } = require("util");
   const { cleanTerminalColors } = require("../../lib/terminal");
   return new Transform({
     highWaterMark: require("../../config/defaults").highWaterMark,

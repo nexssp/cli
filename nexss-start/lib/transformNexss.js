@@ -1,25 +1,4 @@
-const { Transform } = require("stream");
-// NOTE: below showing that are not used, but they ARE!!!
-const {
-  dy,
-  dbg,
-  success,
-  warn,
-  error,
-  ok,
-  info,
-  trace,
-  isErrorPiped,
-} = require("../../lib/log");
-const { colorizer } = require("./colorizer");
-const { bold, yellow, red } = require("@nexssp/ansi");
-require("../../lib/arrays");
-const { spawn } = require("child_process");
 const { defaultExecuteOptions } = require("../../config/defaults");
-const { parseError } = require("./error");
-const isLearningMode = process.argv.indexOf("--nxsLearning") >= 0;
-const { nxsDebugTitle } = require("./output/nxsDebug");
-const { timeElapsed } = require("../../nexss-start/lib/output/nxsTime");
 module.exports.transformNexss = (
   cmd, // cmd = ls, node, php or whatever
   args = [], // arguments eg. ["--help", "myfile.php"]
@@ -31,6 +10,28 @@ module.exports.transformNexss = (
     env,
   } = defaultExecuteOptions
 ) => {
+  const { Transform } = require("stream");
+  // NOTE: below showing that are not used, but they ARE!!!
+  const {
+    dy,
+    dbg,
+    success,
+    warn,
+    error,
+    ok,
+    info,
+    trace,
+    isErrorPiped,
+  } = require("../../lib/log");
+  const { colorizer } = require("./colorizer");
+  const { bold, yellow, red } = require("@nexssp/ansi");
+  require("../../lib/arrays");
+  const { spawn } = require("child_process");
+
+  const { parseError } = require("./error");
+  const learning = require("../lib/learning");
+  const { nxsDebugTitle } = require("./output/nxsDebug");
+  const { timeElapsed } = require("..//lib/output/nxsTime");
   return new Transform({
     highWaterMark: require("../../config/defaults").highWaterMark,
     transform(chunk, encoding, callback) {
@@ -59,6 +60,7 @@ module.exports.transformNexss = (
       } else {
         options.shell = "/bin/bash";
       }
+
       if (cwd && cwd.replace) cwd = eval("`" + cwd.replace(/\\/g, "/") + "`");
       options.cwd = cwd;
       options.env = "SEE: process.env";
@@ -70,15 +72,10 @@ module.exports.transformNexss = (
           JSON.stringify(options)
         );
       }
-      if (isLearningMode) {
-        args = args.remove("--nxsLearning");
-        const commandLearning = `${cmd} ${args ? args.join(" ") : ""}`;
-        console.error(`Execute: ${bold(commandLearning)}`);
-      }
+
+      learning.note(`Execute: ${bold(`${cmd} ${args ? args.join(" ") : ""}`)}`);
 
       options.env = env;
-      // args = args.filter(e => e !== "--test");
-
       process.nexssCWD = cwd;
 
       args2 = args.remove("--nocache");
@@ -106,6 +103,9 @@ module.exports.transformNexss = (
       }
       options.maxBuffer = 1024 * 1024 * 100;
       options.highWaterMark = 1024 * 1024 * 100;
+      const cleanOptions = options;
+      delete cleanOptions.env;
+      // dy(`Spawning ..${cmd}`, argsStrings.join(" "), "cwd: ", process.cwd());
       this.worker = spawn(cmd, argsStrings, options);
       this.worker.cmd = nexssCommand;
       this.worker.on("error", (err) => {
@@ -245,7 +245,6 @@ module.exports.transformNexss = (
     },
     flush(cb) {
       cb();
-      // console.log("flush!!!!!");
     },
   });
 };

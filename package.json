@@ -54,7 +54,8 @@
     "json-diff": "^0.5.4",
     "minimist": "^1.2.5",
     "ms": "^2.1.2",
-    "string-argv": "^0.3.1"
+    "string-argv": "^0.3.1",
+    "string.prototype.matchall": "^4.0.2"
   },
   "devDependencies": {
     "jest": "^26.4.2"

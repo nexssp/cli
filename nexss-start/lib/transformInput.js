@@ -1,17 +1,17 @@
-const { Transform } = require("stream");
-const cliArgs = require("minimist")(process.argv);
-const { error, warn, ok, isErrorPiped } = require("../../lib/log");
-const { bold, red } = require("@nexssp/ansi");
-const nxsInModule = require("./input/nxsIn");
-const { nxsDebugData } = require("./output/nxsDebug");
-require("../../lib/strings"); //we load string interpolate
-const { expressionParser } = require("./expressionParser");
-const cliArgsParser = require("minimist");
-const nxsStop = require("./start/nxsStop");
-const nxsGlobal = require("./input/nxsGlobal");
-const nxsLocal = require("./input/nxsLocal");
-module.exports.transformInput = (x, y, params) =>
-  new Transform({
+module.exports.transformInput = (x, y, params) => {
+  const { Transform } = require("stream");
+  const cliArgs = require("minimist")(process.argv);
+  const { error, warn, ok, isErrorPiped } = require("../../lib/log");
+  const { bold, red } = require("@nexssp/ansi");
+  const nxsInModule = require("./input/nxsIn");
+  const { nxsDebugData } = require("./output/nxsDebug");
+  require("../../lib/strings"); //we load string interpolate
+  const { expressionParser } = require("./expressionParser");
+  const cliArgsParser = require("minimist");
+  const nxsStop = require("./start/nxsStop");
+  const nxsGlobal = require("./input/nxsGlobal");
+  const nxsLocal = require("./input/nxsLocal");
+  return new Transform({
     // writableObjectMode: true,
     highWaterMark: require("../../config/defaults").highWaterMark,
     transform: (chunk, encoding, callback) => {
@@ -63,3 +63,4 @@ module.exports.transformInput = (x, y, params) =>
       }
     },
   });
+};

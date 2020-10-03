@@ -1,10 +1,10 @@
-const { Transform } = require("stream");
-const { red, bold } = require("@nexssp/ansi");
-const { di, ok, error } = require("../../lib/log");
-const cliArgs = require("minimist")(process.argv);
-const { inspect } = require("util");
-const validationMessages = require("./validationMessages");
 module.exports.transformValidation = (area = "input", options = {}) => {
+  const { Transform } = require("stream");
+  const { red, bold } = require("@nexssp/ansi");
+  const { di, ok, error } = require("../../lib/log");
+  const cliArgs = require("minimist")(process.argv);
+  const { inspect } = require("util");
+  const validationMessages = require("./validationMessages");
   return new Transform({
     highWaterMark: require("../../config/defaults").highWaterMark,
     writableObjectMode: true,

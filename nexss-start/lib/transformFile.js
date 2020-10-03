@@ -1,18 +1,17 @@
 /*
- * Title: Nexss PROGRAMMER 2.0.0
+ * Title: Nexss PROGRAMMER 2.2
  * Description: Tranform File Stream Module
  * Author: Marcin Polak
  * 2018/08/14 initial version
  */
 
-const { Transform } = require("stream");
-const { createReadStream, existsSync } = require("fs");
-const { extname } = require("path");
-const { nxsDebugTitle } = require("./output/nxsDebug");
-const { timeElapsed } = require("../../nexss-start/lib/output/nxsTime");
-const { bold } = require("@nexssp/ansi");
-
 module.exports.transformFile = (file, x, y) => {
+  const { Transform } = require("stream");
+  const { createReadStream, existsSync } = require("fs");
+  const { extname } = require("path");
+  const { nxsDebugTitle } = require("./output/nxsDebug");
+  const { timeElapsed } = require("../../nexss-start/lib/output/nxsTime");
+  const { bold } = require("@nexssp/ansi");
   return new Transform({
     highWaterMark: require("../../config/defaults").highWaterMark,
     //  writableObjectMode: true,
