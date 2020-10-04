@@ -25,29 +25,32 @@ function camelCase(text) {
   return result.charAt(0).toUpperCase() + result.slice(1);
 }
 
-function exe(command, options) {
-  options = options || {};
-  if (process.platform !== "win32") {
-    Object.assign(options, { shell: "/bin/bash" });
-  }
+const { nSpawnSync } = require("../../lib/nProcess");
 
-  options.maxBuffer = 52428800; // 10*default
-  try {
-    const r = execSync(`${command} --nxsPipeErrors`, options).toString();
+let exe = nSpawnSync; // Because of the NODEJS 10.
 
-    return r;
-  } catch (er) {
-    // err.stdout;
-    // err.stderr;
-    // err.pid;
-    // err.signal;
-    // err.status;
-    if (process.argv.includes("--errors")) {
-      console.error(er);
-    }
-    if (options && options.stopOnErrors) process.exitCode = 1;
-  }
-}
+// function exeOLD(command, options) {
+//   options = options || {};
+//   if (process.platform !== "win32") {
+//     Object.assign(options, { shell: "/bin/bash" });
+//   }
+
+//   // options.maxBuffer = 52428800; // 10*default
+//   try {
+//     const r = execSync(`${command} --nxsPipeErrors`, options).toString();
+//     return r;
+//   } catch (er) {
+//     // err.stdout;
+//     // err.stderr;
+//     // err.pid;
+//     // err.signal;
+//     // err.status;
+//     if (process.argv.includes("--errors")) {
+//       console.error(er);
+//     }
+//     if (options && options.stopOnErrors) process.exitCode = 1;
+//   }
+// }
 
 var fs = require("fs");
 

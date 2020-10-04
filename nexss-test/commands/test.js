@@ -72,7 +72,7 @@ if (!testType) {
   process.exit();
 }
 let testName;
-stopOnError = false;
+stopOnError = true;
 if (testType !== "all") {
   const oneTest = `${testType}.nexss-test.js`;
   if (!fs.existsSync(`${nexssTestsFolder}/${oneTest}`)) {
@@ -218,7 +218,8 @@ testNames.forEach((test) => {
               } else {
                 return evalTS(p);
               }
-            })
+            }),
+            "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
           );
 
           totalPerformedTests++;
@@ -275,7 +276,7 @@ function should(fname, test, regE, options) {
     const r = exe(test);
     data = process.testData =
       r && r.replace
-        ? exe(test).replace(
+        ? r.replace(
             /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g,
             ""
           )
@@ -342,7 +343,9 @@ function should(fname, test, regE, options) {
     );
   } else {
     console.error(red(bright(`But ${title}: `)));
-    console.error(data);
+    console.log(data);
+    console.error(yellow(bold("INSPECT: ")));
+    console.log(require("util").inspect(data));
   }
 
   logToFile(require("util").inspect(data));

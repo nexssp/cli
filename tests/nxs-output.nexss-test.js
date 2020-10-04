@@ -19,7 +19,11 @@ module.exports = {
         },
         {
           title: "--nxsPretty",
-          params: ["nexss Id --nxsPretty", /{\n\t*"*"*/],
+          params: [
+            "nexss Id --nxsPretty",
+            process.platform == "win32" ? /{\n\t*"*"*/s : /^{.*nexss:..*:.*}/s,
+            ,
+          ],
         },
         {
           title: "--nxsConcat",

@@ -23,7 +23,11 @@ module.exports.transformInput = (x, y, params) => {
         if (isErrorPiped) {
           console.log(data);
         } else {
-          callback(null, data);
+          try {
+            callback(null, data);
+          } catch (e) {
+            error(`ERRROOORRR:`, e);
+          }
         }
 
         return;

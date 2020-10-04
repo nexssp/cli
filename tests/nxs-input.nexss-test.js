@@ -30,7 +30,7 @@ module.exports = {
           params: [
             // order is important
             "nexss Id --x=1 --_y=369123x --_w=369456y --nxsGlobal=x --nxsGlobal=w",
-            /You have used nxsGlobal however there is data with name x already/,
+            /nxsGlobal:Local var '_x' does not exist. Remove nxsGlobal=x/,
           ],
         },
         {

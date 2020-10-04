@@ -12,9 +12,7 @@ module.exports = (data) => {
           `nxsGlobal:Local var '_${glob}' does not exist. Remove nxsGlobal=${glob}`
         );
         data.nxsStop = true;
-      }
-
-      if (data[glob] && !data.nxsGlobalForce) {
+      } else if (data[glob] && !data.nxsGlobalForce) {
         error(
           `You have used nxsGlobal however there is data with name ${glob} already. 
 Use nxsGlobalForce if you don't want to see this message`
