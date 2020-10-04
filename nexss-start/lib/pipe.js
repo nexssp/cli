@@ -17,64 +17,65 @@ async function run(operations, options = {}) {
   const util = require("util");
   const pipelineAsync = util.promisify(pipeline);
 
-  console.time(blue("Nexss Programmer"));
-  // We get last index of transformOutput as some parameters
-  // passed in the commandline directly only should be applied in the
-  // last transform output eg. nxsFields, nxsField etc.
-  let lastIndex;
-  for (let x = 0; x < operations.length; x++) {
-    if (operations[x].stream == "transformOutput") {
-      lastIndex = x;
-    }
-  }
   // Below is for relative dirs in the .nexss files
   // This will need to be changed to the distributed systems
+  const finalOperations = operations.map((element, index) => {
+    console.time(blue("Nexss Programmer"));
+    // We get last index of transformOutput as some parameters
+    // passed in the commandline directly only should be applied in the
+    // last transform output eg. nxsFields, nxsField etc.
+    let lastIndex;
+    for (let x = 0; x < operations.length; x++) {
+      if (operations[x].stream == "transformOutput") {
+        lastIndex = x;
+      }
+    }
+    let streamName = element.stream || "transformNexss";
+    let args = element.args || [];
+
+    // Arguments from command line on run
+    let paramsNumber = 4;
+    if (process.argv[2] !== "s" && process.argv[2] !== "start") {
+      paramsNumber = 3;
+    }
+
+    if (!options.nxsBuild) {
+      let terminalParams = process.argv.slice(paramsNumber);
+      // We filter transformOutput params passed from terminal
+      // This needs to be done as some packages are built from
+      // many modules and transform output streams are used also there.
+      if (index != lastIndex) {
+        terminalParams = cleanup(terminalParams);
+      }
+
+      args = args.concat(terminalParams);
+    }
+
+    const runOptions = Object.assign({}, options, {
+      fileName: element.fileName,
+      cwd: element.cwd,
+    });
+
+    runOptions.inputData = element.inputData;
+    if (element.data) {
+      if (runOptions.inputData) {
+        Object.assign(runOptions.inputData, element.data);
+      } else {
+        runOptions.inputData = element.data;
+      }
+    }
+    runOptions.env = Object.assign({}, process.env, element.env);
+
+    if (element.cmd) {
+      return eval(streamName)(element.cmd, args, runOptions);
+    } else {
+      return eval(element)(runOptions);
+    }
+  });
 
   await pipelineAsync(
     // process.stdin,
-    ...operations.map((element, index) => {
-      let streamName = element.stream || "transformNexss";
-      let args = element.args || [];
-
-      // Arguments from command line on run
-      let paramsNumber = 4;
-      if (process.argv[2] !== "s" && process.argv[2] !== "start") {
-        paramsNumber = 3;
-      }
-
-      if (!options.nxsBuild) {
-        let terminalParams = process.argv.slice(paramsNumber);
-        // We filter transformOutput params passed from terminal
-        // This needs to be done as some packages are built from
-        // many modules and transform output streams are used also there.
-        if (index != lastIndex) {
-          terminalParams = cleanup(terminalParams);
-        }
-
-        args = args.concat(terminalParams);
-      }
-
-      const runOptions = Object.assign({}, options, {
-        fileName: element.fileName,
-        cwd: element.cwd,
-      });
-
-      runOptions.inputData = element.inputData;
-      if (element.data) {
-        if (runOptions.inputData) {
-          Object.assign(runOptions.inputData, element.data);
-        } else {
-          runOptions.inputData = element.data;
-        }
-      }
-      runOptions.env = Object.assign({}, process.env, element.env);
-
-      if (element.cmd) {
-        return eval(streamName)(element.cmd, args, runOptions);
-      } else {
-        return eval(element)(runOptions);
-      }
-    })
+    ...finalOperations
   )
     .then((e) => {
       if (process.argv.includes("--debug")) {

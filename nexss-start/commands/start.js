@@ -119,7 +119,7 @@ function Nexss() {
       if (nexssConfig && nexssConfig.data)
         Object.assign(startData, nexssConfig.data);
 
-      if (cliArgs.debug) di(`startData: ${yellow(inspect(startData))}`);
+      // if (cliArgs.debug) di(`startData: ${yellow(inspect(startData))}`);
 
       nexssBuild.push({ stream: "readable", cmd: startData });
 

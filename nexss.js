@@ -585,9 +585,9 @@ switch (command) {
             `${NEXSS_SRC_PATH}/nexss-${plugin}/commands/${plugin}.js`
           )
         ) {
-          log.d(
-            yellow(`Loading plugin.. ./nexss-${plugin}/commands/${plugin}.js`)
-          );
+          // log.d(
+          //   yellow(`Loading plugin.. ./nexss-${plugin}/commands/${plugin}.js`)
+          // );
           require(`./nexss-${plugin}/commands/${plugin}.js`);
         } else {
           let helpContent = fs.readFileSync(

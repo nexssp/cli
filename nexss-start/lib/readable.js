@@ -75,7 +75,13 @@ module.exports.readable = (startData) => {
   if (stdinRead) {
     try {
       dataStdin = JSON.parse(stdinRead);
-    } catch (error) {
+    } catch (er) {
+      if (stdinRead.startsWith("SyntaxError: ")) {
+        error(stdinRead);
+        process.exitCode = 1;
+        return;
+      }
+
       dataStdin.nexssStdin = stdinRead;
     }
 

@@ -1,17 +1,12 @@
-// Language download-all
-// Language add git://sadasdasd, name: git://nexssp/language-name
-// Language update
-const {
-  NEXSS_PROJECT_PATH,
-  NEXSS_LANGUAGES_PATH,
-  NEXSS_HOME_PATH,
-} = require("../../config/config");
+const NEXSS_PROJECT_PATH = process.env.NEXSS_PROJECT_PATH;
+const NEXSS_LANGUAGES_PATH = process.env.NEXSS_LANGUAGES_PATH;
+const NEXSS_HOME_PATH = process.env.NEXSS_HOME_PATH;
 const { join, extname, resolve } = require("path");
-const { warn, success, info } = require("@nexssp/logdebug");
+const { warn, success, info, dy, dg } = require("@nexssp/logdebug");
 const { bold, yellow, red } = require("@nexssp/ansi");
 const cache = require("../../lib/cache");
 
-function getLanguagesConfigFiles(projectFolder = "") {
+function getLanguagesConfigFiles() {
   let paths = [];
   const fg = require("fast-glob");
   const languagePathArray = [
@@ -104,12 +99,14 @@ module.exports.getLang = (ext, recreateCache) => {
     const getLanguageCacheName = `nexss_core_getLanguages_${ext}_.json`;
     if (!recreateCache && cache.exists(getLanguageCacheName, "1y")) {
       language = cache.readJSON(getLanguageCacheName);
+      dg(`[CACHE] Read JSON`);
     } else {
       language = module.exports.getLanguages(recreateCache);
       language = language[ext];
     }
 
     if (!language) {
+      dy(`[CACHE] recreate cache`);
       console.log(
         green(
           bold(

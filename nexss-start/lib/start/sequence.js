@@ -62,6 +62,11 @@ more: https://github.com/nexssp/cli/wiki/Sequences`
 
 // search for regular expressions
 const searchSequence = (seqFrom, sequences) => {
+  // NodeJS 10 does not have matchAll function.
+  if (process.versions.node.split(".")[0] * 1 < 12) {
+    const matchAll = require("string.prototype.matchall");
+    matchAll.shim();
+  }
   // We return sequence if exact name exists
   if (sequences[seqFrom]) {
     return { seq: seqFrom };
