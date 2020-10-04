@@ -26,6 +26,7 @@ switch (os.name()) {
     linuxOmmit.push(".exs");
     linuxOmmit.push(".erl"); // Works but - testing shows failed.
     linuxOmmit.push(".hs"); // Works but - testing shows failed.
+    linuxOmmit.push(".kts"); // REMOVED COMPLETELY
     break;
 }
 //     linuxOmmit.push(".cs");
