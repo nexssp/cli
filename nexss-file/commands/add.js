@@ -161,9 +161,14 @@ function execute(options) {
         fs.copyFileSync(options.templatePath, filePath);
       } catch (err) {
         if (err.code === "ENOENT") {
-          console.log(
+          error(
             `Error during copy from ${options.templatePath} to ${filePath}`
           );
+        } else if (err.code === "EACCES") {
+          error(
+            `Error during copy from ${options.templatePath} to ${filePath}. Permission denied. You may need to run this as root? or change permissions?`
+          );
+          return;
         } else {
           throw err;
         }

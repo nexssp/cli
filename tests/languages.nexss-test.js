@@ -20,10 +20,14 @@ let linuxOmmit = [
   ".bat", // Above are not on Linux
   // ====================
 ];
-// switch (os.name()) {
-//   case os.distros.DEBIAN:
-//     linuxOmmit.push(".ex"); // /tmp/Nexss-test-ek2lfe/Default.ex: ** (Mix) Could not find an SCM for dependency :json from MyApp.Mixfile
-//     linuxOmmit.push(".exs");
+switch (os.name()) {
+  case os.distros.UBUNTU:
+    linuxOmmit.push(".ex"); // Output stops / NODEJS10
+    linuxOmmit.push(".exs");
+    linuxOmmit.push(".erl"); // Works but - testing shows failed.
+    linuxOmmit.push(".hs"); // Works but - testing shows failed.
+    break;
+}
 //     linuxOmmit.push(".cs");
 //     linuxOmmit.push(".erl");
 //     linuxOmmit.push(".hs");
