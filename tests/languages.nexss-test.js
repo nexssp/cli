@@ -19,14 +19,29 @@ let linuxOmmit = [
   ".pd",
   ".bat", // Above are not on Linux
   // ====================
+  // No implementation of Default and HelloWorld templates
+  // TODO: Compilers works, to implement helloWorld, defaults
+  ".f90",
+  ".hs",
+  ".groovy",
+  ".coco",
+  ".hy",
+  ".bas",
+  ".zig",
+  ".m",
+  ".adb", // !!!!!!!!
 ];
+// ======================
+// Other issues
 switch (os.name()) {
   case os.distros.UBUNTU:
     linuxOmmit.push(".ex"); // Output stops / NODEJS10
     linuxOmmit.push(".exs");
     linuxOmmit.push(".erl"); // Works but - testing shows failed.
-    linuxOmmit.push(".hs"); // Works but - testing shows failed.
     linuxOmmit.push(".kts"); // REMOVED COMPLETELY
+    linuxOmmit.push(".dart");
+    linuxOmmit.push(".clj");
+    linuxOmmit.push(".raku");
     break;
 }
 //     linuxOmmit.push(".cs");

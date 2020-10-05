@@ -2,7 +2,7 @@ const NEXSS_PROJECT_PATH = process.env.NEXSS_PROJECT_PATH;
 const NEXSS_LANGUAGES_PATH = process.env.NEXSS_LANGUAGES_PATH;
 const NEXSS_HOME_PATH = process.env.NEXSS_HOME_PATH;
 const { join, extname, resolve } = require("path");
-const { warn, success, info, dy, dg } = require("@nexssp/logdebug");
+const { warn, success, error, info, dy, dg } = require("@nexssp/logdebug");
 const { bold, yellow, red } = require("@nexssp/ansi");
 const cache = require("../../lib/cache");
 
@@ -54,12 +54,15 @@ module.exports.getLanguages = (recreateCache) => {
         bold(file),
         bold(e)
       );
-      process.exit(1);
+      // process.exit(0);
+      process.exitCode = 1;
+      return;
     }
 
     if (!content || !content.extensions) {
       console.error("File has no .extensions which should be an array.", file);
-      process.exit(1);
+      process.exitCode = 1;
+      return;
     }
     content.extensions.forEach((languageExtension) => {
       result[languageExtension] = content;
@@ -102,6 +105,12 @@ module.exports.getLang = (ext, recreateCache) => {
       dg(`[CACHE] Read JSON`);
     } else {
       language = module.exports.getLanguages(recreateCache);
+      if (!language) {
+        error(
+          "There was an error with loading languages. Do you see any other errors before?"
+        );
+        return;
+      }
       language = language[ext];
     }
 
@@ -232,6 +241,7 @@ module.exports.getLang = (ext, recreateCache) => {
         }
 
         language = module.exports.getLang(ext);
+
         if (process.platform !== "win32") {
           if (language.dist !== distName) {
             // This is different distribution probably no setup for other then Ubuntu

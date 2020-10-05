@@ -15,6 +15,14 @@ module.exports.getCompiler = (file) => {
   db(`>>> Checking language for: ${bold(fileName)}`);
   const languageDefinition = getLangByFilename(fileName);
   if (!languageDefinition) {
+    // THere can be also configuration isssues
+    error(
+      bold(
+        yellow(
+          `If you see any errors before this statement, please fix them first.`
+        )
+      )
+    );
     // TODO: ?? Execute shell commands? return false and pass shell commands?
     // We check if we can run this.
     // maybe later here to execute just shell comands......
@@ -26,7 +34,7 @@ module.exports.getCompiler = (file) => {
     // } catch (e) {
     //   console.log(e);
     // }
-    error("There is an issue", file);
+    error("There might be an issue", file);
     error(
       "Maybe there is a program with the same name as command of Nexss Programmer?"
     );

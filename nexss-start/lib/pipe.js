@@ -19,8 +19,8 @@ async function run(operations, options = {}) {
 
   // Below is for relative dirs in the .nexss files
   // This will need to be changed to the distributed systems
+  console.time(blue("Nexss Programmer"));
   const finalOperations = operations.map((element, index) => {
-    console.time(blue("Nexss Programmer"));
     // We get last index of transformOutput as some parameters
     // passed in the commandline directly only should be applied in the
     // last transform output eg. nxsFields, nxsField etc.
