@@ -6,6 +6,7 @@ module.exports = (data, field) => {
       // Server Output cleanup
       delete data.htmlOutput;
       delete data.nxsField;
+      delete data.nxsModule;
       delete data.nexssScript;
       delete data.nxsPipeErrors;
       delete data.quiet;

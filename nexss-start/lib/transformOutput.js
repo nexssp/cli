@@ -22,13 +22,15 @@ module.exports.transformOutput = (x, y, z) => {
     // writableObjectMode: true,
     transform: (chunk, encoding, callback) => {
       // Not a json data so we don't do anything here
-
       let data = chunk.toString();
+      process.dataFlow.push(chunk.toString());
+
       let cliArgs = require("minimist")(y);
       delete cliArgs._;
       // if (data && data.startsWith("{")) {
       try {
         data = JSON.parse(data);
+
         nxsStop(data);
         // We add data for nxsField, nxsFields etc.
         // defined in the nexss-start\lib\output\nxsOutputParams.js
@@ -56,15 +58,23 @@ module.exports.transformOutput = (x, y, z) => {
           }
           data.nxsStopReason = err;
           data.nxsStop = true;
-          callback(null, JSON.stringify(data)); //JSON stringify?
+          if (!cliArgs.nxsModule) {
+            callback(null, JSON.stringify(data)); //JSON stringify?
+          } else {
+            let field = "nxsOut";
+
+            if (typeof cliArgs.nxsModule !== "boolean") {
+              field = cliArgs.nxsModule;
+            }
+
+            callback(null, JSON.stringify({ [field]: data })); //JSON stringify?
+          }
+
           // console.log(data);
         }
 
         return;
       }
-
-      // Parsing values insde the template !!
-      // You can use variables now!!!
 
       Object.keys(data).forEach((e) => {
         if (!e.startsWith("__") && e.startsWith("_")) {
@@ -75,6 +85,10 @@ module.exports.transformOutput = (x, y, z) => {
           data[e] = expressionParser(data, data[e]);
         }
       });
+
+      //if (process.exitCode === 0) {
+      // Parsing values insde the template !!
+      // You can use variables now!!!
 
       // VERSION 2 MUCH MORE EFFICIENT
       // Twice as if is used for example:
@@ -167,13 +181,13 @@ module.exports.transformOutput = (x, y, z) => {
         if (typeof data === "object") {
           data = JSON.stringify(data);
         }
-        data += ""; //Incase it is a string
+        data += ""; //Incase it is not a string
         callback(null, data);
       }
       // } else {
-      //   callback(null, data);
+      //   // console.log(data);
+      //   callback(null, JSON.stringify(data));
       // }
-      // if (chunk) callback(null, chunk);
     },
   });
 };

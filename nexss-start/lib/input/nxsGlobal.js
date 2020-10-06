@@ -1,5 +1,5 @@
 module.exports = (data) => {
-  const { error } = require("@nexssp/logdebug");
+  const { error } = require("../../../lib/log");
   if (data.nxsGlobal) {
     let nxsGlobal = data.nxsGlobal;
     if (!Array.isArray(nxsGlobal)) {

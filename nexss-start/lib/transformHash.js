@@ -3,6 +3,7 @@ module.exports.transformHash = (cmd, inputData, options) => {
   const cliArgs = require("minimist")(process.argv.slice(2));
   const { info, warn, error } = require("../../lib/log");
   const { NEXSS_SPECIAL_CHAR } = require("../../config/defaults");
+  const { nxsDebugData } = require("./output/nxsDebug");
   return new Transform({
     highWaterMark: require("../../config/defaults").highWaterMark,
     // writableObjectMode: true,
@@ -35,6 +36,22 @@ module.exports.transformHash = (cmd, inputData, options) => {
       Object.keys(newData).forEach((e) => {
         newData[e] = expressionParser(newData, newData[e]);
       });
+
+      // This stream allow to make vars eg. $#
+      if (newData.nxsAs && newData.nxsIn) {
+        const nxsInData = newData.nxsIn;
+        if (Array.isArray(nxsInData)) {
+          // If there is only one element, take this element.
+          newData[newData.nxsAs] =
+            nxsInData.length > 1 ? nxsInData : nxsInData[0];
+        } else {
+          newData[newData.nxsAs] = nxsInData;
+        }
+
+        delete newData.nxsIn;
+        delete newData.nxsAs;
+      }
+      nxsDebugData(newData, "$#", "magenta");
       callback(null, Buffer.from(JSON.stringify(newData)));
     },
   });

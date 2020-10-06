@@ -225,9 +225,10 @@ module.exports.transformNexss = (
         }
       });
 
+      const json = require("../../lib/data/json");
+      j = json.parse(chunk.toString());
       try {
         // console.error(chunk);
-        j = JSON.parse(chunk.toString());
 
         const { expressionParser } = require("./expressionParser");
         Object.keys(j).forEach((e) => {

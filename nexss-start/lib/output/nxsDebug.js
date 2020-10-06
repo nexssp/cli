@@ -13,10 +13,11 @@ const {
 module.exports.nxsDebugTitle = (title, data, color) => {
   if (data && data["nxsDebug"]) {
     if (!color) color = "white";
-    const belt = eval(color)(`=`.repeat(80));
+
+    const belt = eval(color)(bold(`=`.repeat(80)));
 
     console.error(belt);
-    console.error(eval(color)(`->->-> ${title} `));
+    console.error(eval(color)(bold(`\n->->-> ${title} \n`)));
     // console.error(belt);
   }
 };

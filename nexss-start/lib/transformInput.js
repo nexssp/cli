@@ -65,8 +65,10 @@ module.exports.transformInput = (x, y, params) => {
         nxsLocal(data);
         nxsStop(data);
 
-        data.globalTestTInput = "This is input!!!!";
-        data.globalTestTInputFunction = () => 1234;
+        // data.globalTestTInput = "This is input!!!!";
+        // data.nxsGlobalTestTInputFunction = () => {
+        //   return require("fs").existsSync(".");
+        // };
 
         // The library below also stores functions..
         const json = require("../../lib/data/json");

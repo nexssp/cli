@@ -1,4 +1,4 @@
-const { execSync } = require("child_process");
+const { execSync, spawnSync } = require("child_process");
 
 function yellow(s) {
   return `\x1b[33m${s}\x1b[0m`;
@@ -25,32 +25,37 @@ function camelCase(text) {
   return result.charAt(0).toUpperCase() + result.slice(1);
 }
 
-const { nSpawnSync } = require("../../lib/nProcess");
+if (process.versions.node.split(".")[0] * 1 < 12) {
+  const { nSpawnSync } = require("../../lib/nProcess");
+  exe = nSpawnSync; // Because of the NODEJS 10.
+} else {
+  exe = exeOLD;
+}
 
-let exe = nSpawnSync; // Because of the NODEJS 10.
+function exeOLD(command, options) {
+  options = options || {};
+  if (process.platform !== "win32") {
+    Object.assign(options, { shell: "/bin/bash" });
+  }
 
-// function exeOLD(command, options) {
-//   options = options || {};
-//   if (process.platform !== "win32") {
-//     Object.assign(options, { shell: "/bin/bash" });
-//   }
-
-//   // options.maxBuffer = 52428800; // 10*default
-//   try {
-//     const r = execSync(`${command} --nxsPipeErrors`, options).toString();
-//     return r;
-//   } catch (er) {
-//     // err.stdout;
-//     // err.stderr;
-//     // err.pid;
-//     // err.signal;
-//     // err.status;
-//     if (process.argv.includes("--errors")) {
-//       console.error(er);
-//     }
-//     if (options && options.stopOnErrors) process.exitCode = 1;
-//   }
-// }
+  // options.maxBuffer = 52428800; // 10*default
+  let r;
+  try {
+    r = execSync(`${command} --nxsPipeErrors`, options).toString();
+    return r;
+  } catch (er) {
+    r = er.stdout.toString();
+    // err.stderr;
+    // err.pid;
+    // err.signal;
+    // err.status;
+    if (process.argv.includes("--errors")) {
+      console.error(er);
+    }
+    if (options && options.stopOnErrors) process.exitCode = 1;
+  }
+  return r;
+}
 
 var fs = require("fs");
 
