@@ -58,11 +58,10 @@ module.exports.transformOutput = (x, y, z) => {
           }
           data.nxsStopReason = err;
           data.nxsStop = true;
-          if (!cliArgs.nxsModule) {
+          if (!process.argv.includes("--nxsModule")) {
             callback(null, JSON.stringify(data)); //JSON stringify?
           } else {
             let field = "nxsOut";
-
             if (typeof cliArgs.nxsModule !== "boolean") {
               field = cliArgs.nxsModule;
             }
@@ -76,6 +75,9 @@ module.exports.transformOutput = (x, y, z) => {
         return;
       }
 
+      // Parsing values insde the template !!
+      // You can use variables now!!!
+
       Object.keys(data).forEach((e) => {
         if (!e.startsWith("__") && e.startsWith("_")) {
           // All vars which starts with _ are automatically cleaned up
@@ -85,10 +87,6 @@ module.exports.transformOutput = (x, y, z) => {
           data[e] = expressionParser(data, data[e]);
         }
       });
-
-      //if (process.exitCode === 0) {
-      // Parsing values insde the template !!
-      // You can use variables now!!!
 
       // VERSION 2 MUCH MORE EFFICIENT
       // Twice as if is used for example:
@@ -185,9 +183,9 @@ module.exports.transformOutput = (x, y, z) => {
         callback(null, data);
       }
       // } else {
-      //   // console.log(data);
-      //   callback(null, JSON.stringify(data));
+      //   callback(null, data);
       // }
+      // if (chunk) callback(null, chunk);
     },
   });
 };

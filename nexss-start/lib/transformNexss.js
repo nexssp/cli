@@ -189,7 +189,7 @@ module.exports.transformNexss = (
       });
 
       // self.pipe(this.worker);
-
+      // !!NOTE: Below can't be 'finish' as it's not showing all errors.
       this.worker.stderr.on("end", function () {
         if (this.errBuffer) {
           parseError(
