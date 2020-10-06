@@ -1,5 +1,3 @@
-const { exit } = require("process");
-
 Nexss();
 
 function Nexss() {

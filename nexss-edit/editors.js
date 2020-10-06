@@ -22,14 +22,15 @@ module.exports = {
     license: "GPL-2.0-only (https://spdx.org/licenses/GPL-2.0-only.html)",
   },
   vscode: {
-    install: "scoop install vscode",
+    install:
+      "scoop bucket add extras && scoop install vscodiumhttps://github.com/VSCodium/vscodium",
     listExtensions: "vscode list-extensions",
     installExtension: "vscode --install-extension",
     uninstallExtension: "--uninstall-extension <extension>",
-    command: "code",
+    command: "codium",
     args: "<file>",
-    title: "Visual Studio Code",
-    website: "https://code.visualstudio.com/",
-    license: "Freeware (https://code.visualstudio.com/License/)",
+    title: "VSCodium",
+    website: "https://github.com/VSCodium/vscodium",
+    license: "MIT",
   },
 };

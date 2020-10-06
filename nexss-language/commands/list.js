@@ -1,5 +1,5 @@
 /*
- * Title: Language - Nexss PROGRAMMER 2.0.0
+ * Title: Language - Nexss PROGRAMMER 2.x
  * Description: Managing Languages
  * Author: Marcin Polak
  * 2018/10/01 initial version
@@ -10,8 +10,32 @@ const { bold, yellow, green } = require("@nexssp/ansi");
 const { info } = require("../../lib/log");
 
 const languages = require("../lib/language");
+
+const comma = process.argv.includes("--comma");
+const list = process.argv.includes("--list");
+
 (async () => {
   let languagesList = await languages.getLanguages();
+
+  if (list) {
+    for (var key in languagesList) {
+      let details = languagesList[key];
+      console.log(details.title);
+    }
+    process.exit();
+  } else if (comma) {
+    let l = [];
+    for (var key in languagesList) {
+      let details = languagesList[key];
+      l.push(details.title);
+    }
+    const s = new Set(l);
+    const arr = Array.from(s);
+    console.log(arr.join(", "));
+    console.log(arr.length);
+    process.exit();
+  }
+
   info(`Installed languages`);
   const Table = require("cli-table3");
   var table = new Table({

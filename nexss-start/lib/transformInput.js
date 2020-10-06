@@ -12,8 +12,10 @@ module.exports.transformInput = (x, y, params) => {
   const nxsGlobal = require("./input/nxsGlobal");
   const nxsLocal = require("./input/nxsLocal");
   return new Transform({
-    // writableObjectMode: true,
-    highWaterMark: require("../../config/defaults").highWaterMark,
+    writableObjectMode: true,
+    readableObjectMode: true,
+    readableHighWaterMark: require("../../config/defaults").highWaterMark,
+    writableHighWaterMark: require("../../config/defaults").highWaterMark,
     transform: (chunk, encoding, callback) => {
       let data = chunk.toString();
 
@@ -63,7 +65,12 @@ module.exports.transformInput = (x, y, params) => {
         nxsLocal(data);
         nxsStop(data);
 
-        callback(null, JSON.stringify(data));
+        data.globalTestTInput = "This is input!!!!";
+        data.globalTestTInputFunction = () => 1234;
+
+        // The library below also stores functions..
+        const json = require("../../lib/data/json");
+        callback(null, json.stringify(data));
       }
     },
   });

@@ -142,10 +142,10 @@ switch (process.argv[3]) {
     command = `docker run ${privileged} -i ${detached} -v /work -v ${pathNexssCli}:/nexssCli -v /root/.nexss/cache -e DEBIAN_FRONTEND=noninteractive -t ${imageName} /bin/bash -c "cd /nexssCli && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && cd /work && /bin/bash" `;
     break;
   case "clone":
-    command = `docker run ${privileged} ${detached} -it -v /work ${imageName} bin/sh -c "git clone --depth=1 https://github.com/nexssp/cli.git && cd cli && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && cd /work && /bin/bash"`;
+    command = `docker run ${privileged} ${detached} -it -v /work ${imageName} /bin/bash -c "git clone --depth=1 https://github.com/nexssp/cli.git && cd cli && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && cd /work && /bin/bash"`;
     break;
   case "empty":
-    command = `docker run ${privileged} ${detached} -it ${imageName} bin/sh`;
+    command = `docker run ${privileged} ${detached} -it ${imageName} /bin/bash`;
     break;
   case "npminstall":
     command = `docker run ${privileged} ${detached} -it ${imageName} bash -c "npm i @nexssp/cli -g && nexss && mkdir /work && cd /work && /bin/bash`;
@@ -153,6 +153,9 @@ switch (process.argv[3]) {
     break;
 }
 
+if (imageName === "nexss:NixOS") {
+  command = command.replace(/\/bin\/bash/gi, "/bin/sh");
+}
 try {
   var res = execSync(
     // You can build packages inside the container, for dev whatever is needed.

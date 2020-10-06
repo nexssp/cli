@@ -7,72 +7,76 @@ module.exports.writeableStdout = () => {
   return new Writable({
     highWaterMark: require("../../config/defaults").highWaterMark,
     write: (chunk, encoding, callback) => {
-      // Display single value
       if (encoding === "buffer") {
         chunk = chunk.toString();
       }
+      // Display single value
+      if (process.NEXSS_NO_TRANSFORM) {
+        // console.log(process.NEXSS_NO_TRANSFORM);
+        console.log(chunk);
+      } else {
+        try {
+          chunk = JSON.parse(chunk);
 
-      try {
-        chunk = JSON.parse(chunk);
+          delete chunk["nexssScript"];
+          if (!chunk.nxsPretty) {
+            if (chunk["nxsDataDisplay"]) {
+              let color = "\u001b[35m"; //grey
 
-        delete chunk["nexssScript"];
-        if (!chunk.nxsPretty) {
-          if (chunk["nxsDataDisplay"]) {
-            let color = "\u001b[35m"; //grey
+              console.error(
+                `${color}Display below only Object keys (--nxsDataDisplay):\x1b[0m`
+              );
+              console.error(JSON.stringify(Object.keys(chunk)));
+            } else {
+              chunk =
+                typeof chunk === "object" || typeof chunk === "number"
+                  ? JSON.stringify(chunk)
+                  : chunk;
 
-            console.error(
-              `${color}Display below only Object keys (--nxsDataDisplay):\x1b[0m`
-            );
-            console.error(JSON.stringify(Object.keys(chunk)));
+              if (isJson(chunk)) {
+                const coloredJson = require("json-colorizer")(chunk + "", {
+                  colors: {
+                    STRING_KEY: "green.bold",
+                    STRING_LITERAL: "yellow.bold",
+                    NUMBER_LITERAL: "blue.bold",
+                  },
+                });
+                if (process.platform === "win32") {
+                  process.stdout.write(coloredJson);
+                } else {
+                  console.log(coloredJson);
+                }
+              } else {
+                process.stdout.write(chunk + "");
+              }
+            }
+          } else {
+            delete chunk["nxsPretty"];
+            console.log(chunk);
+          }
+
+          timeElapsed(chunk.nxsTime);
+        } catch (error) {
+          // console.log("-------------------------------------------error", error);
+          if (process.argv.indexOf("--nxsModule") >= 0) {
+            process.stdout.write(JSON.stringify({ nxsOut: chunk }));
           } else {
             chunk =
               typeof chunk === "object" || typeof chunk === "number"
                 ? JSON.stringify(chunk)
                 : chunk;
-
             if (isJson(chunk)) {
-              const coloredJson = require("json-colorizer")(chunk + "", {
-                colors: {
-                  STRING_KEY: "green.bold",
-                  STRING_LITERAL: "yellow.bold",
-                  NUMBER_LITERAL: "blue.bold",
-                },
-              });
-              if (process.platform === "win32") {
-                process.stdout.write(coloredJson);
-              } else {
-                console.log(coloredJson);
-              }
+              process.stdout.write(require("json-colorizer")(chunk));
             } else {
-              process.stdout.write(chunk + "");
+              process.stdout.write(chunk);
             }
           }
-        } else {
-          delete chunk["nxsPretty"];
-          console.log(chunk);
         }
 
-        timeElapsed(chunk.nxsTime);
-      } catch (error) {
-        console.log("-------------------------------------------error", error);
-        if (process.argv.indexOf("--nxsModule") >= 0) {
-          process.stdout.write(JSON.stringify({ nxsOut: chunk }));
-        } else {
-          chunk =
-            typeof chunk === "object" || typeof chunk === "number"
-              ? JSON.stringify(chunk)
-              : chunk;
-          if (isJson(chunk)) {
-            process.stdout.write(require("json-colorizer")(chunk));
-          } else {
-            process.stdout.write(chunk);
-          }
-        }
+        // Below must be here as for example Blender will not display
+        // Progress of rendering, some stdout will be cut etc.
+        callback();
       }
-
-      // Below must be here as for example Blender will not display
-      // Progress of rendering, some stdout will be cut etc.
-      callback();
     },
   });
 };

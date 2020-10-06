@@ -33,7 +33,6 @@ module.exports.transformNexss = (
   const { nxsDebugTitle } = require("./output/nxsDebug");
   const { timeElapsed } = require("..//lib/output/nxsTime");
   return new Transform({
-    highWaterMark: require("../../config/defaults").highWaterMark,
     transform(chunk, encoding, callback) {
       let startStreamTime;
       if (process.argv.includes("--nxsTime")) {
@@ -47,7 +46,10 @@ module.exports.transformNexss = (
 
       let options = Object.assign({});
 
-      if (process.argv.includes("--nxsOnly")) {
+      if (
+        process.argv.includes("-i") ||
+        process.argv.includes("--interactive")
+      ) {
         // We get stdin from user.
         options.stdio = ["inherit", "pipe", "pipe"];
       } else {
@@ -61,8 +63,10 @@ module.exports.transformNexss = (
         options.shell = "/bin/bash";
       }
 
+      // TODO: eval?
       if (cwd && cwd.replace) cwd = eval("`" + cwd.replace(/\\/g, "/") + "`");
       options.cwd = cwd;
+      // Below just to hide on debug
       options.env = "SEE: process.env";
 
       if (!quiet) {
@@ -103,8 +107,7 @@ module.exports.transformNexss = (
       }
       options.maxBuffer = 1024 * 1024 * 100;
       options.highWaterMark = 1024 * 1024 * 100;
-      const cleanOptions = options;
-      delete cleanOptions.env;
+
       // dy(`Spawning ..${cmd}`, argsStrings.join(" "), "cwd: ", process.cwd());
       this.worker = spawn(cmd, argsStrings, options);
       this.worker.cmd = nexssCommand;
@@ -176,7 +179,6 @@ module.exports.transformNexss = (
           self.push(data);
           return;
         }
-
         const outputString = data.toString("utf8");
         // On Powershell there is additional extra line which cousing a lot of headache..
         // Anyways we do not want to run empty line through

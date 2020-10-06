@@ -10,6 +10,11 @@ module.exports.transformValidation = (area = "input", options = {}) => {
     writableObjectMode: true,
     // readableObjectMode: true,
     transform(chunk, encoding, callback) {
+      // Not a json data so we don't do anything here
+      // if (process.NEXSS_NO_TRANSFORM) {
+      //   callback(null, chunk);
+      //   return;
+      // }
       if (!cliArgs.nxsNoValidation) {
         let data = chunk.toString();
         const opts = options;

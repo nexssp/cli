@@ -21,6 +21,8 @@ module.exports.transformOutput = (x, y, z) => {
     highWaterMark: require("../../config/defaults").highWaterMark,
     // writableObjectMode: true,
     transform: (chunk, encoding, callback) => {
+      // Not a json data so we don't do anything here
+
       let data = chunk.toString();
       let cliArgs = require("minimist")(y);
       delete cliArgs._;
@@ -38,7 +40,10 @@ module.exports.transformOutput = (x, y, z) => {
         delete cliArgs.nxsGlobalForce;
 
         Object.assign(data, cliArgs);
-      } catch (error) {
+      } catch (err) {
+        // process.NEXSS_NO_TRANSFORM += `${err}`;
+        // callback(null, chunk);
+        // return;
         // console.error(
         //   "ERROR in JSON (start/tranformOutput.js): ",
         //   chunk.toString()
@@ -49,7 +54,7 @@ module.exports.transformOutput = (x, y, z) => {
           if (!data) {
             data = {};
           }
-          data.nxsStopReason = error;
+          data.nxsStopReason = err;
           data.nxsStop = true;
           callback(null, JSON.stringify(data)); //JSON stringify?
           // console.log(data);
