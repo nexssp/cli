@@ -16,6 +16,10 @@ module.exports.transformFile = (file, x, y) => {
     highWaterMark: require("../../config/defaults").highWaterMark,
     //  writableObjectMode: true,
     transform(chunk, encoding, callback) {
+      if (process.NEXSS_CANCEL_STREAM) {
+        callback(null, chunk);
+        return;
+      }
       process.chdir(y.cwd);
       process.nexssCWD = y.cwd;
       if (!existsSync(file)) {

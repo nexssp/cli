@@ -1,6 +1,7 @@
 if (!process.dataFlow) process.dataFlow = [];
 
-Object.assign(global, require("@nexssp/ansi"));
+Object.assign(global, require("@nexssp/ansi")); // Cli tool
+Object.assign(global, require("@nexssp/logdebug")); //  Cli tool
 
 global.nConst = (name, value, where) => {
   if (!where) {
@@ -27,6 +28,8 @@ global.nConst = (name, value, where) => {
   return value;
 };
 
+nConst("aliases", require("../config/aliases"), process);
+
 // TODO: cache for below
 const os = require("@nexssp/os");
 nConst("distro", os.name(), process);
@@ -37,6 +40,7 @@ const tags = os.tags();
 // Below tags are for distro recognition.
 nConst("distroTag1", tags[0], process);
 nConst("distroTag2", tags[1], process);
+
 nConst("mem", process.memoryUsage().rss, process); // https://nodejs.org/api/process.html#process_process_memoryusage
 
 // if (process.argv.includes("--nxsLoad")) {
@@ -56,4 +60,24 @@ if (fs.existsSync(globalConfigPath)) {
   process.nexssGlobalConfig = require(globalConfigPath);
 } else {
   process.nexssGlobalConfig = { languages: {} };
+}
+
+const { checkPlatform } = require("../lib/platform");
+
+if (cliArgs.nxsPlatform && cliArgs.nxsPlatform.split) {
+  const platforms = cliArgs.nxsPlatform.split(",");
+  if (!checkPlatform(platforms)) {
+    console.log(
+      `${yellow("Nexss Programmer: ")}${bold(
+        red(platforms.join(", "))
+      )} did not match with your platform ${green(
+        bold(process.platform)
+      )}, ${green(bold(process.distroTag1))} or ${green(
+        bold(process.distroTag2)
+      )}. Program will not continue.`
+    );
+
+    // process.NEXSS_ARG_CHECK_PLATFORM_FAILED = true;
+    process.exit(1);
+  }
 }

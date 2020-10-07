@@ -34,6 +34,10 @@ module.exports.transformNexss = (
   const { timeElapsed } = require("..//lib/output/nxsTime");
   return new Transform({
     transform(chunk, encoding, callback) {
+      if (process.NEXSS_CANCEL_STREAM) {
+        callback(null, chunk);
+        return;
+      }
       let startStreamTime;
       if (process.argv.includes("--nxsTime")) {
         startStreamTime = process.hrtime();

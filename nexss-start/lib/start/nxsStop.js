@@ -19,6 +19,7 @@ module.exports = (data) => {
       } = require("../../../nexss-start/lib/output/nxsTime");
       timeElapsed(data.nxsTime);
     }
-    process.exitCode = 1;
+    process.exit(0);
+    // process.exit(r);
   }
 };

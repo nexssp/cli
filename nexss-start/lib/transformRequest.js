@@ -6,6 +6,10 @@ module.exports.transformRequest = (url) => {
   return new Transform({
     highWaterMark: require("../../config/defaults").highWaterMark,
     transform: (chunk, encoding, callback) => {
+      if (process.NEXSS_CANCEL_STREAM) {
+        callback(null, chunk);
+        return;
+      }
       let data;
       if (encoding === "buffer") {
         chunk = chunk.toString();

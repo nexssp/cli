@@ -186,20 +186,33 @@ const getFiles = (folder, args, env, ccc) => {
   if (envLoaded) {
     env = envLoaded;
   }
-
+  let config_files;
   if (!config) {
-    console.error("No config file in the ", path.normalize(folderAbsolute));
-    // console.error("Error item: ");
-    // console.error(folder);
-    // console.error("Args: ");
-    // console.error(args);
-    // console.error("Env: ");
-    // console.error(env);
-    process.exit(0);
+    warn(
+      `No config file in ${path.normalize(
+        folderAbsolute
+      )} the the searching.. for index.nexss OR start.nexss `
+    );
+    // if there is one file and it is called index
+
+    const startFile = fs
+      .readdirSync(folderAbsolute)
+      .filter(
+        (startFile) =>
+          startFile === "index.nexss" || startFile === "start.nexss"
+      );
+    if (startFile) {
+      config_files = [{ name: startFile[0] }];
+    } else {
+      error(
+        "No config file in the searching for index.nexss ",
+        path.normalize(folderAbsolute)
+      );
+      process.exit(1);
+    }
+  } else {
+    config_files = getSequence(folder.seq, config);
   }
-
-  let config_files = getSequence(folder.seq, config);
-
   let counter = config_files ? config_files.length : 0;
 
   if (!Array.isArray(config_files)) {
@@ -220,6 +233,9 @@ const getFiles = (folder, args, env, ccc) => {
   const resultFiles =
     config_files &&
     config_files.map((file) => {
+      if (!file.name) {
+        return [];
+      }
       if (file.name.startsWith("http")) {
         const name = file.name;
         const split = file.name.trim().split(" ");
@@ -275,14 +291,14 @@ const getFiles = (folder, args, env, ccc) => {
       }
       // } else {
       // We add input from the module at start of queue of this module
-      if (counter-- === config_files.length) {
+      if (config && counter-- === config_files.length) {
         if (config.input) {
           file.input = config.input;
         }
       }
 
       // We add output from the module at end of queue of this module
-      if (counter === 0) {
+      if (config && counter === 0) {
         if (config.output) {
           file.output = config.output;
         }
@@ -304,7 +320,7 @@ const getFiles = (folder, args, env, ccc) => {
         Object.assign(file.data, ccc.data);
       }
 
-      if (config.data) {
+      if (config && config.data) {
         if (Array.isArray(config.data)) {
           console.error(
             `config.data is an Array. Do not use array for 'data' section in config file.`

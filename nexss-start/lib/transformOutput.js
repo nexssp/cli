@@ -21,6 +21,11 @@ module.exports.transformOutput = (x, y, z) => {
     highWaterMark: require("../../config/defaults").highWaterMark,
     // writableObjectMode: true,
     transform: (chunk, encoding, callback) => {
+      if (process.NEXSS_CANCEL_STREAM) {
+        process.NEXSS_CANCEL_STREAM = false; // this is for next streams.
+        callback(null, chunk);
+        return;
+      }
       // Not a json data so we don't do anything here
       let data = chunk.toString();
       process.dataFlow.push(chunk.toString());
@@ -40,6 +45,7 @@ module.exports.transformOutput = (x, y, z) => {
         delete cliArgs.nxsLocalForce;
         delete cliArgs.nxsGlobal;
         delete cliArgs.nxsGlobalForce;
+        delete cliArgs.nxsPlatform;
 
         Object.assign(data, cliArgs);
       } catch (err) {

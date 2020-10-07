@@ -11,12 +11,19 @@ module.exports.transformInput = (x, y, params) => {
   const nxsStop = require("./start/nxsStop");
   const nxsGlobal = require("./input/nxsGlobal");
   const nxsLocal = require("./input/nxsLocal");
+  const { checkPlatform } = require("../../lib/platform");
   return new Transform({
     writableObjectMode: true,
     readableObjectMode: true,
     readableHighWaterMark: require("../../config/defaults").highWaterMark,
     writableHighWaterMark: require("../../config/defaults").highWaterMark,
     transform: (chunk, encoding, callback) => {
+      if (params.inputData && !checkPlatform(params.inputData.nxsPlatform)) {
+        process.NEXSS_CANCEL_STREAM = true;
+        callback(null, chunk);
+        return;
+      }
+
       let data = chunk.toString();
 
       try {
@@ -28,7 +35,7 @@ module.exports.transformInput = (x, y, params) => {
           try {
             callback(null, data);
           } catch (e) {
-            error(`ERRROOORRR:`, e);
+            console.error(`ERRROOORRR:`, e);
           }
         }
 

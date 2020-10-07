@@ -11,6 +11,10 @@ module.exports.transformError = (
     highWaterMark: require("../../config/defaults").highWaterMark,
     writableObjectMode: true,
     transform(chunk, encoding, callback) {
+      if (process.NEXSS_CANCEL_STREAM) {
+        callback(null, chunk);
+        return;
+      }
       // if (process.stdout.clearLine) {
       //   process.stdout.clearLine();
       //   process.stdout.cursorTo(0);

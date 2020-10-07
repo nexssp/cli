@@ -71,7 +71,11 @@ function Nexss() {
     !isURL(fileOrDirectory) &&
     !fileOrDirectory.startsWith(NEXSS_SPECIAL_CHAR)
   ) {
-    if (fs.lstatSync(fileOrDirectory).isFile()) {
+    if (!fs.existsSync(fileOrDirectory)) {
+      console.log(`${fileOrDirectory} has not been found.`);
+      process.exitCode = 1;
+      return;
+    } else if (fs.lstatSync(fileOrDirectory).isFile()) {
       const dirname = path.dirname(fileOrDirectory);
       const configFileDirname = `${dirname}/_nexss.yml`;
       if (fs.existsSync(configFileDirname) && fs.lstatSync(configFileDirname)) {

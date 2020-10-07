@@ -15,10 +15,10 @@ module.exports.transformTest = (
     // readableObjectMode: true,
     transform(chunk, encoding, callback) {
       // Not a json data so we don't do anything here
-      // if (process.NEXSS_NO_TRANSFORM) {
-      //   callback(null, chunk);
-      //   return;
-      // }
+      if (process.NEXSS_CANCEL_STREAM) {
+        callback(null, chunk);
+        return;
+      }
       if (cliArgs.nxsTest) {
         const testingData = require("../../config/testingData.json");
         let data = "";

@@ -18,6 +18,27 @@ module.exports = {
         //   ],
         // },
         {
+          title: "Run depends on platform .nexss file",
+          params: [
+            "nexss Nexss/Test/Platform/example1.nexss",
+            process.platform === "win32"
+              ? "This command will appear only on All Windowses"
+              : "This command will appear only on Linux distros", // add MacOS later
+          ],
+        },
+        {
+          title: "Run depends on platform",
+          params: [
+            "nexss Output/End 'works on Ubuntu' --nxsPlatform='UBUNTU'",
+            process.platform === "win32"
+              ? "'UBUNTU' did not match with your platform win32"
+              : process.distroTag2 === "Ubuntu"
+              ? "works on Ubuntu"
+              : "",
+          ],
+        },
+        // ##################################################
+        {
           title: "Thest calculations field with $#",
           params: [
             "nexss Id --pi='x\\${Math.PI}zzz' --nxsAs=A",

@@ -18,6 +18,14 @@ module.exports.writeableStdout = () => {
         try {
           chunk = JSON.parse(chunk);
 
+          // Cleanup display
+          if (process.stdout.isTTY) {
+            delete chunk.cwd;
+            delete chunk.start;
+            // delete chunk.nexss;
+            delete chunk.__dirname;
+          }
+          delete chunk.nxsPlatform;
           delete chunk["nexssScript"];
           if (!chunk.nxsPretty) {
             if (chunk["nxsDataDisplay"]) {

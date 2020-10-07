@@ -8,6 +8,10 @@ module.exports.transformHash = (cmd, inputData, options) => {
     highWaterMark: require("../../config/defaults").highWaterMark,
     // writableObjectMode: true,
     transform: (chunk, encoding, callback) => {
+      if (process.NEXSS_CANCEL_STREAM) {
+        callback(null, chunk);
+        return;
+      }
       const n = cmd.name.replace(NEXSS_SPECIAL_CHAR, "");
 
       if (cliArgs.nxsComments) {
@@ -30,8 +34,6 @@ module.exports.transformHash = (cmd, inputData, options) => {
         }
       }
       let newData = JSON.parse(chunk.toString());
-
-      console.log(inputData);
 
       newData = Object.assign(newData, options.inputData);
       const { expressionParser } = require("./expressionParser");

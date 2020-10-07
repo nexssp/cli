@@ -83,6 +83,12 @@ if (
 let fileOrFolderExists;
 
 const packageName = plugin.split("/")[0];
+
+// Replacer so you can build shortcuts like P
+if (process.aliases[plugin]) {
+  plugin = process.aliases[plugin];
+}
+
 if (
   plugin.startsWith(NEXSS_SPECIAL_CHAR) ||
   fs.existsSync(plugin) ||

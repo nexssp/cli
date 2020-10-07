@@ -52,7 +52,6 @@ async function run(operations, options = {}) {
     }
     // We add ' to attributes which contains code to execute
     const sign = process.platform === "win32" ? `"` : `'`;
-
     args = args.map((e) => {
       return e.includes &&
         e.includes("${") &&
