@@ -31,6 +31,8 @@ module.exports.transformHash = (cmd, inputData, options) => {
       }
       let newData = JSON.parse(chunk.toString());
 
+      console.log(inputData);
+
       newData = Object.assign(newData, options.inputData);
       const { expressionParser } = require("./expressionParser");
       Object.keys(newData).forEach((e) => {

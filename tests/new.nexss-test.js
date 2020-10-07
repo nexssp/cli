@@ -17,13 +17,20 @@ module.exports = {
         //     "cc",
         //   ],
         // },
-        // {
-        //   title: "App/Run",
-        //   params: [
-        //     "nexss App/Run --_app='ls -la'",
-        //     "SUCCESS  Project 'MyTestProject' is ready.",
-        //   ],
-        // },
+        {
+          title: "Thest calculations field with $#",
+          params: [
+            "nexss Id --pi='x\\${Math.PI}zzz' --nxsAs=A",
+            "x3.141592653589793zzz",
+          ],
+        },
+        {
+          title: "Thest calculations field with package",
+          params: [
+            "nexss $# 'x\\${Math.PI}zzz' --nxsAs=A",
+            "x3.141592653589793zzz",
+          ],
+        },
       ],
     },
     // {

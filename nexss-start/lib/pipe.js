@@ -50,6 +50,14 @@ async function run(operations, options = {}) {
 
       args = args.concat(terminalParams);
     }
+    // We add ' to attributes which contains code to execute
+    const sign = process.platform === "win32" ? `"` : `'`;
+
+    args = args.map((e) => {
+      return e.includes("${") && !e.startsWith("'") && !e.startsWith("--")
+        ? `${sign}${e}${sign}`
+        : e;
+    });
 
     const runOptions = Object.assign({}, options, {
       fileName: element.fileName,

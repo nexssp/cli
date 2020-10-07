@@ -201,7 +201,8 @@ function Nexss() {
                   }
                 }
 
-                let spawnOptions = { detached: true };
+                let spawnOptions = {};
+                // let spawnOptions =  { detached: true };
 
                 let compiler = Object.assign({}, getCompiler(file));
                 if (Object.keys(compiler).length > 0) {

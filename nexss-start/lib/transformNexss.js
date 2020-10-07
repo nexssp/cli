@@ -46,10 +46,7 @@ module.exports.transformNexss = (
 
       let options = Object.assign({});
 
-      if (
-        process.argv.includes("-i") ||
-        process.argv.includes("--interactive")
-      ) {
+      if (process.argv.includes("--nxsI")) {
         // We get stdin from user.
         options.stdio = ["inherit", "pipe", "pipe"];
       } else {
