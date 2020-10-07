@@ -54,7 +54,10 @@ async function run(operations, options = {}) {
     const sign = process.platform === "win32" ? `"` : `'`;
 
     args = args.map((e) => {
-      return e.includes("${") && !e.startsWith("'") && !e.startsWith("--")
+      return e.includes &&
+        e.includes("${") &&
+        !e.startsWith("'") &&
+        !e.startsWith("--")
         ? `${sign}${e}${sign}`
         : e;
     });
