@@ -1,7 +1,7 @@
 if (!process.dataFlow) process.dataFlow = [];
 
 Object.assign(global, require("@nexssp/ansi")); // Cli tool
-Object.assign(global, require("@nexssp/logdebug")); //  Cli tool
+global.nxsLog = require("@nexssp/logdebug"); //  Cli tool
 
 global.nConst = (name, value, where) => {
   if (!where) {
@@ -34,7 +34,7 @@ nConst("aliases", require("../config/aliases"), process);
 const os = require("@nexssp/os");
 nConst("distro", os.name(), process);
 nConst("distroVersion", os.v(), process);
-nConst("distroSudo", os.sudo(), process);
+nConst("sudo", os.sudo(), process);
 nConst("replacePMByDistro", os.replacePMByDistro, process);
 const tags = os.tags();
 // Below tags are for distro recognition.
@@ -48,7 +48,7 @@ nConst("mem", process.memoryUsage().rss, process); // https://nodejs.org/api/pro
 // Later to make usage below on whole system.
 nConst("fs", require("fs"));
 nConst("path", require("path"));
-nConst("cliArgs", require("minimist")(process.argv));
+nConst("cliArgs", require("minimist")(process.argv.slice(2)));
 // nConst("require", require);
 nConst("child_process", require("child_process"));
 // nConst("dev_colors", require("../lib/core/-dev-colors"));

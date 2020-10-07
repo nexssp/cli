@@ -9,12 +9,7 @@ const { npmInstallRun } = require("./lib/npm");
 npmInstallRun();
 require("./config/globals");
 
-const cliArgs = require("minimist")(process.argv.slice(2));
-const { bold, yellow, blue } = require("@nexssp/ansi");
-const cp = require("child_process"),
-  log = require("@nexssp/logdebug");
-
-log.db("Starting Nexss Programmer..");
+nxsLog.db("Starting Nexss Programmer..");
 
 const { NEXSS_SRC_PATH, NEXSS_PACKAGES_PATH } = require("./config/config"),
   { NEXSS_SPECIAL_CHAR } = require("./config/defaults"),
@@ -30,7 +25,7 @@ process.title =
   process.argv.slice(2).join(" ") +
   "";
 
-log.d("Set the process title: ", process.title);
+nxsLog.d("Set the process title: ", process.title);
 
 // Core functions like version, update. All are located ./lib/core
 // Example: nexss --env, or nexss --version
@@ -38,7 +33,7 @@ log.d("Set the process title: ", process.title);
 if (process.argv[2] && process.argv[2].startsWith("-")) {
   const f = process.argv[2];
   const functionsFolder = `./lib/core/${f}.js`;
-  log.db(`Loading core${f} function, ${functionsFolder}`);
+  nxsLog.db(`Loading core${f} function, ${functionsFolder}`);
   if (fs.existsSync(path.resolve(__dirname, functionsFolder))) {
     const functionRun = require(functionsFolder);
     functionRun();
@@ -69,14 +64,14 @@ if (
   fs.existsSync(`${NEXSS_SRC_PATH}/nexss-${plugin}/`) &&
   fs.existsSync(`${NEXSS_PACKAGES_PATH}/${plugin}`)
 ) {
-  log.error("NEXSS DEVELOPER WARNING !");
+  nxsLog.error("NEXSS DEVELOPER WARNING !");
   error(
     `THE PLUGIN ${NEXSS_SRC_PATH}/nexss-${plugin} colide with package ${NEXSS_PACKAGES_PATH}/${plugin}`
   );
-  log.error(
+  nxsLog.error(
     `There CANNOT be the same name for plugin and package. PLEASE CHANGE THE PACKAGE NAME!`
   );
-  log.error(`Nexss Programmer will not continue until it is done.`);
+  nxsLog.error(`Nexss Programmer will not continue until it is done.`);
   return;
 }
 
@@ -176,7 +171,7 @@ if (
       }
 
       // try {
-      //   cp.execSync(command, {
+      //   child_process.execSync(command, {
       //     stdio: "inherit",
       //     detached: false,
       //     shell: process.platform === "win32" ? true : "/bin/bash",
@@ -222,12 +217,14 @@ if (
             break;
           default:
             if (whatToSet) {
-              log.error(`You cannot specify ${whatToSet}.`);
+              nxsLog.error(`You cannot specify ${whatToSet}.`);
             } else {
-              log.error(`What you want to change?`);
+              nxsLog.error(`What you want to change?`);
             }
 
-            log.error(`Use ${bold("compiler, builder, packageManager or pm")}`);
+            nxsLog.error(
+              `Use ${bold("compiler, builder, packageManager or pm")}`
+            );
 
             return;
         }
@@ -243,7 +240,7 @@ if (
         const firstName = Object.keys(languageSelected[whatToSet])[0];
         if (!toSet) {
           if (Object.keys(languageSelected[whatToSet]).length) {
-            log.error(
+            nxsLog.error(
               `Specify '${bold(whatToSet)}' name to set eg: nexss '${bold(
                 plugin
               )} ${argument} compiler ${bold(firstName)}'`
@@ -271,7 +268,7 @@ if (
               );
             }
           } else {
-            log.warn(
+            nxsLog.warn(
               `No ${bold(whatToSet)} specified in the configuration for ${bold(
                 plugin
               )}.`
@@ -285,7 +282,7 @@ if (
           !languageSelected[whatToSet][toSet] &&
           toSet.toLowerCase() !== "unset"
         ) {
-          log.error(
+          nxsLog.error(
             `Compiler '${bold(
               toSet
             )}' does not exist. Use existing one eg  'nexss ${plugin} ${argument} compiler ${firstName}'`
@@ -296,7 +293,7 @@ if (
               console.log(bold(w), languageSelected[whatToSet][w]);
             });
           } else {
-            log.warn(
+            nxsLog.warn(
               `No ${bold(whatToSet)} specified in the configuration for ${bold(
                 plugin
               )}.`
@@ -330,7 +327,7 @@ if (
           const command = `scoop bucket add versions && ${languageSelected[whatToSet][toSet].install} && ${languageSelected[whatToSet][toSet].switch}`;
 
           try {
-            cp.execSync(command, {
+            child_process.execSync(command, {
               stdio: "inherit",
               detached: false,
               shell: process.platform === "win32" ? true : "/bin/bash",
@@ -344,7 +341,7 @@ if (
           }
         }
 
-        log.ok(
+        nxsLog.ok(
           `${whatToSet} has been set for language ${plugin} ${argument} compiler ${toSet}'`
         );
 
@@ -405,7 +402,7 @@ if (
 
       if (!action || process.argv[3].startsWith("-")) {
         if (argument && !process.argv[3].startsWith("-")) {
-          log.warn(
+          nxsLog.warn(
             `Action '${argument}' does not exist for ${bold(
               languageSelected.title
             )}`
@@ -423,7 +420,7 @@ if (
         const pmArguments = process.argv.slice(3);
         const command = `${compiler.command} ${pmArguments.join(" ")}`;
         try {
-          cp.execSync(command, {
+          child_process.execSync(command, {
             stdio: "inherit",
             detached: false,
             shell: process.platform === "win32" ? true : "/bin/bash",
@@ -441,10 +438,10 @@ if (
           const pmArguments = process.argv.slice(4);
           const command = `${action} ${pmArguments.join(" ")}`;
 
-          log.info(`Execute: ${bold(command)}, cwd: ${process.cwd()}`);
+          nxsLog.info(`Execute: ${bold(command)}, cwd: ${process.cwd()}`);
 
           try {
-            cp.execSync(command, {
+            child_process.execSync(command, {
               stdio: "inherit",
               detached: false,
               shell: process.platform === "win32" ? true : "/bin/bash",
@@ -457,7 +454,7 @@ if (
         }
       }
     } else {
-      log.info(`No actions for '${plugin}'`);
+      nxsLog.info(`No actions for '${plugin}'`);
     }
   } else {
     // File not found OR no actions can be performed
@@ -513,13 +510,13 @@ if (fileOrFolderExists && process.argv[3] === "test") {
 
   const testName = process.argv.length > 3 ? process.argv[4] : null;
   if (!testName) {
-    log.warn(`Enter test name or specify 'all' to run all tests`);
+    nxsLog.warn(`Enter test name or specify 'all' to run all tests`);
     process.exit(1);
   }
   const testCommand = `nexss test ${testName}`;
 
   try {
-    cp.execSync(testCommand, {
+    child_process.execSync(testCommand, {
       stdio: "inherit",
       detached: false,
       shell: process.platform === "win32" ? true : "/bin/bash",
@@ -558,7 +555,7 @@ switch (command) {
       console.info(helpContent.toString());
     } catch (error) {
       console.log(error);
-      log.error(`Long help is not found for plugin nexss-${plugin}`);
+      nxsLog.error(`Long help is not found for plugin nexss-${plugin}`);
     }
     break;
 
@@ -578,7 +575,7 @@ switch (command) {
         ) {
           require(`./nexss-${plugin}/commands/${command}.js`);
         } else {
-          log.error(
+          nxsLog.error(
             `Command ${bold(command)} has not been found for nexss-${bold(
               plugin
             )}.`
@@ -591,7 +588,7 @@ switch (command) {
             `${NEXSS_SRC_PATH}/nexss-${plugin}/commands/${plugin}.js`
           )
         ) {
-          // log.d(
+          // nxsLog.d(
           //   yellow(`Loading plugin.. ./nexss-${plugin}/commands/${plugin}.js`)
           // );
           require(`./nexss-${plugin}/commands/${plugin}.js`);
@@ -628,7 +625,7 @@ example to display help 'nexss ${plugin} ${filesList[0]} help'`;
       // }
       // cmd.default();
     } catch (err) {
-      log.error(err);
+      nxsLog.error(err);
       console.log(err);
       // console.log(process.cwd());
       // const helpContent = fs.readFileSync(
