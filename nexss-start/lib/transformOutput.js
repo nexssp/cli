@@ -137,7 +137,12 @@ module.exports.transformOutput = (x, y, z) => {
         }
 
         if (data.nxsOutAs || data.nxsAs) {
-          data = nxsRenameModule(data, "nxsOut", data.nxsOutAs || data.nxsAs);
+          if (data.nxsIn) {
+            data = nxsRenameModule(data, "nxsIn", data.nxsOutAs || data.nxsAs);
+          } else if (data.nxsOut) {
+            data = nxsRenameModule(data, "nxsOut", data.nxsOutAs || data.nxsAs);
+          }
+
           delete data.nxsAs;
         }
 

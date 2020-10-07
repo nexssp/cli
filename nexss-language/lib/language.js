@@ -100,7 +100,7 @@ module.exports.getLang = (ext, recreateCache) => {
 
     let language;
     const getLanguageCacheName = `nexss_core_getLanguages_${ext}_.json`;
-    if (!recreateCache && cache.exists(getLanguageCacheName, "1y")) {
+    if (0 && cache.exists(getLanguageCacheName, "1y")) {
       language = cache.readJSON(getLanguageCacheName);
       dg(`[CACHE] Read JSON`);
     } else {

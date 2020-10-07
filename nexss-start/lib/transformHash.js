@@ -38,19 +38,21 @@ module.exports.transformHash = (cmd, inputData, options) => {
       });
 
       // This stream allow to make vars eg. $#
-      if (newData.nxsAs && newData.nxsIn) {
-        const nxsInData = newData.nxsIn;
-        if (Array.isArray(nxsInData)) {
-          // If there is only one element, take this element.
+      if (newData.nxsAs) {
+        if (Array.isArray(newData.nxsIn)) {
+          const nxsInData = newData.nxsIn;
+
           newData[newData.nxsAs] =
             nxsInData.length > 1 ? nxsInData : nxsInData[0];
+
+          console.log(newData[newData.nxsAs]);
         } else {
-          newData[newData.nxsAs] = nxsInData;
+          newData.nxsOut = newData.nxsIn;
         }
 
         delete newData.nxsIn;
-        delete newData.nxsAs;
       }
+
       nxsDebugData(newData, "$#", "magenta");
       callback(null, Buffer.from(JSON.stringify(newData)));
     },
