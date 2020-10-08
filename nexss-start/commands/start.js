@@ -144,7 +144,7 @@ function Nexss() {
       for (let file of files) {
         let fileName = file.name;
 
-        log.db(`∘ Preparing ${fileName}..`);
+        // log.db(`∘ Preparing ${fileName}..`);
 
         if (file.path && fs.existsSync(file.path)) process.chdir(file.path);
 

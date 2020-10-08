@@ -33,10 +33,14 @@ module.exports.transformNexss = (
   const { timeElapsed } = require("..//lib/output/nxsTime");
   return new Transform({
     transform(chunk, encoding, callback) {
-      log.di(`↳ Stream:transformNexss`);
+      const argsDisplay = args.filter((e) => !e.includes("--debug")).join(" ");
+
       if (process.NEXSS_CANCEL_STREAM) {
+        log.dr(`× Canceled Stream: ${cmd} ${argsDisplay}`);
         callback(null, chunk);
         return;
+      } else {
+        log.di(`↳ Stream:transformNexss: ${cmd} ${argsDisplay}`);
       }
       let startStreamTime;
       if (process.argv.includes("--nxsTime")) {
@@ -217,6 +221,8 @@ module.exports.transformNexss = (
           !process.argv.includes("--nxsPipeErrors")
         ) {
           // console.log("There was an error during run..", this.worker.cmd);
+          process.NEXSS_ERROR_STREAM = "Error.";
+          process.NEXSS_CANCEL_STREAM = "Error.";
           return;
         } else {
           callback();

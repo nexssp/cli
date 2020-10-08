@@ -4,6 +4,7 @@ const { getLangByFilename } = require("../../nexss-language/lib/language");
 const { isAbsolute, dirname } = require("path");
 const { existsSync } = require("fs");
 const { colorizer } = require("./colorizer");
+const { Console } = require("console");
 
 // more here: https://github.com/nexssp/cli/wiki/Errors-Solutions
 module.exports.parseError = (filename, errorBody, stdOutput, cwd) => {
@@ -11,7 +12,9 @@ module.exports.parseError = (filename, errorBody, stdOutput, cwd) => {
     errorBody = errorBody.trim();
   }
   const langInfo = getLangByFilename(filename);
-  const ErrorPre = isAbsolute(filename) ? filename : `${cwd}/${filename}`;
+  const ErrorPre = path.normalize(
+    isAbsolute(filename) ? filename : `${cwd}/${filename}`
+  );
 
   if (stdOutput) {
     if (process.argv.includes("--htmlOutput")) {

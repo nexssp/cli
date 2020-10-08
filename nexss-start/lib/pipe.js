@@ -83,23 +83,36 @@ async function run(operations, options = {}) {
     }
   });
 
-  await pipelineAsync(
-    // process.stdin,
-    ...finalOperations
-  )
-    .then((e) => {
-      if (process.argv.includes("--debug")) {
-        process.stdout.write("\n");
-        console.timeEnd(blue("Nexss Programmer"));
-      }
-    })
-    .catch((err) => {
-      // This is handled by nexss transform as all errors are parsed
-      // based on language - this can be used maybe to better debug ?
-      console.error(blue("\nNexss Programmer: "), err);
-      // console.error("Nexss last error: ", process.cwd());
-      process.exitCode = 1;
-    });
+  // We get Readable Stream
+  let nPipe = finalOperations.shift();
+
+  for (let pipe of finalOperations) {
+    nPipe = nPipe.pipe(pipe);
+    nPipe.on("error", (e) => `${e} EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE`);
+  }
+
+  // nPipe.on("finish", (e) => {
+  //   console.log("finish!@!!!!!");
+  // });
+
+  // await pipelineAsync(
+  //   // process.stdin,
+  //   ...finalOperations
+  // )
+  //   .then((e) => {
+  //     if (process.argv.includes("--debug")) {
+  //       process.stdout.write("\n");
+  //       console.timeEnd(blue("Nexss Programmer"));
+  //     }
+  //   })
+  //   .catch((err) => {
+  //     // This is handled by nexss transform as all errors are parsed
+  //     // based on language - this can be used maybe to better debug ?
+  //     console.error(blue("\nNexss Programmer: "), err);
+  //     // console.error("Nexss last error: ", process.cwd());
+  //     process.exitCode = 1;
+  //   });
+
   return;
 }
 
