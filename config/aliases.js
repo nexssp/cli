@@ -1,1 +1,1 @@
-module.exports = { P: "Output/End", ["Nexss/Test"]: "@ex" };
+module.exports = { P: "Output/End", ["Nexss/Test"]: "@exx" };

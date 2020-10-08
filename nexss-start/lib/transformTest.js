@@ -14,6 +14,7 @@ module.exports.transformTest = (
     // writableObjectMode: true,
     // readableObjectMode: true,
     transform(chunk, encoding, callback) {
+      log.di(`↳ Stream:transformTest`);
       // Not a json data so we don't do anything here
       if (process.NEXSS_CANCEL_STREAM) {
         callback(null, chunk);

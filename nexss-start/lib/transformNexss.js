@@ -24,7 +24,6 @@ module.exports.transformNexss = (
     isErrorPiped,
   } = require("../../lib/log");
   const { colorizer } = require("./colorizer");
-  const { bold, yellow, red } = require("@nexssp/ansi");
   require("../../lib/arrays");
   const { spawn } = require("child_process");
 
@@ -34,6 +33,7 @@ module.exports.transformNexss = (
   const { timeElapsed } = require("..//lib/output/nxsTime");
   return new Transform({
     transform(chunk, encoding, callback) {
+      log.di(`↳ Stream:transformNexss`);
       if (process.NEXSS_CANCEL_STREAM) {
         callback(null, chunk);
         return;
@@ -71,7 +71,7 @@ module.exports.transformNexss = (
       options.env = "SEE: process.env";
 
       if (!quiet) {
-        dy("Current working dir: ", process.cwd());
+        log.dy("Current working dir: ", process.cwd());
         console.error(
           `Spawning ${cmd} ${args ? args.join(" ") : ""} options: `,
           JSON.stringify(options)
@@ -82,8 +82,7 @@ module.exports.transformNexss = (
 
       options.env = env;
       process.nexssCWD = cwd;
-
-      args2 = args.remove("--nocache");
+      let args2 = args.remove("--nocache");
       args2 = args2.remove("--nxsPipeErrors");
       args2 = args2.remove("--nxsTest");
 
@@ -170,9 +169,7 @@ module.exports.transformNexss = (
       this.worker.stdout.on("data", function (data) {
         // TODO: Check if trim is ok here
 
-        dy(
-          `TranformNexss: Worker: size of data received: ${data.length}, cmd: ${process.nexssCMD}`
-        );
+        log.dg(`>> Data: ${data.length}B, cmd: ${process.nexssCMD}`);
         timeElapsed(startCompilerTime, `Response from ${bold(nexssCommand)}`);
 
         if (cmd === "bash") {
@@ -238,14 +235,14 @@ module.exports.transformNexss = (
 
         this.worker.stdin.write(Buffer.from(JSON.stringify(j)));
       } catch (error) {
-        dbg(`ERROR WRITING TO PIPE: ${chunk}`);
+        log.dbg(`ERROR WRITING TO PIPE: ${chunk}`);
       }
 
-      nxsDebugTitle("Executed: " + this.worker.cmd, j, "yellow");
+      nxsDebugTitle(" ! Executed: " + this.worker.cmd, j, "yellow");
 
       if (this.worker.stdin) this.worker.stdin.end();
 
-      dy("waiting for: ", this.worker.cmd);
+      log.dy(`${yellow(bold("⇋ Waiting for: " + this.worker.cmd))}`);
     },
     flush(cb) {
       cb();

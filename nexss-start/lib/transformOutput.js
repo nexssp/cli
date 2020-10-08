@@ -21,6 +21,7 @@ module.exports.transformOutput = (x, y, z) => {
     highWaterMark: require("../../config/defaults").highWaterMark,
     // writableObjectMode: true,
     transform: (chunk, encoding, callback) => {
+      log.di(`↳ Stream:transformOutput`);
       if (process.NEXSS_CANCEL_STREAM) {
         process.NEXSS_CANCEL_STREAM = false; // this is for next streams.
         callback(null, chunk);

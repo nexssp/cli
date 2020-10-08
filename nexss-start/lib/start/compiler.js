@@ -3,7 +3,7 @@ const { getLangByFilename } = require("../../../nexss-language/lib/language");
 module.exports.getCompiler = (file) => {
   const fileName = file.name;
   const fileFillPAth = path.join(file.path, file.name);
-  nxsLog.db(`Checking language for: ${bold(fileName)}`);
+  log.db(`➤ Checking language for: ${bold(fileName)}`);
   const languageDefinition = getLangByFilename(fileName);
   if (!languageDefinition) {
     // THere can be also configuration isssues

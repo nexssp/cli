@@ -6,6 +6,7 @@ module.exports.transformRequest = (url) => {
   return new Transform({
     highWaterMark: require("../../config/defaults").highWaterMark,
     transform: (chunk, encoding, callback) => {
+      log.di(`↳ Stream:transformRequest`);
       if (process.NEXSS_CANCEL_STREAM) {
         callback(null, chunk);
         return;

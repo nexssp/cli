@@ -9,7 +9,7 @@ const { npmInstallRun } = require("./lib/npm");
 npmInstallRun();
 require("./config/globals");
 
-nxsLog.db("Starting Nexss Programmer..");
+log.dc(bold("∞ Starting Nexss Programmer.."));
 
 const { NEXSS_SRC_PATH, NEXSS_PACKAGES_PATH } = require("./config/config"),
   { NEXSS_SPECIAL_CHAR } = require("./config/defaults"),
@@ -25,7 +25,7 @@ process.title =
   process.argv.slice(2).join(" ") +
   "";
 
-nxsLog.d("Set the process title: ", process.title);
+log.d("⊛ Set the process title: ", process.title);
 
 // Core functions like version, update. All are located ./lib/core
 // Example: nexss --env, or nexss --version
@@ -33,7 +33,7 @@ nxsLog.d("Set the process title: ", process.title);
 if (process.argv[2] && process.argv[2].startsWith("-")) {
   const f = process.argv[2];
   const functionsFolder = `./lib/core/${f}.js`;
-  nxsLog.db(`Loading core${f} function, ${functionsFolder}`);
+  log.db(`Loading core${f} function, ${functionsFolder}`);
   if (fs.existsSync(path.resolve(__dirname, functionsFolder))) {
     const functionRun = require(functionsFolder);
     functionRun();
@@ -64,14 +64,14 @@ if (
   fs.existsSync(`${NEXSS_SRC_PATH}/nexss-${plugin}/`) &&
   fs.existsSync(`${NEXSS_PACKAGES_PATH}/${plugin}`)
 ) {
-  nxsLog.error("NEXSS DEVELOPER WARNING !");
+  log.error("NEXSS DEVELOPER WARNING !");
   error(
     `THE PLUGIN ${NEXSS_SRC_PATH}/nexss-${plugin} colide with package ${NEXSS_PACKAGES_PATH}/${plugin}`
   );
-  nxsLog.error(
+  log.error(
     `There CANNOT be the same name for plugin and package. PLEASE CHANGE THE PACKAGE NAME!`
   );
-  nxsLog.error(`Nexss Programmer will not continue until it is done.`);
+  log.error(`Nexss Programmer will not continue until it is done.`);
   return;
 }
 
@@ -152,7 +152,7 @@ if (
           compiler && compiler.install ? compiler.command : builder.command
         } ${pmArguments.join(" ")}`;
 
-        console.log(
+        log.info(
           `installing ${yellow(bold(languageSelected.title))}, please wait..`
         );
 
@@ -160,9 +160,7 @@ if (
 
         let p = ensureInstalled(command, installCommand, { verbose: true });
         if (p) {
-          console.log(
-            `${blue(bold(languageSelected.title))} is installed at:\n${p}`
-          );
+          info(`${blue(bold(languageSelected.title))} is installed at:\n${p}`);
         }
       } else {
         //uninstall
@@ -217,14 +215,12 @@ if (
             break;
           default:
             if (whatToSet) {
-              nxsLog.error(`You cannot specify ${whatToSet}.`);
+              log.error(`You cannot specify ${whatToSet}.`);
             } else {
-              nxsLog.error(`What you want to change?`);
+              log.error(`What you want to change?`);
             }
 
-            nxsLog.error(
-              `Use ${bold("compiler, builder, packageManager or pm")}`
-            );
+            log.error(`Use ${bold("compiler, builder, packageManager or pm")}`);
 
             return;
         }
@@ -240,7 +236,7 @@ if (
         const firstName = Object.keys(languageSelected[whatToSet])[0];
         if (!toSet) {
           if (Object.keys(languageSelected[whatToSet]).length) {
-            nxsLog.error(
+            log.error(
               `Specify '${bold(whatToSet)}' name to set eg: nexss '${bold(
                 plugin
               )} ${argument} compiler ${bold(firstName)}'`
@@ -268,7 +264,7 @@ if (
               );
             }
           } else {
-            nxsLog.warn(
+            log.warn(
               `No ${bold(whatToSet)} specified in the configuration for ${bold(
                 plugin
               )}.`
@@ -282,7 +278,7 @@ if (
           !languageSelected[whatToSet][toSet] &&
           toSet.toLowerCase() !== "unset"
         ) {
-          nxsLog.error(
+          log.error(
             `Compiler '${bold(
               toSet
             )}' does not exist. Use existing one eg  'nexss ${plugin} ${argument} compiler ${firstName}'`
@@ -293,7 +289,7 @@ if (
               console.log(bold(w), languageSelected[whatToSet][w]);
             });
           } else {
-            nxsLog.warn(
+            log.warn(
               `No ${bold(whatToSet)} specified in the configuration for ${bold(
                 plugin
               )}.`
@@ -341,7 +337,7 @@ if (
           }
         }
 
-        nxsLog.ok(
+        log.ok(
           `${whatToSet} has been set for language ${plugin} ${argument} compiler ${toSet}'`
         );
 
@@ -402,7 +398,7 @@ if (
 
       if (!action || process.argv[3].startsWith("-")) {
         if (argument && !process.argv[3].startsWith("-")) {
-          nxsLog.warn(
+          log.warn(
             `Action '${argument}' does not exist for ${bold(
               languageSelected.title
             )}`
@@ -438,7 +434,7 @@ if (
           const pmArguments = process.argv.slice(4);
           const command = `${action} ${pmArguments.join(" ")}`;
 
-          nxsLog.info(`Execute: ${bold(command)}, cwd: ${process.cwd()}`);
+          log.info(`Execute: ${bold(command)}, cwd: ${process.cwd()}`);
 
           try {
             child_process.execSync(command, {
@@ -454,7 +450,7 @@ if (
         }
       }
     } else {
-      nxsLog.info(`No actions for '${plugin}'`);
+      log.info(`No actions for '${plugin}'`);
     }
   } else {
     // File not found OR no actions can be performed
@@ -510,7 +506,7 @@ if (fileOrFolderExists && process.argv[3] === "test") {
 
   const testName = process.argv.length > 3 ? process.argv[4] : null;
   if (!testName) {
-    nxsLog.warn(`Enter test name or specify 'all' to run all tests`);
+    log.warn(`Enter test name or specify 'all' to run all tests`);
     process.exit(1);
   }
   const testCommand = `nexss test ${testName}`;
@@ -555,7 +551,7 @@ switch (command) {
       console.info(helpContent.toString());
     } catch (error) {
       console.log(error);
-      nxsLog.error(`Long help is not found for plugin nexss-${plugin}`);
+      log.error(`Long help is not found for plugin nexss-${plugin}`);
     }
     break;
 
@@ -575,7 +571,7 @@ switch (command) {
         ) {
           require(`./nexss-${plugin}/commands/${command}.js`);
         } else {
-          nxsLog.error(
+          log.error(
             `Command ${bold(command)} has not been found for nexss-${bold(
               plugin
             )}.`
@@ -588,7 +584,7 @@ switch (command) {
             `${NEXSS_SRC_PATH}/nexss-${plugin}/commands/${plugin}.js`
           )
         ) {
-          // nxsLog.d(
+          // log.d(
           //   yellow(`Loading plugin.. ./nexss-${plugin}/commands/${plugin}.js`)
           // );
           require(`./nexss-${plugin}/commands/${plugin}.js`);
@@ -625,7 +621,7 @@ example to display help 'nexss ${plugin} ${filesList[0]} help'`;
       // }
       // cmd.default();
     } catch (err) {
-      nxsLog.error(err);
+      log.error(err);
       console.log(err);
       // console.log(process.cwd());
       // const helpContent = fs.readFileSync(

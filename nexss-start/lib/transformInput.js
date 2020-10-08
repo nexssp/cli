@@ -18,6 +18,7 @@ module.exports.transformInput = (x, y, params) => {
     readableHighWaterMark: require("../../config/defaults").highWaterMark,
     writableHighWaterMark: require("../../config/defaults").highWaterMark,
     transform: (chunk, encoding, callback) => {
+      log.di(`↳ Stream:transformInput`);
       if (params.inputData && !checkPlatform(params.inputData.nxsPlatform)) {
         process.NEXSS_CANCEL_STREAM = true;
         callback(null, chunk);

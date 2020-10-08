@@ -1,7 +1,7 @@
 if (!process.dataFlow) process.dataFlow = [];
 
 Object.assign(global, require("@nexssp/ansi")); // Cli tool
-global.nxsLog = require("@nexssp/logdebug"); //  Cli tool
+global.log = require("@nexssp/logdebug"); //  Cli tool
 
 global.nConst = (name, value, where) => {
   if (!where) {

@@ -8,6 +8,7 @@ module.exports.transformHash = (cmd, inputData, options) => {
     highWaterMark: require("../../config/defaults").highWaterMark,
     // writableObjectMode: true,
     transform: (chunk, encoding, callback) => {
+      log.di(`↳ Stream:transformHash`);
       if (process.NEXSS_CANCEL_STREAM) {
         callback(null, chunk);
         return;

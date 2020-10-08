@@ -7,6 +7,7 @@ module.exports.writeableStdout = () => {
   return new Writable({
     highWaterMark: require("../../config/defaults").highWaterMark,
     write: (chunk, encoding, callback) => {
+      log.di(`↳ Stream:writeableStdout`);
       if (encoding === "buffer") {
         chunk = chunk.toString();
       }
@@ -24,6 +25,7 @@ module.exports.writeableStdout = () => {
             delete chunk.start;
             // delete chunk.nexss;
             delete chunk.__dirname;
+            delete chunk.nxsLearning;
           }
           delete chunk.nxsPlatform;
           delete chunk["nexssScript"];

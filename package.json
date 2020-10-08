@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@nexssp/ansi": "^1.0.7",
-    "@nexssp/logdebug": "^1.0.4",
+    "@nexssp/logdebug": "^1.0.6",
     "@nexssp/os": "^1.0.20",
     "@nexssp/packunpack": "^1.0.6",
     "axios": "^0.20.0",

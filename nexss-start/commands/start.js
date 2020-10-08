@@ -144,7 +144,7 @@ function Nexss() {
       for (let file of files) {
         let fileName = file.name;
 
-        dg(`Parsing ${fileName}..`);
+        log.db(`∘ Preparing ${fileName}..`);
 
         if (file.path && fs.existsSync(file.path)) process.chdir(file.path);
 
@@ -398,7 +398,7 @@ function Nexss() {
 
     // Recheck the Serialize (later remove??)
     nexssResult = json.parse(json.stringify(nexssResult));
-    dg("Executing..");
+    dg(">> Executing..");
 
     if (cliArgs.nxsBuild) {
       let buildFilename = "./build.nexss.json";

@@ -16,7 +16,9 @@ module.exports.transformFile = (file, x, y) => {
     highWaterMark: require("../../config/defaults").highWaterMark,
     //  writableObjectMode: true,
     transform(chunk, encoding, callback) {
+      log.di(`↳ Stream:transformFile`);
       if (process.NEXSS_CANCEL_STREAM) {
+        log.dr(`))| CANCEL STREAM:NEXSS:transformFile`);
         callback(null, chunk);
         return;
       }

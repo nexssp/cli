@@ -1,9 +1,3 @@
-const NEXSS_PROJECT_PATH = process.env.NEXSS_PROJECT_PATH;
-const NEXSS_LANGUAGES_PATH = process.env.NEXSS_LANGUAGES_PATH;
-const NEXSS_HOME_PATH = process.env.NEXSS_HOME_PATH;
-const { join, extname, resolve } = require("path");
-const { warn, success, error, info, dy, dg } = require("@nexssp/logdebug");
-const { bold, yellow, red } = require("@nexssp/ansi");
 const cache = require("../../lib/cache");
 
 function getLanguagesConfigFiles() {
@@ -16,19 +10,27 @@ function getLanguagesConfigFiles() {
   ];
 
   // ../languages/php/win32.nexss.config.js
-  paths.push(join(__dirname, "..", ...languagePathArray).replace(/\\/g, "/"));
+  paths.push(
+    path.join(__dirname, "..", ...languagePathArray).replace(/\\/g, "/")
+  );
   // di(`Languages Path: ${nexssLanguagesConfigPath}`);
 
   // PROJECTPATH/languages/php/win32/nexss.config.js
-  paths.push(join(NEXSS_HOME_PATH, ...languagePathArray).replace(/\\/g, "/"));
+  paths.push(
+    path
+      .join(process.env.NEXSS_HOME_PATH, ...languagePathArray)
+      .replace(/\\/g, "/")
+  );
   // console.log(NEXSS_PROJECT_PATH, "x");
   // process.exit();
-  if (NEXSS_PROJECT_PATH) {
+  if (process.env.NEXSS_PROJECT_PATH) {
     paths.push(
-      join(resolve(NEXSS_PROJECT_PATH), ...languagePathArray).replace(
-        /\\/g,
-        "/"
-      )
+      path
+        .join(
+          path.resolve(process.env.NEXSS_PROJECT_PATH),
+          ...languagePathArray
+        )
+        .replace(/\\/g, "/")
     );
   }
 
@@ -42,7 +44,7 @@ module.exports.getLanguages = (recreateCache) => {
   }
 
   let result = {};
-  const files = getLanguagesConfigFiles(NEXSS_PROJECT_PATH);
+  const files = getLanguagesConfigFiles(process.env.NEXSS_PROJECT_PATH);
 
   for (file of files) {
     let content;
@@ -100,9 +102,9 @@ module.exports.getLang = (ext, recreateCache) => {
 
     let language;
     const getLanguageCacheName = `nexss_core_getLanguages_${ext}_.json`;
-    if (0 && cache.exists(getLanguageCacheName, "1y")) {
+    if (!recreateCache && cache.exists(getLanguageCacheName, "1y")) {
       language = cache.readJSON(getLanguageCacheName);
-      dg(`[CACHE] Read JSON`);
+      // log.dg(`[CACHE] Read JSON`);
     } else {
       language = module.exports.getLanguages(recreateCache);
       if (!language) {
@@ -115,7 +117,7 @@ module.exports.getLang = (ext, recreateCache) => {
     }
 
     if (!language) {
-      dy(`[CACHE] recreate cache`);
+      log.dy(`[CACHE] recreate cache`);
       console.log(
         green(
           bold(
@@ -141,18 +143,12 @@ module.exports.getLang = (ext, recreateCache) => {
           `${osPM.install ? osPM.install : osPM.installCommand} git`
         );
 
-        const repoName = require("path").basename(langRepositories[ext]);
-        const repoPath = `${NEXSS_LANGUAGES_PATH}/${repoName}`;
+        const repoName = path.basename(langRepositories[ext]);
+        const repoPath = `${process.env.NEXSS_LANGUAGES_PATH}/${repoName}`;
         const spawnOptions = require("../../config/spawnOptions");
-        const repoPathPackageJson = require("path").join(
-          repoPath,
-          "package.json"
-        );
+        const repoPathPackageJson = path.join(repoPath, "package.json");
 
-        const repoPathNodeModules = require("path").join(
-          repoPath,
-          "node_modules"
-        );
+        const repoPathNodeModules = path.join(repoPath, "node_modules");
         if (require("fs").existsSync(repoPath)) {
           console.log(
             `Language seems to be already there. Updating repo silently at:\n${bold(
@@ -277,6 +273,6 @@ module.exports.getLang = (ext, recreateCache) => {
 };
 
 module.exports.getLangByFilename = (name, recreateCache) => {
-  const ext = extname(name);
+  const ext = path.extname(name);
   return module.exports.getLang(ext, recreateCache);
 };
