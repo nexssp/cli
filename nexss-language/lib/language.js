@@ -95,8 +95,12 @@ module.exports.languageNames = () => {
 
 module.exports.getLang = (ext, recreateCache) => {
   // Cache L1
+
   if (ext) {
     if (process.languages && process.languages[ext]) {
+      log.dm(
+        `Read language (ext: ${process.languages[ext].title}) data from cache.`
+      );
       return process.languages[ext];
     }
 
@@ -108,7 +112,7 @@ module.exports.getLang = (ext, recreateCache) => {
     } else {
       language = module.exports.getLanguages(recreateCache);
       if (!language) {
-        error(
+        log.error(
           "There was an error with loading languages. Do you see any other errors before?"
         );
         return;
@@ -217,7 +221,7 @@ module.exports.getLang = (ext, recreateCache) => {
           }
         }
 
-        info(`Implementation for '${ext}' has been installed.`);
+        log.info(`Implementation for '${ext}' has been installed.`);
 
         cache.del(`nexss_core_getLanguages__.json`);
         cache.del(`nexss_core_getLanguages_${ext}_.json`);
@@ -225,8 +229,7 @@ module.exports.getLang = (ext, recreateCache) => {
         const { dist } = require("../../lib/osys");
         const distName = dist();
         if (!x[ext]) {
-          const { error } = require("../../lib/log");
-          error(
+          log.error(
             "Error:",
             bold(ext),
             "is not implemented for",
@@ -240,7 +243,7 @@ module.exports.getLang = (ext, recreateCache) => {
         if (process.platform !== "win32") {
           if (language.dist !== distName) {
             // This is different distribution probably no setup for other then Ubuntu
-            warn(
+            log.warn(
               `Your linux distribution ${bold(
                 distName
               )} is not configured for the extension ${bold(
@@ -252,7 +255,7 @@ module.exports.getLang = (ext, recreateCache) => {
           }
         }
       } else {
-        warn(
+        log.warn(
           `Nexss online Github repository: Support for language with extension ${ext} has not been found. Please consider installing it manually.`
         );
         process.exit(0);
@@ -260,7 +263,7 @@ module.exports.getLang = (ext, recreateCache) => {
     }
 
     if (!language) {
-      warn(`File with extension ${ext} is not supported.`);
+      log.warn(`File with extension ${ext} is not supported.`);
     }
 
     cache.writeJSON(getLanguageCacheName, language);

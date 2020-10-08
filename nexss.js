@@ -65,7 +65,7 @@ if (
   fs.existsSync(`${NEXSS_PACKAGES_PATH}/${plugin}`)
 ) {
   log.error("NEXSS DEVELOPER WARNING !");
-  error(
+  log.error(
     `THE PLUGIN ${NEXSS_SRC_PATH}/nexss-${plugin} colide with package ${NEXSS_PACKAGES_PATH}/${plugin}`
   );
   log.error(

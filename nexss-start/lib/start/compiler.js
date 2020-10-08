@@ -3,11 +3,11 @@ const { getLangByFilename } = require("../../../nexss-language/lib/language");
 module.exports.getCompiler = (file) => {
   const fileName = file.name;
   const fileFillPAth = path.join(file.path, file.name);
-  log.db(`➤ Checking language for: ${bold(fileName)}`);
+  log.dc(`➤ Setup language for: ${bold(fileName)}`);
   const languageDefinition = getLangByFilename(fileName);
   if (!languageDefinition) {
     // THere can be also configuration isssues
-    error(
+    log.error(
       bold(
         yellow(
           `If you see any errors before this statement, please fix them first.`
@@ -25,11 +25,11 @@ module.exports.getCompiler = (file) => {
     // } catch (e) {
     //   console.log(e);
     // }
-    error("There might be an issue", file);
-    error(
+    log.error("There might be an issue", file);
+    log.error(
       "Maybe there is a program with the same name as command of Nexss Programmer?"
     );
-    error(
+    log.error(
       "Eg. You execute `nexss " +
         process.argv[2] +
         " install` and you are in the folder with the `" +
@@ -48,7 +48,7 @@ module.exports.getCompiler = (file) => {
 
   if (path.extname(fileName) && fs.existsSync(fileName)) {
     if (cliArgs.verbose) {
-      info(
+      log.info(
         `Checking for the config in the program (eg. nexss-compiler:).. (top part of the file:${fileName})`
       );
     }
@@ -70,7 +70,7 @@ module.exports.getCompiler = (file) => {
     !ld_compiler[file && file.compiler && file.compiler.split(" ")[0]]
   ) {
     if (cliArgs.verbose) {
-      warn(
+      log.warn(
         `Compiler has been set to ${file.compiler} from file but not exists. Using default one.`
       );
     }
@@ -81,7 +81,7 @@ module.exports.getCompiler = (file) => {
     // GLOBAL COMPILER
     let globalLangConfig;
     const globalConfigPath = require("os").homedir() + "/.nexss/config.json";
-    if (require("fs").existsSync(globalConfigPath)) {
+    if (fs.existsSync(globalConfigPath)) {
       globalConfig = require(globalConfigPath);
     } else {
       globalConfig = { languages: {} };
@@ -99,7 +99,7 @@ module.exports.getCompiler = (file) => {
         compiler = languageDefinition.compilers[globalLangConfig.compilers];
         // console.log(compiler);
         if (cliArgs.verbose) {
-          info(
+          log.info(
             `Compiler has been set to ${compiler} from global config file ${globalConfigPath}`
           );
         }
@@ -113,7 +113,7 @@ module.exports.getCompiler = (file) => {
           compiler = languageDefinition.compilers[globalLangConfig.compilers];
           // console.log(compiler);
           if (cliArgs.verbose) {
-            info(
+            log.info(
               `Compiler has been set to ${compiler} from global config file ${globalConfigPath}`
             );
           }
@@ -149,19 +149,3 @@ module.exports.getCompiler = (file) => {
 
   return compiler;
 };
-
-// let compilerArgs;
-
-// nexssResult.push({
-//   stream: "transformNexss",
-//   cmd: exeFile,
-//   args: fileArgs.args
-//     ? fileArgs.args
-//         .replace(/<file>/g, fileName)
-//         //.replace(/<destinationPath>/g, dirname(exeFile))
-//         .replace(/<destinationFile>/g, exeFile)
-//         .replace(/<destinationDirectory>/g, path.dirname(exeFile))
-//         .split(" ")
-//     : [],
-//   fileName
-// });

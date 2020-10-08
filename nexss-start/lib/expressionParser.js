@@ -1,7 +1,5 @@
 const parserSyntax = require("./parserSyntax");
-const { error } = require("../../lib/log");
-const { red, bold, blue, yellow } = require("@nexssp/ansi");
-
+require("../../lib/strings");
 const expressionParser2 = (data) => {
   if (!data) return data;
   let jsON = JSON.stringify(data);
@@ -34,7 +32,7 @@ const expressionParser2 = (data) => {
 
   if (errors.size > 0) {
     errors.forEach((se) => {
-      error(se);
+      log.error(se);
     });
     process.exit(0);
   }
@@ -88,7 +86,7 @@ const expressionParser = (data, exp) => {
 
   if (errors.size > 0) {
     errors.forEach((se) => {
-      error(se);
+      log.error(se);
     });
     process.exit(0);
   }
