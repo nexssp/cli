@@ -15,14 +15,28 @@ module.exports.readable = (startData) => {
     highWaterMark: require("../../config/defaults").highWaterMark,
   });
   s._read = () => {};
+
+  // if (cliArgs.nxsTime) {
+  //   process.nxsTime = process.hrtime();
+  // }
+
+  // process.nxsOut = cliArgs.nxsOut;
+  // delete cliArgs.nxsOut;
+
+  if (cliArgs._ && cliArgs._.shift) {
+    cliArgs._.shift();
+    if (cliArgs._.length === 0) {
+      delete cliArgs._;
+    }
+  }
+
+  cliArgsCleaned = cleanup(cliArgs);
+
   const nexssVersion = require("../../package.json").version;
+
   startData.nexss = `${nexssVersion}`;
   startData.start = +new Date();
   startData.cwd = process.nexssGlobalCWD;
-
-  if (cliArgs.nxsTime) {
-    startData.nxsTime = process.hrtime();
-  }
 
   // TEST DATA
   if (cliArgs.nxsTest) {
@@ -86,6 +100,9 @@ module.exports.readable = (startData) => {
     }
 
     Object.assign(startData, dataStdin);
+    log.dm(`¦ Stream:Readable stdin is NOT empty. Parsing..`);
+  } else {
+    log.dm(`× Stream:Readable stdin is empty.`);
   }
 
   // console.error("NEXSS/info:", stdinRead, "end");
@@ -97,17 +114,18 @@ module.exports.readable = (startData) => {
 
   // Remove first parameter (script name)
   // Delete empty _
-  if (cliArgs._ && cliArgs._.shift) {
-    cliArgs._.shift();
-    if (cliArgs._.length === 0) {
-      delete cliArgs._;
-    }
-  }
+  // if (cliArgs._ && cliArgs._.shift) {
+  //   cliArgs._.shift();
+  //   if (cliArgs._.length === 0) {
+  //     delete cliArgs._;
+  //   }
+  // }
+  cliArgs.nxsIn = cliArgs._;
+  delete cliArgs._;
 
-  delete cliArgs.nxsTime;
   cliArgsCleaned = cleanup(cliArgs);
-  Object.assign(startData, cliArgsCleaned);
 
+  Object.assign(startData, cliArgsCleaned);
   // Make sure we are in the right folder.
   // Later change it
   // if (require("fs").existsSync(startData.cwd) && !cliArgs)
@@ -118,7 +136,9 @@ module.exports.readable = (startData) => {
     if (!startData["__dirname"]) startData["__dirname"] = process.cwd();
     startData.cwd = process.NexssFilePath;
   }
-  s.push(JSON.stringify(startData));
+
+  s.push({ status: "ok", data: startData });
   s.push(null);
+
   return s;
 };

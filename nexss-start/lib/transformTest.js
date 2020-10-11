@@ -10,29 +10,22 @@ module.exports.transformTest = (
   const { inspect } = require("util");
   const { cleanTerminalColors } = require("../../lib/terminal");
   return new Transform({
+    objectMode: true,
     highWaterMark: require("../../config/defaults").highWaterMark,
-    // writableObjectMode: true,
-    // readableObjectMode: true,
     transform(chunk, encoding, callback) {
-      log.di(`↳ Stream:transformTest`);
       // Not a json data so we don't do anything here
-      if (process.NEXSS_CANCEL_STREAM) {
+      if (chunk.stream === "cancel") {
+        log.dr(`× Stream:Cancelled transformTest`);
         callback(null, chunk);
         return;
       }
+
+      log.di(`↳ Stream:transformTest`);
+
       if (cliArgs.nxsTest) {
         const testingData = require("../../config/testingData.json");
-        let data = "";
-        try {
-          data = JSON.parse(chunk.toString());
-        } catch (er) {
-          error(
-            `There was an issue with JSON going out from file ${bold(
-              process.nexssFilename ? process.nexssFilename : "unknown"
-            )}:`
-          );
-          error(data);
-        }
+        let data = chunk.data;
+
         if (data) {
           let errorExists;
           Object.keys(testingData).forEach((k) => {
@@ -53,8 +46,8 @@ module.exports.transformTest = (
           }
         }
       }
+
       if (chunk) callback(null, chunk);
-      //   process.stdout.write(`END ERROR TRANSFORMER ${title}\n\n `);
     },
   });
 };

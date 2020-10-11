@@ -99,11 +99,11 @@ module.exports.getLang = (ext, recreateCache) => {
   if (ext) {
     if (process.languages && process.languages[ext]) {
       log.dm(
-        `Read language (ext: ${process.languages[ext].title}) data from cache.`
+        `¦ Reading language (ext: ${process.languages[ext].title}) data from cache.`
       );
       return process.languages[ext];
     } else {
-      log.dm(`Reading language config (ext: ${ext})`);
+      log.dm(`¦ Reading language config (ext: ${ext})`);
     }
 
     let language;

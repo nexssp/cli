@@ -13,11 +13,11 @@ module.exports = (data) => {
       r = 1;
     }
 
-    if (data.nxsTime) {
+    if (process.nxsTime) {
       const {
         timeElapsed,
       } = require("../../../nexss-start/lib/output/nxsTime");
-      timeElapsed(data.nxsTime);
+      timeElapsed(process.nxsTime);
     }
     process.exit(0);
     // process.exit(r);

@@ -134,10 +134,10 @@ function Nexss() {
 
       // let nexssResult = [() => "process.stdin"];
 
-      const noStdin = process.argv.includes("--nxsOnly");
-      nexssResult.push({ stream: "readable", cmd: startData });
+      const noStdin = process.argv.includes("--nxsI");
+      // nexssResult.push({ stream: "readable", cmd: startData });
       // { stream: "transformError", cmd: "Some text" }
-
+      nexssResult.push({ stream: "readable", cmd: startData });
       const { getCompiler } = require("../lib/start/compiler");
       const { getBuilder } = require("../lib/start/builder");
 

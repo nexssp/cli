@@ -4,6 +4,7 @@ module.exports.transformRequest = (url) => {
   const axios = require("axios");
   const { nxsDebugTitle } = require("../lib/output/nxsDebug");
   return new Transform({
+    objectMode: true,
     highWaterMark: require("../../config/defaults").highWaterMark,
     transform: (chunk, encoding, callback) => {
       log.di(`↳ Stream:transformRequest`);
@@ -41,13 +42,15 @@ module.exports.transformRequest = (url) => {
             data = {};
           }
 
-          try {
-            data = JSON.parse(wholeData);
-            callback(null, Buffer.from(wholeData));
-          } catch (error) {
-            data.nxsOut = wholeData;
-            callback(null, Buffer.from(JSON.stringify(data)));
-          }
+          // try {
+          //   data = JSON.parse(wholeData);
+          //   callback(null, Buffer.from(wholeData));
+          // } catch (error) {
+          //   data.nxsOut = wholeData;
+          //   callback(null, Buffer.from(JSON.stringify(data)));
+          // }
+
+          callback(null, wholeData);
         });
       });
 

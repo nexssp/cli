@@ -13,14 +13,16 @@ module.exports.transformFile = (file, x, y) => {
   const { timeElapsed } = require("../../nexss-start/lib/output/nxsTime");
   const { bold } = require("@nexssp/ansi");
   return new Transform({
+    objectMode: true,
     highWaterMark: require("../../config/defaults").highWaterMark,
     //  writableObjectMode: true,
     transform(chunk, encoding, callback) {
-      log.di(`↳ Stream:transformFile`);
-      if (process.NEXSS_CANCEL_STREAM) {
+      if (chunk.stream === "cancel") {
         log.dr(`))| CANCEL STREAM:NEXSS:transformFile`);
         callback(null, chunk);
         return;
+      } else {
+        log.di(`↳ Stream:transformFile`);
       }
       process.chdir(y.cwd);
       process.nexssCWD = y.cwd;
@@ -30,18 +32,9 @@ module.exports.transformFile = (file, x, y) => {
           `File ${file} not found. Current dir (transformFile.js):${process.cwd()}`
         );
       }
-      try {
-        data = JSON.parse(chunk.toString());
-      } catch (error) {
-        console.error(
-          "ERROR in JSON (start/trasformFile.js): ",
-          chunk.toString()
-        );
-        callback(null, JSON.stringify(data));
-      }
 
       let startCompilerTime = process.hrtime();
-
+      let data = chunk.data;
       nxsDebugTitle("Transforming File: " + file, data, "yellow");
       let streamRead = createReadStream(file);
       let wholeData = "";
@@ -62,15 +55,16 @@ module.exports.transformFile = (file, x, y) => {
           } catch (e) {
             data.nxsStopReason = `Issue with json file: ${file}\n ERROR: ${e}`;
             data.nxsStop = true;
-
-            callback(JSON.stringify(data));
+            data.status = "error";
+            data.stream = "cancel";
+            callback(data);
           }
         } else {
           data.nxsOut = wholeData;
         }
-        data = JSON.stringify(data);
+        // data = JSON.stringify(data);
         // timeElapsed(startCompilerTime, `Read file from ${bold(file)}`);
-        callback(null, Buffer.from(data));
+        callback(null, { status: "ok", data });
       });
 
       // streamRead.on("exit", (code, signal) => {

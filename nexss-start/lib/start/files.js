@@ -64,8 +64,13 @@ const { isURL } = require("../../../lib/data/url");
 function stripEndQuotes(s) {
   return s.replace && s.replace(/(^["|'])|(["|']$)/g, "");
 }
+
+const { inspect } = require("util");
+
 const getFiles = (folder, args, env, ccc) => {
+  // log.di(`getFiles: `, inspect(folder).replace(/\n/g, " "));
   assert(folder, "missing path");
+  const command = folder.name;
 
   if (folder.name.startsWith("//")) {
     return;
@@ -99,11 +104,15 @@ const getFiles = (folder, args, env, ccc) => {
     if (args._ && args._.length === 0) {
       delete args._;
     } else {
-      // To CHECKTHIS.
       if (!args.nxsIn || args._) {
-        args.nxsIn = args._;
+        if (args._) args.nxsIn = args._;
         delete args._;
       }
+    }
+
+    if (Object.keys(args).length === 0) {
+      // TODO: This needs to be checked in the refactoring stage. for now this "wonderful"
+      args = [];
     }
   }
   // console.log("folder:", folder, "ARGS!!!!!!!!!!", args);
@@ -157,7 +166,7 @@ const getFiles = (folder, args, env, ccc) => {
 
     process.exit(0);
   }
-
+  // This is $# commands
   if (folder.name.startsWith(NEXSS_SPECIAL_CHAR)) {
     folder.args = args;
     // folder.env = env;
@@ -175,7 +184,7 @@ const getFiles = (folder, args, env, ccc) => {
         res.env = loaded;
       }
     }
-
+    res.commmand = folderAbsolute;
     return res;
   }
   // console.log("folderAbsolute:", folderAbsolute);
@@ -188,7 +197,7 @@ const getFiles = (folder, args, env, ccc) => {
   }
   let config_files;
   if (!config) {
-    warn(
+    log.warn(
       `No config file in ${path.normalize(
         folderAbsolute
       )} the the searching.. for index.nexss OR start.nexss `
@@ -204,7 +213,7 @@ const getFiles = (folder, args, env, ccc) => {
     if (startFile) {
       config_files = [{ name: startFile[0] }];
     } else {
-      error(
+      log.error(
         "No config file in the searching for index.nexss ",
         path.normalize(folderAbsolute)
       );
@@ -236,6 +245,8 @@ const getFiles = (folder, args, env, ccc) => {
       if (!file.name) {
         return [];
       }
+
+      // URL Address
       if (file.name.startsWith("http")) {
         const name = file.name;
         const split = file.name.trim().split(" ");
@@ -245,14 +256,9 @@ const getFiles = (folder, args, env, ccc) => {
         }
         return file;
       }
+
       const fileCWD = process.cwd();
-      // console.log("=============================================");
-      // console.log("FFFFFIIILLLLEEEEEEEEEE->", file, "fileCWD:", fileCWD);
-
       const ppp = getPath(getName(file.name));
-      // console.log("=============================================");
-
-      // console.log("ppp", ppp, "file:", file);
 
       if (!ppp) {
         if (!file.name) {
@@ -264,29 +270,18 @@ const getFiles = (folder, args, env, ccc) => {
         process.exit();
       }
 
+      // This is a directory
       if (fs.lstatSync(ppp).isDirectory()) {
         //   //console.log("DIIIIIIIIIIIIIIIRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
         process.chdir(ppp);
         const subConfig = loadConfigContent(ppp + "/_nexss.yml");
-
         // console.log("config:", config);
         let envLoaded = loadEnv();
         if (envLoaded) {
           env = envLoaded;
         }
-        // console.log(
-        //   "----------------------------------------------file:",
-        //   file,
-        //   "----ppp:",
-        //   ppp,
-        //   "----config:",
-        //   config
-        // );
-        // console.log(subConfig);
         process.chdir(fileCWD);
-
         let xxxx = getFiles(file, file.data, env, subConfig);
-
         return xxxx;
       }
       // } else {
@@ -305,16 +300,6 @@ const getFiles = (folder, args, env, ccc) => {
       }
 
       file.path = process.cwd();
-      // console.log(
-      //   "ccc:",
-      //   ccc,
-      //   "filePATH",
-      //   file.path,
-      //   "configPATH: ",
-      //   config.filePath
-      // );
-      // Custom data from the module
-      // if (!file.data) file.data = {};
       if (ccc && ccc.data && file.data) {
         // console.log("file.data, ccc.data", file.data, ccc.data);
         Object.assign(file.data, ccc.data);
@@ -334,7 +319,7 @@ const getFiles = (folder, args, env, ccc) => {
           );
           process.exit(0);
         }
-        // console.log("file.data, config.data", file.data, config.data);
+        console.log("file.data, config.data", file.data, config.data);
 
         file.data = Object.assign(file.data || {}, config.data);
       }
@@ -351,7 +336,16 @@ const getFiles = (folder, args, env, ccc) => {
       if (Object.keys(arr).length > 0) {
         file.name = file.name.split(" ")[0];
         if (file.args) {
-          file.args = file.args.concat(arr.args);
+          try {
+            file.args = file.args.concat(arr.args);
+          } catch (e) {
+            log.error(
+              "There is an error in concatenation of file arguments. (nexss-start/lib/start/files.js)"
+            );
+            console.error("file.args is not an Array!");
+            console.error("file.args", file.args, "arr.args", arr.args);
+            process.exit(1);
+          }
         } else {
           file.args = arr.args;
         }
@@ -364,12 +358,14 @@ const getFiles = (folder, args, env, ccc) => {
       }
       // ?????? process.chdir(cwd);
       // console.log(file);
+      file.command = command;
       return file;
       //}
     });
 
   process.chdir(cwd);
-
+  // console.log("!!!!!!!!!! lib/files.js", resultFiles && resultFiles.flat());
+  // process.exit();
   return resultFiles && resultFiles.flat();
 };
 

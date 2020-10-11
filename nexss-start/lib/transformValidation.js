@@ -6,34 +6,34 @@ module.exports.transformValidation = (area = "input", options = {}) => {
   const { inspect } = require("util");
   const validationMessages = require("./validationMessages");
   return new Transform({
+    objectMode: true,
     highWaterMark: require("../../config/defaults").highWaterMark,
-    writableObjectMode: true,
     // readableObjectMode: true,
     transform(chunk, encoding, callback) {
       // Not a json data so we don't do anything here
-      if (process.NEXSS_CANCEL_STREAM) {
+      if (chunk.stream === "cancel") {
         callback(null, chunk);
         return;
       }
       if (!cliArgs.nxsNoValidation) {
-        let data = chunk.toString();
+        let data = chunk.data;
         const opts = options;
         if (opts && Array.isArray(opts)) {
-          try {
-            data = JSON.parse(data);
-          } catch (er) {
-            error(
-              `There was an issue with JSON going out from command: ${bold(
-                process.nexssCMD ? process.nexssCMD : "unknown"
-              )}:`
-            );
-            error(
-              `Current dir: ${bold(
-                process.nexssCWD ? process.nexssCWD : "unknown"
-              )}:`
-            );
-            error(data);
-          }
+          // try {
+          //   data = JSON.parse(data);
+          // } catch (er) {
+          //   error(
+          //     `There was an issue with JSON going out from command: ${bold(
+          //       process.nexssCMD ? process.nexssCMD : "unknown"
+          //     )}:`
+          //   );
+          //   error(
+          //     `Current dir: ${bold(
+          //       process.nexssCWD ? process.nexssCWD : "unknown"
+          //     )}:`
+          //   );
+          //   error(data);
+          // }
 
           let errorExists = [];
           // more: https://github.com/nexssp/cli/wiki/Data-Validation
@@ -101,8 +101,7 @@ module.exports.transformValidation = (area = "input", options = {}) => {
           }
         }
       }
-      if (chunk) callback(null, chunk);
-      //   process.stdout.write(`END ERROR TRANSFORMER ${title}\n\n `);
+      if (chunk) callback(null, { status: "ok", data: chunk.data });
     },
   });
 };

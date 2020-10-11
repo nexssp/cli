@@ -1,7 +1,14 @@
 async function run(operations, options = {}) {
+  if (cliArgs.nxsTime) {
+    process.nxsTime = process.hrtime();
+  }
+
+  process.nxsOut = cliArgs.nxsOut;
+  delete cliArgs.nxsOut;
+
   const { pipeline } = require("stream");
   // Below must be like that! for EVAL
-  const { transformNexss } = require("./transformNexss");
+  const { transformNexss } = require("./transformNexssASync");
   const { transformError } = require("./transformError");
   const { transformFile } = require("./transformFile");
   const { writeableStdout } = require("./writeableStdout");
@@ -11,6 +18,7 @@ async function run(operations, options = {}) {
   const { transformOutput } = require("./transformOutput");
   const { transformHash } = require("./transformHash");
   const { transformRequest } = require("./transformRequest");
+  const { transformParse } = require("./transformParse");
   const { readable } = require("./readable");
   const { cleanup } = require("./output/nxsOutputParams");
   const { blue, bold } = require("@nexssp/ansi");
@@ -19,7 +27,8 @@ async function run(operations, options = {}) {
 
   // Below is for relative dirs in the .nexss files
   // This will need to be changed to the distributed systems
-  console.time(blue("Nexss Programmer"));
+  console.time(bold(cyan("Nexss P"), bold("rogrammer")));
+
   const finalOperations = operations.map((element, index) => {
     // We get last index of transformOutput as some parameters
     // passed in the commandline directly only should be applied in the
@@ -67,6 +76,7 @@ async function run(operations, options = {}) {
     });
 
     runOptions.inputData = element.inputData;
+
     if (element.data) {
       if (runOptions.inputData) {
         Object.assign(runOptions.inputData, element.data);
@@ -83,35 +93,61 @@ async function run(operations, options = {}) {
     }
   });
 
-  // We get Readable Stream
-  let nPipe = finalOperations.shift();
+  // Below are 2 versions for of look and Async Pipeline
+  if (1) {
+    let nPipe;
+    // We get Readable Stream
+    nPipe = finalOperations.shift();
 
-  for (let pipe of finalOperations) {
-    nPipe = nPipe.pipe(pipe);
-    nPipe.on("error", (e) => `${e} EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE`);
+    // nPipe = process.openStdin();
+
+    // log.di(`nPipe-stdin open`);
+
+    try {
+      for (let pipe of finalOperations) {
+        // log.di(`nPipe-stdin :pipe`, Object.keys(pipe));
+        // if (process.NEXSS_WAIT) {
+        // }
+        nPipe = nPipe.pipe && nPipe.pipe(pipe);
+        if (nPipe)
+          pipe.on("error", (e) =>
+            console.log(bold(cyan("Nexss P"), bold("rogrammer")), e)
+          );
+      }
+    } catch (e) {
+      console.log(`Error in PIPE: pipe.js`, e);
+    }
+
+    nPipe.on("finish", (e) => {
+      if (process.argv.includes("--debug")) {
+        process.stdout.write("\n");
+        console.timeEnd(bold(cyan("Nexss P"), bold("rogrammer")));
+      }
+    });
+  } else {
+    await pipelineAsync(
+      // process.stdin,
+      ...finalOperations
+    )
+      .then((e) => {
+        if (process.argv.includes("--debug")) {
+          process.stdout.write("\n");
+        }
+        if (
+          process.argv.includes("--nxsTime") ||
+          process.argv.includes("--debug")
+        ) {
+          console.timeEnd(bold(cyan("Nexss P"), bold("rogrammer")));
+        }
+      })
+      .catch((err) => {
+        // This is handled by nexss transform as all errors are parsed
+        // based on language - this can be used maybe to better debug ?
+        console.error(bold(cyan("Nexss P"), bold("rogrammer")), err);
+        // console.error("Nexss last error: ", process.cwd());
+        process.exitCode = 1;
+      });
   }
-
-  // nPipe.on("finish", (e) => {
-  //   console.log("finish!@!!!!!");
-  // });
-
-  // await pipelineAsync(
-  //   // process.stdin,
-  //   ...finalOperations
-  // )
-  //   .then((e) => {
-  //     if (process.argv.includes("--debug")) {
-  //       process.stdout.write("\n");
-  //       console.timeEnd(blue("Nexss Programmer"));
-  //     }
-  //   })
-  //   .catch((err) => {
-  //     // This is handled by nexss transform as all errors are parsed
-  //     // based on language - this can be used maybe to better debug ?
-  //     console.error(blue("\nNexss Programmer: "), err);
-  //     // console.error("Nexss last error: ", process.cwd());
-  //     process.exitCode = 1;
-  //   });
 
   return;
 }

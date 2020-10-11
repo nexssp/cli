@@ -18,11 +18,20 @@ module.exports.transformOutput = (x, y, z) => {
   const { cleanup } = require("./output/nxsOutputParams");
   const nxsStop = require("./start/nxsStop");
   return new Transform({
+    objectMode: true,
     highWaterMark: require("../../config/defaults").highWaterMark,
     // writableObjectMode: true,
     transform: (chunk, encoding, callback) => {
-      if (process.NEXSS_CANCEL_STREAM) {
-        // log.dy(bold(`↳ Stream:transformOutput: `, process.NEXSS_CANCEL_STREAM));
+      if (Buffer.isBuffer(chunk)) {
+        chunk = chunk.toString();
+      }
+
+      nxsDebugData(chunk.data, "Output", "magenta");
+      if (chunk.stream === "cancel") {
+        log.dr(`× Stream:Cancelled transformOutput`);
+        if (chunk.command) {
+          log.dr(`! Cancelled by: `, bold(chunk.command));
+        }
         // process.NEXSS_CANCEL_STREAM = false; // this is for next streams.
         callback(null, chunk);
         return;
@@ -30,60 +39,20 @@ module.exports.transformOutput = (x, y, z) => {
         log.di(`↳ Stream:transformOutput`);
       }
       // Not a json data so we don't do anything here
-      let data = chunk.toString();
-      process.dataFlow.push(chunk.toString());
+      let data = chunk.data;
+      process.dataFlow.push(chunk.data);
 
       let cliArgs = require("minimist")(y);
       delete cliArgs._;
-      // if (data && data.startsWith("{")) {
-      try {
-        data = JSON.parse(data);
 
-        nxsStop(data);
-        // We add data for nxsField, nxsFields etc.
-        // defined in the nexss-start\lib\output\nxsOutputParams.js
-        //
-        delete cliArgs.nxsTime;
-        delete cliArgs.nxsLocal;
-        delete cliArgs.nxsLocalForce;
-        delete cliArgs.nxsGlobal;
-        delete cliArgs.nxsGlobalForce;
-        delete cliArgs.nxsPlatform;
+      delete cliArgs.nxsTime;
+      delete cliArgs.nxsLocal;
+      delete cliArgs.nxsLocalForce;
+      delete cliArgs.nxsGlobal;
+      delete cliArgs.nxsGlobalForce;
+      delete cliArgs.nxsPlatform;
 
-        Object.assign(data, cliArgs);
-      } catch (err) {
-        // process.NEXSS_NO_TRANSFORM += `${err}`;
-        // callback(null, chunk);
-        // return;
-        // console.error(
-        //   "ERROR in JSON (start/tranformOutput.js): ",
-        //   chunk.toString()
-        // );
-        if (isErrorPiped) {
-          console.log(data);
-        } else {
-          if (!data) {
-            data = {};
-          }
-          data.nxsStopReason = err;
-          data.nxsStop = true;
-          if (!process.argv.includes("--nxsModule")) {
-            callback(null, JSON.stringify(data)); //JSON stringify?
-          } else {
-            let field = "nxsOut";
-            if (typeof cliArgs.nxsModule !== "boolean") {
-              field = cliArgs.nxsModule;
-            }
-
-            callback(null, JSON.stringify({ [field]: data })); //JSON stringify?
-          }
-
-          // console.log(data);
-        }
-
-        return;
-      }
-
+      Object.assign(data, cliArgs);
       // Parsing values insde the template !!
       // You can use variables now!!!
 
@@ -146,10 +115,10 @@ module.exports.transformOutput = (x, y, z) => {
         }
 
         if (data.nxsOutAs || data.nxsAs) {
-          if (data.nxsIn) {
-            data = nxsRenameModule(data, "nxsIn", data.nxsOutAs || data.nxsAs);
-          } else if (data.nxsOut) {
+          if (data.nxsOut) {
             data = nxsRenameModule(data, "nxsOut", data.nxsOutAs || data.nxsAs);
+          } else if (data.nxsIn) {
+            data = nxsRenameModule(data, "nxsIn", data.nxsOutAs || data.nxsAs);
           }
 
           delete data.nxsAs;
@@ -190,11 +159,12 @@ module.exports.transformOutput = (x, y, z) => {
         }
         nxsDebugData(data, "Output", "cyan");
 
-        if (typeof data === "object") {
-          data = JSON.stringify(data);
-        }
-        data += ""; //Incase it is not a string
-        callback(null, data);
+        // if (typeof data === "object") {
+        //   data = JSON.stringify(data);
+        // }
+        // data += ""; //Incase it is not a string
+
+        callback(null, { status: "ok", data });
       }
       // } else {
       //   callback(null, data);

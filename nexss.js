@@ -5,6 +5,15 @@
  * 2018/10/01 initial version
  */
 // We make sure application is installed
+
+process.on("unhandledRejection", (err, promise) => {
+  console.log({ err, promise });
+});
+
+process.on("rejectionHandled", (err, promise) => {
+  console.log({ promise });
+});
+
 const { npmInstallRun } = require("./lib/npm");
 npmInstallRun();
 require("./config/globals");
@@ -132,6 +141,7 @@ if (
     let pmArguments = process.argv.slice(4);
     pmArguments = pmArguments.filter((e) => e !== "--nocache");
 
+    // INSTALL / UNINSTALL
     if (
       (process.argv[3] === "install" || process.argv[3] === "uninstall") &&
       (!process.argv[4] ||
@@ -160,11 +170,13 @@ if (
 
         let p = ensureInstalled(command, installCommand, { verbose: true });
         if (p) {
-          info(`${blue(bold(languageSelected.title))} is installed at:\n${p}`);
+          log.info(
+            `${blue(bold(languageSelected.title))} is installed at:\n${p}`
+          );
         }
       } else {
         //uninstall
-
+        // TODO: Implement uninstalling..
         console.log(`Uninstalling is here`);
       }
 
@@ -181,6 +193,7 @@ if (
       return;
     }
 
+    // Package managers
     const pm = languageSelected.languagePackageManagers
       ? languageSelected.languagePackageManagers[
           Object.keys(languageSelected.languagePackageManagers)[0]
@@ -194,6 +207,7 @@ if (
     // custom actions like display compilers etc
     // eg nexss js compilers, nexss js builders
 
+    // SET default compilers, builders for each language
     switch (argument) {
       case "default":
         // Set default compilator eg nexss lua default compiler

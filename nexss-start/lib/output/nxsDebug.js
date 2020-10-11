@@ -43,11 +43,7 @@ module.exports.nxsDebugData = (data, title, color) => {
         console.error(side + ` ${title} ` + side);
         break;
     }
-    console.error(
-      grey(
-        "CURRENT DIR:" + (process.nexssCWD ? process.nexssCWD : process.cwd())
-      )
-    );
+
     // if (process.nexssCMD) console.error(yellow("COMMAND: " + process.nexssCMD));
 
     if (process.previousDATA) {
@@ -65,11 +61,18 @@ module.exports.nxsDebugData = (data, title, color) => {
     } else {
       diffData = data;
     }
+
     if (diffData) {
       console.error(diffData);
     } else {
       console.error(grey("Data not changed."));
     }
+    console.error(
+      grey(
+        bold("CURRENT DIR: ") +
+          (process.nexssCWD ? process.nexssCWD : process.cwd())
+      )
+    );
     process.previousDATA = data;
   }
 };

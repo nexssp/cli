@@ -5,14 +5,17 @@ module.exports.transformHash = (cmd, inputData, options) => {
   const { NEXSS_SPECIAL_CHAR } = require("../../config/defaults");
   const { nxsDebugData } = require("./output/nxsDebug");
   return new Transform({
+    objectMode: true,
     highWaterMark: require("../../config/defaults").highWaterMark,
     // writableObjectMode: true,
     transform: (chunk, encoding, callback) => {
-      log.di(`↳ Stream:transformHash`);
-      if (process.NEXSS_CANCEL_STREAM) {
+      if (chunk.stream === "cancel") {
         callback(null, chunk);
         return;
       }
+
+      log.di(`↳ Stream:transformHash: ${require("util").inspect(cmd)}`);
+
       const n = cmd.name.replace(NEXSS_SPECIAL_CHAR, "");
 
       if (cliArgs.nxsComments) {
@@ -29,12 +32,13 @@ module.exports.transformHash = (cmd, inputData, options) => {
                 break;
               default:
                 error(splitter[1], "Command not found.");
-                break;
+                callback(null, { status: "error", data: chunk.data });
+                return;
             }
           }
         }
       }
-      let newData = JSON.parse(chunk.toString());
+      let newData = chunk.data;
 
       newData = Object.assign(newData, options.inputData);
       const { expressionParser } = require("./expressionParser");
@@ -59,7 +63,8 @@ module.exports.transformHash = (cmd, inputData, options) => {
       }
 
       nxsDebugData(newData, "$#", "magenta");
-      callback(null, Buffer.from(JSON.stringify(newData)));
+
+      callback(null, { status: "ok", data: newData });
     },
   });
 };

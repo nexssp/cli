@@ -28,9 +28,9 @@ module.exports.transformNexss = (
   const { spawn } = require("child_process");
 
   const { parseError } = require("./error");
-  const learning = require("../lib/learning");
+  const learning = require("./learning");
   const { nxsDebugTitle } = require("./output/nxsDebug");
-  const { timeElapsed } = require("..//lib/output/nxsTime");
+  const { timeElapsed } = require("./output/nxsTime");
   return new Transform({
     transform(chunk, encoding, callback) {
       const argsDisplay = args.filter((e) => !e.includes("--debug")).join(" ");
@@ -169,25 +169,25 @@ module.exports.transformNexss = (
           // this.errBuffer = "";
         }
       });
-
+      let totalData = "";
       this.worker.stdout.on("data", function (data) {
         // TODO: Check if trim is ok here
-
-        log.dg(`>> Data: ${data.length}B, cmd: ${process.nexssCMD}`);
+        totalData += data.toString();
+        log.dg(`<< Data: ${data.length}B, cmd: ${process.nexssCMD}`);
         timeElapsed(startCompilerTime, `Response from ${bold(nexssCommand)}`);
 
-        if (cmd === "bash") {
-          // self.push(data.toString().trim().replace(/\n/g, "\n\r"));
-          self.push(data);
-          return;
-        }
-        const outputString = data.toString("utf8");
-        // On Powershell there is additional extra line which cousing a lot of headache..
-        // Anyways we do not want to run empty line through
-        // console.log("outputString", outputString);
-        if (outputString !== "\n") {
-          self.push(outputString); //.trim removed (some distored output eg blender compiler)
-        }
+        // if (cmd === "bash") {
+        //   // self.push(data.toString().trim().replace(/\n/g, "\n\r"));
+        //   self.push(data);
+        //   return;
+        // }
+        // const outputString = data.toString("utf8");
+        // // On Powershell there is additional extra line which cousing a lot of headache..
+        // // Anyways we do not want to run empty line through
+        // // console.log("outputString", outputString);
+        // if (outputString !== "\n") {
+        //   self.push(outputString); //.trim removed (some distored output eg blender compiler)
+        // }
       });
 
       // self.pipe(this.worker);
@@ -214,6 +214,8 @@ module.exports.transformNexss = (
       //   });
 
       this.worker.on("exit", () => {
+        timeElapsed(startCompilerTime, `End Worker ${bold(nexssCommand)}`);
+        self.push(totalData);
         self.end();
         // timeElapsed(startStreamTime, "End of Stream");
         if (

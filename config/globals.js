@@ -3,7 +3,10 @@ if (!process.dataFlow) process.dataFlow = [];
 Object.assign(global, require("@nexssp/ansi")); // Cli tool
 global.log = require("@nexssp/logdebug"); //  Cli tool
 
+global.nConstants = [];
 global.nConst = (name, value, where) => {
+  const displayWhere = where ? "process." : "";
+  global.nConstants.push(`${displayWhere}${name}`);
   if (!where) {
     where = global; // process, any Object ..
   }

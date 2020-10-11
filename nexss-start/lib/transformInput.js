@@ -1,6 +1,4 @@
 module.exports.transformInput = (x, y, params) => {
-  const { Transform } = require("stream");
-  const cliArgs = require("minimist")(process.argv);
   const { error, warn, ok, isErrorPiped } = require("../../lib/log");
   const { bold, red } = require("@nexssp/ansi");
   const nxsInModule = require("./input/nxsIn");
@@ -12,43 +10,28 @@ module.exports.transformInput = (x, y, params) => {
   const nxsGlobal = require("./input/nxsGlobal");
   const nxsLocal = require("./input/nxsLocal");
   const { checkPlatform } = require("../../lib/platform");
-  return new Transform({
-    writableObjectMode: true,
-    readableObjectMode: true,
-    readableHighWaterMark: require("../../config/defaults").highWaterMark,
-    writableHighWaterMark: require("../../config/defaults").highWaterMark,
+
+  return new require("stream").Transform({
+    objectMode: true,
     transform: (chunk, encoding, callback) => {
       if (
-        process.NEXSS_CANCEL_STREAM ||
+        chunk.stream === "cancel" ||
         (params.inputData && !checkPlatform(params.inputData.nxsPlatform))
       ) {
-        process.NEXSS_CANCEL_STREAM = true;
+        log.dr(`× Stream:Cancelled transformInput`);
         callback(null, chunk);
         return;
       } else {
         log.di(`↳ Stream:transformInput`);
       }
 
-      let data = chunk.toString();
-
-      try {
-        data = JSON.parse(data);
-      } catch (error) {
-        if (isErrorPiped) {
-          console.log(data);
-        } else {
-          try {
-            callback(null, data);
-          } catch (e) {
-            console.error(`ERRROOORRR:`, e);
-          }
-        }
-
+      if (!chunk.data) {
+        callback(null, { status: "error", data: chunk });
         return;
       }
 
-      delete params.env;
-      // console.log("#######################", params);
+      let data = chunk.data;
+
       if (data) {
         // We add inputData from the parameters
         // This is added here as the validation is needed
@@ -57,6 +40,10 @@ module.exports.transformInput = (x, y, params) => {
           // Array is used on args parameter
           if (Array.isArray(params.inputData)) {
             params.inputData = cliArgsParser(params.inputData);
+          }
+
+          if (params.inputData._ && params.inputData._.length === 0) {
+            delete params.inputData._;
           }
 
           Object.assign(data, params.inputData);
@@ -75,6 +62,7 @@ module.exports.transformInput = (x, y, params) => {
         nxsDebugData(data, "Input", "blue");
         nxsGlobal(data);
         nxsLocal(data);
+
         nxsStop(data);
 
         // data.globalTestTInput = "This is input!!!!";
@@ -82,9 +70,7 @@ module.exports.transformInput = (x, y, params) => {
         //   return require("fs").existsSync(".");
         // };
 
-        // The library below also stores functions..
-        const json = require("../../lib/data/json");
-        callback(null, json.stringify(data));
+        callback(null, { status: "ok", data });
       }
     },
   });
