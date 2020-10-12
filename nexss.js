@@ -4,8 +4,6 @@
  * Author: Marcin Polak / nexss.com
  * 2018/10/01 initial version
  */
-// We make sure application is installed
-
 process.on("unhandledRejection", (err, promise) => {
   console.log({ err, promise });
 });
@@ -14,6 +12,7 @@ process.on("rejectionHandled", (err, promise) => {
   console.log({ promise });
 });
 
+// We make sure application is installed
 const { npmInstallRun } = require("./lib/npm");
 npmInstallRun();
 require("./config/globals");
@@ -410,7 +409,11 @@ if (
     if (pm) {
       const action = pm[argument];
 
-      if (!action || process.argv[3].startsWith("-")) {
+      if (
+        !action ||
+        (process.argv[3].startsWith("-") &&
+          !process.argv[3].startsWith("--nxs"))
+      ) {
         if (argument && !process.argv[3].startsWith("-")) {
           log.warn(
             `Action '${argument}' does not exist for ${bold(

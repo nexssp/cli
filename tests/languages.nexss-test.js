@@ -19,9 +19,14 @@ let linuxOmmit = [
   ".pd",
   ".bat", // Above are not on Linux
   // ====================
+  ".jl", // Julia runs on virtual machine, needs some adjustments
+  ".scala", // UNICODE CHARACTERS TO FIX
+  //
+
   // No implementation of Default and HelloWorld templates
   // TODO: Compilers works, to implement helloWorld, defaults
   ".f90",
+  ".v",
   ".hs",
   ".groovy",
   ".coco",
@@ -42,6 +47,7 @@ switch (os.name()) {
     linuxOmmit.push(".dart");
     linuxOmmit.push(".clj");
     linuxOmmit.push(".raku");
+    linuxOmmit.push(".d");
     break;
 }
 //     linuxOmmit.push(".cs");

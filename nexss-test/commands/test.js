@@ -344,7 +344,10 @@ function should(fname, test, regE, options) {
   } else {
     console.error(red(bright(`But ${title}: `)));
     console.log(data);
-    console.error(yellow(bold("INSPECT: ")));
+    if (cliArgs.nxsInspect) {
+      console.error(yellow(bold("INSPECT: ")));
+    }
+
     console.log(require("util").inspect(data));
   }
 

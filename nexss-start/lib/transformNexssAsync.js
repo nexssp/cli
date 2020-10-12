@@ -171,9 +171,20 @@ module.exports.transformNexss = (
         log.dg(
           `<< Data: ${bold(data.length + " B.")}, cmd: ${process.nexssCMD}`
         );
-        timeElapsed(startCompilerTime, `Response from ${bold(nexssCommand)}`);
+
         data = data.toString();
+
+        log.dg(
+          "Inspect data (up to 250chars..)",
+          data.length > 250
+            ? require("util").inspect(data.substr(0, 250)) + "..."
+            : require("util").inspect(data)
+        );
+
+        timeElapsed(startCompilerTime, `Response from ${bold(nexssCommand)}`);
+
         // Checking if data is
+
         try {
           data = JSON.parse(data);
 
@@ -195,8 +206,8 @@ module.exports.transformNexss = (
           //   ifLonger += data;
           // }
           self.push({
-            stream: "cancel",
-            status: "not a json",
+            stream: "ok",
+            error: "not a json",
             data,
             command: process.nexssCMD,
           });

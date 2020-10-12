@@ -40,7 +40,6 @@ module.exports.transformOutput = (x, y, z) => {
       }
       // Not a json data so we don't do anything here
       let data = chunk.data;
-      process.dataFlow.push(chunk.data);
 
       let cliArgs = require("minimist")(y);
       delete cliArgs._;
@@ -115,10 +114,10 @@ module.exports.transformOutput = (x, y, z) => {
         }
 
         if (data.nxsOutAs || data.nxsAs) {
-          if (data.nxsOut) {
-            data = nxsRenameModule(data, "nxsOut", data.nxsOutAs || data.nxsAs);
-          } else if (data.nxsIn) {
+          if (data.nxsIn) {
             data = nxsRenameModule(data, "nxsIn", data.nxsOutAs || data.nxsAs);
+          } else if (data.nxsOut) {
+            data = nxsRenameModule(data, "nxsOut", data.nxsOutAs || data.nxsAs);
           }
 
           delete data.nxsAs;

@@ -60,6 +60,12 @@ function Nexss() {
         firstParam.seq = cliArgs.seq;
       }
       files = getFiles(firstParam);
+
+      if (cliArgs.nxsDryFiles) {
+        log.dm(bold("➤ Function enabled: --nxsDryFiles"));
+        console.log(JSON.stringify(files, null, 2));
+        process.exit(0);
+      }
     }
   }
 
@@ -398,11 +404,10 @@ function Nexss() {
 
     // Recheck the Serialize (later remove??)
     nexssResult = json.parse(json.stringify(nexssResult));
-    dg(">> Executing..");
 
     if (cliArgs.nxsBuild) {
       let buildFilename = "./build.nexss.json";
-      db(`option nxsBuild -> building and write to ${buildFilename}`);
+      log.db(`option nxsBuild -> building and write to ${buildFilename}`);
 
       if (typeof cliArgs.nxsBuild !== "boolean") {
         buildFilename = cliArgs.nxsBuild;
@@ -415,10 +420,12 @@ function Nexss() {
 
     // We do not run, just display info
     if (cliArgs.nxsDry) {
+      log.dm(bold("➤ Function enabled: --nxsDry"));
       console.log(JSON.stringify(nexssResult, null, 2));
       process.exit(0);
     }
 
+    log.dg(">> Executing..");
     run(nexssResult, { quiet: !cliArgs.verbose }).catch((e) =>
       console.error(e)
     );

@@ -120,8 +120,10 @@ module.exports.readable = (startData) => {
   //     delete cliArgs._;
   //   }
   // }
-  cliArgs.nxsIn = cliArgs._;
-  delete cliArgs._;
+  if (cliArgs._) {
+    cliArgs.nxsIn = cliArgs._;
+    delete cliArgs._;
+  }
 
   cliArgsCleaned = cleanup(cliArgs);
 

@@ -370,6 +370,12 @@ const getFiles = (folder, args, env, ccc) => {
 
   process.chdir(cwd);
 
+  if (cliArgs.nxsDryFiles) {
+    log.dm(bold("➤ Function enabled: --nxsDryFiles"));
+    console.log(JSON.stringify(resultFiles && resultFiles.flat(), null, 2));
+    process.exit(0);
+  }
+
   return resultFiles && resultFiles.flat();
 };
 

@@ -1,5 +1,3 @@
-if (!process.dataFlow) process.dataFlow = [];
-
 Object.assign(global, require("@nexssp/ansi")); // Cli tool
 global.log = require("@nexssp/logdebug"); //  Cli tool
 
@@ -35,6 +33,20 @@ nConst("aliases", require("../config/aliases"), process);
 
 // TODO: cache for below
 const os = require("@nexssp/os");
+
+const getCallerFile = require("get-caller-file");
+nConst("ddd", (...args) => {
+  args.map((e) => {
+    process.stdout.write(require("util").inspect(e) + " ");
+  });
+
+  console.log();
+  console.log(yellow(`Stopped by ddd Function at:`));
+  console.log(bold(getCallerFile()));
+  console.log(yellow("cwd: "), bold(process.cwd()));
+  process.exit(0);
+});
+
 nConst("distro", os.name(), process);
 nConst("distroVersion", os.v(), process);
 nConst("sudo", os.sudo(), process);

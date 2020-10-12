@@ -86,7 +86,6 @@ module.exports.writeableStdout = () => {
             }
           }
         }
-        // console.log(process.dataFlow);
         // Below must be here as for example Blender will not display
         // Progress of rendering, some stdout will be cut etc.
         callback();
