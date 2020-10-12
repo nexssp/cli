@@ -120,6 +120,7 @@ module.exports.transformOutput = (x, y, z) => {
             data = nxsRenameModule(data, "nxsOut", data.nxsOutAs || data.nxsAs);
           }
 
+          delete data.nxsOutAs;
           delete data.nxsAs;
         }
 
@@ -141,6 +142,7 @@ module.exports.transformOutput = (x, y, z) => {
         delete data["nxsGlobal"];
         delete data["nxsGlobalForce"];
 
+        delete data["nxsInfo"]; // nxsInfo is used in the packages to info about variables
         // if (!cliArgs.nxsPretty) {
         //   console.log(JSON.stringify(data));
         // } else {

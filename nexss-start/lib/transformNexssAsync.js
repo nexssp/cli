@@ -86,6 +86,7 @@ module.exports.transformNexss = (
       let args2 = args.remove("--nocache");
       args2 = args2.remove("--nxsPipeErrors");
       args2 = args2.remove("--nxsTest");
+      args2 = args2.remove("--nxsDebugData");
 
       let argsStrings;
       if (process.platform === "win32") {
@@ -99,6 +100,7 @@ module.exports.transformNexss = (
       }
 
       const nexssCommand = `${cmd} ${argsStrings.join(" ")}`;
+
       process.nexssCMD = nexssCommand;
       let startCompilerTime;
       //Yes startStreamTime below
@@ -189,11 +191,17 @@ module.exports.transformNexss = (
           data = JSON.parse(data);
 
           if (!data.nxsStop) {
-            self.push({ from: "transform-nexss", status: "ok", data });
+            self.push({
+              command: nexssCommand,
+              from: "transform-nexss",
+              status: "ok",
+              data,
+            });
           } else {
             delete data.nxsStop;
             delete data.nxsStopReason;
             self.push({
+              command: nexssCommand,
               from: "transform-nexss",
               stream: "cancel",
               status: "end",
@@ -207,6 +215,7 @@ module.exports.transformNexss = (
           //   ifLonger += data;
           // }
           self.push({
+            command: nexssCommand,
             from: "transform-nexss",
             stream: "ok",
             error: "not a json",
