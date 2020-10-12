@@ -8,7 +8,7 @@ async function run(operations, options = {}) {
 
   const { pipeline } = require("stream");
   // Below must be like that! for EVAL
-  const { transformNexss } = require("./transformNexssASync");
+  const { transformNexss } = require("./transformNexss");
   const { transformError } = require("./transformError");
   const { transformFile } = require("./transformFile");
   const { writeableStdout } = require("./writeableStdout");
