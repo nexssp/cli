@@ -18,7 +18,7 @@ async function run(operations, options = {}) {
   const { transformOutput } = require("./transformOutput");
   const { transformHash } = require("./transformHash");
   const { transformRequest } = require("./transformRequest");
-  const { transformParse } = require("./transformParse");
+  // const { transformParse } = require("./transformParseDELETED");
   const { readable } = require("./readable");
   const { cleanup } = require("./output/nxsOutputParams");
   const { blue, bold } = require("@nexssp/ansi");
@@ -92,6 +92,7 @@ async function run(operations, options = {}) {
       return eval(element)(runOptions);
     }
   });
+  const { PassThrough, Readable } = require("stream");
 
   // Below are 2 versions for of look and Async Pipeline
   if (1) {
@@ -100,22 +101,51 @@ async function run(operations, options = {}) {
     nPipe = finalOperations.shift();
 
     // nPipe = process.openStdin();
-
+    const EventEmitter = require("events");
+    const EE = new EventEmitter();
+    EE.on("go", (e) => console.log("==============================", e));
     // log.di(`nPipe-stdin open`);
-
+    let previousFrom = "";
     try {
       for (let pipe of finalOperations) {
         // log.di(`nPipe-stdin :pipe`, Object.keys(pipe));
         // if (process.NEXSS_WAIT) {
         // }
+
         nPipe = nPipe.pipe && nPipe.pipe(pipe);
-        if (nPipe)
+
+        if (cliArgs.nxsDebugData && nPipe instanceof Readable) {
+          var PTrough = new PassThrough({ objectMode: true });
+          PTrough.on("data", (x) => {
+            // First: don't display doubles (like cancel stream.)
+            if (x.from !== previousFrom) {
+              // Second: search by name of the stream data comes from.
+              if (
+                ~x.from.indexOf(
+                  typeof cliArgs.nxsDebugData !== "boolean"
+                    ? cliArgs.nxsDebugData
+                    : ""
+                )
+              )
+                EE.emit("go", x);
+            }
+            previousFrom = x.from;
+          });
+          nPipe.pipe(PTrough);
+        }
+
+        // nPipe = PTrough;
+        if (nPipe) {
           pipe.on("error", (e) =>
             console.log(bold(cyan("Nexss P"), bold("rogrammer")), e)
           );
+          // DebugData.pipe(nPipe);
+        }
+
+        //  nPipe.pipe(DebugData, { end: false });
       }
-    } catch (e) {
-      console.log(`Error in PIPE: pipe.js`, e);
+    } catch (ex) {
+      console.log(`Error in PIPE: pipe.js`, ex);
     }
 
     nPipe.on("finish", (e) => {

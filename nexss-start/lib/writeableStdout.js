@@ -9,11 +9,12 @@ module.exports.writeableStdout = () => {
     highWaterMark: require("../../config/defaults").highWaterMark,
     write: (chunk, encoding, callback) => {
       if (chunk.stream === "cancel") {
-        log.dr(`× Stream:Cancelled Writeable stdout`);
+        log.dr(`× Stream: Cancelled Writeable stdout`);
         if (chunk.status !== "end") {
           console.log(chunk.data);
         }
       } else {
+        log.dg(`↳ Stream: Writeable stdout`);
         chunk = chunk.data;
         if (cliArgs.nxsOut && typeof cliArgs.nxsOut == "boolean") {
           console.log(data["nxsOut"]);
@@ -71,7 +72,7 @@ module.exports.writeableStdout = () => {
         timeElapsed(process.nxsTime);
         // Below must be here as for example Blender will not display
         // Progress of rendering, some stdout will be cut etc.
-        // callback();
+        callback();
       }
     },
   });

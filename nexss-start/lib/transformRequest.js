@@ -49,8 +49,12 @@ module.exports.transformRequest = (url) => {
           //   data.nxsOut = wholeData;
           //   callback(null, Buffer.from(JSON.stringify(data)));
           // }
-
-          callback(null, wholeData);
+          data.data.nxsOut = wholeData;
+          callback(null, {
+            from: "transform-request",
+            status: "ok",
+            data: data.data,
+          });
         });
       });
 

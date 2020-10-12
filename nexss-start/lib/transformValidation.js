@@ -101,7 +101,12 @@ module.exports.transformValidation = (area = "input", options = {}) => {
           }
         }
       }
-      if (chunk) callback(null, { status: "ok", data: chunk.data });
+      if (chunk)
+        callback(null, {
+          from: "transform-validation",
+          status: "ok",
+          data: chunk.data,
+        });
     },
   });
 };

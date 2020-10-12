@@ -64,7 +64,7 @@ module.exports.transformFile = (file, x, y) => {
         }
         // data = JSON.stringify(data);
         // timeElapsed(startCompilerTime, `Read file from ${bold(file)}`);
-        callback(null, { status: "ok", data });
+        callback(null, { from: "transform-file", status: "ok", data });
       });
 
       // streamRead.on("exit", (code, signal) => {

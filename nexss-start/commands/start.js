@@ -40,6 +40,13 @@ function Nexss() {
           fileOrDirectory,
           cliArgs
         );
+
+        if (cliArgs.nxsDryFiles) {
+          log.dc(bold("➤ Function enabled: --nxsDryFiles (from .nexss files)"));
+          files = files.filter(Boolean);
+          console.log(JSON.stringify(files, null, 2));
+          process.exit(0);
+        }
       }
     } else {
       // CLEANUP IF THIS IS NOT URL, REMOVE END / OR \ AND REPLACE TO /

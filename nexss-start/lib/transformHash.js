@@ -64,7 +64,7 @@ module.exports.transformHash = (cmd, inputData, options) => {
 
       nxsDebugData(newData, "$#", "magenta");
 
-      callback(null, { status: "ok", data: newData });
+      callback(null, { from: "transform-hash", status: "ok", data: newData });
     },
   });
 };

@@ -163,7 +163,7 @@ module.exports.transformOutput = (x, y, z) => {
         // }
         // data += ""; //Incase it is not a string
 
-        callback(null, { status: "ok", data });
+        callback(null, { from: "transform-output", status: "ok", data });
       }
       // } else {
       //   callback(null, data);

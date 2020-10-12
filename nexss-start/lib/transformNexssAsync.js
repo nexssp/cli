@@ -189,11 +189,12 @@ module.exports.transformNexss = (
           data = JSON.parse(data);
 
           if (!data.nxsStop) {
-            self.push({ status: "ok", data });
+            self.push({ from: "transform-nexss", status: "ok", data });
           } else {
             delete data.nxsStop;
             delete data.nxsStopReason;
             self.push({
+              from: "transform-nexss",
               stream: "cancel",
               status: "end",
               data,
@@ -206,6 +207,7 @@ module.exports.transformNexss = (
           //   ifLonger += data;
           // }
           self.push({
+            from: "transform-nexss",
             stream: "ok",
             error: "not a json",
             data,

@@ -70,7 +70,7 @@ module.exports.transformInput = (x, y, params) => {
         //   return require("fs").existsSync(".");
         // };
 
-        callback(null, { status: "ok", data });
+        callback(null, { from: "transform-input", status: "ok", data });
       }
     },
   });

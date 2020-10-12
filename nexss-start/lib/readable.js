@@ -139,7 +139,7 @@ module.exports.readable = (startData) => {
     startData.cwd = process.NexssFilePath;
   }
 
-  s.push({ status: "ok", data: startData });
+  s.push({ from: "readable", status: "ok", data: startData });
   s.push(null);
 
   return s;
