@@ -149,6 +149,19 @@ module.exports.getLang = (ext, recreateCache) => {
           `${osPM.install ? osPM.install : osPM.installCommand} git`
         );
 
+        if (process.distros.FEDORA) {
+          // For fedora Nexss Programmer needs procps.
+          ensureInstalled(
+            "ps",
+            `${osPM.install ? osPM.install : osPM.installCommand} procps`
+          );
+        }
+
+        ensureInstalled(
+          "bash",
+          `${osPM.install ? osPM.install : osPM.installCommand} bash`
+        );
+
         const repoName = path.basename(langRepositories[ext]);
         const repoPath = `${process.env.NEXSS_LANGUAGES_PATH}/${repoName}`;
         const spawnOptions = require("../../config/spawnOptions");

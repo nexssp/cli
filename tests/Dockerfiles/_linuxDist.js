@@ -48,9 +48,9 @@ if (!opts.includes(process.argv[3])) {
 
 let dockerFile = process.argv[2].replace(/\.\\/, "");
 console.log("Dockerfile:", yellow(dockerFile));
-
-const imageName = `nexss:${dockerFile.replace(".Dockerfile", "")}`;
-
+const tag = dockerFile.replace(".Dockerfile", "");
+const imageName = `nexss:${tag}`;
+console.log("Image name:", yellow(imageName));
 // =====================================================================
 console.log(`
 Nexss Programmer uses docker to test it for different OS distributions.
@@ -129,31 +129,42 @@ const pathWork = pathToDocker(path.join(require("os").homedir(), ".nexssWork"));
 // There are some issues with the Swift on docker containers so we need to run docker in --privileged mode.
 const privileged = "--privileged";
 const detached = "-d"; // "-d";
+const { distros } = require("@nexssp/os");
+let shell;
+switch (tag) {
+  case "Alpine312":
+    shell = "/bin/sh";
+    break;
+  default:
+    shell = "/bin/bash";
+    break;
+}
 
+console.log(`Shell: ${shell}`);
 let command;
 switch (process.argv[3]) {
   case "local":
-    command = `docker run ${privileged} -i ${detached} -v ${pathWork}:/work -v ${pathNexssCli}:/nexssCli -v ${pathDotNexss}:/root/.nexss -v /root/.nexss/cache -e DEBIAN_FRONTEND=noninteractive -t ${imageName} /bin/bash -c "cd /nexssCli && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && cd /work && /bin/bash" `;
+    command = `docker run ${privileged} -i ${detached} -v ${pathWork}:/work -v ${pathNexssCli}:/nexssCli -v ${pathDotNexss}:/root/.nexss -v /root/.nexss/cache -e DEBIAN_FRONTEND=noninteractive -t ${imageName} ${shell} -c "cd /nexssCli && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && cd /work && ${shell}" `;
     break;
   case "local-testlangs":
-    command = `docker run ${privileged} -i ${detached} -v ${pathWork}:/work -v ${pathNexssCli}:/nexssCli -v ${pathDotNexss}:/root/.nexss -v /root/.nexss/cache -e DEBIAN_FRONTEND=noninteractive -t ${imageName} /bin/bash -c "cd /nexssCli && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && cd /work && nexss test languages && /bin/bash" `;
+    command = `docker run ${privileged} -i ${detached} -v ${pathWork}:/work -v ${pathNexssCli}:/nexssCli -v ${pathDotNexss}:/root/.nexss -v /root/.nexss/cache -e DEBIAN_FRONTEND=noninteractive -t ${imageName} ${shell} -c "cd /nexssCli && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && cd /work && nexss test languages && ${shell}" `;
     break;
   case "local-empty":
-    command = `docker run ${privileged} -i ${detached} -v /work -v ${pathNexssCli}:/nexssCli -v /root/.nexss/cache -e DEBIAN_FRONTEND=noninteractive -t ${imageName} /bin/bash -c "cd /nexssCli && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && cd /work && /bin/bash" `;
+    command = `docker run ${privileged} -i ${detached} -v /work -v ${pathNexssCli}:/nexssCli -v /root/.nexss/cache -e DEBIAN_FRONTEND=noninteractive -t ${imageName} ${shell} -c "cd /nexssCli && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && cd /work && ${shell}" `;
     break;
   case "clone":
-    command = `docker run ${privileged} ${detached} -it -v /work ${imageName} /bin/bash -c "git clone --depth=1 https://github.com/nexssp/cli.git && cd cli && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && cd /work && /bin/bash"`;
+    command = `docker run ${privileged} ${detached} -it -v /work ${imageName} ${shell} -c "git clone --depth=1 https://github.com/nexssp/cli.git && cd cli && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && cd /work && ${shell}"`;
     break;
   case "empty":
-    command = `docker run ${privileged} ${detached} -it ${imageName} /bin/bash`;
+    command = `docker run ${privileged} ${detached} -it ${imageName} ${shell}`;
     break;
   case "npminstall":
-    command = `docker run ${privileged} ${detached} -it ${imageName} bash -c "npm i @nexssp/cli -g && nexss && mkdir /work && cd /work && /bin/bash`;
+    command = `docker run ${privileged} ${detached} -it ${imageName} bash -c "npm i @nexssp/cli -g && nexss && mkdir /work && cd /work && ${shell}`;
   default:
     break;
 }
 
-if (imageName === "nexss:NixOS") {
+if (imageName === "nexss:NixOS" || imageName === "nexss:Alpine312") {
   command = command.replace(/\/bin\/bash/gi, "/bin/sh");
 }
 try {

@@ -35,7 +35,7 @@ if (process.versions.node.split(".")[0] * 1 < 12) {
 function exeOLD(command, options) {
   options = options || {};
   if (process.platform !== "win32") {
-    Object.assign(options, { shell: "/bin/bash" });
+    Object.assign(options, { shell: process.shell });
   }
 
   // options.maxBuffer = 52428800; // 10*default

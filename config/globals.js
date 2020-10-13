@@ -50,6 +50,7 @@ nConst("ddd", (...args) => {
 nConst("distro", os.name(), process);
 nConst("distroVersion", os.v(), process);
 nConst("sudo", os.sudo(), process);
+nConst("distros", os.distros, process);
 nConst("replacePMByDistro", os.replacePMByDistro, process);
 const tags = os.tags();
 // Below tags are for distro recognition.
@@ -69,6 +70,7 @@ nConst("child_process", require("child_process"));
 // nConst("dev_colors", require("../lib/core/-dev-colors"));
 nConst("PROCESS_CWD", process.cwd());
 
+nConst("shell", os.getShell(), process);
 const globalConfigPath = require("os").homedir() + "/.nexss/config.json";
 
 if (fs.existsSync(globalConfigPath)) {

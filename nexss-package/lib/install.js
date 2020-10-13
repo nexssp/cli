@@ -25,7 +25,7 @@ module.exports.installPackages = (destinationFolder, packageName) => {
       );
       require("child_process").execSync(command, {
         stdio: "inherit",
-        shell: process.platform === "win32" ? true : "/bin/bash",
+        shell: process.shell,
       });
     }
 
@@ -58,7 +58,7 @@ module.exports.installPackages = (destinationFolder, packageName) => {
       `nexss pkg init${packageName ? " " + packageName : ""}`,
       {
         stdio: "inherit",
-        shell: process.platform === "win32" ? true : "/bin/bash",
+        shell: process.shell,
       }
     );
 

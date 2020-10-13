@@ -62,11 +62,7 @@ module.exports.transformNexss = (
       }
 
       options.detached = false;
-      if (process.platform === "win32") {
-        options.shell = true;
-      } else {
-        options.shell = "/bin/bash";
-      }
+      options.shell = process.shell;
 
       // TODO: eval?
       if (cwd && cwd.replace) cwd = eval("`" + cwd.replace(/\\/g, "/") + "`");

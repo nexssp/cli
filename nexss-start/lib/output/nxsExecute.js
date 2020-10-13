@@ -9,7 +9,7 @@ module.exports = (data) => {
 
   var ExecuteCommandObject = spawnSync(command, arrayCommands, {
     detached: false,
-    shell: process.platform !== "win32" ? "/bin/bash" : true,
+    shell: process.shell,
     input: JSON.stringify(data),
     stdio: "pipe",
   });

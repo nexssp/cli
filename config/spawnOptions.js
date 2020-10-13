@@ -3,7 +3,7 @@ module.exports = (opts) => {
   if (process.platform === "win32") {
     Object.assign(result, { stdio: "inherit" }, opts);
   } else {
-    Object.assign(result, { stdio: "inherit", shell: "/bin/bash" }, opts);
+    Object.assign(result, { stdio: "inherit", shell: process.shell }, opts);
   }
 
   return result;

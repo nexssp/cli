@@ -183,7 +183,7 @@ if (
       //   child_process.execSync(command, {
       //     stdio: "inherit",
       //     detached: false,
-      //     shell: process.platform === "win32" ? true : "/bin/bash",
+      //     shell: process.shell,
       //     cwd: process.cwd(),
       //   });
       // } catch (error) {
@@ -339,7 +339,7 @@ if (
             child_process.execSync(command, {
               stdio: "inherit",
               detached: false,
-              shell: process.platform === "win32" ? true : "/bin/bash",
+              shell: process.shell,
               cwd: process.cwd(),
               maxBuffer: 1024 * 1024 * 100,
             });
@@ -436,7 +436,7 @@ if (
           child_process.execSync(command, {
             stdio: "inherit",
             detached: false,
-            shell: process.platform === "win32" ? true : "/bin/bash",
+            shell: process.shell,
             cwd: process.cwd(),
             maxBuffer: 1024 * 1024 * 100,
           });
@@ -457,7 +457,7 @@ if (
             child_process.execSync(command, {
               stdio: "inherit",
               detached: false,
-              shell: process.platform === "win32" ? true : "/bin/bash",
+              shell: process.shell,
               cwd: process.cwd(),
               maxBuffer: 1024 * 1024 * 100,
             });
@@ -532,7 +532,7 @@ if (fileOrFolderExists && process.argv[3] === "test") {
     child_process.execSync(testCommand, {
       stdio: "inherit",
       detached: false,
-      shell: process.platform === "win32" ? true : "/bin/bash",
+      shell: process.shell,
       maxBuffer: 1024 * 1024 * 100,
     });
   } catch (error) {

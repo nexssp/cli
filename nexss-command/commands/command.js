@@ -61,7 +61,7 @@ if (!configContent.commands) {
     // Execute command and display in the stdio
     const sp = exec(commandFinal, {
       stdio: ["inherit", "pipe", "pipe"],
-      shell: process.platform === "win32" ? true : "/bin/bash",
+      shell: process.shell,
     });
 
     sp.stdout.on("data", function (data) {

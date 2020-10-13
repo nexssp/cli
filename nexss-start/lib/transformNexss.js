@@ -59,11 +59,7 @@ module.exports.transformNexss = (
       }
 
       options.detached = false;
-      if (process.platform === "win32") {
-        options.shell = true;
-      } else {
-        options.shell = "/bin/bash";
-      }
+      options.shell = process.shell;
 
       // TODO: eval?
       if (cwd && cwd.replace) cwd = eval("`" + cwd.replace(/\\/g, "/") + "`");
@@ -118,11 +114,16 @@ module.exports.transformNexss = (
         // throw Error(err);
         switch (err.code) {
           case "ENOENT":
-            throw `TRANSFORM_nexss:${
-              err.path
-            } not found. Command: ${cmd} ${args.join(" ")}`;
+            error(
+              `TRANSFORM_nexss:${
+                err.path
+              } not found. Command: ${cmd} ${args.join(" ")}`
+            );
+            break;
           default:
-            throw `TRANSFORM_nexss:Failed to start subprocess. ${err}`;
+            error(
+              `TRANSFORM_nexss:Failed to start subprocess. ${err}. Maybe shell specified is not ok? process.shell: ${process.shell}`
+            );
         }
       });
 
