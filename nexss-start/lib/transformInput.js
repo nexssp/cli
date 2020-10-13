@@ -14,13 +14,32 @@ module.exports.transformInput = (x, y, params) => {
   return new require("stream").Transform({
     objectMode: true,
     transform: (chunk, encoding, callback) => {
-      if (
-        chunk.stream === "cancel" ||
-        (params.inputData && !checkPlatform(params.inputData.nxsPlatform))
-      ) {
-        log.dr(`× Stream:Cancelled transformInput`);
-        callback(null, chunk);
+      if (chunk.stream === "cancel") {
+        log.dr(`× Stream: Cancelled transformInput`);
+
+        callback(null, {
+          from: "transform-input",
+          stream: "cancel",
+          status: "ok",
+          data: chunk.data,
+        });
         return;
+        // } else if (
+        //   params.inputData &&
+        //   params.inputData.nxsPlatform &&
+        //   !checkPlatform(params.inputData.nxsPlatform)
+        // ) {
+        //   log.dg(
+        //     `× Stream: Cancelled platform not match. ${
+        //       params.inputData.nxsPlatform !== process.distro
+        //     }`
+        //   );
+        //   callback(null, {
+        //     from: "transform-input",
+        //     status: "platform-notmach",
+        //     data: chunk.data,
+        //   });
+        //   return;
       } else {
         log.di(`↳ Stream:transformInput`);
       }

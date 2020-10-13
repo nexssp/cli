@@ -113,6 +113,20 @@ async function run(operations, options = {}) {
         // }
 
         nPipe = nPipe.pipe && nPipe.pipe(pipe);
+        // if (cliArgs.nxsDebugJSON) {
+        //   var PTrough = new PassThrough({ objectMode: true });
+        //   PTrough.on("data", (streamData) => {
+        //     try {
+        //       const x = JSON.parse(streamData);
+        //     } catch (e) {
+        //       console.log(`NOT A JSON:`, streamData);
+        //       if (typeof streamData === "object") {
+        //         console.log(`BUT AN OBJECT.`);
+        //       }
+        //     }
+        //   });
+        //   nPipe.pipe(PTrough);
+        // }
 
         if (cliArgs.nxsDebugData && nPipe instanceof Readable) {
           var PTrough = new PassThrough({ objectMode: true });

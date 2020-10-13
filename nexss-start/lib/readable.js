@@ -100,9 +100,9 @@ module.exports.readable = (startData) => {
     }
 
     Object.assign(startData, dataStdin);
-    log.dm(`¦ Stream:Readable stdin is NOT empty. Parsing..`);
+    log.dm(`¦ Stream: Readable stdin is NOT empty. Parsing..`);
   } else {
-    log.dm(`× Stream:Readable stdin is empty.`);
+    log.dm(`× Stream: Readable stdin is empty.`);
   }
 
   // console.error("NEXSS/info:", stdinRead, "end");

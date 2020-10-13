@@ -3,15 +3,33 @@ module.exports.transformRequest = (url) => {
   const { bold } = require("@nexssp/ansi");
   const axios = require("axios");
   const { nxsDebugTitle } = require("../lib/output/nxsDebug");
+  const { checkPlatform } = require("../../lib/platform");
   return new Transform({
     objectMode: true,
     highWaterMark: require("../../config/defaults").highWaterMark,
     transform: (chunk, encoding, callback) => {
-      log.di(`↳ Stream:transformRequest`);
-      if (process.NEXSS_CANCEL_STREAM) {
-        callback(null, chunk);
+      if (chunk.stream === "cancel") {
+        log.dr(`× Stream: Cancelled transformInput`);
+
+        callback(null, {
+          from: "transform-input",
+          status: "ok",
+          data: chunk.data,
+        });
+      } else if (!checkPlatform(chunk.data.nxsPlatform)) {
+        log.dg(
+          `× Stream: Cancelled platform not match. ${cliArgs.nxsPlaftorm}`
+        );
+        callback(null, {
+          from: "transform-input",
+          status: "platform-notmach",
+          data: chunk.data,
+        });
         return;
+      } else {
+        log.di(`↳ Stream:transformRequest`);
       }
+
       let data;
       if (encoding === "buffer") {
         chunk = chunk.toString();

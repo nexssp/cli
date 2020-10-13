@@ -10,6 +10,8 @@ module.exports = {
       title: "Platform Specific Tests",
       onError: "stop",
       tests: [
+        // Add Request test eg:  nexss https://nexss.com / file: transformRequest.js
+
         // {
         //   title: "",
         //   params: [

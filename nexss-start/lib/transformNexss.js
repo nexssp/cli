@@ -40,8 +40,12 @@ module.exports.transformNexss = (
         log.dr(`× Canceled Stream: ${cmd} ${argsDisplay}`);
         callback(null, chunk);
         return;
+        // } else if (chunk.status === "platform-notmach") {
+        //   log.dr(`× Canceled Stream:Nexss: platform-notmatch`);
+        //   callback(null, chunk);
+        //   return;
       } else {
-        log.di(`↳ Stream:transformNexss: ${cmd} ${argsDisplay}`);
+        log.di(`↳ Stream: transformNexss: ${cmd} ${argsDisplay}`);
       }
       let startStreamTime;
       if (process.argv.includes("--nxsTime")) {

@@ -22,11 +22,7 @@ module.exports.transformOutput = (x, y, z) => {
     highWaterMark: require("../../config/defaults").highWaterMark,
     // writableObjectMode: true,
     transform: (chunk, encoding, callback) => {
-      if (Buffer.isBuffer(chunk)) {
-        chunk = chunk.toString();
-      }
-
-      nxsDebugData(chunk.data, "Output", "magenta");
+      // nxsDebugData(chunk.data, "Output", "magenta");
       if (chunk.stream === "cancel") {
         log.dr(`× Stream:Cancelled transformOutput`);
         if (chunk.command) {
@@ -35,9 +31,18 @@ module.exports.transformOutput = (x, y, z) => {
         // process.NEXSS_CANCEL_STREAM = false; // this is for next streams.
         callback(null, chunk);
         return;
+        // } else if (chunk.status === "platform-notmach") {
+        //   log.dr(`× Canceled Stream:Output: platform-notmatch`);
+        //   callback(null, chunk);
+        //   return;
       } else {
         log.di(`↳ Stream:transformOutput`);
       }
+
+      if (Buffer.isBuffer(chunk)) {
+        chunk = chunk.toString();
+      }
+
       // Not a json data so we don't do anything here
       let data = chunk.data;
 

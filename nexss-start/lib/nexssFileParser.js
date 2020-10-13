@@ -3,6 +3,7 @@ const minimist = require("minimist");
 const { NEXSS_SPECIAL_CHAR } = require("../../config/defaults");
 const { error } = require("@nexssp/logdebug");
 const { bold, yellow } = require("@nexssp/ansi");
+const { di } = require("../../lib/log");
 function stripEndQuotes(s) {
   return s.replace && s.replace(/(^["|'])|(["|']$)/g, "");
 }
@@ -29,6 +30,7 @@ const nexssFileParser = (content, filename, nxsArgs) => {
 
   const files = nexssProgram
     .map((line) => {
+      const orgLine = line;
       line = line.trim(); // if there is unnecessary space at the end of line.
       lineNumber++;
 
@@ -46,6 +48,7 @@ const nexssFileParser = (content, filename, nxsArgs) => {
       // split by space but keep ""
       // let splitter = line.split(/\ (?=(?:(?:[^(("|')]*"){2})*[^("|')]*$)/);
       let splitter = parseArgsStringToArgv(line);
+
       // console.log(line, line.split(/\ (?=(?:(?:[^"]*"){2})*[^"]*$)/));
       const name = splitter.shift();
       // Add parameters added to the .nexss program to the last one.
@@ -77,6 +80,15 @@ const nexssFileParser = (content, filename, nxsArgs) => {
             return stripEndQuotes(a);
           });
         }
+      }
+      const lineNxsPlatform = args.nxsPlatform;
+      const { checkPlatform } = require("../../lib/platform");
+      if (!checkPlatform(lineNxsPlatform)) {
+        di(
+          `line ommited (platform not match): \n${bold(yellow("LINE"))}: `,
+          orgLine
+        );
+        return;
       }
 
       // delete args._;

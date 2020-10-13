@@ -14,15 +14,19 @@ module.exports.transformTest = (
     highWaterMark: require("../../config/defaults").highWaterMark,
     transform(chunk, encoding, callback) {
       // Not a json data so we don't do anything here
-      if (chunk.stream === "cancel") {
-        log.dr(`× Stream:Cancelled transformTest`);
-        callback(null, chunk);
-        return;
-      }
-
-      log.di(`↳ Stream:transformTest`);
-
       if (cliArgs.nxsTest) {
+        if (chunk.stream === "cancel") {
+          log.dr(`× Stream:Cancelled transformTest`);
+          callback(null, chunk);
+          return;
+          // } else if (chunk.status === "platform-notmach") {
+          //   log.dr(`× Canceled Stream:Test: platform-notmatch`);
+          //   callback(null, chunk);
+          //   return;
+        }
+
+        log.di(`↳ Stream:transformTest`);
+
         const testingData = require("../../config/testingData.json");
         let data = chunk.data;
 
