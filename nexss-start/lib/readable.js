@@ -125,8 +125,8 @@ module.exports.readable = (startData) => {
     delete cliArgs._;
   }
 
-  cliArgsCleaned = cleanup(cliArgs);
-
+  // cliArgsCleaned = cleanup(cliArgs);
+  log.dc(bold(`  Adding cliArgs: Stream: Readable..`), cliArgsCleaned);
   Object.assign(startData, cliArgsCleaned);
   // Make sure we are in the right folder.
   // Later change it

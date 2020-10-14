@@ -14,7 +14,7 @@ module.exports.transformHash = (cmd, inputData, options) => {
         return;
       }
 
-      log.di(`↳ Stream:transformHash: ${require("util").inspect(cmd)}`);
+      log.di(`↳ Stream: transformHash: ${require("util").inspect(cmd)}`);
 
       const n = cmd.name.replace(NEXSS_SPECIAL_CHAR, "");
 

@@ -20,12 +20,12 @@ module.exports.transformTest = (
           callback(null, chunk);
           return;
           // } else if (chunk.status === "platform-notmach") {
-          //   log.dr(`× Canceled Stream:Test: platform-notmatch`);
+          //   log.dr(`× Canceled Stream: Test: platform-notmatch`);
           //   callback(null, chunk);
           //   return;
         }
 
-        log.di(`↳ Stream:transformTest`);
+        log.di(`↳ Stream: transformTest`);
 
         const testingData = require("../../config/testingData.json");
         let data = chunk.data;

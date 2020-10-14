@@ -5,7 +5,12 @@ module.exports = (data, nxsRenameFrom = "nxsOut", nxsRenameTo) => {
     );
     process.exit(0);
   }
-
+  log.dg(
+    `Renaming var ${red(nxsRenameFrom)} -> ${green(
+      bold(nxsRenameTo)
+    )} with value: `,
+    data[nxsRenameFrom]
+  );
   if (nxsRenameFrom === nxsRenameTo) {
     console.error("--nxsRenameFrom and --nxsRenameTo cannot be the same.");
     process.exit(0);

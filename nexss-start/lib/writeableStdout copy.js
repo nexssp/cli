@@ -9,9 +9,10 @@ module.exports.writeableStdout = () => {
     highWaterMark: require("../../config/defaults").highWaterMark,
     write: (chunk, encoding, callback) => {
       if (chunk.stream === "cancel") {
-        log.dr(`× Stream:Cancelled`);
+        log.dr(`× Stream: Cancelled`);
         // console.log(process.NEXSS_NO_TRANSFORM);
         console.log(chunk);
+        if (chunk.display) console.log(chunk.display);
       } else {
         log.di(`↳ Stream:writeableStdout`);
         try {

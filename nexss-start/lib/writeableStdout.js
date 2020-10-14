@@ -13,6 +13,9 @@ module.exports.writeableStdout = () => {
         if (chunk.status !== "end") {
           console.log(chunk.data);
         }
+        if (chunk.display) {
+          console.log(bold(yellow(chunk.display)));
+        }
       } else {
         log.dg(`↳ Stream: Writeable stdout`);
         chunk = chunk.data;
@@ -68,10 +71,13 @@ module.exports.writeableStdout = () => {
         // Below display not ok on stream, progress bars etc.
         // see example: cd @nexssp\ansi\examples\ && nexss .\example-other.js
         // process.stdout.write("\n");
-
+        if (chunk.display) {
+          console.log(bold(yellow(chunk.display)));
+        }
         timeElapsed(process.nxsTime);
         // Below must be here as for example Blender will not display
         // Progress of rendering, some stdout will be cut etc.
+
         callback();
       }
     },

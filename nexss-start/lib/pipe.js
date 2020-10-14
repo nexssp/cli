@@ -18,7 +18,6 @@ async function run(operations, options = {}) {
   const { transformOutput } = require("./transformOutput");
   const { transformHash } = require("./transformHash");
   const { transformRequest } = require("./transformRequest");
-  // const { transformParse } = require("./transformParseDELETED");
   const { readable } = require("./readable");
   const { cleanup } = require("./output/nxsOutputParams");
   const { blue, bold } = require("@nexssp/ansi");
@@ -95,6 +94,8 @@ async function run(operations, options = {}) {
   const { PassThrough, Readable } = require("stream");
 
   // Below are 2 versions for of look and Async Pipeline
+
+  let nxsPool = {};
   if (1) {
     let nPipe;
     // We get Readable Stream
@@ -128,9 +129,19 @@ async function run(operations, options = {}) {
         //   nPipe.pipe(PTrough);
         // }
 
+        // if (nPipe instanceof Readable) {
+        //   let PTrough = new PassThrough({ objectMode: true });
+        //   PTrough.on("data", (x) => {
+        //     if (x.from) {
+        //       console.log(`QQQQQQQ` + x.from + ` EXISTS!!!!`, x.data);
+        //     }
+        //   });
+        //   nPipe.pipe(PTrough);
+        // }
+
         if (cliArgs.nxsDebugData && nPipe instanceof Readable) {
-          var PTrough = new PassThrough({ objectMode: true });
-          PTrough.on("data", (x) => {
+          let PTrough2 = new PassThrough({ objectMode: true });
+          PTrough2.on("data", (x) => {
             // First: don't display doubles (like cancel stream.)
             if (x.from !== previousFrom) {
               // Second: search by name of the stream data comes from.
@@ -145,7 +156,7 @@ async function run(operations, options = {}) {
             }
             previousFrom = x.from;
           });
-          nPipe.pipe(PTrough);
+          nPipe.pipe(PTrough2);
         }
 
         // nPipe = PTrough;

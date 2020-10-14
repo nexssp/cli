@@ -27,7 +27,7 @@ module.exports.transformRequest = (url) => {
         });
         return;
       } else {
-        log.di(`↳ Stream:transformRequest`);
+        log.di(`↳ Stream: transformRequest`);
       }
 
       let data;

@@ -34,7 +34,10 @@ module.exports.transformNexss = (
   return new Transform({
     objectMode: true,
     transform(chunk, encoding, callback) {
-      const argsDisplay = args.filter((e) => !e.includes("--debug")).join(" ");
+      const argsDisplay = args
+        .filter((e) => !e.includes("--debug"))
+        .filter((e) => !e.startsWith("--nxs"))
+        .join(" ");
 
       if (chunk.stream === "cancel") {
         log.dr(`× Canceled Stream: ${cmd} ${argsDisplay}`);
@@ -84,10 +87,11 @@ module.exports.transformNexss = (
       options.env = env;
       process.nexssCWD = cwd;
       let args2 = args.remove("--nocache");
+      // args2 = args2.remove("--debug");
       args2 = args2.remove("--nxsPipeErrors");
       args2 = args2.remove("--nxsTest");
       args2 = args2.remove("--nxsDebugData");
-
+      args2 = args2.filter((e) => !e.startsWith("--nxsAs"));
       let argsStrings;
       if (process.platform === "win32") {
         argsStrings = args2.map((a) =>
@@ -110,7 +114,12 @@ module.exports.transformNexss = (
       }
       options.maxBuffer = 1024 * 1024 * 100;
       options.highWaterMark = 1024 * 1024 * 100;
-
+      log.dc(
+        bold(
+          `  Adding cliArgs (argsStrings to the run command): Stream: Nexss..`
+        ),
+        argsStrings.join(" ")
+      );
       // dy(`Spawning ..${cmd}`, argsStrings.join(" "), "cwd: ", process.cwd());
       this.worker = spawn(cmd, argsStrings, options);
       this.worker.cmd = nexssCommand;
@@ -175,16 +184,33 @@ module.exports.transformNexss = (
       });
 
       this.worker.stdout.on("data", function (data) {
+        data = data.toString();
+        // console.error(this.cmd, "xxxx!!!!!!!!!!!!!!", data.toString());
+        if (data === "\n") {
+          // sometime we have \n
+          self.push({
+            display: data, // Will just display the data at the end.
+            stream: "cancel",
+            command: nexssCommand,
+            from: "transform-nexss",
+            status: "ok",
+            data,
+          });
+
+          log.dy(
+            "!!!!!!!!!!!!!! In the stdout there is '\\n' received from the transformNexss Worker.",
+            "We didn't pass this as it would go through the whole stream"
+          );
+          return; // we do not want to pass through the whole stream \n
+        }
         log.dg(
-          `<< Data: ${bold(data.length + " B.")}, cmd: ${process.nexssCMD}`
+          `<< Data: ${bold(data.length + " B.")}, cmd:${process.nexssCMD}`
         );
 
-        data = data.toString();
-
         log.dg(
-          "Inspect data (up to 250chars..)",
-          data.length > 250
-            ? require("util").inspect(data.substr(0, 250)) + "..."
+          "insp -->",
+          data.length > 400
+            ? require("util").inspect(data.substr(0, 400)) + "...(400chars)"
             : require("util").inspect(data)
         );
 
@@ -194,9 +220,25 @@ module.exports.transformNexss = (
 
         try {
           data = JSON.parse(data);
+          if (data.nxsIn === "") {
+            // Autohotkey - issue with delete object key - how to?
+            delete data.nxsIn;
+          }
+
+          if (data.resultField_1 === "") {
+            // Autohotkey - issue with delete object key - how to?
+            delete data.resultField_1;
+            delete data.nxsAs;
+          }
+
+          if (data.nxsAs === "") {
+            // Autohotkey - issue with delete object key - how to?
+            delete data.nxsAs;
+          }
 
           if (!data.nxsStop) {
             self.push({
+              display: chunk.display,
               command: nexssCommand,
               from: "transform-nexss",
               status: "ok",
@@ -206,6 +248,7 @@ module.exports.transformNexss = (
             delete data.nxsStop;
             delete data.nxsStopReason;
             self.push({
+              display: chunk.display,
               command: nexssCommand,
               from: "transform-nexss",
               stream: "cancel",
@@ -220,6 +263,7 @@ module.exports.transformNexss = (
           //   ifLonger += data;
           // }
           self.push({
+            display: chunk.display,
             command: nexssCommand,
             from: "transform-nexss",
             stream: "ok",

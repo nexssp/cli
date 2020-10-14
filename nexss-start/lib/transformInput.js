@@ -22,6 +22,7 @@ module.exports.transformInput = (x, y, params) => {
           stream: "cancel",
           status: "ok",
           data: chunk.data,
+          display: chunk.display,
         });
         return;
         // } else if (
@@ -41,11 +42,15 @@ module.exports.transformInput = (x, y, params) => {
         //   });
         //   return;
       } else {
-        log.di(`↳ Stream:transformInput`);
+        log.di(`↳ Stream: transformInput`);
       }
 
       if (!chunk.data) {
-        callback(null, { status: "error", data: chunk });
+        callback(null, {
+          status: "error",
+          data: chunk,
+          display: chunk.display,
+        });
         return;
       }
 
@@ -57,6 +62,12 @@ module.exports.transformInput = (x, y, params) => {
         if (params.inputData) {
           // FIXME: later to make sure everywever is the object, not array.
           // Array is used on args parameter
+
+          log.dc(
+            bold(`  Adding cliArgs (inputData): Stream: Input..`),
+            params.inputData
+          );
+
           if (Array.isArray(params.inputData)) {
             params.inputData = cliArgsParser(params.inputData);
           }
@@ -88,8 +99,12 @@ module.exports.transformInput = (x, y, params) => {
         // data.nxsGlobalTestTInputFunction = () => {
         //   return require("fs").existsSync(".");
         // };
-
-        callback(null, { from: "transform-input", status: "ok", data });
+        callback(null, {
+          from: "transform-input",
+          status: "ok",
+          data,
+          display: chunk.display,
+        });
       }
     },
   });

@@ -1,3 +1,5 @@
+const { restoreDefaultPrompts } = require("inquirer");
+
 module.exports.transformOutput = (x, y, z) => {
   const { Transform } = require("stream");
 
@@ -24,7 +26,7 @@ module.exports.transformOutput = (x, y, z) => {
     transform: (chunk, encoding, callback) => {
       // nxsDebugData(chunk.data, "Output", "magenta");
       if (chunk.stream === "cancel") {
-        log.dr(`× Stream:Cancelled transformOutput`);
+        log.dr(`× Stream: Cancelled transformOutput`);
         if (chunk.command) {
           log.dr(`! Cancelled by: `, bold(chunk.command));
         }
@@ -36,7 +38,7 @@ module.exports.transformOutput = (x, y, z) => {
         //   callback(null, chunk);
         //   return;
       } else {
-        log.di(`↳ Stream:transformOutput`);
+        log.di(`↳ Stream: transformOutput`);
       }
 
       if (Buffer.isBuffer(chunk)) {
@@ -119,6 +121,18 @@ module.exports.transformOutput = (x, y, z) => {
         }
 
         if (data.nxsOutAs || data.nxsAs) {
+          if (Array.isArray(data.nxsAs)) {
+            callback(null, {
+              from: "transform-output",
+              stream: "cancel",
+              status: "error",
+              display: "--nxsAs or --nxsOutAs can be used only once.",
+              data,
+            });
+            process.exitCode = 1;
+            return;
+          }
+
           if (data.nxsIn) {
             data = nxsRenameModule(data, "nxsIn", data.nxsOutAs || data.nxsAs);
           } else if (data.nxsOut) {
@@ -165,12 +179,43 @@ module.exports.transformOutput = (x, y, z) => {
         }
         nxsDebugData(data, "Output", "cyan");
 
+        // Reorder fields so the last are nexss, start, cwd as they are obvious.
+        const NexssVersion = data.nexss;
+        const NexssStart = data.start;
+        const NexssCWD = data.cwd;
+        const NexssDebug = data.debug;
+        const Nexss__dirname = data.__dirname;
         // if (typeof data === "object") {
         //   data = JSON.stringify(data);
         // }
         // data += ""; //Incase it is not a string
+        if (NexssVersion) {
+          delete data.nexss;
+          data.nexss = NexssVersion;
+        }
+        if (NexssStart) {
+          delete data.start;
+          data.start = NexssStart;
+        }
+        if (NexssCWD) {
+          delete data.cwd;
+          data.cwd = NexssCWD;
+        }
+        if (NexssDebug) {
+          delete data.debug;
+          data.debug = NexssDebug;
+        }
+        if (Nexss__dirname) {
+          delete data.__dirname;
+          data.__dirname = Nexss__dirname;
+        }
 
-        callback(null, { from: "transform-output", status: "ok", data });
+        callback(null, {
+          from: "transform-output",
+          status: "ok",
+          data,
+          display: chunk.display,
+        });
       }
       // } else {
       //   callback(null, data);
