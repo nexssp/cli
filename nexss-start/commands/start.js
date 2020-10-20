@@ -1,16 +1,18 @@
 Nexss();
 
 function Nexss() {
-  const { NEXSS_SPECIAL_CHAR } = require("../../config/defaults"),
-    { error, warn, di, dg, dbg } = require("@nexssp/logdebug"),
-    // const dotenv = require("dotenv");
-    { inspect } = require("util"),
-    { yellow } = require("@nexssp/ansi"),
-    { startServer } = require("../../lib/server"),
-    { ensureInstalled, pathWinToLinux } = require("../../lib/terminal"),
-    { isURL } = require("../../lib/data/url"),
-    { getFiles } = require("../lib/start/files"),
-    url = require("url");
+  const { NEXSS_SPECIAL_CHAR } = require("../../config/defaults");
+  const { error, warn, di, dg, dbg } = require("@nexssp/logdebug");
+  const { inspect } = require("util");
+
+  const { startServer } = require("../../lib/server");
+
+  const { ensureInstalled, pathWinToLinux } = require("../../lib/terminal");
+
+  const { isURL } = require("../../lib/data/url");
+  const { getFiles } = require("../lib/start/files"); //.50
+
+  const url = require("url");
 
   // nexss s OR nexss start is ommiting
   let paramNumber = 2;
@@ -50,6 +52,7 @@ function Nexss() {
       }
     } else {
       // CLEANUP IF THIS IS NOT URL, REMOVE END / OR \ AND REPLACE TO /
+
       if (!isURL(fileOrDirectory)) {
         fileOrDirectory = fileOrDirectory.replace(/\\/g, "/");
         fileOrDirectory = path

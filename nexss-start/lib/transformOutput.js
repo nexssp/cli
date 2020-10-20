@@ -1,5 +1,3 @@
-const { restoreDefaultPrompts } = require("inquirer");
-
 module.exports.transformOutput = (x, y, z) => {
   const { Transform } = require("stream");
 

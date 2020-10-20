@@ -37,13 +37,16 @@ const os = require("@nexssp/os");
 const getCallerFile = require("get-caller-file");
 nConst("ddd", (...args) => {
   args.map((e) => {
-    process.stdout.write(require("util").inspect(e) + " ");
+    process.stdout.write(yellow(bold(require("util").inspect(e) + "\n")));
   });
 
-  console.log();
   console.log(yellow(`Stopped by ddd Function at:`));
   console.log(bold(getCallerFile()));
-  console.log(yellow("cwd: "), bold(process.cwd()));
+  const timeDiff = process.hrtime(process.startTime);
+  console.log(
+    bold("exec time: " + green(`${timeDiff[0]}s ${timeDiff[1] / 1000000}ms`))
+  );
+  console.log(bold("cwd: ", green(bold(process.cwd()))));
   process.exit(0);
 });
 

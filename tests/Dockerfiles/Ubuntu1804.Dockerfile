@@ -12,7 +12,7 @@ RUN apt update && \
 
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
     apt update && \
-    apt install git nodejs -y
+    apt install nodejs -y
 
 ENV DEBIAN_FRONTEND=interactive
 

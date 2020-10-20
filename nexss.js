@@ -4,6 +4,18 @@
  * Author: Marcin Polak / nexss.com
  * 2018/10/01 initial version
  */
+Object.defineProperty(process, "startTime", {
+  configurable: false,
+  enumerable: true,
+  value: process.hrtime(),
+});
+
+Object.defineProperty(process, "nexssGlobalCWD", {
+  configurable: false,
+  enumerable: true,
+  value: process.cwd(),
+});
+
 process.on("unhandledRejection", (err, promise) => {
   console.log({ err, promise });
 });
@@ -18,20 +30,15 @@ npmInstallRun();
 require("./config/globals");
 
 log.dc(bold("∞ Starting Nexss Programmer.."));
+const { NEXSS_SRC_PATH, NEXSS_PACKAGES_PATH } = require("./config/config"); // .40
 
-const { NEXSS_SRC_PATH, NEXSS_PACKAGES_PATH } = require("./config/config"),
-  { NEXSS_SPECIAL_CHAR } = require("./config/defaults"),
-  { isURL } = require("./lib/data/url");
+const { NEXSS_SPECIAL_CHAR } = require("./config/defaults");
 
-process.nexssGlobalCWD = process.cwd();
-process.title =
-  "nexss (" +
-  require("./package.json").version +
-  ":" +
-  process.pid +
-  ") " +
-  process.argv.slice(2).join(" ") +
-  "";
+const { isURL } = require("./lib/data/url");
+
+process.title = `nexss (${require("./package.json").version}:${
+  process.pid
+}) ${process.argv.slice(2).join(" ")}`;
 
 log.d("⊛ Set the process title: ", process.title);
 
@@ -41,8 +48,8 @@ log.d("⊛ Set the process title: ", process.title);
 if (process.argv[2] && process.argv[2].startsWith("-")) {
   const f = process.argv[2];
   const functionsFolder = `./lib/core/${f}.js`;
-  log.db(`Loading core${f} function, ${functionsFolder}`);
   if (fs.existsSync(path.resolve(__dirname, functionsFolder))) {
+    log.db(`Loading core${f} function, ${functionsFolder}`);
     const functionRun = require(functionsFolder);
     functionRun();
     return;

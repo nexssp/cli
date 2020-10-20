@@ -1,8 +1,6 @@
-const { NEXSS_PROJECT_SRC_PATH } = require("../../config/config");
-const { error, success, info, ok } = require("../../lib/log");
-const { yellow, red, bold } = require("@nexssp/ansi");
+const { error, success, info, ok } = require("@nexssp/logdebug");
 const { which } = require("../../lib/terminal");
-const fs = require("fs");
+
 module.exports.extraFunctions = (templatePath) => {
   // Extra operation for the template like installations, files copy, info
   if (fs.existsSync(`${templatePath}.js`)) {
@@ -12,8 +10,8 @@ module.exports.extraFunctions = (templatePath) => {
     const path = require("path");
     files.forEach((element) => {
       const elementPath = path.join(path.dirname(templatePath), element);
-      const destinationPath = NEXSS_PROJECT_SRC_PATH
-        ? path.join(NEXSS_PROJECT_SRC_PATH, path.dirname(element))
+      const destinationPath = process.env.NEXSS_PROJECT_SRC_PATH
+        ? path.join(process.env.NEXSS_PROJECT_SRC_PATH, path.dirname(element))
         : path.dirname(element);
 
       //If we are in the project folder make a copy to the src/ of that project
@@ -22,9 +20,7 @@ module.exports.extraFunctions = (templatePath) => {
           bold(
             `Copying 3rdParty libraries... 
 ${elementPath} TO 
-${
-  NEXSS_PROJECT_SRC_PATH ? path.join(NEXSS_PROJECT_SRC_PATH, element) : element
-}`
+${destinationPath}`
           )
         )
       );

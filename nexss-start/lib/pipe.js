@@ -8,27 +8,26 @@ async function run(operations, options = {}) {
 
   const { pipeline } = require("stream");
   // Below must be like that! for EVAL
-  const { transformNexss } = require("./transformNexss");
-  const { transformError } = require("./transformError");
-  const { transformFile } = require("./transformFile");
-  const { writeableStdout } = require("./writeableStdout");
-  const { transformTest } = require("./transformTest");
-  const { transformValidation } = require("./transformValidation");
-  const { transformInput } = require("./transformInput");
-  const { transformOutput } = require("./transformOutput");
-  const { transformHash } = require("./transformHash");
-  const { transformRequest } = require("./transformRequest");
-  const { readable } = require("./readable");
-  const { cleanup } = require("./output/nxsOutputParams");
-  const { blue, bold } = require("@nexssp/ansi");
+
   const util = require("util");
-  const pipelineAsync = util.promisify(pipeline);
 
   // Below is for relative dirs in the .nexss files
   // This will need to be changed to the distributed systems
   console.time(bold(cyan("Nexss P"), bold("rogrammer")));
 
   const finalOperations = operations.map((element, index) => {
+    const { transformNexss } = require("./transformNexss");
+    const { transformError } = require("./transformError");
+    const { transformFile } = require("./transformFile");
+    const { writeableStdout } = require("./writeableStdout");
+    const { transformTest } = require("./transformTest");
+    const { transformValidation } = require("./transformValidation");
+    const { transformInput } = require("./transformInput");
+    const { transformOutput } = require("./transformOutput");
+    const { transformHash } = require("./transformHash");
+    const { transformRequest } = require("./transformRequest");
+    const { readable } = require("./readable");
+    const { cleanup } = require("./output/nxsOutputParams");
     // We get last index of transformOutput as some parameters
     // passed in the commandline directly only should be applied in the
     // last transform output eg. nxsFields, nxsField etc.
@@ -180,6 +179,7 @@ async function run(operations, options = {}) {
       }
     });
   } else {
+    const pipelineAsync = util.promisify(pipeline);
     await pipelineAsync(
       // process.stdin,
       ...finalOperations

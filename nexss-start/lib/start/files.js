@@ -1,5 +1,3 @@
-const path = require("path");
-const fs = require("fs");
 const { loadConfigContent } = require("../../../lib/config");
 const dotenv = require("dotenv");
 const { bold, red, green, blue } = require("@nexssp/ansi");
