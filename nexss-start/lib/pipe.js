@@ -111,8 +111,10 @@ async function run(operations, options = {}) {
         // log.di(`nPipe-stdin :pipe`, Object.keys(pipe));
         // if (process.NEXSS_WAIT) {
         // }
+        if (nPipe && pipe) {
+          nPipe = nPipe.pipe && nPipe.pipe(pipe);
+        }
 
-        nPipe = nPipe.pipe && nPipe.pipe(pipe);
         // if (cliArgs.nxsDebugJSON) {
         //   var PTrough = new PassThrough({ objectMode: true });
         //   PTrough.on("data", (streamData) => {
