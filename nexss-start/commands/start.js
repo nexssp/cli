@@ -69,8 +69,8 @@ function Nexss() {
       if (cliArgs.seq) {
         firstParam.seq = cliArgs.seq;
       }
-      files = getFiles(firstParam);
 
+      files = getFiles(firstParam);
       if (cliArgs.nxsDryFiles) {
         log.dm(bold("➤ Function enabled: --nxsDryFiles"));
         console.log(JSON.stringify(files, null, 2));

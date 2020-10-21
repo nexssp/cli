@@ -8,12 +8,13 @@ const { Console } = require("console");
 
 // more here: https://github.com/nexssp/cli/wiki/Errors-Solutions
 module.exports.parseError = (filename, errorBody, stdOutput, cwd) => {
+  console.log(filename);
   if (errorBody && errorBody.trim) {
     errorBody = errorBody.trim();
   }
   const langInfo = getLangByFilename(filename);
   const ErrorPre = path.normalize(
-    isAbsolute(filename) ? filename : `${cwd}/${filename}`
+    isAbsolute(filename) ? filename : `${cwd ? cwd : process.cwd()}/${filename}`
   );
 
   if (stdOutput) {

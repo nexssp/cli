@@ -12,9 +12,10 @@ module.exports.writeableStdout = () => {
         log.dr(`× Stream: Cancelled Writeable stdout`);
         if (chunk.status !== "end") {
           console.log(chunk.data);
-        }
-        if (chunk.display) {
+        } else if (chunk.display) {
           console.log(bold(yellow(chunk.display)));
+        } else {
+          process.stdout.write(chunk.data);
         }
       } else {
         log.dg(`↳ Stream: Writeable stdout`);

@@ -3,7 +3,6 @@ module.exports.readable = (startData) => {
   const { Readable } = require("stream");
   const fs = require("../../lib/fs");
   const { info, error } = require("@nexssp/logdebug");
-
   let paramNumber = 2;
   if (process.argv[2] === "s" || process.argv[2] === "start") {
     paramNumber = 3;

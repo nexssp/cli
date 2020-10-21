@@ -1,21 +1,17 @@
-const { loadConfigContent } = require("../../../lib/config");
-const dotenv = require("dotenv");
-const { bold, red, green, blue } = require("@nexssp/ansi");
 const { NEXSS_SPECIAL_CHAR } = require("../../../config/defaults");
-const { getSequence } = require("./sequence");
 require("../../../lib/arrays"); // array flat / nodejs 10
-const assert = require("assert");
 const loadEnv = (p) => {
   if (!p) {
     p = `./config.env`;
   }
 
   if (fs.existsSync(p)) {
-    return dotenv.parse(fs.readFileSync(p));
+    return require("dotenv").parse(fs.readFileSync(p));
   }
 };
-var { parseArgsStringToArgv } = require("string-argv");
+
 const parseName = (name, incl) => {
+  var { parseArgsStringToArgv } = require("string-argv");
   const arr = parseArgsStringToArgv(name);
   let result = []; // was {} ??
   if (incl) result.name = arr[0];
@@ -63,10 +59,8 @@ function stripEndQuotes(s) {
   return s.replace && s.replace(/(^["|'])|(["|']$)/g, "");
 }
 
-const { inspect } = require("util");
-
 const getFiles = (folder, args, env, ccc) => {
-  // log.di(`getFiles: `, inspect(folder).replace(/\n/g, " "));
+  const assert = require("assert");
   assert(folder, "missing path");
   const command = folder.name;
 
@@ -188,7 +182,9 @@ const getFiles = (folder, args, env, ccc) => {
 
   // console.log("folderAbsolute:", folderAbsolute);
   process.chdir(folderAbsolute);
-  const config = loadConfigContent(folderAbsolute + "/_nexss.yml");
+  const config = require("../../../lib/config").loadConfigContent(
+    folderAbsolute + "/_nexss.yml"
+  );
 
   let envLoaded = loadEnv();
   if (envLoaded) {
@@ -219,7 +215,7 @@ const getFiles = (folder, args, env, ccc) => {
       process.exit(1);
     }
   } else {
-    config_files = getSequence(folder.seq, config);
+    config_files = require("./sequence").getSequence(folder.seq, config);
   }
   let counter = config_files ? config_files.length : 0;
 
@@ -273,7 +269,9 @@ const getFiles = (folder, args, env, ccc) => {
       if (fs.lstatSync(ppp).isDirectory()) {
         //   //console.log("DIIIIIIIIIIIIIIIRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
         process.chdir(ppp);
-        const subConfig = loadConfigContent(ppp + "/_nexss.yml");
+        const subConfig = require("../../../lib/config").loadConfigContent(
+          ppp + "/_nexss.yml"
+        );
         // console.log("config:", config);
         let envLoaded = loadEnv();
         if (envLoaded) {

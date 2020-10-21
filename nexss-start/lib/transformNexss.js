@@ -1,3 +1,4 @@
+const { db } = require("@nexssp/logdebug");
 const { defaultExecuteOptions } = require("../../config/defaults");
 module.exports.transformNexss = (
   cmd, // cmd = ls, node, php or whatever
@@ -177,25 +178,26 @@ module.exports.transformNexss = (
           process.nxsErrorExists = true;
           this.errBuffer = this.errBuffer || "";
           this.errBuffer += err.toString();
-          // if (this.errBuffer)
-          //   parseError(fileName, this.errBuffer, args.includes("--pipeerrors"));
-          // this.errBuffer = "";
+          if (this.errBuffer)
+            parseError(fileName, this.errBuffer, args.includes("--pipeerrors"));
+          this.errBuffer = "";
         }
       });
 
       this.worker.stdout.on("data", function (data) {
+        this.emptyCall = false;
         data = data.toString();
-        // console.error(this.cmd, "xxxx!!!!!!!!!!!!!!", data.toString());
         if (data === "\n") {
+          this.emptyCall = true;
           // sometime we have \n
-          self.push({
-            display: data, // Will just display the data at the end.
-            stream: "cancel",
-            command: nexssCommand,
-            from: "transform-nexss",
-            status: "ok",
-            data,
-          });
+          // self.push({
+          //   display: data, // Will just display the data at the end.
+          //   stream: "cancel",
+          //   command: nexssCommand,
+          //   from: "transform-nexss",
+          //   status: "ok",
+          //   data,
+          // });
 
           log.dy(
             "!!!!!!!!!!!!!! In the stdout there is '\\n' received from the transformNexss Worker.",

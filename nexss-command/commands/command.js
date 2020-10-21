@@ -1,7 +1,6 @@
 const { NEXSS_PROJECT_CONFIG_PATH } = require("../../config/config");
 const { loadConfigContent } = require("../../lib/config");
 let configContent = loadConfigContent(NEXSS_PROJECT_CONFIG_PATH);
-const { bold, blue, yellow, red, magenta } = require("@nexssp/ansi");
 const { db } = require("@nexssp/logdebug");
 const { exec } = require("child_process");
 const { listCommands } = require("../lib/commands");
