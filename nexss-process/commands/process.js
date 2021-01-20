@@ -9,8 +9,6 @@ const config = require(`../../nexss-language/languages/config.${process.platform
 const { ensureInstalled } = require("../../lib/terminal");
 const osPM = config.osPackageManagers[Object.keys(config.osPackageManagers)[0]];
 
-const os = require("@nexssp/os");
-
 if (process.platform !== "win32") {
   ensureInstalled(
     "ps",
