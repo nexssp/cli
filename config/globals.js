@@ -1,5 +1,5 @@
-Object.assign(global, require("@nexssp/ansi")); // Cli tool
-global.log = require("@nexssp/logdebug"); //  Cli tool
+Object.assign(global, require("@nexssp/ansi"));
+global.log = require("@nexssp/logdebug");
 
 global.nConstants = [];
 global.nConst = (name, value, where) => {
@@ -34,13 +34,13 @@ nConst("aliases", require("../config/aliases"), process);
 // TODO: cache for below
 const os = require("@nexssp/os");
 
-const getCallerFile = require("get-caller-file");
 nConst("ddd", (...args) => {
   args.map((e) => {
     process.stdout.write(yellow(bold(require("util").inspect(e) + "\n")));
   });
 
   console.log(yellow(`Stopped by ddd Function at:`));
+  const getCallerFile = require("get-caller-file");
   console.log(bold(getCallerFile()));
   const timeDiff = process.hrtime(process.startTime);
   console.log(

@@ -23,11 +23,29 @@ module.exports.transformOutput = (x, y, z) => {
     // writableObjectMode: true,
     transform: (chunk, encoding, callback) => {
       // nxsDebugData(chunk.data, "Output", "magenta");
-      if (chunk.stream === "cancel") {
-        log.dr(`× Stream: Cancelled transformOutput`);
-        if (chunk.command) {
-          log.dr(`! Cancelled by: `, bold(chunk.command));
+      if (chunk.stream === "cancel" || chunk.stream === "stop") {
+        switch (chunk.stream) {
+          case "cancel":
+            log.dr(`× Stream: Cancelled transformOutput`);
+            if (chunk.command) {
+              log.dr(`! Cancelled by: `, bold(chunk.command));
+            }
+            break;
+          case "stop":
+            log.dr(`× Stream: Stopped transformOutput`);
+
+            if (chunk.command) {
+              log.dr(`! Stopped by: `, bold(chunk.command));
+            }
+
+            if (chunk.reason) {
+              log.dr(`! Stop Reason: `, bold(chunk.reason));
+            }
+            break;
+          default:
+            break;
         }
+
         // process.NEXSS_CANCEL_STREAM = false; // this is for next streams.
         callback(null, chunk);
         return;

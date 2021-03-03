@@ -411,7 +411,7 @@ if (
         break;
     }
 
-    console.log(`Language selected: ${bold(languageSelected.title)}`);
+    log.di(`Language selected: ${bold(languageSelected.title)}`);
 
     if (pm) {
       const action = pm[argument];

@@ -11,7 +11,7 @@ module.exports.transformValidation = (area = "input", options = {}) => {
     // readableObjectMode: true,
     transform(chunk, encoding, callback) {
       // Not a json data so we don't do anything here
-      if (chunk.stream === "cancel") {
+      if (chunk.stream === "cancel" || chunk.stream === "stop") {
         callback(null, chunk);
         return;
       }

@@ -247,13 +247,15 @@ module.exports.transformNexss = (
               data,
             });
           } else {
+            const reason = data.nxsStopReason;
             delete data.nxsStop;
             delete data.nxsStopReason;
             self.push({
               display: chunk.display,
               command: nexssCommand,
               from: "transform-nexss",
-              stream: "cancel",
+              stream: "stop",
+              reason: reason ? reason : "reason not specified",
               status: "end",
               data,
               command: process.nexssCMD,

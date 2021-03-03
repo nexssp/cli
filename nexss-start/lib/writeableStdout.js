@@ -17,6 +17,10 @@ module.exports.writeableStdout = () => {
         } else {
           process.stdout.write(chunk.data);
         }
+      } else if (chunk.stream === "stop") {
+        console.log(bold(red("× Stream: Stopped by: ", chunk.command)));
+        console.log(bold(red("↳ Reason:")));
+        console.log(bold(red(chunk.reason)));
       } else {
         log.dg(`↳ Stream: Writeable stdout`);
         chunk = chunk.data;
