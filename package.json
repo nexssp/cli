@@ -9,7 +9,8 @@
     "nexss": "nexss.js"
   },
   "scripts": {
-    "test": "jest --env=node --verbose ./tests/Jest/",
+    "test": "",
+    "test2": "jest --env=node --verbose ./tests/Jest/",
     "prepare": "npm test",
     "postinstall": "",
     "postuninstall": ""
