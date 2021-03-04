@@ -560,10 +560,14 @@ switch (command) {
           console.info(helpContent.toString());
         } else {
           const { extname } = require("path");
-          const f = fs.readdirSync(`${fileOrFolderExists}/`);
-          f.filter(
-            (e) => [".json", ".git"].indexOf(extname(e)) !== 0
-          ).forEach((e) => (e !== ".git" ? console.log(`${e}`) : ""));
+          if (fs.existsSync(fileOrFolderExists)) {
+            const f = fs.readdirSync(`${fileOrFolderExists}/`);
+            f.filter(
+              (e) => [".json", ".git"].indexOf(extname(e)) !== 0
+            ).forEach((e) => (e !== ".git" ? console.log(`${e}`) : ""));
+          } else {
+            console.log(`${fileOrFolderExists} has not been found.`);
+          }
         }
 
         return;
