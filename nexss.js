@@ -62,6 +62,7 @@ if (plugin) plugin += "";
 
 // Aliases eg start -> s. Each package has also own aliases for commands.
 const aliases = require("./aliases.json");
+const { errorMonitor } = require("events");
 if (aliases[plugin]) {
   plugin = aliases[plugin];
 }
@@ -509,13 +510,16 @@ if (fs.existsSync(`${NEXSS_SRC_PATH}/nexss-${plugin}/aliases.json`)) {
 }
 
 // Here loads when help is needed for particular command eg nexss file add help
-if (process.argv[4] === "help") {
+if (process.argv[4] === "help" && command) {
   //help for command
+  const helpFile = `${NEXSS_SRC_PATH}/nexss-${plugin}/commands/${command}.md`;
   try {
-    const helpContent = fs.readFileSync(
-      `${NEXSS_SRC_PATH}/nexss-${plugin}/commands/${command}.md`
-    );
-    console.info(helpContent.toString());
+    if (fs.existsSync(helpFile)) {
+      const helpContent = fs.readFileSync(helpFile);
+      console.info(helpContent.toString());
+    } else {
+      console.log(`file ${helpFile} not found.`);
+    }
   } catch (error) {
     console.log(error);
     process.exit();
