@@ -528,11 +528,11 @@ if (process.argv[4] === "help" && command) {
   return;
 }
 
-if (fileOrFolderExists && process.argv[3] === "test") {
+if (fileOrFolderExists && process.argv[2] === "test") {
   //help for command
   process.chdir(fileOrFolderExists);
 
-  const testName = process.argv.length > 3 ? process.argv[4] : null;
+  const testName = process.argv.length > 2 ? process.argv[3] : null;
   if (!testName) {
     log.warn(`Enter test name or specify 'all' to run all tests`);
     process.exit(1);
