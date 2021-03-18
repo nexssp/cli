@@ -12,6 +12,10 @@ Programmer
 
 **Nexss Programmer** is a cli tool which allows to compile, compose over **50** programming languages.
 
+- `nexss program.r`
+- `nexss program.[any extension]`
+- `npx nexss program.r` # without installing nexss
+
 <p align="center">
 <b><a href="https://github.com/nexssp/cli/wiki/Concept-Overview">Overview</a></b> |
 <b><a href="https://github.com/nexssp/cli/wiki/Nexss-Programmer-Programming-Languages">List of Languages</a></b> |
