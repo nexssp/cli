@@ -2,7 +2,7 @@
   "name": "@nexssp/cli",
   "author": "Marcin Polak mapoart@gmail.com",
   "homepage": "https://nexss.com",
-  "version": "2.2.22",
+  "version": "2.2.23",
   "description": "Nexss PROGRAMMER - Over 50 programming languages together..",
   "main": "nexss.js",
   "bin": {
@@ -50,7 +50,7 @@
     "get-caller-file": "^2.0.5",
     "inquirer": "^8.0.0",
     "inquirer-autocomplete-prompt": "^1.3.0",
-    "ioredis": "^4.24.2",
+    "ioredis": "^4.24.5",
     "js-yaml": "^4.0.0",
     "json-colorizer": "^2.2.2",
     "json-diff": "^0.5.4",
