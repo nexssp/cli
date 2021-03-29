@@ -2,7 +2,7 @@
   "name": "@nexssp/cli",
   "author": "Marcin Polak mapoart@gmail.com",
   "homepage": "https://nexss.com",
-  "version": "2.2.23",
+  "version": "2.2.24",
   "description": "Nexss PROGRAMMER - Over 50 programming languages together..",
   "main": "nexss.js",
   "bin": {
@@ -25,6 +25,9 @@
   },
   "keywords": [
     "tool",
+    "shell",
+    "scripts",
+    "cli",
     "programming",
     "programmer",
     "innovation",
@@ -48,7 +51,7 @@
     "fs-extra": "^9.1.0",
     "fuzzy": "^0.1.3",
     "get-caller-file": "^2.0.5",
-    "inquirer": "^8.0.0",
+    "inquirer": "^7.0.0",
     "inquirer-autocomplete-prompt": "^1.3.0",
     "ioredis": "^4.24.5",
     "js-yaml": "^4.0.0",
