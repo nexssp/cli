@@ -59,8 +59,11 @@ const tags = os.tags();
 // Below tags are for distro recognition.
 nConst("distroTag1", tags[0], process);
 nConst("distroTag2", tags[1], process);
-
-nConst("mem", process.memoryUsage().rss, process); // https://nodejs.org/api/process.html#process_process_memoryusage
+try {
+  nConst("mem", process.memoryUsage().rss, process); // https://nodejs.org/api/process.html#process_process_memoryusage
+} catch (error) {
+  nConst("mem", 0, process); // https://nodejs.org/api/process.html#process_process_memoryusage
+}
 
 // if (process.argv.includes("--nxsLoad")) {
 // }
