@@ -25,8 +25,11 @@ process.on("rejectionHandled", (err, promise) => {
 });
 
 // We make sure application is installed
-const { npmInstallRun } = require("./lib/npm");
-npmInstallRun();
+// EDIT: Application is installed through npm or npx
+// This was also cousing issues on SHARED SERVERS
+// const { npmInstallRun } = require("./lib/npm");
+// npmInstallRun();
+
 require("./config/globals");
 
 log.dc(bold("∞ Starting Nexss Programmer.."));
