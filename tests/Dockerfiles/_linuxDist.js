@@ -16,12 +16,12 @@ if (!process.argv[2]) {
 
 if (!process.argv[3]) {
   console.log(`\nYou haven't selected the type of run:
-1) ${blue("local")} - create virtual discs to local environment
-2) ${blue("local-testlangs")} - run all language tests
-3) ${blue("local-empty")} - local but fresh start / clean cache folder
-4) ${blue("clone")} - clones from the repository
-5) ${blue("empty")} - nothing is installed, just nodejs, npm.
-6) ${blue("npminstall")} - installs from ${magenta(
+1) ${bold("local")} - create virtual discs to local environment
+2) ${bold("local-testlangs")} - run all language tests
+3) ${bold("local-empty")} - local but fresh start / clean cache folder
+4) ${bold("clone")} - clones from the repository
+5) ${bold("empty")} - nothing is installed, just nodejs, npm.
+6) ${bold("npminstall")} - installs from ${magenta(
     "LIVE"
   )}, npm i @nexssp/cli -g
 \nexample: ${yellow(
