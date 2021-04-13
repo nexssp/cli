@@ -15,6 +15,7 @@ Programmer
 - `nexss program.r`
 - `nexss program.[any extension]`
 - `npx nexss program.r` # without installing nexss
+- `nexss file add my.rs --edit` # Will open list of templates for particular language, install editor (if not exists) and open file for editing.
 
 <p align="center">
 <b><a href="https://github.com/nexssp/cli/wiki/Concept-Overview">Overview</a></b> |
