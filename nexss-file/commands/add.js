@@ -36,6 +36,7 @@ const fs = require("fs");
 const { loadConfigContent, saveConfigContent } = require("../../lib/config");
 const nexssLanguages = require("../../nexss-language/lib/language");
 const { extraFunctions } = require("../lib/fileExtraOptions");
+const { exit } = require("process");
 
 var options = {};
 options.fileName = cliArgs._[1] || options.fileName || "";
@@ -157,23 +158,37 @@ function execute(options) {
       info(
         `Using ${bold(options.template)} template. Creating from template...`
       );
+
+      const directory = dirname(filePath);
+      if (!fs.existsSync(directory)) {
+        info(
+          `src/ folder not found. creating in the main folder. ${NEXSS_PROJECT_SRC_PATH}`
+        );
+      }
+
       try {
         fs.copyFileSync(options.templatePath, filePath);
+
+        ok(`File ${yellow(bold(normalize(filePath)))} has been created.`);
       } catch (err) {
         if (err.code === "ENOENT") {
           error(
-            `Error during copy from ${options.templatePath} to ${filePath}`
+            `Error during copy from ${normalize(
+              options.templatePath
+            )} to ${filePath}`
           );
+          return;
         } else if (err.code === "EACCES") {
           error(
-            `Error during copy from ${options.templatePath} to ${filePath}. Permission denied. You may need to run this as root? or change permissions?`
+            `Error during copy from ${normalize(
+              options.templatePath
+            )} to ${filePath}. Permission denied. You may need to run this as root? or change permissions?`
           );
           return;
         } else {
           throw err;
         }
       }
-      ok(`File ${yellow(bold(normalize(filePath)))} has been created.`);
 
       // cliArgs.noconfig - no config modification
       if (!cliArgs.noconfig && NEXSS_PROJECT_CONFIG_PATH) {

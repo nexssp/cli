@@ -127,6 +127,7 @@ function getConfig() {
 }
 
 const { findParent } = require("../lib/fs");
+const { exit } = require("process");
 
 const NEXSS_PROJECT_CONFIG_PATH = findParent("_nexss.yml");
 // console.log("NEXSS_PROJECT_CONFIG_PATH", NEXSS_PROJECT_CONFIG_PATH);
@@ -134,10 +135,18 @@ const NEXSS_PROJECT_PATH = NEXSS_PROJECT_CONFIG_PATH
   ? dirname(NEXSS_PROJECT_CONFIG_PATH)
   : undefined;
 
+let projectSubfolderSrcPath = "";
+if (NEXSS_PROJECT_PATH) {
+  if (fs.existsSync(join(NEXSS_PROJECT_PATH, "src"))) {
+    projectSubfolderSrcPath = "src";
+  }
+}
+
 const NEXSS_PROJECT_SRC_PATH = NEXSS_PROJECT_PATH
   ? process.env.NEXSS_PROJECT_SRC_PATH ||
-    (process.env.NEXSS_PROJECT_SRC_PATH = normalize(
-      `${NEXSS_PROJECT_PATH}/src`
+    (process.env.NEXSS_PROJECT_SRC_PATH = join(
+      NEXSS_PROJECT_PATH,
+      projectSubfolderSrcPath
     ))
   : undefined;
 
