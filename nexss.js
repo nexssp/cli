@@ -344,7 +344,10 @@ if (
 
         if (languageSelected[whatToSet][toSet]) {
           //Reseting to the version
-          const command = `scoop bucket add versions && ${languageSelected[whatToSet][toSet].install} && ${languageSelected[whatToSet][toSet].switch}`;
+          const { ensureBucketAdded } = require("./lib/scoop");
+          ensureBucketAdded("versions");
+
+          const command = `${languageSelected[whatToSet][toSet].install} && ${languageSelected[whatToSet][toSet].switch}`;
 
           try {
             child_process.execSync(command, {
