@@ -122,27 +122,42 @@ module.exports.getCompiler = (file) => {
     }
   }
   // CUSTOM COMPILER in the _nexss.yml file
-  if (file.compiler) {
-    fileCompilerSplit = file.compiler.split(" ");
 
-    if (ld_compiler[fileCompilerSplit[0]]) {
-      compiler = ld_compiler[fileCompilerSplit[0]];
-
-      fileCompilerSplit.shift();
-      compiler.args = fileCompilerSplit.concat(compiler.args).join(" ");
+  if (
+    cliArgs.nxsCompiler &&
+    (compiler = ld_compiler[cliArgs.nxsCompiler.split(" ")[0]])
+  ) {
+    // console.log(compiler);
+    if (cliArgs.verbose) {
+      log.info(
+        `Compiler has been set to ${
+          cliArgs.nxsCompiler.split(" ")[0]
+        } from command line arguments.`
+      );
     }
   } else {
-    if (!compiler) {
-      if (languageDefinition) {
-        compiler =
-          languageDefinition.compilers[
-            Object.keys(languageDefinition.compilers)[0]
-          ];
-      } else {
-        compiler = {};
-        compiler.command = "nexss";
+    if (file.compiler) {
+      fileCompilerSplit = file.compiler.split(" ");
 
-        compiler.args = `${fileName} ${file.args.join(" ")}`;
+      if (ld_compiler[fileCompilerSplit[0]]) {
+        compiler = ld_compiler[fileCompilerSplit[0]];
+
+        fileCompilerSplit.shift();
+        compiler.args = fileCompilerSplit.concat(compiler.args).join(" ");
+      }
+    } else {
+      if (!compiler) {
+        if (languageDefinition) {
+          compiler =
+            languageDefinition.compilers[
+              Object.keys(languageDefinition.compilers)[0]
+            ];
+        } else {
+          compiler = {};
+          compiler.command = "nexss";
+
+          compiler.args = `${fileName} ${file.args.join(" ")}`;
+        }
       }
     }
   }
