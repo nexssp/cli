@@ -65,7 +65,7 @@ if (plugin) plugin += "";
 
 // Aliases eg start -> s. Each package has also own aliases for commands.
 const aliases = require("./aliases.json");
-const { errorMonitor } = require("events");
+
 if (aliases[plugin]) {
   plugin = aliases[plugin];
 }
@@ -442,7 +442,10 @@ if (
         ensureInstalled(compiler.command, compiler.install);
 
         const pmArguments = process.argv.slice(3);
-        const command = `${compiler.command} ${pmArguments.join(" ")}`;
+        const command = `${
+          compiler.shell ? compiler.shell : compiler.command
+        } ${pmArguments.join(" ")}`;
+
         try {
           child_process.execSync(command, {
             stdio: "inherit",
