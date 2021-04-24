@@ -17,6 +17,20 @@ Programmer
 - `npx nexss program.r` # without installing nexss
 - `nexss file add my.rs --edit` # Will open list of templates for particular language, install editor (if not exists) and open file for editing.
 
+## Run any programming language in seconds (eg. Google Colab Notebook)
+
+```sh
+!npm i -g @nexssp/cli
+!nexss f a my.r --helloWorld # Add template
+!nexss my.r # run program
+# {"HelloFromR":"4.0.5","nexss":"2.2.35"}
+!nexss Id # run Id package
+# {"nxsOut":"cknvpfni00000blqefsh37hwa","nexss":"2.2.35"}
+!nexss f a my.cpp --helloWorld # Add template
+!nexss my.cpp
+# {"outputCPP":"Hello from C++ 17!","nexss":"2.2.35"}
+```
+
 <p align="center">
 <b><a href="https://github.com/nexssp/cli/wiki/Concept-Overview">Overview</a></b> |
 <b><a href="https://github.com/nexssp/cli/wiki/Nexss-Programmer-Programming-Languages">List of Languages</a></b> |
