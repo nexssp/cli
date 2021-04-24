@@ -228,8 +228,7 @@ module.exports.getLang = (ext, recreateCache) => {
         cache.del(`nexss_core_getLanguages__.json`);
         cache.del(`nexss_core_getLanguages_${ext}_.json`);
         const x = module.exports.getLanguages(true);
-        const { dist } = require("../../lib/osys");
-        const distName = dist();
+        const distName = process.distro;
         if (!x[ext]) {
           log.error(
             "Error:",

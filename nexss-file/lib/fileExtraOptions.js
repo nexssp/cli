@@ -36,11 +36,6 @@ ${destinationPath}`
     let commands = extraOptions.commands;
 
     if (commands && commands.forEach) {
-      const {
-        replaceCommandByDist,
-        dist,
-      } = require(`${process.env.NEXSS_SRC_PATH}/lib/osys`);
-
       // const distName = dist();
 
       // TODO: Later to cleanup this config file !!
@@ -56,7 +51,7 @@ ${destinationPath}`
       commands.forEach((cmd2) => {
         // TODO: better error handling
         // console.log(cmd);
-        cmd = replaceCommandByDist(cmd2);
+        cmd = process.replacePMByDistro(cmd2);
         if (cmd) {
           try {
             require("child_process").execSync(`${cmd}`, {
