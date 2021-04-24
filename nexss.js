@@ -630,9 +630,16 @@ switch (command) {
           // );
           require(`./nexss-${plugin}/commands/${plugin}.js`);
         } else {
-          let helpContent = fs.readFileSync(
-            `${NEXSS_SRC_PATH}/nexss-${plugin}/help.md`
-          );
+          try {
+            let helpContent = fs.readFileSync(
+              `${NEXSS_SRC_PATH}/nexss-${plugin}/help.md`
+            );
+          } catch (e) {
+            error(
+              `File ${helpContent} has not been found. This maybe the issue that you have installed different versions of Nexss Programmer. Try use --nocache option to recreate cache.`
+            );
+            process.exit(1);
+          }
 
           // console.log(`./nexss-${plugin}/commands/*.md`);
           const fg = require("fast-glob");

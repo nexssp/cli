@@ -17,6 +17,11 @@ const NEXSS_HOME_PATH =
   process.env.NEXSS_HOME_PATH ||
   (process.env.NEXSS_HOME_PATH = normalize(`${home}/.nexss`));
 
+// This must be here as many nexss programmer version can run (npx etc)
+const NEXSS_SRC_PATH =
+  process.env.NEXSS_SRC_PATH ||
+  (process.env.NEXSS_SRC_PATH = join(__dirname, ".."));
+
 function getConfig() {
   const { basename } = require("path");
   const { existsSync, mkdirSync, copyFileSync } = require("fs");
@@ -50,10 +55,6 @@ function getConfig() {
     (process.env.NEXSS_BACKUP_PATH = normalize(`${NEXSS_HOME_PATH}/backup`));
 
   const NEXSS_PROJECTS_DB = normalize(`${NEXSS_HOME_PATH}/projects.json`);
-
-  const NEXSS_SRC_PATH =
-    process.env.NEXSS_SRC_PATH ||
-    (process.env.NEXSS_SRC_PATH = join(__dirname, ".."));
 
   // Make sure directories are there
   const createIfNotExists = [
@@ -115,7 +116,6 @@ function getConfig() {
   }
 
   return {
-    NEXSS_SRC_PATH,
     NEXSS_HOME_PATH,
     NEXSS_APPS_PATH,
     NEXSS_CACHE_PATH,
@@ -127,7 +127,6 @@ function getConfig() {
 }
 
 const { findParent } = require("../lib/fs");
-const { exit } = require("process");
 
 const NEXSS_PROJECT_CONFIG_PATH = findParent("_nexss.yml");
 // console.log("NEXSS_PROJECT_CONFIG_PATH", NEXSS_PROJECT_CONFIG_PATH);
@@ -159,6 +158,7 @@ if (existsSync(NEXSS_HOME_PATH) && cache.exists(getConfigCacheName, "1y")) {
   cache.write(getConfigCacheName, JSON.stringify(config));
 }
 const result = Object.assign({}, config, {
+  NEXSS_SRC_PATH,
   NEXSS_PROJECT_CONFIG_PATH,
   NEXSS_PROJECT_PATH,
   NEXSS_PROJECT_SRC_PATH,
