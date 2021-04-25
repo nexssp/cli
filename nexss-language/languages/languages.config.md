@@ -12,7 +12,7 @@ languageConfig.description =
   "Node.js® is a JavaScript runtime built on Chrome's V8 JavaScript engine.";
 languageConfig.url = "https://nodejs.org";
 languageConfig.extensions = [".js"];
-languageConfig.executeCommandLine = "node -e";
+languageConfig.run = "node -e";
 languageConfig.printCommandLine = "node -p"; //no console.log() needed to display result eg node -p "4+6"
 languageConfig.checkSyntax = "node -c";
 languageConfig.interactiveShell = "node";
@@ -23,8 +23,8 @@ languageConfig.builders = {
     //build: "pkg --output <destinationFile> --out-path <destinationPath> <file>",
     build: "pkg",
     args: "--target host --output <destinationFile> <file>",
-    help: ``
-  }
+    help: ``,
+  },
 };
 languageConfig.compilers = {
   node: {
@@ -32,8 +32,8 @@ languageConfig.compilers = {
     // Cpp does not have possibility to compile and run on the fly. We need to save it as a exe file first.
     command: "node",
     args: "<file>",
-    help: ``
-  }
+    help: ``,
+  },
 };
 languageConfig.errors = require("./nexss.nodejs.errors");
 languageConfig.languagePackageManagers = {
@@ -60,7 +60,7 @@ languageConfig.languagePackageManagers = {
     },
     // if command not found in specification
     // run directly on package manager
-    else: "npm <default> <args>"
+    else: "npm <default> <args>",
   },
   yarn: {
     installation: "scoop install yarn",
@@ -69,8 +69,8 @@ languageConfig.languagePackageManagers = {
     install: "yarn list",
     uninstall: "yarn remove",
     help: "yarn help",
-    version: "yarn help"
-  }
+    version: "yarn help",
+  },
 };
 
 module.exports = languageConfig;
