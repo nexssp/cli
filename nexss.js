@@ -4,6 +4,7 @@
  * Author: Marcin Polak / nexss.com
  * 2018/10/01 initial version
  */
+
 Object.defineProperty(process, "startTime", {
   configurable: false,
   enumerable: true,
@@ -354,8 +355,11 @@ if (
 
         if (languageSelected[whatToSet][toSet]) {
           //Reseting to the version
-          const { ensureBucketAdded } = require("./lib/scoop");
-          ensureBucketAdded("versions");
+          if (process.platform === "win32") {
+            // Versions bucket only for Windows / Scoop
+            const { ensureBucketAdded } = require("./lib/scoop");
+            ensureBucketAdded("versions");
+          }
 
           const command = `${languageSelected[whatToSet][toSet].install} && ${languageSelected[whatToSet][toSet].switch}`;
 
@@ -481,7 +485,6 @@ if (
           runCommand(...cliArgs._);
         } else {
           const pmArguments = process.argv.slice(4);
-
           runCommand =
             runCommand &&
             runCommand.replace(
@@ -489,18 +492,26 @@ if (
               compiler.command || builder.command
             );
 
-          const command = `${runCommand} ${pmArguments.join(" ")}`;
+          function escapeShellArg(arg) {
+            return `"${arg}"`;
+          }
+          const arguments = `${pmArguments.map(escapeShellArg).join(" ")}`;
+
+          const command = `${runCommand} ${arguments}`;
+          const spawnOptions = require("./config/spawnOptions");
 
           log.dg(`RUN: ${bold(command)}, cwd: ${process.cwd()}`);
 
           try {
-            child_process.execSync(command, {
-              stdio: "inherit",
-              detached: false,
-              shell: process.shell,
-              cwd: process.cwd(),
-              maxBuffer: 1024 * 1024 * 100,
-            });
+            child_process.execSync(
+              command,
+              spawnOptions({
+                stdio: "inherit",
+                detached: false,
+                cwd: process.cwd(),
+                maxBuffer: 1024 * 1024 * 100,
+              })
+            );
           } catch (error) {
             console.log(`Command failed ${command}`);
           }
