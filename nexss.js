@@ -249,8 +249,9 @@ if (
             return;
         }
 
+        // TODO: Later move the function to config (see config path is also used below)
         let config;
-        const configPath = require("os").homedir() + "/.nexss/config.json";
+        const configPath = process.env.NEXSS_HOME_PATH + "/config.json";
         if (fs.existsSync(configPath)) {
           config = require(configPath);
         } else {
@@ -414,6 +415,88 @@ if (
         }
 
         process.exit(0);
+      case "run":
+        // TODO: Refactor later for DRY.
+        // Below runs like:
+        // Per compiler run command if not exists main run command else display error that is not specified.
+        const configPath2 = process.env.NEXSS_HOME_PATH + "/config.json";
+        let config2;
+        if (fs.existsSync(configPath2)) {
+          config2 = require(configPath2);
+        } else {
+          config2 = { languages: {} };
+        }
+
+        // const compiler = getCompiler({
+        //   path: "",
+        //   name: `test${languageSelected.extensions[0]}`,
+        // });
+        // let builder;
+        // if (!compiler) {
+        //   const { getBuilder } = require("./nexss-start/lib/start/builder");
+        //   builder = getBuilder({
+        //     path: "",
+        //     name: `test${languageSelected.extensions[0]}`,
+        //   });
+        // }
+
+        let runCommand =
+          (compiler && compiler.run) ||
+          (builder && builder.run) ||
+          languageSelected["run"];
+
+        if (!runCommand) {
+          log.error(
+            bold(
+              `Run command is not setup in the configuration for ${languageSelected.title} and os: ${process.distro}`
+            )
+          );
+          log.info(
+            bold(
+              `Try to add your own run function. (eg add to the file languageConfig.run='your command to run')`
+            )
+          );
+          log.info(bold(`Config file: ${languageSelected.configFile}`));
+          log.info(
+            bold(
+              `Please remember to use --nocache if you change the language config file.`
+            )
+          );
+          process.exit(1);
+        }
+
+        if (
+          Object.prototype.toString.call(runCommand) === `[object Function]`
+        ) {
+          log.dg(`Running FUNCTION ${argument}(${cliArgs._.join(",")})`);
+          runCommand(...cliArgs._);
+        } else {
+          const pmArguments = process.argv.slice(4);
+
+          runCommand =
+            runCommand &&
+            runCommand.replace(
+              "<currentCommand>",
+              compiler.command || builder.command
+            );
+
+          const command = `${runCommand} ${pmArguments.join(" ")}`;
+
+          log.dg(`RUN: ${bold(command)}, cwd: ${process.cwd()}`);
+
+          try {
+            child_process.execSync(command, {
+              stdio: "inherit",
+              detached: false,
+              shell: process.shell,
+              cwd: process.cwd(),
+              maxBuffer: 1024 * 1024 * 100,
+            });
+          } catch (error) {
+            console.log(`Command failed ${command}`);
+          }
+        }
+        return;
       default:
         break;
     }
@@ -462,7 +545,7 @@ if (
         }
       } else {
         if (Object.prototype.toString.call(action) === `[object Function]`) {
-          console.log(`Running FUNCTION ${argument}(${cliArgs._.join(",")})`);
+          log.dg(`Running FUNCTION ${argument}(${cliArgs._.join(",")})`);
           action(...cliArgs._);
         } else {
           const pmArguments = process.argv.slice(4);
