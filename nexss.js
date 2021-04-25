@@ -549,7 +549,14 @@ if (
           action(...cliArgs._);
         } else {
           const pmArguments = process.argv.slice(4);
-          const command = `${action} ${pmArguments.join(" ")}`;
+          let command = `${action} ${pmArguments.join(" ")}`;
+
+          command =
+            command &&
+            command.replace(
+              "<currentCommand>",
+              compiler.command || builder.command
+            );
 
           log.info(`Execute: ${bold(command)}, cwd: ${process.cwd()}`);
 
