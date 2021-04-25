@@ -430,6 +430,18 @@ if (
         process.exit(0);
       case "run":
         // TODO: Refactor later for DRY.
+
+        const installCommand = `${
+          compiler && compiler.install ? compiler.install : builder.install
+        }`;
+
+        const command = `${
+          compiler && compiler.install ? compiler.command : builder.command
+        }`;
+
+        const { ensureInstalled } = require("./lib/terminal");
+        ensureInstalled(command, installCommand, { verbose: true });
+
         // Below runs like:
         // Per compiler run command if not exists main run command else display error that is not specified.
         const configPath2 = process.env.NEXSS_HOME_PATH + "/config.json";
@@ -495,7 +507,10 @@ if (
           function escapeShellArg(arg) {
             return `"${arg}"`;
           }
-          const arguments = `${pmArguments.map(escapeShellArg).join(" ")}`;
+          const arguments =
+            process.platform === "win32"
+              ? `${pmArguments.join(" ")}`
+              : `${pmArguments.map(escapeShellArg).join(" ")}`;
 
           const command = `${runCommand} ${arguments}`;
           const spawnOptions = require("./config/spawnOptions");
