@@ -125,12 +125,20 @@ if (
   process.argv[2] = `${NEXSS_PACKAGES_PATH}/${plugin}`;
   process.argv[1] = "start";
   plugin = "start";
+} else if (process.argv[2] === "cache") {
+  if (process.argv[3] === "rebuild") {
+    const { getLangByFilename } = require("./nexss-language/lib/language");
+    // We use js as is always installed / nodejs
+    getLangByFilename(`example.js`, true);
+    log.info("done");
+    return;
+  }
 } else if (!fs.existsSync(`${NEXSS_SRC_PATH}/nexss-${plugin}/nexssPlugin.js`)) {
   const { getLangByFilename } = require("./nexss-language/lib/language");
 
   // We check if thiscan be language specified action like
   // --> eg. nexss js install socketio
-  const languageSelected = getLangByFilename(`example.${plugin}`, true);
+  const languageSelected = getLangByFilename(`example.${plugin}`);
   // To use lang specific commands use
   // `nexss js install OR nexss php install` NOT!-> nexss .js install
   if (plugin.split(".").length === 1 && languageSelected) {
@@ -139,6 +147,7 @@ if (
       path: "",
       name: `test${languageSelected.extensions[0]}`,
     });
+
     let builder;
     if (!compiler) {
       const { getBuilder } = require("./nexss-start/lib/start/builder");
