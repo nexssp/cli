@@ -32,14 +32,25 @@ Programmer
     </a>
 </p>
 
-**Nexss Programmer** is a cli tool which allows to compile, compose over **50** programming languages.
+**Nexss Programmer** is a cli tool which allows to:
+
+### Easy and intuitively install programming environments
+
+Example:
+
+- `nexss r install` OR `nexss py install` OR `nexss php install` OR ..
+- `nexss [language file extension] install`
+
+### Compile, compose over **50** programming languages
+
+if there is no compiler installed, nexss programmer will install it automatically.
 
 - `nexss program.r`
 - `nexss program.[any extension]`
 - `npx @nexssp/cli program.r` # without installing nexss
-- `nexss file add my.rs --edit` # Will open list of templates for particular language, install editor (if not exists) and open file for editing.
+- `nexss file add my.rs --edit` # Will open list of templates to select from for particular language, install editor (if not exists) and open file for editing.
 
-## Run any programming language in seconds (eg. Google Colab Notebook)
+### Run any programming language in seconds (eg. Google Colab Notebook)
 
 ```sh
 !npm i -g @nexssp/cli
@@ -53,8 +64,14 @@ Programmer
 # {"outputCPP":"Hello from C++ 17!","nexss":"2.2.35"}
 ```
 
-## Upgrade to the latest versions
+### And much, much more..
 
+- Checkout our **blog** on [nexss.com](https://nexss.com/11_blog-nexss-programmer/introduction/nexss-blog.html)
+- Documentation on [nexss programmer wiki](https://nexss.com/programmer_.html)
+
+## NOTE: Upgrade to the latest versions
+
+- `npm upgrade -g @nexssp/cli` # upgrade nexss programmer
 - `nexss l u` # the same as `nexss langauge update` // Updating all installed language definitions
 - `nexss pkg u` # the same as `nexss package update` // Updating all installed Nexss Programmer Packages
 - `nexss cache rebuild` # rebuilding cache // handy when developing new language configurations (now is over 50)
