@@ -48,15 +48,25 @@ ${destinationPath}`
       // }
 
       // FIXME: to check this part!!
+      let defaultOptions = { stdio: "inherit" };
+      if (process.platform === "win32") {
+        defaultOptions.shell = true;
+      } else {
+        defaultOptions.shell = process.shell;
+      }
+
       commands.forEach((cmd2) => {
         // TODO: better error handling
         // console.log(cmd);
         cmd = process.replacePMByDistro(cmd2);
         if (cmd) {
+          if (!process.argv.includes("--progress")) {
+            log.info("To see all installation messages use --progress.");
+            defaultOptions.stdio = "pipe";
+          }
+
           try {
-            require("child_process").execSync(`${cmd}`, {
-              stdio: "inherit",
-            });
+            require("child_process").execSync(`${cmd}`, defaultOptions);
           } catch (err) {
             error("==========================================================");
             error(
@@ -75,7 +85,7 @@ ${destinationPath}`
                   `${commandRun} seems to be installed however there may be more errors:`
                 )
               );
-              error(err);
+              error(err.stderr ? err.stderr : err);
               error(
                 "=========================================================="
               );
