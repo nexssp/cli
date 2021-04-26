@@ -128,10 +128,16 @@ if (
   plugin = "start";
 } else if (process.argv[2] === "cache") {
   if (process.argv[3] === "rebuild") {
-    const { getLangByFilename } = require("./nexss-language/lib/language");
+    const { getLanguages } = require("./nexss-language/lib/language");
     // We use js as is always installed / nodejs
-    getLangByFilename(`example.js`, true);
-    log.info("done");
+    const cache = require("./lib/cache");
+    const allInstalledLanguages = getLanguages();
+    Object.keys(allInstalledLanguages).forEach((ext) => {
+      const getLanguageCacheName = `nexss_core_getLanguages_${ext}_.json`;
+      cache.del(getLanguageCacheName);
+    });
+    getLanguages(true);
+    log.info("done!");
     return;
   }
 } else if (!fs.existsSync(`${NEXSS_SRC_PATH}/nexss-${plugin}/nexssPlugin.js`)) {
