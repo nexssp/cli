@@ -193,10 +193,6 @@ if (
           compiler && compiler.install ? compiler.command : builder.command
         } ${pmArguments.join(" ")}`;
 
-        log.info(
-          `installing ${yellow(bold(languageSelected.title))}, please wait..`
-        );
-
         const { ensureInstalled } = require("./lib/terminal");
 
         let p = ensureInstalled(command, installCommand, { verbose: true });

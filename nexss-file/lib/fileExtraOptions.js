@@ -55,6 +55,8 @@ ${destinationPath}`
         defaultOptions.shell = process.shell;
       }
 
+      info(green(bold(`Please wait.. Installing..`)));
+
       commands.forEach((cmd2) => {
         // TODO: better error handling
         // console.log(cmd);
