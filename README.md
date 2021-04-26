@@ -1,5 +1,5 @@
 ```sh
-npm i @nexssp/cli -g
+npm i @nexssp/cli -g # Or npx @nexssp/cli
 nexss
 
 Welcome to      ____
@@ -10,11 +10,33 @@ Welcome to      ____
 Programmer
 ```
 
+<p align="center">
+<b><a href="https://github.com/nexssp/cli/wiki/Concept-Overview">Overview</a></b> |
+<b><a href="https://github.com/nexssp/cli/wiki/Nexss-Programmer-Programming-Languages">List of Languages</a></b> |
+<b><a href="https://github.com/nexssp/cli/wiki/Quick-Start">Installation</a></b> |
+<b><a href="https://github.com/nexssp/cli/wiki">Documentation</a></b> |
+<b><a href="https://github.com/nexssp/cli/wiki/Tutorials">Tutorials</a></b>
+</p>
+
+---
+
+<p align="center" >
+    <a href="https://github.com/nexssp/cli/blob/master/LICENSE">
+        <img src="https://img.shields.io/github/license/nexssp/cli?style=for-the-badge" alt="License" />
+    </a>
+    <a href="https://github.com/nexssp/cli">
+        <img src="https://img.shields.io/github/languages/code-size/nexssp/cli?style=for-the-badge" alt="Repository size" />
+    </a>
+    <a href="https://discord.gg/d9xjMEX">
+        <img src="https://img.shields.io/badge/CHAT-ON%20DISCORD-brightgreen?style=for-the-badge" alt="License" />
+    </a>
+</p>
+
 **Nexss Programmer** is a cli tool which allows to compile, compose over **50** programming languages.
 
 - `nexss program.r`
 - `nexss program.[any extension]`
-- `npx nexss program.r` # without installing nexss
+- `npx @nexssp/cli program.r` # without installing nexss
 - `nexss file add my.rs --edit` # Will open list of templates for particular language, install editor (if not exists) and open file for editing.
 
 ## Run any programming language in seconds (eg. Google Colab Notebook)
@@ -31,25 +53,11 @@ Programmer
 # {"outputCPP":"Hello from C++ 17!","nexss":"2.2.35"}
 ```
 
-<p align="center">
-<b><a href="https://github.com/nexssp/cli/wiki/Concept-Overview">Overview</a></b> |
-<b><a href="https://github.com/nexssp/cli/wiki/Nexss-Programmer-Programming-Languages">List of Languages</a></b> |
-<b><a href="https://github.com/nexssp/cli/wiki/Quick-Start">Installation</a></b> |
-<b><a href="https://github.com/nexssp/cli/wiki">Documentation</a></b> |
-<b><a href="https://github.com/nexssp/cli/wiki/Tutorials">Tutorials</a></b>
-</p>
----
-<p align="center" >
-    <a href="https://github.com/nexssp/cli/blob/master/LICENSE">
-        <img src="https://img.shields.io/github/license/nexssp/cli?style=for-the-badge" alt="License" />
-    </a>
-    <a href="https://github.com/nexssp/cli">
-        <img src="https://img.shields.io/github/languages/code-size/nexssp/cli?style=for-the-badge" alt="Repository size" />
-    </a>
-    <a href="https://discord.gg/d9xjMEX">
-        <img src="https://img.shields.io/badge/CHAT-ON%20DISCORD-brightgreen?style=for-the-badge" alt="License" />
-    </a>
-</p>
+## Upgrade to the latest versions
+
+- `nexss l u` # the same as `nexss langauge update` // Updating all installed language definitions
+- `nexss pkg u` # the same as `nexss package update` // Updating all installed Nexss Programmer Packages
+- `nexss cache rebuild` # rebuilding cache // handy when developing new language configurations (now is over 50)
 
 **Nexss Programmer Presentation** (Youtube video):  
 [![Nexss Programmer Presentation](https://img.youtube.com/vi/vs2tXMrZzzs/0.jpg)](https://www.youtube.com/watch?v=vs2tXMrZzzs)
