@@ -165,15 +165,20 @@ if (
     }
 
     let pmArguments = process.argv.slice(4);
-    pmArguments = pmArguments.filter((e) => e !== "--nocache");
+    const argsNoAffect = [
+      "--",
+      "--nocache",
+      "--debug",
+      "--progress",
+      "--nxsLearning",
+    ];
+
+    pmArguments = pmArguments.filter((e) => !argsNoAffect.includes(e));
 
     // INSTALL / UNINSTALL
     if (
       (process.argv[3] === "install" || process.argv[3] === "uninstall") &&
-      (!process.argv[4] ||
-        process.argv[4] === "--" ||
-        process.argv[4] === "--nocache" ||
-        process.argv[4] === "--debug")
+      (!process.argv[4] || argsNoAffect.includes(process.argv[4]))
     ) {
       if (process.argv[4] === "--" || process.argv[4] === "--nocache") {
         delete process.argv[4];
