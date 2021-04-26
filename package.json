@@ -2,7 +2,7 @@
   "name": "@nexssp/cli",
   "author": "Marcin Polak mapoart@gmail.com",
   "homepage": "https://nexss.com",
-  "version": "2.2.40",
+  "version": "2.2.41",
   "description": "Nexss PROGRAMMER - Over 50 programming languages together..",
   "main": "nexss.js",
   "bin": {
@@ -40,7 +40,7 @@
   "dependencies": {
     "@nexssp/ansi": "^1.0.7",
     "@nexssp/logdebug": "^1.0.11",
-    "@nexssp/os": "^1.0.24",
+    "@nexssp/os": "^1.0.27",
     "@nexssp/packunpack": "^1.0.6",
     "axios": "^0.21.1",
     "cli-table3": "^0.6.0",
@@ -53,8 +53,8 @@
     "get-caller-file": "^2.0.5",
     "inquirer": "^7.0.0",
     "inquirer-autocomplete-prompt": "^1.3.0",
-    "ioredis": "^4.24.5",
-    "js-yaml": "^4.0.0",
+    "ioredis": "^4.27.1",
+    "js-yaml": "^4.1.0",
     "json-colorizer": "^2.2.2",
     "json-diff": "^0.5.4",
     "minimist": "^1.2.5",
