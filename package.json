@@ -2,7 +2,7 @@
   "name": "@nexssp/cli",
   "author": "Marcin Polak mapoart@gmail.com",
   "homepage": "https://nexss.com",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "Nexss PROGRAMMER - Over 50 programming languages together..",
   "main": "nexss.js",
   "bin": {
@@ -40,7 +40,7 @@
   "dependencies": {
     "@nexssp/ansi": "^1.0.7",
     "@nexssp/logdebug": "^1.0.11",
-    "@nexssp/os": "^1.0.27",
+    "@nexssp/os": "^1.0.28",
     "@nexssp/packunpack": "^1.0.6",
     "axios": "^0.21.1",
     "cli-table3": "^0.6.0",
