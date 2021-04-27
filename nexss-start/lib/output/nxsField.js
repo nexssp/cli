@@ -5,8 +5,13 @@ module.exports = (data, field) => {
         console.error(`Field '${field}' does not exist`);
       } else {
         field = "nxsOut";
-        console.log(data[field]);
-        process.exit(0);
+        if (Array.isArray(data[field])) {
+          if (data[field].length === 1) {
+            console.log(data[field][0]);
+          } else {
+            console.log(data[field]);
+          }
+        }
       }
     } else {
       // Server Output cleanup
