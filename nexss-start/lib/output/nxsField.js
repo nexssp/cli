@@ -1,7 +1,13 @@
 module.exports = (data, field) => {
   if (!data[field]) {
     if (field !== "nxsOut") {
-      console.error(`Field '${field}' does not exist`);
+      if (data[field] === "true") {
+        console.error(`Field '${field}' does not exist`);
+      } else {
+        field = "nxsOut";
+        console.log(data[field]);
+        process.exit(0);
+      }
     } else {
       // Server Output cleanup
       delete data.htmlOutput;
