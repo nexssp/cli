@@ -4,41 +4,12 @@
  * Author: Marcin Polak / nexss.com
  * 2018/10/01 initial version
  */
-
-Object.defineProperty(process, "startTime", {
-  configurable: false,
-  enumerable: true,
-  value: process.hrtime(),
-});
-
-Object.defineProperty(process, "nexssGlobalCWD", {
-  configurable: false,
-  enumerable: true,
-  value: process.cwd(),
-});
-
-process.on("unhandledRejection", (err, promise) => {
-  console.log({ err, promise });
-});
-
-process.on("rejectionHandled", (err, promise) => {
-  console.log({ promise });
-});
-
-// We make sure application is installed
-// EDIT: Application is installed through npm or npx
-// This was also cousing issues on SHARED SERVERS
-// const { npmInstallRun } = require("./lib/npm");
-// npmInstallRun();
-
-require("./config/globals");
-
+require("./nexss-core/init.js");
 log.dc(bold("∞ Starting Nexss Programmer.."));
-const { NEXSS_SRC_PATH, NEXSS_PACKAGES_PATH } = require("./config/config"); // .40
 
+const NEXSS_SRC_PATH = process.env.NEXSS_SRC_PATH;
+const NEXSS_PACKAGES_PATH = process.env.NEXSS_PACKAGES_PATH;
 const { NEXSS_SPECIAL_CHAR } = require("./config/defaults");
-
-const { isURL } = require("./lib/data/url");
 
 process.title = `nexss (${require("./package.json").version}:${
   process.pid
@@ -46,18 +17,8 @@ process.title = `nexss (${require("./package.json").version}:${
 
 log.d("⊛ Set the process title: ", process.title);
 
-// Core functions like version, update. All are located ./lib/core
-// Example: nexss --env, or nexss --version
-
 if (process.argv[2] && process.argv[2].startsWith("-")) {
-  const f = process.argv[2];
-  const functionsFolder = `./lib/core/${f}.js`;
-  if (fs.existsSync(path.resolve(__dirname, functionsFolder))) {
-    log.db(`Loading core${f} function, ${functionsFolder}`);
-    const functionRun = require(functionsFolder);
-    functionRun();
-    return;
-  }
+  require("./nexss-core/-functions");
 }
 
 // Get first parameter as plugin name.
@@ -104,6 +65,7 @@ if (process.aliases[plugin]) {
   plugin = process.aliases[plugin];
 }
 
+const { isURL } = require("./lib/data/url");
 if (
   plugin.startsWith(NEXSS_SPECIAL_CHAR) ||
   fs.existsSync(plugin) ||
@@ -126,20 +88,6 @@ if (
   process.argv[2] = `${NEXSS_PACKAGES_PATH}/${plugin}`;
   process.argv[1] = "start";
   plugin = "start";
-} else if (process.argv[2] === "cache") {
-  if (process.argv[3] === "rebuild") {
-    const { getLanguages } = require("./nexss-language/lib/language");
-    // We use js as is always installed / nodejs
-    const cache = require("./lib/cache");
-    const allInstalledLanguages = getLanguages();
-    Object.keys(allInstalledLanguages).forEach((ext) => {
-      const getLanguageCacheName = `nexss_core_getLanguages_${ext}_.json`;
-      cache.del(getLanguageCacheName);
-    });
-    getLanguages(true);
-    log.info("done!");
-    return;
-  }
 } else if (!fs.existsSync(`${NEXSS_SRC_PATH}/nexss-${plugin}/nexssPlugin.js`)) {
   const { getLangByFilename } = require("./nexss-language/lib/language");
 
@@ -631,14 +579,6 @@ To add new file please use command ${bold("nexss file add " + plugin)}`
   return;
 }
 
-//We check if command/plugin exists otherwise help.
-// try {
-//   require(`./nexss-${plugin}/nexssPlugin.js`);
-// } catch (err) {
-//   require(`./nexss-help/help.js`);
-//   return;
-// }
-
 let command = cliArgs._[1] || undefined;
 
 // Aliases for commands like nexss file [add] -> nexss file [a]
@@ -696,7 +636,7 @@ if (fileOrFolderExists && process.argv[2] === "test") {
 switch (command) {
   case "help":
     try {
-      // Plugin hel
+      // Help for package
       if (fileOrFolderExists) {
         if (fs.existsSync(`${fileOrFolderExists}/README.md`)) {
           const helpContent = fs.readFileSync(
@@ -708,7 +648,7 @@ switch (command) {
           if (fs.existsSync(fileOrFolderExists)) {
             const f = fs.readdirSync(`${fileOrFolderExists}/`);
             f.filter(
-              (e) => [".json", ".git"].indexOf(extname(e)) !== 0
+              (e) => [".json", ".git", ".gitignore"].indexOf(extname(e)) !== 0
             ).forEach((e) => (e !== ".git" ? console.log(`${e}`) : ""));
           } else {
             console.log(`${fileOrFolderExists} has not been found.`);
@@ -733,9 +673,7 @@ switch (command) {
       if (
         !fileOrFolderExists &&
         command &&
-        plugin !== "command" &&
-        plugin !== "test" &&
-        plugin !== "edit"
+        !["command", "test", "edit"].includes(plugin)
       ) {
         if (
           fs.existsSync(
@@ -762,8 +700,9 @@ switch (command) {
           // );
           require(`./nexss-${plugin}/commands/${plugin}.js`);
         } else {
+          let helpContent = "";
           try {
-            let helpContent = fs.readFileSync(
+            helpContent = fs.readFileSync(
               `${NEXSS_SRC_PATH}/nexss-${plugin}/help.md`
             );
           } catch (e) {

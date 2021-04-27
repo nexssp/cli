@@ -173,12 +173,14 @@ async function run(operations, options = {}) {
       console.log(`Error in PIPE: pipe.js`, ex);
     }
 
-    nPipe.on("finish", (e) => {
-      if (process.argv.includes("--debug")) {
-        process.stdout.write("\n");
-        console.timeEnd(bold(cyan("Nexss P"), bold("rogrammer")));
-      }
-    });
+    if (nPipe && nPipe.on) {
+      nPipe.on("finish", (e) => {
+        if (process.argv.includes("--debug")) {
+          process.stdout.write("\n");
+          console.timeEnd(bold(cyan("Nexss P"), bold("rogrammer")));
+        }
+      });
+    }
   } else {
     const pipelineAsync = util.promisify(pipeline);
     await pipelineAsync(

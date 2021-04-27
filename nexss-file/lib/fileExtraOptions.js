@@ -87,7 +87,8 @@ ${destinationPath}`
                   `${commandRun} seems to be installed however there may be more errors:`
                 )
               );
-              error(err.stderr ? err.stderr : err);
+              error(err.stdout ? err.stdout.toString() : "");
+              error(err.stderr ? err.stderr.toString() : "");
               error(
                 "=========================================================="
               );

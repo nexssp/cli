@@ -1,4 +1,4 @@
-const fs = require("../fs");
+const fs = require("../../lib/fs");
 
 module.exports = () => {
   const ansi = require("@nexssp/ansi");
@@ -17,12 +17,12 @@ module.exports = () => {
     const file = join(__dirname, filename);
     if (existsSync(file)) {
       console.log(
-        ansi.blue(filename),
+        ansi.bold(ansi.yellow(filename)),
         "-",
         readFileSync(file).toString().split("\n")[2]
       );
     } else {
-      console.log(ansi.blue(filename));
+      console.log(ansi.green(filename));
     }
   }
 };
