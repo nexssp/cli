@@ -77,10 +77,13 @@ nConst("child_process", require("child_process"));
 nConst("PROCESS_CWD", process.cwd());
 
 nConst("shell", os.getShell(), process);
-const globalConfigPath = require("os").homedir() + "/.nexss/config.json";
+const globalConfigPath = path.normalize(
+  require("os").homedir() + "/.nexss/config.json"
+);
+nConst("nexssGlobalConfigPath", globalConfigPath, process);
 
-if (fs.existsSync(globalConfigPath)) {
-  process.nexssGlobalConfig = require(globalConfigPath);
+if (fs.existsSync(process.nexssGlobalConfigPath)) {
+  process.nexssGlobalConfig = require(process.nexssGlobalConfigPath);
 } else {
   process.nexssGlobalConfig = { languages: {} };
 }

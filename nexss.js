@@ -510,11 +510,15 @@ if (
         }
 
         const { getCompiler } = require("./nexss-start/lib/start/compiler");
-        const compiler = getCompiler({
+        let compiler = getCompiler({
           path: "",
           name: `test${languageSelected.extensions[0]}`,
         });
         const { ensureInstalled } = require("./lib/terminal");
+        if (!compiler) {
+          compiler = builder;
+        }
+
         ensureInstalled(compiler.command, compiler.install);
 
         const pmArguments = process.argv.slice(3);
