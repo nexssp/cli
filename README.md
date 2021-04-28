@@ -10,6 +10,8 @@ Welcome to      ____
 Programmer
 ```
 
+**NOTE:** If there is anything which doesn't work please **create [new issue](https://github.com/nexssp/cli/issues/new)** and **it will be solved immediately** as we have a lot of emails and email issues can be delayed..Thank you!
+
 <p align="center">
 <b><a href="https://github.com/nexssp/cli/wiki/Concept-Overview">Overview</a></b> |
 <b><a href="https://github.com/nexssp/cli/wiki/Nexss-Programmer-Programming-Languages">List of Languages</a></b> |
@@ -17,9 +19,7 @@ Programmer
 <b><a href="https://github.com/nexssp/cli/wiki">Documentation</a></b> |
 <b><a href="https://github.com/nexssp/cli/wiki/Tutorials">Tutorials</a></b>
 </p>
-
 ---
-
 <p align="center" >
     <a href="https://github.com/nexssp/cli/blob/master/LICENSE">
         <img src="https://img.shields.io/github/license/nexssp/cli?style=for-the-badge" alt="License" />
