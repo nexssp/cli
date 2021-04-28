@@ -138,6 +138,7 @@ if (cliArgs._.length > 0) {
 
   warn("You have selected tests: ", selected.join(","));
 }
+
 testNames.forEach((test) => {
   test = `${nexssTestsFolder}/${test}`;
   if (!fs.existsSync(test)) {
@@ -190,11 +191,18 @@ testNames.forEach((test) => {
     testsDef.values = selected;
   }
 
-  testsDef.values.forEach((ext) => {
+  testsDef.values.forEach((ext, index) => {
     global.currentExtension = ext;
 
     out("===========================================================");
-    if (ext !== "Nexss") out(yellow(`Testing \x1b[1m${bright(ext)}\x1b[0m`));
+    if (ext !== "Nexss")
+      out(
+        yellow(
+          `Testing \x1b[1m${bright(ext)}\x1b[0m (NEXT: ${
+            testsDef.values[index + 1]
+          })`
+        )
+      );
 
     if (continuue || ext === startFrom || !startFrom) {
       continuue = 1;
