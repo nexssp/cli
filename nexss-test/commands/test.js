@@ -20,7 +20,7 @@ const out = (...txt) => (cliArgs.onlyErrors ? "" : console.log(...txt));
 
 const logPath = cliArgs.logPath
   ? cliArgs.logPath
-  : path.join(__dirname, "../../logs/");
+  : process.env.NEXSS_SRC_PATH + "/logs/";
 if (cliArgs.logPath) {
   //check if folder exists
   if (!fs.existsSync(cliArgs.logPath)) {
@@ -31,6 +31,9 @@ if (cliArgs.logPath) {
     success(`New folder has been specified for logs ${$cliArgs.logPath}`);
   }
 } else {
+  if (!fs.existsSync(logPath)) {
+    fs.mkdirSync(logPath, { recursive: true });
+  }
   ok(`Logs will be saved to ${path.resolve(logPath)}`);
 }
 
@@ -126,7 +129,7 @@ function logToFile(data) {
     path.join("TEST-" + os.name().replace("/", "_") + os.v() + ".log");
   return require("fs").appendFileSync(
     LogFile,
-    +new Date().toISOString() + " " + JSON.stringify(data, null, 2) + "\n"
+    new Date().toISOString() + " " + JSON.stringify(data, null, 2) + "\n"
   );
 }
 
