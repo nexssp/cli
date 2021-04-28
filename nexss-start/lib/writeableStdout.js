@@ -52,17 +52,25 @@ module.exports.writeableStdout = () => {
                 : chunk;
 
             if (isJson(chunk)) {
-              const coloredJson = require("json-colorizer")(chunk + "", {
-                colors: {
-                  STRING_KEY: "green.bold",
-                  STRING_LITERAL: "yellow.bold",
-                  NUMBER_LITERAL: "blue.bold",
-                },
-              });
+              let outputJson = chunk + "";
+
+              if (
+                process.nexssGlobalConfig.colors &&
+                process.nexssGlobalConfig.colors.output
+              ) {
+                outputJson = require("json-colorizer")(outputJson, {
+                  colors: {
+                    STRING_KEY: "green.bold",
+                    STRING_LITERAL: "yellow.bold",
+                    NUMBER_LITERAL: "blue.bold",
+                  },
+                });
+              }
+
               if (process.platform === "win32") {
-                process.stdout.write(coloredJson);
+                process.stdout.write(outputJson);
               } else {
-                console.log(coloredJson);
+                console.log(outputJson);
               }
             } else {
               process.stdout.write(chunk + "");
