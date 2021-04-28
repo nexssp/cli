@@ -9,7 +9,7 @@ const {
   blue,
   magenta,
 } = require("@nexssp/ansi");
-const { error, warn, ok } = require("@nexssp/logdebug");
+const { error, warn, ok, success } = require("@nexssp/logdebug");
 const fs = require("fs");
 const path = require("path");
 const nexssConfig = require("../../lib/config").loadConfigContent();
@@ -17,6 +17,23 @@ const cliArgs = require("minimist")(process.argv.slice(3));
 const testType = cliArgs._.shift();
 // TODO: below needs to be rewritten, done in rush
 const out = (...txt) => (cliArgs.onlyErrors ? "" : console.log(...txt));
+
+const logPath = cliArgs.logPath
+  ? cliArgs.logPath
+  : path.join(__dirname, "../../logs/");
+if (cliArgs.logPath) {
+  //check if folder exists
+  if (!fs.existsSync(cliArgs.logPath)) {
+    error(
+      `${cliArgs.logPath} does not exist. Specify different folder for testing`
+    );
+  } else {
+    success(`New folder has been specified for logs ${$cliArgs.logPath}`);
+  }
+} else {
+  ok(`Logs will be saved to ${path.resolve(logPath)}`);
+}
+
 let nexssTestsPath = "./";
 let nexssTestsFolder = `${__dirname}/../../tests`;
 if (nexssConfig && nexssConfig.filePath) {
@@ -104,14 +121,12 @@ ok("Starting tests.. Please wait.. (no output)");
 let selected = [];
 
 function logToFile(data) {
-  const LogFile = path.join(
-    __dirname,
-    "../../logs/",
-    "TEST-" + os.name().replace("/", "_") + os.v() + ".log"
-  );
+  const LogFile =
+    logPath +
+    path.join("TEST-" + os.name().replace("/", "_") + os.v() + ".log");
   return require("fs").appendFileSync(
     LogFile,
-    +new Date() + " " + JSON.stringify(data, null, 2) + "\n"
+    +new Date().toISOString() + " " + JSON.stringify(data, null, 2) + "\n"
   );
 }
 
@@ -130,9 +145,22 @@ testNames.forEach((test) => {
   out(blue(`STARTING ${test}`));
 
   const testsDef = require(test);
-  const startFrom = selected.length > 0 ? null : testsDef.startFrom;
-  const endsWith = selected.length > 0 ? null : testsDef.endsWith;
-  const omit = selected.length > 0 ? null : testsDef.omit;
+  let startFrom = selected.length > 0 ? null : testsDef.startFrom;
+  let endsWith = selected.length > 0 ? null : testsDef.endsWith;
+  let omit = selected.length > 0 ? null : testsDef.omit;
+
+  // Test start from eg[]
+  if (cliArgs.startFrom) {
+    startFrom = cliArgs.startFrom.trim();
+  }
+
+  if (cliArgs.endsWith) {
+    endsWith = cliArgs.endsWith.trim();
+  }
+
+  if (cliArgs.omit) {
+    omit = cliArgs.omit.split(",").map(trim);
+  }
 
   // const lang = JSON.parse(exe("nexss py info --json"));
   // console.log(lang.title);
