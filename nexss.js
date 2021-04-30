@@ -5,6 +5,7 @@
  * 2018/10/01 initial version
  */
 require("./nexss-core/init.js");
+
 log.dc(bold("∞ Starting Nexss Programmer.."));
 
 const NEXSS_SRC_PATH = process.env.NEXSS_SRC_PATH;
@@ -60,7 +61,6 @@ if (
   log.error(`Nexss Programmer will not continue until it is done.`);
   return;
 }
-
 let fileOrFolderExists;
 
 const packageName = plugin.split("/")[0];
@@ -71,7 +71,7 @@ if (process.aliases[plugin]) {
 }
 
 const { isURL } = require("./lib/data/url");
-const { nexssGlobalCWD } = require("process");
+
 if (
   plugin.startsWith(NEXSS_SPECIAL_CHAR) ||
   fs.existsSync(plugin) ||
