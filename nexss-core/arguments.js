@@ -10,7 +10,8 @@ const arguments = {
   "output:keys": "Displays only keys (available variables) without data",
   "output:colors":
     "Colorize output. Also you can use nexss -colors 1 to enable it permanently.", //
-  "output:pretty": "Displays nice looking JSON data", // Pretty JSON output
+  "output:pretty": "Displays nice looking JSON data", // Pretty JSON output,
+  "error:pipe": "Displays nice looking JSON data", // Pretty JSON output
 };
 
 // Proxy is used to not duplicate data or making constants etc. We use Object but when key does not exist
