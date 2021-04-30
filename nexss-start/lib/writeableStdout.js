@@ -40,16 +40,19 @@ module.exports.writeableStdout = () => {
 
         // Clear all nexss arguments (only for one nexss command)
         // nexss-core\arguments.js
+        const outputKeys = chunk[nexss["output:keys"]];
+        const outputPretty = chunk[nexss["output:pretty"]] || chunk.nxsPretty;
+
         Object.keys(global.nexss).forEach((e) => delete chunk[global.nexss[e]]);
 
         delete chunk.nxsPlatform;
         delete chunk["nexssScript"];
-        if (!chunk.nxsPretty && !chunk[nexss["output:pretty"]]) {
-          if (chunk[nexss["output:keys"]]) {
+        if (!outputPretty) {
+          if (chunk[outputKeys]) {
             let color = "\u001b[35m"; //grey
 
             console.error(
-              `${color}Display below only Object keys (${nexss["output:keys"]}):\x1b[0m`
+              `${color}Display below only Object keys (${outputKeys}):\x1b[0m`
             );
             console.error(JSON.stringify(Object.keys(chunk)));
           } else {
@@ -87,7 +90,26 @@ module.exports.writeableStdout = () => {
         } else {
           delete chunk[nexss["output:pretty"]];
           delete chunk["nxsPretty"];
+
+          chunk = JSON.stringify(chunk, null, 4);
+
+          if (
+            (process.nexssGlobalConfig.colors &&
+              process.nexssGlobalConfig.colors.output) ||
+            cliArgs[nexss["output:colors"]]
+          ) {
+            chunk = require("json-colorizer")(chunk, {
+              colors: {
+                STRING_KEY: "green.bold",
+                STRING_LITERAL: "yellow.bold",
+                NUMBER_LITERAL: "blue.bold",
+              },
+            });
+          }
+
           console.log(chunk);
+
+          // console.log(JSON.stringify(chunk, null, 4));
         }
 
         // Below display not ok on stream, progress bars etc.

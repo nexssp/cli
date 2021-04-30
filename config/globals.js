@@ -6,23 +6,11 @@ Object.assign(global, require("@nexssp/ansi"));
 global.log = require("@nexssp/logdebug");
 
 nConst("aliases", require("../config/aliases"), process);
-nConst("ddd", (...args) => {
-  args.map((e) => {
-    process.stdout.write(yellow(bold(require("util").inspect(e) + "\n")));
-  });
 
-  console.log(yellow(`Stopped by ddd Function at:`));
-  const getCallerFile = require("get-caller-file");
-  console.log(bold(getCallerFile()));
-  const timeDiff = process.hrtime(process.startTime);
-  console.log(
-    bold("exec time: " + green(`${timeDiff[0]}s ${timeDiff[1] / 1000000}ms`))
-  );
-  console.log(bold("cwd: ", green(bold(process.cwd()))));
-  process.exit(0);
-});
+nConst("ddd", require("@nexssp/dddebug").ddd);
+
 // Get only keys but validate them
-nConst("stack", require("../lib/error").stack, process);
+nConst("stack", require("@nexssp/stack").stack, process);
 nConst("nexss", require("../nexss-core/arguments").keys);
 nConst("distro", os.name(), process);
 nConst("distroVersion", os.v(), process);
