@@ -8,6 +8,7 @@ inquirer.registerPrompt(
   require("inquirer-autocomplete-prompt")
 );
 const cliArgs = require("minimist")(process.argv.slice(3));
+const forceCreate = cliArgs.f || cliArgs.force;
 const {
   NEXSS_PROJECT_CONFIG_PATH,
   NEXSS_PROJECTS_DB,
@@ -120,7 +121,7 @@ function attachProject(answers) {
   let projects = existsSync(NEXSS_PROJECTS_DB)
     ? require(NEXSS_PROJECTS_DB)
     : {};
-  if (projects[projectNameIndex]) {
+  if (!forceCreate && projects[projectNameIndex]) {
     warn(
       `project ${bold(projectNameIndex)} already exists in ${bold(
         NEXSS_PROJECTS_DB

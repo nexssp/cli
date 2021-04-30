@@ -17,6 +17,7 @@ module.exports = {
             "SUCCESS  Project 'MyTestProject' is ready.",
           ],
         },
+
         {
           title: "Add file to the Project",
           type: "shouldContain",
@@ -51,17 +52,63 @@ module.exports = {
           params: ["nexss project info", `Current Project`],
         },
         {
-          title: "Check",
+          title: "Check project attach to nexss db",
           params: [
-            `nexss p a --keywords="mykeyword1,mykeyword2" --description="description" --repo="repository" --editor="editor" --note="note"`,
-            `INFO  This is Nexss PROGRAMMER project.
-INFO  Project name: MyTestProject
-INFO  Description: description
-INFO  Keywords: mykeyword1,mykeyword2
-INFO  Repo: repository
-INFO  Editor: editor
-INFO  Note: note`,
+            // if to force
+            `nexss p a --force --keywords="mykeyword1,mykeyword2" --description="description" --repo="repository" --editor="editor" --note="note"`,
+            `INFO  Attaching project from current folder`,
           ],
+        },
+        {
+          title: "Search Project",
+          params: [
+            // if to force
+            `nexss p search MyTestProject`,
+            `MyTestProject NEXSSP`,
+          ],
+        },
+        {
+          title: "Remove project from nexss db / Project not exists",
+          params: [
+            // if to force
+            `nexss p remove not-exists-project`,
+            `project not-exists-project does not exist`,
+          ],
+        },
+        {
+          title: "Remove test project from nexss db / Project EXIST",
+          params: [
+            // if to force
+            `nexss p remove MyTestProject`,
+            `SUCCESS  Done..`,
+          ],
+        },
+        // later move after
+        {
+          title: "Check command add",
+          params: [
+            "nexss cmd add init " +
+              (process.platform === "win32" ? "dir" : "ls"),
+            `SUCCESS  Done..`,
+          ],
+        },
+        {
+          title: "Check command run command",
+          params: [
+            "nexss cmd init",
+            process.platform === "win32" ? "Volume in" : "_nexss.yml",
+          ],
+        },
+        {
+          title: "Check command is already in the project",
+          params: [
+            "nexss cmd add init nexss Id",
+            `is already in the config file`,
+          ],
+        },
+        {
+          title: "List commands",
+          params: ["nexss cmd", /init.*(dir|ls)/],
         },
       ],
     },
