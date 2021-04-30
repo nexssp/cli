@@ -34,15 +34,22 @@ module.exports.writeableStdout = () => {
           // delete chunk.nexss;
           delete chunk.__dirname;
           delete chunk.nxsLearning;
+
+          // We delete all arguments which are use to specific nexss
         }
+
+        // Clear all nexss arguments (only for one nexss command)
+        // nexss-core\arguments.js
+        Object.keys(global.nexss).forEach((e) => delete chunk[global.nexss[e]]);
+
         delete chunk.nxsPlatform;
         delete chunk["nexssScript"];
-        if (!chunk.nxsPretty) {
-          if (chunk["nxsDataDisplay"]) {
+        if (!chunk.nxsPretty && !chunk[nexss["output:pretty"]]) {
+          if (chunk[nexss["output:keys"]]) {
             let color = "\u001b[35m"; //grey
 
             console.error(
-              `${color}Display below only Object keys (--nxsDataDisplay):\x1b[0m`
+              `${color}Display below only Object keys (${nexss["output:keys"]}):\x1b[0m`
             );
             console.error(JSON.stringify(Object.keys(chunk)));
           } else {
@@ -55,8 +62,9 @@ module.exports.writeableStdout = () => {
               let outputJson = chunk + "";
 
               if (
-                process.nexssGlobalConfig.colors &&
-                process.nexssGlobalConfig.colors.output
+                (process.nexssGlobalConfig.colors &&
+                  process.nexssGlobalConfig.colors.output) ||
+                cliArgs[nexss["output:colors"]]
               ) {
                 outputJson = require("json-colorizer")(outputJson, {
                   colors: {
@@ -77,6 +85,7 @@ module.exports.writeableStdout = () => {
             }
           }
         } else {
+          delete chunk[nexss["output:pretty"]];
           delete chunk["nxsPretty"];
           console.log(chunk);
         }
