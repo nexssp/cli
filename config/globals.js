@@ -1,39 +1,11 @@
+const { nConst } = require("@nexssp/const");
+const os = require("@nexssp/os");
+
+// Adding colors to global as they are used very often.
 Object.assign(global, require("@nexssp/ansi"));
 global.log = require("@nexssp/logdebug");
 
-global.nConstants = [];
-global.nConst = (name, value, where) => {
-  const displayWhere = where ? "process." : "";
-  global.nConstants.push(`${displayWhere}${name}`);
-  if (!where) {
-    where = global; // process, any Object ..
-  }
-  Object.defineProperty(where, name, {
-    set: function (v) {
-      console.error(
-        red(bold("PROGRAM TERMINATED:")),
-        green(
-          ` ${bold(name)} is a ${yellow(
-            bold("constant")
-          )}. You cannot change it.\n${bold(name)}\nhas a value:`
-        ),
-        green(bold(value)) + "\nnew value:",
-        red(bold(v))
-      );
-      process.exit(1);
-    },
-    get: function () {
-      return value;
-    },
-  });
-  return value;
-};
-
 nConst("aliases", require("../config/aliases"), process);
-
-// TODO: cache for below
-const os = require("@nexssp/os");
-
 nConst("ddd", (...args) => {
   args.map((e) => {
     process.stdout.write(yellow(bold(require("util").inspect(e) + "\n")));
@@ -49,7 +21,9 @@ nConst("ddd", (...args) => {
   console.log(bold("cwd: ", green(bold(process.cwd()))));
   process.exit(0);
 });
-
+// Get only keys but validate them
+nConst("stack", require("../lib/error").stack, process);
+nConst("nexss", require("../nexss-core/arguments").keys);
 nConst("distro", os.name(), process);
 nConst("distroVersion", os.v(), process);
 nConst("sudo", os.sudo(), process);
@@ -65,8 +39,6 @@ try {
   nConst("mem", 0, process); // https://nodejs.org/api/process.html#process_process_memoryusage
 }
 
-// if (process.argv.includes("--nxsLoad")) {
-// }
 // Later to make usage below on whole system.
 nConst("fs", require("fs"));
 nConst("path", require("path"));
@@ -103,7 +75,6 @@ if (cliArgs.nxsPlatform && cliArgs.nxsPlatform.split) {
       )}. Program will not continue.`
     );
 
-    // process.NEXSS_ARG_CHECK_PLATFORM_FAILED = true;
     process.exit(1);
   }
 }

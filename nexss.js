@@ -11,9 +11,14 @@ const NEXSS_SRC_PATH = process.env.NEXSS_SRC_PATH;
 const NEXSS_PACKAGES_PATH = process.env.NEXSS_PACKAGES_PATH;
 const { NEXSS_SPECIAL_CHAR } = require("./config/defaults");
 
-process.title = `nexss (${require("./package.json").version}:${
-  process.pid
-}) ${process.argv.slice(2).join(" ")}`;
+if (!cliArgs[nexss["process:title"]]) {
+  process.title = `nexss (${require("./package.json").version}:${
+    process.pid
+  }) ${process.argv.slice(2).join(" ")}`;
+} else {
+  process.title = cliArgs[nexss["process:title"]];
+  delete cliArgs[nexss["process:title"]];
+}
 
 log.d("⊛ Set the process title: ", process.title);
 
@@ -66,6 +71,7 @@ if (process.aliases[plugin]) {
 }
 
 const { isURL } = require("./lib/data/url");
+const { nexssGlobalCWD } = require("process");
 if (
   plugin.startsWith(NEXSS_SPECIAL_CHAR) ||
   fs.existsSync(plugin) ||
