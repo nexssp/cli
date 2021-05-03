@@ -1,5 +1,5 @@
-let values = ["Nexss"];
-let nonWin32Tests = [
+// TODO: Fix pipes on Windows (npm issue for passing input field? - Check bin/nexss.ps1 was working..)
+let nexsstests = [
   {
     title: "nxsExecute Subpipe",
     params: [
@@ -24,20 +24,9 @@ let nonWin32Tests = [
 ];
 
 if (process.platform === "win32") {
-  nonWin32Tests = [];
+  nexsstests = [];
 }
 
 module.exports = {
-  values,
-  startFrom: "",
-  endsWith: "",
-  omit: [],
-  tests: [
-    {
-      title: "NEXSS_ pipes",
-      onError: "stop", // global value,
-      notEval: true, // Means that parameters will not be evaluated (like below it ${..} will be passed)
-      tests: nonWin32Tests,
-    },
-  ],
+  nexsstests,
 };
