@@ -13,6 +13,10 @@ const arguments = {
   "output:pretty": "Displays nice looking JSON data", // Pretty JSON output,
   "error:pipe": "Displays nice looking JSON data", // Pretty JSON output
   "arg:progress": "Showing progress during installations.",
+  "platform:check":
+    "Program checks if platform match and platform:noerror is not set will return exitCode: 1. If platfrom:noerror is set then it will return exitCode: 0, but program will not run",
+  "platform:noerror":
+    "When platform does not match, command will not run, however it will return exitCode:0, so it can continue.",
 };
 
 // Proxy is used to not duplicate data or making constants etc. We use Object but when key does not exist
@@ -20,7 +24,12 @@ const arguments = {
 const proxyHandler = {
   get(target, name, receiver) {
     if (!target[name]) {
-      process.stack(red(`Argument key ${name} does not exist`), 2);
+      process.stack(
+        red(
+          `Argument key ${name} does not exist. Check: 'src/nexss-core/arguments.js'`
+        ),
+        2
+      );
       process.exit(1);
     }
 

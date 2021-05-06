@@ -1,5 +1,3 @@
-const { db } = require("@nexssp/logdebug");
-const { defaultExecuteOptions } = require("../../config/defaults");
 module.exports.transformNexss = (
   cmd, // cmd = ls, node, php or whatever
   args = [], // arguments eg. ["--help", "myfile.php"]
@@ -11,6 +9,8 @@ module.exports.transformNexss = (
     env,
   } = defaultExecuteOptions
 ) => {
+  const { defaultExecuteOptions } = require("../../config/defaults");
+  const { pushData } = require("./transformNexssLib");
   const { Transform } = require("stream");
   // NOTE: below showing that are not used, but they ARE!!!
   const {
@@ -25,7 +25,7 @@ module.exports.transformNexss = (
     isErrorPiped,
   } = require("../../lib/log");
   const { colorizer } = require("./colorizer");
-  require("../../lib/arrays");
+  require("@nexssp/extend")("string");
   const { spawn } = require("child_process");
 
   const { parseError } = require("./error");
@@ -35,6 +35,7 @@ module.exports.transformNexss = (
   return new Transform({
     objectMode: true,
     transform(chunk, encoding, callback) {
+      nexssCache = false;
       const argsDisplay = args
         .filter((e) => !e.includes("--debug"))
         .filter((e) => !e.startsWith("--nxs"))
@@ -93,7 +94,7 @@ module.exports.transformNexss = (
       args2 = args2.remove("--nxsTest");
       args2 = args2.remove("--nxsDebugData");
       args2 = args2.filter((e) => !e.startsWith("--nxsAs"));
-      let argsStrings;
+      let argsStrings = args2;
       if (process.platform === "win32") {
         argsStrings = args2.map((a) =>
           ~a.indexOf("=") ? `${a.replace("=", '="')}"` : a
@@ -123,6 +124,7 @@ module.exports.transformNexss = (
       );
       // dy(`Spawning ..${cmd}`, argsStrings.join(" "), "cwd: ", process.cwd());
       this.worker = spawn(cmd, argsStrings, options);
+
       this.worker.cmd = nexssCommand;
       this.worker.on("error", (err) => {
         // throw Error(err);
@@ -184,103 +186,69 @@ module.exports.transformNexss = (
         }
       });
 
+      var nexssCacheData = "";
+
       this.worker.stdout.on("data", function (data) {
         this.emptyCall = false;
         data = data.toString();
-        if (data === "\n") {
-          this.emptyCall = true;
-          // sometime we have \n
-          // self.push({
-          //   display: data, // Will just display the data at the end.
-          //   stream: "cancel",
-          //   command: nexssCommand,
-          //   from: "transform-nexss",
-          //   status: "ok",
-          //   data,
-          // });
 
-          log.dy(
-            "!!!!!!!!!!!!!! In the stdout there is '\\n' received from the transformNexss Worker.",
-            "We didn't pass this as it would go through the whole stream"
+        if (nexssCache) {
+          nexssCacheData += data;
+        } else {
+          dbg("\n\nOUT FROM STDOUT", require("util").inspect(data), "\n\n");
+
+          // Does below happen? to check
+          // If it does then we need to create
+          // New stream status: noparse, which will just display data
+          if (data === "\n" || data === "\r\n") {
+            this.emptyCall = true;
+            // sometime we have \n
+            // self.push({
+            //   display: data, // Will just display the data at the end.
+            //   stream: "cancel",
+            //   command: nexssCommand,
+            //   from: "transform-nexss",
+            //   status: "ok",
+            //   data,
+            // });
+
+            log.dy(
+              "In the stdout there is '\\n' received from the transformNexss Worker.",
+              "We didn't pass this as it would go through the whole stream"
+            );
+            return; // we do not want to pass through the whole stream \n
+          }
+          log.dg(
+            `<< Data: ${bold(data.length + " B.")}, cmd:${process.nexssCMD}`
           );
-          return; // we do not want to pass through the whole stream \n
-        }
-        log.dg(
-          `<< Data: ${bold(data.length + " B.")}, cmd:${process.nexssCMD}`
-        );
 
-        log.dg(
-          "insp -->",
-          data.length > 400
-            ? require("util").inspect(data.substr(0, 400)) + "...(400chars)"
-            : require("util").inspect(data)
-        );
+          log.dg(
+            "insp -->",
+            data.length > 400
+              ? require("util").inspect(data.substr(0, 400)) + "...(400chars)"
+              : require("util").inspect(data)
+          );
 
-        timeElapsed(startCompilerTime, `Response from ${bold(nexssCommand)}`);
+          timeElapsed(startCompilerTime, `Response from ${bold(nexssCommand)}`);
 
-        // Checking if data is
+          // Checking if data is
 
-        try {
-          data = JSON.parse(data);
-          if (data.nxsIn === "") {
-            // Autohotkey - issue with delete object key - how to?
-            delete data.nxsIn;
-          }
-
-          if (data.resultField_1 === "") {
-            // Autohotkey - issue with delete object key - how to?
-            delete data.resultField_1;
-            delete data.nxsAs;
-          }
-
-          if (data.nxsAs === "") {
-            // Autohotkey - issue with delete object key - how to?
-            delete data.nxsAs;
-          }
-
-          if (!data.nxsStop) {
-            self.push({
-              display: chunk.display,
-              command: nexssCommand,
-              from: "transform-nexss",
-              status: "ok",
-              data,
-            });
-          } else {
-            const reason = data.nxsStopReason;
-            delete data.nxsStop;
-            delete data.nxsStopReason;
-            self.push({
-              display: chunk.display,
-              command: nexssCommand,
-              from: "transform-nexss",
-              stream: "stop",
-              reason: reason ? reason : "reason not specified",
-              status: "end",
-              data,
-              command: process.nexssCMD,
-            });
-          }
-        } catch (e) {
-          // if ((data && data.startsWith("{")) || ifLonger) {
-          //   // it can be json but not completed
-          //   ifLonger += data;
-          // }
-          self.push({
-            display: chunk.display,
-            command: nexssCommand,
-            from: "transform-nexss",
-            stream: "ok",
-            error: "not a json",
-            data,
-            command: process.nexssCMD,
-          });
+          // First we check fast
+          chunk.nexssCommand = nexssCommand;
+          const dataToPush = pushData(data, chunk);
+          self.push(dataToPush);
         }
       });
 
       // self.pipe(this.worker);
       // !!NOTE: Below can't be 'finish' as it's not showing all errors.
       this.worker.stderr.on("end", function () {
+        if (nexssCache) {
+          chunk.nexssCommand = nexssCommand;
+          const dataToPush = pushData(nexssCacheData, chunk);
+          self.push(dataToPush);
+        }
+
         if (this.errBuffer) {
           parseError(
             fileName,

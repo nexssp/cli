@@ -8,9 +8,9 @@ module.exports = (data, nxsSelect = "nxsOut") => {
   let nxsSelectField = nxsSelectFieldPrefix;
   if (nxsSelect.split) {
     let cnt = 0;
-    nxsSelect.split(",").forEach(element => {
+    nxsSelect.split(",").forEach((element) => {
       if (Array.isArray(data[element])) {
-        data[element].forEach(subElement => {
+        data[element].forEach((subElement) => {
           cnt++;
           if (cnt > 1) {
             nxsSelectField = `${nxsSelectFieldPrefix}_${cnt}`;

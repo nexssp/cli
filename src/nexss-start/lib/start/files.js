@@ -195,7 +195,7 @@ const getFiles = (folder, args, env, ccc) => {
     log.warn(
       `No config file in ${path.normalize(
         folderAbsolute
-      )} the the searching.. for index.nexss OR start.nexss `
+      )} searching for the index.nexss OR start.nexss `
     );
     // if there is one file and it is called index
 

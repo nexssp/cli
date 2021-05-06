@@ -29,7 +29,7 @@ module.exports = {
     {
       title: "--nxsGlue",
       params: [
-        'nexss Id --myPath=CDE --myPath="Program Files" --nxsConcat="myPath" --nxsGlue=PATH',
+        'nexss Id --myPath=CDE --myPath="Program Files" --nxsConcat="myPath" --nxsGlue=PATH --debug',
         /"nxsConcatResults":"CDE.*Program Files"/,
       ],
     },
@@ -75,7 +75,7 @@ module.exports = {
       params:
         process.platform === "win32"
           ? [
-              'echo {"array":["x","y","z"]} | nexss Id --nxsSelect=array',
+              'echo \'{"array":["x","y","z"]}\' | nexss Id --nxsSelect=array',
               /"Select":"x","Select_2":"y","Select_3":"z"/,
             ]
           : [

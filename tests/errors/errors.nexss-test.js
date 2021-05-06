@@ -7,6 +7,10 @@ module.exports = {
     //   params: ["nexss Nexss/Test/Errors", "file is required"],
     // },
     {
+      title: "Check for file is required field.",
+      params: ["nexss Nexss/Test/Errors", "'file' is required"],
+    },
+    {
       title:
         "Check for OK message (Please wait.. installing additional compilers)",
       params: [

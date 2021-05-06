@@ -1,7 +1,7 @@
-const { getLangByFilename } = require("../../../nexss-language/lib/language");
+const { getLangByFilename } = require("./language");
 const fs = require("fs");
 const path = require("path");
-const { ensureInstalled } = require("../../../lib/terminal");
+const { ensureInstalled } = require("../../lib/terminal");
 
 module.exports.getBuilder = (file) => {
   const fileName = file.name;
@@ -9,7 +9,6 @@ module.exports.getBuilder = (file) => {
   const languageDefinition = getLangByFilename(fileName);
 
   let builder;
-
   if (languageDefinition) {
     builder =
       languageDefinition.builders[Object.keys(languageDefinition.builders)[0]];

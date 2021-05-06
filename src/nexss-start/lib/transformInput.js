@@ -3,7 +3,7 @@ module.exports.transformInput = (x, y, params) => {
   const { bold, red } = require("@nexssp/ansi");
   const nxsInModule = require("./input/nxsIn");
   const { nxsDebugData } = require("./output/nxsDebug");
-  require("../../lib/strings"); //we load string interpolate
+  require("@nexssp/extend")("string");
   const { expressionParser } = require("./expressionParser");
   const cliArgsParser = require("minimist");
   const nxsStop = require("./start/nxsStop");

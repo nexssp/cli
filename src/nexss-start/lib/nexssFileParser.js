@@ -4,9 +4,8 @@ const { NEXSS_SPECIAL_CHAR } = require("../../config/defaults");
 const { error } = require("@nexssp/logdebug");
 const { bold, yellow } = require("@nexssp/ansi");
 const { di } = require("../../lib/log");
-function stripEndQuotes(s) {
-  return s.replace && s.replace(/(^["|'])|(["|']$)/g, "");
-}
+
+require("@nexssp/extend")("string");
 
 function preVars(isn) {
   const { vars } = require("../../config/preVars");
@@ -73,11 +72,11 @@ const nexssFileParser = (content, filename, nxsArgs) => {
       for (let [key, value] of Object.entries(args)) {
         if (!Array.isArray(value)) {
           if (isNaN(value)) {
-            args[key] = stripEndQuotes(value);
+            args[key] = value.stripEndQuotes();
           }
         } else {
           args[key] = args[key].map((a) => {
-            return stripEndQuotes(a);
+            return a.stripEndQuotes();
           });
         }
       }

@@ -13,7 +13,7 @@ module.exports.transformOutput = (x, y, z) => {
   const nxsSelectModule = require("./output/nxsSelect");
   // const nxsInModule = require("./input/nxsIn");
   const { nxsDebugData } = require("./output/nxsDebug");
-  require("../../lib/strings"); //we load string interpolate
+  require("@nexssp/extend")("string");
   const { expressionParser } = require("./expressionParser");
   const { cleanup } = require("./output/nxsOutputParams");
   const nxsStop = require("./start/nxsStop");
@@ -58,6 +58,7 @@ module.exports.transformOutput = (x, y, z) => {
         log.di(`↳ Stream: transformOutput`);
       }
 
+      // Do we need it here???
       if (Buffer.isBuffer(chunk)) {
         chunk = chunk.toString();
       }

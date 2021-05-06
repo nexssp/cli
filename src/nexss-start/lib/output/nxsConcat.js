@@ -7,6 +7,12 @@ module.exports = (data, concatFields) => {
         console.log(
           `output/nxsConcat.js: There is no ${element} field in the data.`
         );
+        if (element.startsWith('"')) {
+          console.error(
+            `Your element ${element} starts with " so it might be an issue with passing arguments.\n` +
+              'For example on Windows param="val1" should be ok.'
+          );
+        }
         console.log(data);
         process.exit(0);
       }

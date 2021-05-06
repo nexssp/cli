@@ -1,5 +1,5 @@
 const parserSyntax = require("./parserSyntax");
-require("../../lib/strings");
+require("@nexssp/extend")("string");
 const expressionParser2 = (data) => {
   if (!data) return data;
   let jsON = JSON.stringify(data);

@@ -48,19 +48,28 @@ if (fs.existsSync(process.nexssGlobalConfigPath)) {
 
 const { checkPlatform } = require("../lib/platform");
 
-if (cliArgs.nxsPlatform && cliArgs.nxsPlatform.split) {
-  const platforms = cliArgs.nxsPlatform.split(",");
-  if (!checkPlatform(platforms)) {
-    console.log(
-      `${yellow("Nexss Programmer: ")}${bold(
-        red(platforms.join(", "))
-      )} did not match with your platform ${green(
-        bold(process.platform)
-      )}, ${green(bold(process.distroTag1))} or ${green(
-        bold(process.distroTag2)
-      )}. Program will not continue.`
-    );
+const nxsPlatform = cliArgs.nxsPlatform ?? cliArgs[nexss["platform:check"]];
 
-    process.exit(1);
+if (nxsPlatform && nxsPlatform.split) {
+  const platforms = nxsPlatform.split(",");
+  if (!checkPlatform(platforms)) {
+    const info = `${yellow("Nexss Programmer: ")}${bold(
+      red(platforms.join(", "))
+    )} did not match with your platform ${green(
+      bold(process.platform)
+    )}, ${green(bold(process.distroTag1))} or ${green(
+      bold(process.distroTag2)
+    )}. Program will NOT continue.`;
+
+    if (!cliArgs[nexss["platform:noerror"]]) {
+      console.error(info);
+      process.exit(1);
+    } else {
+      log.warn(
+        `WARN: `,
+        info.replace("Program will NOT continue", "But program WILL continue")
+      );
+      process.exit(0);
+    }
   }
 }

@@ -18,9 +18,18 @@ module.exports.writeableStdout = () => {
           process.stdout.write(chunk.data);
         }
       } else if (chunk.stream === "stop") {
-        console.log(bold(red("× Stream: Stopped by: ", chunk.command)));
-        console.log(bold(red("↳ Reason:")));
-        console.log(bold(red(chunk.reason)));
+        if (chunk.reason !== "ok") {
+          console.log(bold(red("× Stream: Stopped by: ", chunk.command)));
+          console.log(bold(red("↳ Reason:")));
+          console.log(bold(red(chunk.reason)));
+        } else {
+          log.dg(
+            bold(
+              "Stream has ended with reason:ok. It means that all is ok except it should stop here. For example Output/End was used."
+            )
+          );
+          process.exit(0);
+        }
       } else {
         log.dg(`↳ Stream: Writeable stdout`);
         chunk = chunk.data;

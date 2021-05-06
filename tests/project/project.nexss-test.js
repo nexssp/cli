@@ -15,7 +15,8 @@ module.exports = {
         "nexss file add myfile1.js -f -t=helloWorld",
         `myfile1.js has been created.`,
         {
-          chdir: "MyTestProject",
+          // chdir: "MyTestProject", // only once will change dir
+          keepchdir: "MyTestProject", // will keep changing dir on the next tests.
         },
       ],
     },
@@ -31,7 +32,7 @@ module.exports = {
       title: "Add file to the Project (forced)",
       params: [
         "nexss file add myfile1.js -f -t=helloWorld",
-        `myfile1.js has been created.\\nSUCCESS  Done.`,
+        `myfile1.js has been created.`,
       ],
     },
     {
@@ -41,23 +42,17 @@ module.exports = {
     {
       title: "Check project attach to nexss db",
       params: [
-        // if to force
         `nexss p a --force --keywords="mykeyword1,mykeyword2" --description="description" --repo="repository" --editor="editor" --note="note"`,
         `INFO  Attaching project from current folder`,
       ],
     },
     {
       title: "Search Project",
-      params: [
-        // if to force
-        `nexss p search MyTestProject`,
-        `MyTestProject NEXSSP`,
-      ],
+      params: [`nexss p search MyTestProject`, `MyTestProject NEXSSP`],
     },
     {
       title: "Remove project from nexss db / Project not exists",
       params: [
-        // if to force
         `nexss p remove not-exists-project`,
         `project not-exists-project does not exist`,
       ],

@@ -19,14 +19,29 @@ module.exports = {
       ],
     },
     {
-      title: "Run depends on platform",
+      title: "Run depends on platform - exitCode 1",
       params: [
-        "nexss Output/End 'works on Ubuntu' --nxsPlatform='UBUNTU'",
+        `nexss Output/End "works on Ubuntu" --nxsPlatform="UBUNTU"`,
         process.platform === "win32"
-          ? "'UBUNTU' did not match with your platform win32"
+          ? "UBUNTU did not match with your platform win32"
           : process.distroTag2 === "Ubuntu"
           ? "works on Ubuntu"
           : "",
+        {
+          exitCode: 1, // Checks if the number of error code
+        },
+      ],
+    },
+    {
+      title: "Run depends on platform - exitCode 0",
+      params: [
+        `nexss Output/End "works on Ubuntu" --platform:check="UBUNTU" --platform:noerror`,
+        process.platform === "win32"
+          ? "UBUNTU did not match with your platform win32"
+          : process.distroTag2 === "Ubuntu"
+          ? "works on Ubuntu"
+          : "",
+        // { exitCode: 0 },
       ],
     },
     // ##################################################

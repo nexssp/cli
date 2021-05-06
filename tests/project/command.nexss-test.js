@@ -9,7 +9,8 @@ const t = {
         "nexss cmd add init " + (process.platform === "win32" ? "dir" : "ls"),
         `SUCCESS  Done..`,
         {
-          chdir: "MyTestProject",
+          // chdir: "MyTestProject",
+          keepchdir: "MyTestProject", // will keep changing dir on the next tests.
         },
       ],
     },

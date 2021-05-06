@@ -1,4 +1,4 @@
-const { getLangByFilename } = require("../../../nexss-language/lib/language");
+const { getLangByFilename } = require("./language");
 
 module.exports.getCompiler = (file) => {
   const fileName = file.name;

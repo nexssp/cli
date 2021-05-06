@@ -5,8 +5,6 @@ function Nexss() {
   const { error, warn, di, dg, dbg } = require("@nexssp/logdebug");
   const { inspect } = require("util");
 
-  const { startServer } = require("../../lib/server");
-
   const { ensureInstalled, pathWinToLinux } = require("../../lib/terminal");
 
   const { isURL } = require("../../lib/data/url");
@@ -115,6 +113,7 @@ function Nexss() {
 
   if (cliArgs.server) {
     // SERVER
+    const { startServer } = require("../../lib/server");
     if (nexssConfig) {
       startServer(nexssConfig.server, { cwd: PROCESS_CWD });
     } else {
@@ -154,8 +153,8 @@ function Nexss() {
       // nexssResult.push({ stream: "readable", cmd: startData });
       // { stream: "transformError", cmd: "Some text" }
       nexssResult.push({ stream: "readable", cmd: startData });
-      const { getCompiler } = require("../lib/start/compiler");
-      const { getBuilder } = require("../lib/start/builder");
+      const { getCompiler } = require("../../nexss-language/lib/compiler");
+      const { getBuilder } = require("../../nexss-language/lib/builder");
 
       for (let file of files) {
         let fileName = file.name;
