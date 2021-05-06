@@ -465,7 +465,7 @@ const perLanguage = (extension) => {
           log.info(`Execute: ${bold(command)}, cwd: ${process.cwd()}`);
 
           try {
-            child_process.execSync(command, {
+            require("child_process").execSync(command, {
               stdio: "inherit",
               detached: false,
               shell: process.shell,
