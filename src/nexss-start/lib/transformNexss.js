@@ -45,10 +45,6 @@ module.exports.transformNexss = (
         log.dr(`× Canceled Stream: ${cmd} ${argsDisplay}`);
         callback(null, chunk);
         return;
-        // } else if (chunk.status === "platform-notmach") {
-        //   log.dr(`× Canceled Stream:Nexss: platform-notmatch`);
-        //   callback(null, chunk);
-        //   return;
       } else {
         log.di(`↳ Stream: transformNexss: ${cmd} ${argsDisplay}`);
       }
@@ -60,9 +56,10 @@ module.exports.transformNexss = (
       const self = this;
 
       let options = Object.assign({});
+
       if (process.argv.includes("--nxsI")) {
         // We get stdin from user.
-        options.stdio = ["inherit", "pipe", "pipe"];
+        options.stdio = ["inherit", "inherit", "pipe"];
       } else {
         options.stdio = ["pipe", "pipe", "pipe"];
       }
@@ -93,6 +90,8 @@ module.exports.transformNexss = (
       args2 = args2.remove("--nxsPipeErrors");
       args2 = args2.remove("--nxsTest");
       args2 = args2.remove("--nxsDebugData");
+      args2 = args2.remove("--nxsI");
+      args2 = args2.remove("--debug");
       args2 = args2.filter((e) => !e.startsWith("--nxsAs"));
       let argsStrings = args2;
       if (process.platform === "win32") {
@@ -126,119 +125,130 @@ module.exports.transformNexss = (
       this.worker = spawn(cmd, argsStrings, options);
 
       this.worker.cmd = nexssCommand;
-      this.worker.on("error", (err) => {
-        // throw Error(err);
-        switch (err.code) {
-          case "ENOENT":
-            error(
-              `TRANSFORM_nexss:${
-                err.path
-              } not found. Command: ${cmd} ${args.join(" ")}`
-            );
-            break;
-          default:
-            error(
-              `TRANSFORM_nexss:Failed to start subprocess. ${err}. Maybe shell specified is not ok? process.shell: ${process.shell}`
-            );
-        }
-      });
+      this.worker.on &&
+        this.worker.on("error", (err) => {
+          // throw Error(err);
+          switch (err.code) {
+            case "ENOENT":
+              error(
+                `TRANSFORM_nexss:${
+                  err.path
+                } not found. Command: ${cmd} ${args.join(" ")}`
+              );
+              break;
+            default:
+              error(
+                `TRANSFORM_nexss:Failed to start subprocess. ${err}. Maybe shell specified is not ok? process.shell: ${process.shell}`
+              );
+          }
+        });
 
-      this.worker.stderr.on("data", function (err) {
-        const errorString = err.toString();
-        if (errorString.includes("NEXSS/")) {
-          const exploded = errorString.split("NEXSS");
-          exploded.forEach((element) => {
-            if (!element) return;
-            if (element.substring(0, 1) === "/") {
-              let nexssError = element + "";
-              nexssError = nexssError.substring(1);
-              nexssError = nexssError.split(":");
-              let type = nexssError.shift();
-              if (isErrorPiped) {
-                console.log(nexssError.join(":").trim());
-              } else {
-                switch (type) {
-                  case "debug":
-                    type = "dbg";
-                    break;
-                  default:
-                    break;
+      this.worker.stderr &&
+        this.worker.stderr.on &&
+        this.worker.stderr.on("data", function (err) {
+          const errorString = err.toString();
+          if (errorString.includes("NEXSS/")) {
+            const exploded = errorString.split("NEXSS");
+            exploded.forEach((element) => {
+              if (!element) return;
+              if (element.substring(0, 1) === "/") {
+                let nexssError = element + "";
+                nexssError = nexssError.substring(1);
+                nexssError = nexssError.split(":");
+                let type = nexssError.shift();
+                if (isErrorPiped) {
+                  console.log(nexssError.join(":").trim());
+                } else {
+                  switch (type) {
+                    case "debug":
+                      type = "dbg";
+                      break;
+                    default:
+                      break;
+                  }
+                  eval(type)(colorizer(nexssError.join(":").trim()));
                 }
-                eval(type)(colorizer(nexssError.join(":").trim()));
+              } else {
+                parseError(
+                  fileName,
+                  element,
+                  args.includes("--nxsPipeErrors"),
+                  process.nexssCWD
+                );
               }
-            } else {
+            });
+            // this.errBuffer = "";
+          } else {
+            process.nxsErrorExists = true;
+            this.errBuffer = this.errBuffer || "";
+            this.errBuffer += err.toString();
+            if (this.errBuffer)
               parseError(
                 fileName,
-                element,
-                args.includes("--nxsPipeErrors"),
-                process.nexssCWD
+                this.errBuffer,
+                args.includes("--pipeerrors")
               );
-            }
-          });
-          // this.errBuffer = "";
-        } else {
-          process.nxsErrorExists = true;
-          this.errBuffer = this.errBuffer || "";
-          this.errBuffer += err.toString();
-          if (this.errBuffer)
-            parseError(fileName, this.errBuffer, args.includes("--pipeerrors"));
-          this.errBuffer = "";
-        }
-      });
+            this.errBuffer = "";
+          }
+        });
 
       var nexssCacheData = "";
+      this.worker.stdout &&
+        this.worker.stdout.on &&
+        this.worker.stdout.on("data", function (data) {
+          this.emptyCall = false;
+          data = data.toString();
 
-      this.worker.stdout.on("data", function (data) {
-        this.emptyCall = false;
-        data = data.toString();
+          if (nexssCache) {
+            nexssCacheData += data;
+          } else {
+            dbg("\n\nOUT FROM STDOUT", require("util").inspect(data), "\n\n");
 
-        if (nexssCache) {
-          nexssCacheData += data;
-        } else {
-          dbg("\n\nOUT FROM STDOUT", require("util").inspect(data), "\n\n");
+            // Does below happen? to check
+            // If it does then we need to create
+            // New stream status: noparse, which will just display data
+            if (data === "\n" || data === "\r\n") {
+              this.emptyCall = true;
+              // sometime we have \n
+              // self.push({
+              //   display: data, // Will just display the data at the end.
+              //   stream: "cancel",
+              //   command: nexssCommand,
+              //   from: "transform-nexss",
+              //   status: "ok",
+              //   data,
+              // });
 
-          // Does below happen? to check
-          // If it does then we need to create
-          // New stream status: noparse, which will just display data
-          if (data === "\n" || data === "\r\n") {
-            this.emptyCall = true;
-            // sometime we have \n
-            // self.push({
-            //   display: data, // Will just display the data at the end.
-            //   stream: "cancel",
-            //   command: nexssCommand,
-            //   from: "transform-nexss",
-            //   status: "ok",
-            //   data,
-            // });
-
-            log.dy(
-              "In the stdout there is '\\n' received from the transformNexss Worker.",
-              "We didn't pass this as it would go through the whole stream"
+              log.dy(
+                "In the stdout there is '\\n' received from the transformNexss Worker.",
+                "We didn't pass this as it would go through the whole stream"
+              );
+              return; // we do not want to pass through the whole stream \n
+            }
+            log.dg(
+              `<< Data: ${bold(data.length + " B.")}, cmd:${process.nexssCMD}`
             );
-            return; // we do not want to pass through the whole stream \n
+
+            log.dg(
+              "insp -->",
+              data.length > 400
+                ? require("util").inspect(data.substr(0, 400)) + "...(400chars)"
+                : require("util").inspect(data)
+            );
+
+            timeElapsed(
+              startCompilerTime,
+              `Response from ${bold(nexssCommand)}`
+            );
+
+            // Checking if data is
+
+            // First we check fast
+            chunk.nexssCommand = nexssCommand;
+            const dataToPush = pushData(data, chunk);
+            self.push(dataToPush);
           }
-          log.dg(
-            `<< Data: ${bold(data.length + " B.")}, cmd:${process.nexssCMD}`
-          );
-
-          log.dg(
-            "insp -->",
-            data.length > 400
-              ? require("util").inspect(data.substr(0, 400)) + "...(400chars)"
-              : require("util").inspect(data)
-          );
-
-          timeElapsed(startCompilerTime, `Response from ${bold(nexssCommand)}`);
-
-          // Checking if data is
-
-          // First we check fast
-          chunk.nexssCommand = nexssCommand;
-          const dataToPush = pushData(data, chunk);
-          self.push(dataToPush);
-        }
-      });
+        });
 
       // self.pipe(this.worker);
       // !!NOTE: Below can't be 'finish' as it's not showing all errors.
@@ -272,24 +282,24 @@ module.exports.transformNexss = (
       // this.worker.on("close", () => {
       //   timeElapsed(startCompilerTime, `Close Worker ${bold(nexssCommand)}`);
       // });
+      this.worker.on &&
+        this.worker.on("close", () => {
+          timeElapsed(
+            startCompilerTime,
+            `Close/End Worker ${bold(nexssCommand)}`
+          );
+          self.end();
 
-      this.worker.on("close", () => {
-        timeElapsed(
-          startCompilerTime,
-          `Close/End Worker ${bold(nexssCommand)}`
-        );
-        self.end();
-
-        if (
-          process.nxsErrorExists &&
-          !process.argv.includes("--nxsPipeErrors")
-        ) {
-          // console.log("There was an error during run..", this.worker.cmd);
-          // callback(null, { stream: "cancel", status: "error" });
-        } else {
-          callback(null);
-        }
-      });
+          if (
+            process.nxsErrorExists &&
+            !process.argv.includes("--nxsPipeErrors")
+          ) {
+            // console.log("There was an error during run..", this.worker.cmd);
+            // callback(null, { stream: "cancel", status: "error" });
+          } else {
+            callback(null);
+          }
+        });
 
       j = chunk.data;
 
@@ -312,7 +322,7 @@ module.exports.transformNexss = (
         this.worker.stdin.write(Buffer.from(JSON.stringify(j)));
         // =======================
       } catch (error) {
-        log.dbg(`ERROR WRITING TO PIPE: ${chunk}`);
+        log.dbg(`ERROR WRITING TO PIPE:`, chunk);
       }
 
       nxsDebugTitle(" ! Executed: " + this.worker.cmd, j, "yellow");

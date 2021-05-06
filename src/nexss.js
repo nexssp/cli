@@ -35,9 +35,7 @@ if (process.argv[2] && process.argv[2].startsWith("-")) {
 // Get first parameter as plugin name.
 let plugin = cliArgs._[0];
 if (plugin) plugin += "";
-
 // Aliases eg start -> s. Each package has also own aliases for commands.
-
 // TO IMPLEMENT, NEW FEATURE: Aliases per project, per folder
 const aliases = require("./aliases.json");
 
@@ -79,10 +77,7 @@ if (process.aliases[plugin]) {
 
 const { isURL } = require("./lib/data/url");
 
-if (plugin.startsWith("!")) {
-  console.log("!!!");
-  return;
-} else if (
+if (
   plugin.startsWith(NEXSS_SPECIAL_CHAR) ||
   fs.existsSync(plugin) ||
   isURL(plugin)
@@ -95,6 +90,7 @@ if (plugin.startsWith("!")) {
   fs.existsSync(`${NEXSS_PACKAGES_PATH}/${plugin}`) ||
   require("./nexss-package/repos.json")[packageName]
 ) {
+  // Install Package if not exists
   if (!fs.existsSync(`${NEXSS_PACKAGES_PATH}/${packageName}`)) {
     // Installs package if is not downloaded.
     const { installPackages } = require("./nexss-package/lib/install");
@@ -121,7 +117,7 @@ if (fs.existsSync(`${NEXSS_SRC_PATH}/nexss-${plugin}/aliases.json`)) {
   }
 }
 
-// Here loads when help is needed for particular command eg nexss file add help
+// Here loads when help is needed for particular command eg nexss file add help for 'file add'
 if (process.argv[4] === "help" && command) {
   //help for command
   const helpFile = `${NEXSS_SRC_PATH}/nexss-${plugin}/commands/${command}.md`;
@@ -140,6 +136,8 @@ if (process.argv[4] === "help" && command) {
   return;
 }
 
+// TODO: New testing system to implement. Now working for the Nexss Programmer, not packages.
+// Use older version of Nexss Programmer 2.3.x-
 if (fileOrFolderExists && process.argv[2] === "test") {
   //help for command
   process.chdir(fileOrFolderExists);
@@ -242,8 +240,6 @@ switch (command) {
             );
             process.exit(1);
           }
-
-          // console.log(`./nexss-${plugin}/commands/*.md`);
           const fg = require("fast-glob");
           const files = fg.sync([
             `${__dirname}/nexss-${plugin}/commands/*.md`.replace(/\\/g, "/"),
@@ -255,29 +251,12 @@ switch (command) {
           )}
 ${bold(filesList.join(", "))}
 example to display help 'nexss ${plugin} ${filesList[0]} help'`;
-          // console.log(filesList);
-          // files.forEach(
-          //   f =>
-          //     (helpContent +=
-          //       require("fs").readFileSync(f) +
-          //       "-----------------------------\n")
-          // );
           console.info(helpContent.toString());
         }
       }
-
-      // if (!cmd.default) {
-      //   throw yellow(`Command ${command} is not implemented.`);
-      // }
-      // cmd.default();
     } catch (err) {
       log.error(err);
       console.log(err);
-      // console.log(process.cwd());
-      // const helpContent = fs.readFileSync(
-      //   `${NEXSS_SRC_PATH}/nexss-${plugin}/help.md`
-      // );
-      // console.info(helpContent.toString());
     }
     break;
 }

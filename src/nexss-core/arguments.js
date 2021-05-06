@@ -17,6 +17,8 @@ const arguments = {
     "Program checks if platform match and platform:noerror is not set will return exitCode: 1. If platfrom:noerror is set then it will return exitCode: 0, but program will not run",
   "platform:noerror":
     "When platform does not match, command will not run, however it will return exitCode:0, so it can continue.",
+  "platform:noerror":
+    "When platform does not match, command will not run, however it will return exitCode:0, so it can continue.",
 };
 
 // Proxy is used to not duplicate data or making constants etc. We use Object but when key does not exist
