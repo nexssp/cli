@@ -18,8 +18,6 @@ nConst("hasStdin", cliArgs[nexss[":i"]]);
 
 const NEXSS_SRC_PATH = process.env.NEXSS_SRC_PATH;
 const NEXSS_PACKAGES_PATH = process.env.NEXSS_PACKAGES_PATH;
-const { NEXSS_SPECIAL_CHAR } = require("./config/defaults");
-
 if (!cliArgs[nexss["process:title"]]) {
   process.title = `nexss (${NEXSSP_VERSION}:${
     process.pid
@@ -52,7 +50,7 @@ if (plugin) {
 // TO IMPLEMENT, NEW FEATURE: Aliases per project, per folder
 
 // display main help eg: nexss help
-if (!plugin.startsWith(NEXSS_SPECIAL_CHAR) && (!plugin || plugin === "help")) {
+if (!startWithSpecialChar(plugin) && (!plugin || plugin === "help")) {
   require(`./nexss-help/help.js`);
   return;
 }
@@ -71,11 +69,7 @@ const { isURL } = require("./lib/data/url");
 
 const packageName = plugin.split("/")[0];
 
-if (
-  plugin.startsWith(NEXSS_SPECIAL_CHAR) ||
-  fs.existsSync(plugin) ||
-  isURL(plugin)
-) {
+if (isSpecialChar(plugin) || fs.existsSync(plugin) || isURL(plugin)) {
   fileOrFolderExists = plugin;
   cliArgs._[1] = plugin;
   cliArgs._[0] = "start";

@@ -1,6 +1,7 @@
+const { ddd } = require("@nexssp/dddebug");
+
 module.exports.transformHash = (cmd, inputData, options) => {
   const { Transform } = require("stream");
-  const { NEXSS_SPECIAL_CHAR } = require("../../config/defaults");
   const { nxsDebugData } = require("./output/nxsDebug");
   return new Transform({
     objectMode: true,
@@ -14,7 +15,7 @@ module.exports.transformHash = (cmd, inputData, options) => {
 
       log.di(`↳ Stream: ${__filename}: ${require("util").inspect(cmd)}`);
 
-      const n = cmd.name.replace(NEXSS_SPECIAL_CHAR, "");
+      const n = cmd.name.replace("", "");
 
       if (cliArgs.nxsComments) {
         //??
@@ -63,11 +64,7 @@ module.exports.transformHash = (cmd, inputData, options) => {
         delete newData.nxsIn;
       }
 
-      nxsDebugData(
-        newData,
-        bold(`Special char: ${NEXSS_SPECIAL_CHAR}`),
-        "magenta"
-      );
+      nxsDebugData(newData, bold(`Special char. ${n}`), "magenta");
 
       callback(null, { from: "transform-hash", status: "ok", data: newData });
     },

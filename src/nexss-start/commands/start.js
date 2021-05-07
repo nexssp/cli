@@ -1,9 +1,6 @@
 Nexss();
 
 function Nexss() {
-  const { NEXSS_SPECIAL_CHAR } = require("../../config/defaults");
-  const { inspect } = require("util");
-
   const { ensureInstalled, pathWinToLinux } = require("../../lib/terminal");
 
   const { isURL } = require("../../lib/data/url");
@@ -68,10 +65,7 @@ function Nexss() {
 
   let nexssConfig;
 
-  if (
-    !isURL(fileOrDirectory) &&
-    !fileOrDirectory.startsWith(NEXSS_SPECIAL_CHAR)
-  ) {
+  if (!isURL(fileOrDirectory) && !startWithSpecialChar(fileOrDirectory)) {
     if (!fs.existsSync(fileOrDirectory)) {
       console.log(`${fileOrDirectory} has not been found.`);
       process.exitCode = 1;
@@ -186,11 +180,17 @@ function Nexss() {
 
         const parsed = url.parse(fileName);
 
-        if (isSpecialChar() || cliArgs._.length === 0 || !process.argv[2]) {
+        if (
+          startWithSpecialChar(file.name) ||
+          cliArgs._.length === 0 ||
+          !process.argv
+        ) {
           // const fileArgsHash = file.args;
+          const streamForSpecialChar = getStreamBasedOnSpecialChar(file.name);
+
           delete file.args;
           nexssResult.push({
-            stream: "transformHash",
+            stream: streamForSpecialChar,
             cmd: file,
           });
         } else {

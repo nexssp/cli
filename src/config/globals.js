@@ -2,6 +2,8 @@ const { nConst } = require("@nexssp/const");
 // We load nConst as global function
 nConst("nConst", nConst);
 
+require("./defaults");
+
 nConst("NEXSSP_VERSION", require("../../package.json").version);
 
 // Adding colors to global as they are used very often.

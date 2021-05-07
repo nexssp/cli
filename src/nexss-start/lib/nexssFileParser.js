@@ -1,7 +1,5 @@
 const { getFiles } = require("./start/files");
 const minimist = require("minimist");
-const { NEXSS_SPECIAL_CHAR } = require("../../config/defaults");
-
 require("@nexssp/extend")("string");
 
 function preVars(isn) {
@@ -142,7 +140,7 @@ const nexssFileParser = (content, filename, nxsArgs) => {
 
         if (
           f.name &&
-          f.name !== NEXSS_SPECIAL_CHAR &&
+          !startWithSpecialChar(f.name) &&
           !f.name.startsWith("http")
         ) {
           let toCheck = require("path").join(f.path, f.name);

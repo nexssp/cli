@@ -1,4 +1,3 @@
-const { NEXSS_SPECIAL_CHAR } = require("../../../config/defaults");
 require("@nexssp/extend")("array"); // array flat / nodejs 10
 const loadEnv = (p) => {
   if (!p) {
@@ -128,7 +127,7 @@ const getFiles = (folder, args, env, ccc) => {
     }
   }
 
-  if (!folderAbsolute && folder.name !== NEXSS_SPECIAL_CHAR) {
+  if (!folderAbsolute && !startWithSpecialChar(folder.name)) {
     if (!folder.filename) {
       // TODO: Maybe later to add here extra/special functions like:
       // nexss $#abc, then folder.name = $#abc
@@ -146,10 +145,7 @@ const getFiles = (folder, args, env, ccc) => {
 
   // console.log(`CF: ${process.cwd()}, folder abs: ${folderAbsolute}`);
   // .nexss language
-  if (
-    !folder.name.startsWith(NEXSS_SPECIAL_CHAR) &&
-    !fs.existsSync(folderAbsolute)
-  ) {
+  if (!startWithSpecialChar(folder.name) && !fs.existsSync(folderAbsolute)) {
     console.error(
       `${red("Error: ")} There is an error on file ${bold(
         folder.filename.replace(".\\", "")
@@ -159,7 +155,7 @@ const getFiles = (folder, args, env, ccc) => {
     process.exit(0);
   }
   // This is $# commands
-  if (folder.name.startsWith(NEXSS_SPECIAL_CHAR)) {
+  if (startWithSpecialChar(folder.name)) {
     folder.args = args;
     // folder.env = env;
     return folder;
