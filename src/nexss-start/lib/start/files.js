@@ -1,5 +1,5 @@
 const { NEXSS_SPECIAL_CHAR } = require("../../../config/defaults");
-require("../../../lib/arrays"); // array flat / nodejs 10
+require("@nexssp/extend")("array"); // array flat / nodejs 10
 const loadEnv = (p) => {
   if (!p) {
     p = `./config.env`;

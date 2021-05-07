@@ -31,9 +31,9 @@ module.exports.getCompiler = (file) => {
     );
     log.error(
       "Eg. You execute `nexss " +
-        process.argv[2] +
+        cliArgs._[0] +
         " install` and you are in the folder with the `" +
-        process.argv[2] +
+        cliArgs._[0] +
         "` program."
     );
     process.exit(1);

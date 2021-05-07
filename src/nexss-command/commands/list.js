@@ -1,4 +1,3 @@
-const { green, yellow, bold } = require("@nexssp/ansi");
 const { NEXSS_PROJECT_CONFIG_PATH } = require("../../config/config");
 
 const { loadConfigContent } = require("../../lib/config");

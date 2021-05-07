@@ -1,15 +1,12 @@
-const { warn, info, error, success } = require("../../lib/log");
-const cliArgs = require("minimist")(process.argv.slice(3));
 const fs = require("fs");
 const path = require("path");
-const { yellow, bold } = require("@nexssp/ansi");
 const copydir = require("copy-dir");
 const currentPath = process.cwd();
 
-let paramName = process.argv[4];
+let paramName = cliArgs._[2];
 
 if (!paramName) {
-  warn(`Enter project name eg. nexss project new project-name-here.`);
+  log.warn(`Enter project name eg. nexss project new project-name-here.`);
   process.exit(0);
 }
 let projectPath, dotDir;
@@ -25,16 +22,16 @@ if (paramName === ".") {
   }
 } else {
   projectPath = path.join(currentPath, paramName);
-  info(`Creating project '${paramName}'`);
+  log.info(`Creating project '${paramName}'`);
   if (!fs.existsSync(projectPath)) {
     console.log(`creating project ${projectPath}`);
     fs.mkdirSync(projectPath, 0777);
   } else {
     if (!cliArgs.f && !cliArgs.ff) {
-      error(`Folder ${projectPath} exists. Folder cannot exist.`);
+      log.error(`Folder ${projectPath} exists. Folder cannot exist.`);
       process.exit(0);
     } else {
-      error(
+      log.error(
         `Folder ${projectPath} exists but ${yellow("force option enabled.")}`
       );
     }
@@ -48,11 +45,11 @@ nexss.fullforce = cliArgs.ff;
 if (nexss.template) {
   const templatePath = path.join(__dirname, "../templates/", nexss.template);
   if (!fs.existsSync(templatePath)) {
-    error(`Template ${bold(nexss.template)} does not exist.`);
+    log.error(`Template ${bold(nexss.template)} does not exist.`);
     fs.rmdirSync(projectPath);
     process.exit(0);
   } else {
-    success(`Using ${bold(nexss.template)} template. Copying files...`);
+    log.success(`Using ${bold(nexss.template)} template. Copying files...`);
 
     options = {};
     options.cover = false;
@@ -67,7 +64,7 @@ if (nexss.template) {
               stdio: "inherit",
             }
           );
-          success(`Default template cloned.`);
+          log.success(`Default template cloned.`);
         } catch (er) {
           console.error(er);
           process.exit(0);
@@ -90,12 +87,12 @@ if (nexss.template) {
 
   if (dotDir) {
     //current folder new project
-    success(
+    log.success(
       `Project '${paramName}' is ready. 
 to run please enter 'nexss start'`
     );
   } else {
-    success(
+    log.success(
       `Project '${paramName}' is ready. 
 Go to the project by command '${bold("cd " + paramName)}'`
     );

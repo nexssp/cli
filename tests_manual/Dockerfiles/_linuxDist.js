@@ -1,20 +1,19 @@
 // Testing Nexss Programmer in different Linux distributions
-const { error, ok } = require("../../src/lib/log");
-const { bold, yellow, magenta, blue, green } = require("@nexssp/ansi");
 const execSync = require("child_process").execSync;
 const buildNocache = "--no-cache";
 const path = require("path");
+const cliArgs = require("minimist")(process.argv.slice(2));
 
-if (!process.argv[2]) {
+if (!cliArgs._[0]) {
   console.error("You need to pass dockerFile filename as argument.");
   console.error("you can pass --color for colored output");
   process.exit(1);
-} else if (!require("fs").existsSync(process.argv[2])) {
-  console.error(`${bold(process.argv[2])} does not exists`);
+} else if (!require("fs").existsSync(cliArgs._[0])) {
+  console.error(`${bold(cliArgs._[0])} does not exists`);
   process.exit(1);
 }
 
-if (!process.argv[3]) {
+if (!cliArgs._[1]) {
   console.log(`\nYou haven't selected the type of run:
 1) ${bold("local")} - create virtual discs to local environment
 2) ${bold("local-testlangs")} - run all language tests
@@ -27,7 +26,7 @@ if (!process.argv[3]) {
 \nexample: ${yellow(
     "nexss " +
       require("path").basename(__filename) +
-      ` ${process.argv[2]}` +
+      ` ${cliArgs._[0]}` +
       " local"
   )}
 `);
@@ -41,12 +40,12 @@ const opts = [
   "npminstall",
   "local-testlangs",
 ];
-if (!opts.includes(process.argv[3])) {
+if (!opts.includes(cliArgs._[1])) {
   console.error(`You can only pass ${opts.join(", ")}`);
   process.exit(0);
 }
 
-let dockerFile = process.argv[2].replace(/\.\\/, "");
+let dockerFile = cliArgs._[0].replace(/\.\\/, "");
 console.log("Dockerfile:", yellow(dockerFile));
 const tag = dockerFile.replace(".Dockerfile", "");
 const imageName = `nexss:${tag}`;
@@ -143,7 +142,7 @@ switch (tag) {
 
 console.log(`Shell: ${shell}`);
 let command;
-switch (process.argv[3]) {
+switch (cliArgs._[1]) {
   case "local":
     command = `docker run ${privileged} -i ${detached} -v ${pathApps}:/root/.nexssApps -v ${pathWork}:/work -v ${pathNexssCli}:/nexssCli -v ${pathDotNexss}:/root/.nexss -v /root/.nexss/cache -e DEBIAN_FRONTEND=noninteractive -t ${imageName} ${shell} -c "cd /nexssCli/src && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && cd /work && ${shell}" `;
     break;

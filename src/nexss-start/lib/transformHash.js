@@ -1,7 +1,5 @@
 module.exports.transformHash = (cmd, inputData, options) => {
   const { Transform } = require("stream");
-  const cliArgs = require("minimist")(process.argv.slice(2));
-  const { info, warn, error } = require("../../lib/log");
   const { NEXSS_SPECIAL_CHAR } = require("../../config/defaults");
   const { nxsDebugData } = require("./output/nxsDebug");
   return new Transform({
@@ -14,24 +12,25 @@ module.exports.transformHash = (cmd, inputData, options) => {
         return;
       }
 
-      log.di(`↳ Stream: transformHash: ${require("util").inspect(cmd)}`);
+      log.di(`↳ Stream: ${__filename}: ${require("util").inspect(cmd)}`);
 
       const n = cmd.name.replace(NEXSS_SPECIAL_CHAR, "");
 
       if (cliArgs.nxsComments) {
+        //??
         if (n.length === 0) {
-          info(inputData._.join(" "));
+          log.info(inputData._.join(" "));
         } else {
           const splitter = n.split(":");
           if (splitter.length === 1) {
-            info(splitter[0]);
+            log.info(splitter[0]);
           } else {
             switch (splitter[0]) {
               case "warn":
-                warn(splitter[1]);
+                log.warn(splitter[1]);
                 break;
               default:
-                error(splitter[1], "Command not found.");
+                log.error(splitter[1], "Command not found.");
                 callback(null, { status: "error", data: chunk.data });
                 return;
             }
@@ -64,7 +63,11 @@ module.exports.transformHash = (cmd, inputData, options) => {
         delete newData.nxsIn;
       }
 
-      nxsDebugData(newData, "$#", "magenta");
+      nxsDebugData(
+        newData,
+        bold(`Special char: ${NEXSS_SPECIAL_CHAR}`),
+        "magenta"
+      );
 
       callback(null, { from: "transform-hash", status: "ok", data: newData });
     },

@@ -1,5 +1,4 @@
 module.exports.installPackages = (destinationFolder, packageName) => {
-  const { bold, green, yellow } = require("@nexssp/ansi");
   // We make sure git is installed.
   const { ensureInstalled } = require("../../lib/terminal");
   const config = require(`../../nexss-language/languages/config.${process.platform}`);

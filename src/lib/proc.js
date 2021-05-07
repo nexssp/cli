@@ -1,14 +1,8 @@
-const { dirname, basename, join } = require("path");
-// const { NEXSS_PROCESS_PATH } = require("../config/config");
-const { unlinkSync, writeFileSync, readFileSync } = require("fs");
-const fg = require("fast-glob");
-const { bold, green, red, yellow } = require("@nexssp/ansi");
-const { error } = require("./log");
-const path = require("path");
+const { unlinkSync } = require("fs");
 
-module.exports.title = (txt) => {
+module.exports.title = () => {
   let param = 2;
-  if (process.argv[2] === "--bg") {
+  if (cliArgs._[2] === "--bg") {
     param = 3;
   }
 
@@ -96,7 +90,7 @@ module.exports.stop = (pid) => {
   } catch (err) {
     switch (err.code) {
       case "ESRCH":
-        error(
+        log.error(
           bold(
             "No process or process group can be found corresponding to that specified by pid."
           )
@@ -105,7 +99,7 @@ module.exports.stop = (pid) => {
         break;
 
       default:
-        error(bold(err));
+        log.error(bold(err));
         break;
     }
     console.log(err);

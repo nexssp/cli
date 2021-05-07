@@ -1,6 +1,5 @@
 module.exports.transformRequest = (url) => {
   const { Transform } = require("stream");
-  const { bold } = require("@nexssp/ansi");
   const axios = require("axios");
   const { nxsDebugTitle } = require("../lib/output/nxsDebug");
   const { checkPlatform } = require("../../lib/platform");

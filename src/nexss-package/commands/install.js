@@ -1,7 +1,7 @@
 // Installs Nexss Programmer package(s)
 const { installPackages } = require("../lib/install");
 
-const packageToInstall = process.argv[4];
+const packageToInstall = cliArgs._[2];
 if (!packageToInstall) {
   console.error(
     `Enter ${blue("Nexss Programmer")} ${yellow("package name")} or ${green(

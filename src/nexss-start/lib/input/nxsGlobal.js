@@ -1,5 +1,4 @@
 module.exports = (data) => {
-  const { error } = require("../../../lib/log");
   if (data.nxsGlobal) {
     let nxsGlobal = data.nxsGlobal;
     if (!Array.isArray(nxsGlobal)) {
@@ -8,12 +7,12 @@ module.exports = (data) => {
 
     for (glob of nxsGlobal) {
       if (!data[`_${glob}`]) {
-        error(
+        log.error(
           `nxsGlobal:Local var '_${glob}' does not exist. Remove nxsGlobal=${glob}`
         );
         data.nxsStop = true;
       } else if (data[glob] && !data.nxsGlobalForce) {
-        error(
+        log.error(
           `You have used nxsGlobal however there is data with name ${glob} already. 
 Use nxsGlobalForce if you don't want to see this message`
         );

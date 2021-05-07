@@ -5,10 +5,6 @@ const { loadConfigContent, saveConfigContent } = require("../../lib/config");
 const { NEXSS_PROJECT_CONFIG_PATH } = require("../../config/config");
 const nexssConfig = loadConfigContent(NEXSS_PROJECT_CONFIG_PATH);
 
-const { warn, info } = require("../../lib/log");
-const { bold, green, yellow, grey } = require("@nexssp/ansi");
-const cliArgs = require("minimist")(process.argv.slice(4));
-
 if (nexssConfig) {
   console.log(bold(yellow("Current Project: ")));
   const files = nexssConfig.files;
@@ -36,8 +32,8 @@ if (nexssConfig) {
   }
   console.log(`${grey("To display config 'nexss config get'")}`);
 } else {
-  warn(`This is not ${bold("Nexss PROGRAMMER project")}`);
-  info(
+  log.warn(`This is not ${bold("Nexss PROGRAMMER project")}`);
+  log.info(
     `Create new project:
       New folder: ${bold("nexss project new MyProjectName")} OR ${bold(
       "nexss p n MyProjectName"

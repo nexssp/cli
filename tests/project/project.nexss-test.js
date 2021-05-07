@@ -4,7 +4,7 @@ module.exports = {
       title: "Create New Project",
       params: [
         "nexss project new MyTestProject -f",
-        "SUCCESS  Project 'MyTestProject' is ready.",
+        "SUCCESS Project 'MyTestProject' is ready",
       ],
     },
 
@@ -43,7 +43,7 @@ module.exports = {
       title: "Check project attach to nexss db",
       params: [
         `nexss p a --force --keywords="mykeyword1,mykeyword2" --description="description" --repo="repository" --editor="editor" --note="note"`,
-        `INFO  Attaching project from current folder`,
+        `INFO Attaching project from current folder`,
       ],
     },
     {
@@ -59,7 +59,7 @@ module.exports = {
     },
     {
       title: "Remove test project from nexss db / Project EXIST",
-      params: [`nexss p remove MyTestProject`, `SUCCESS  Done..`],
+      params: [`nexss p remove MyTestProject`, `SUCCESS Done..`],
     },
   ],
 };

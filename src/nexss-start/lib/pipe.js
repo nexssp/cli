@@ -175,7 +175,7 @@ async function run(operations, options = {}) {
 
     if (nPipe && nPipe.on) {
       nPipe.on("finish", (e) => {
-        if (process.argv.includes("--debug")) {
+        if (cliArgs.debug) {
           process.stdout.write("\n");
           console.timeEnd(bold(cyan("Nexss P"), bold("rogrammer")));
         }
@@ -188,13 +188,10 @@ async function run(operations, options = {}) {
       ...finalOperations
     )
       .then((e) => {
-        if (process.argv.includes("--debug")) {
+        if (cliArgs.debug) {
           process.stdout.write("\n");
         }
-        if (
-          process.argv.includes("--nxsTime") ||
-          process.argv.includes("--debug")
-        ) {
+        if (cliArgs.nxsTime || cliArgs.debug) {
           console.timeEnd(bold(cyan("Nexss P"), bold("rogrammer")));
         }
       })

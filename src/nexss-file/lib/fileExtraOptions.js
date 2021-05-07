@@ -1,4 +1,3 @@
-const { error, success, info, ok } = require("@nexssp/logdebug");
 const { which } = require("../../lib/terminal");
 
 module.exports.extraFunctions = (templatePath) => {
@@ -15,7 +14,7 @@ module.exports.extraFunctions = (templatePath) => {
         : path.dirname(element);
 
       //If we are in the project folder make a copy to the src/ of that project
-      info(
+      log.info(
         yellow(
           bold(
             `Copying 3rdParty libraries... 
@@ -30,7 +29,7 @@ ${destinationPath}`
         elementPath,
         path.join(destinationPath, path.basename(element))
       );
-      success("copied.");
+      log.success("copied.");
     });
 
     let commands = extraOptions.commands;
@@ -55,7 +54,7 @@ ${destinationPath}`
         defaultOptions.shell = process.shell;
       }
 
-      info(green(bold(`Please wait.. Installing..`)));
+      log.info(green(bold(`Please wait.. Installing..`)));
 
       commands.forEach((cmd2) => {
         // TODO: better error handling
@@ -76,26 +75,28 @@ ${destinationPath}`
           try {
             require("child_process").execSync(`${cmd}`, defaultOptions);
           } catch (err) {
-            error("==========================================================");
-            error(
+            log.error(
+              "=========================================================="
+            );
+            log.error(
               bold(`There was an issue with the command: ${red(cmd)}, details:`)
             );
 
             const commandRun = cmd.split(" ").shift();
             if (!which(commandRun)) {
-              error(red(`${commandRun} seems to be not installed.`));
-              error(
+              log.error(red(`${commandRun} seems to be not installed.`));
+              log.error(
                 red(`Error during execute extra operations: ${templatePath}.js`)
               );
             } else {
-              ok(
+              log.ok(
                 bold(
                   `${commandRun} seems to be installed however there may be more errors:`
                 )
               );
-              error(err.stdout ? err.stdout.toString() : "");
-              error(err.stderr ? err.stderr.toString() : "");
-              error(
+              log.error(err.stdout ? err.stdout.toString() : "");
+              log.error(err.stderr ? err.stderr.toString() : "");
+              log.error(
                 "=========================================================="
               );
             }
@@ -110,8 +111,8 @@ ${destinationPath}`
     if (descriptions.length > 0) {
       // warn("Some information about installed packages.");
       descriptions.forEach((desc) => {
-        info(bold("Info from additional third party libraries package:"));
-        info(desc);
+        log.info(bold("Info from additional third party libraries package:"));
+        log.info(desc);
       });
     }
   }

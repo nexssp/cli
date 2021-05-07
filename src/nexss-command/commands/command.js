@@ -8,14 +8,16 @@ if (!configContent) {
   process.exit();
 }
 
+const commandName = cliArgs._[1];
+
 // Setup commands names as default is run the command.
-if (["add", "delete", "list"].includes(process.argv[3])) {
-  require(`./${process.argv[3]}.js`);
+if (["add", "delete", "list"].includes(commandName)) {
+  require(`./${commandName}.js`);
 }
 
 if (!configContent.commands) {
   log.warn(`No commands have been found.`);
-} else if (process.argv[3]) {
+} else if (commandName) {
   // Find command in the config by the name
 
   // We check if there is platform related code
@@ -23,11 +25,7 @@ if (!configContent.commands) {
     configContent.commands = configContent.commands[process.platform];
   }
 
-  let CommandToRun = configContent.findByProp(
-    "commands",
-    "name",
-    process.argv[3]
-  );
+  let CommandToRun = configContent.findByProp("commands", "name", commandName);
   if (CommandToRun) {
     if (Array.isArray(CommandToRun)) {
       CommandToRun = CommandToRun[0];
@@ -76,7 +74,7 @@ if (!configContent.commands) {
           console.log(
             blue(
               `NOTE: Please put repository name in the package.json of package ${bold(
-                green(process.argv[4])
+                green(cliArgs._[4])
               )}`
             )
           );

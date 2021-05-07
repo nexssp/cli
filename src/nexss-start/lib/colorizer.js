@@ -1,4 +1,3 @@
-const { red, yellow, green, bold } = require("@nexssp/ansi");
 module.exports.colorizer = (txt) => {
   if (txt.startsWith("OK")) {
     return green(txt);

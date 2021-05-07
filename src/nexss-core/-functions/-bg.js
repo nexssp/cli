@@ -1,5 +1,4 @@
 module.exports.x = () => {
-  const { bold } = require("@nexssp/ansi");
   const { nohup } = require("../nohup.js");
   const { title } = require("../../lib/proc");
   let argv = process.argv.slice(3);
@@ -26,7 +25,7 @@ module.exports = () => {
 
   opts.shell = process.shell;
 
-  if (!process.argv.includes("--nxsWindow")) {
+  if (!cliArgs.nxsWindow) {
     opts.windowsHide = true;
   } else {
     process.argv.filter((e) => e !== "--nxsWindow");

@@ -1,10 +1,7 @@
 const { NEXSS_PROJECT_CONFIG_PATH } = require("../../config/config");
 const fs = require("fs");
-const { warn } = require("../../lib/log");
 const { loadConfigContent, saveConfigContent } = require("../../lib/config");
 
-// TODO: To make DRY here on set and get commands.
-const cliArgs = require("minimist")(process.argv.slice(2));
 let configContent;
 if (cliArgs.configPath) {
   if (fs.existsSync(`${cliArgs.configPath}/_nexss.yml`)) {
@@ -14,7 +11,7 @@ if (cliArgs.configPath) {
       console.log("This is not nexss PROGRAMMER project.");
     }
   } else {
-    warn(`This is not Nexss PROGRAMMER Project.`);
+    log.warn(`This is not Nexss PROGRAMMER Project.`);
     process.exit(0);
   }
 } else {
@@ -22,7 +19,7 @@ if (cliArgs.configPath) {
 }
 
 if (!configContent) {
-  warn(`This is not Nexss PROGRAMMER Project.`);
+  log.warn(`This is not Nexss PROGRAMMER Project.`);
   process.exit(0);
 }
 

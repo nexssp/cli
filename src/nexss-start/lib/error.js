@@ -1,11 +1,9 @@
-const { error, isErrorPiped } = require("../../lib/log");
-const { bold, yellow } = require("@nexssp/ansi");
 const { getLangByFilename } = require("../../nexss-language/lib/language");
 const { isAbsolute, dirname } = require("path");
 const { existsSync } = require("fs");
 const { colorizer } = require("./colorizer");
-const { Console } = require("console");
-
+// Below is created in the globals.js
+// const isErrorPiped = cliArgs.nxsPipeErrors || cliArgs[nexss["error:pipe"]];
 // more here: https://github.com/nexssp/cli/wiki/Errors-Solutions
 module.exports.parseError = (filename, errorBody, stdOutput, cwd) => {
   if (errorBody && errorBody.trim) {
@@ -19,7 +17,7 @@ module.exports.parseError = (filename, errorBody, stdOutput, cwd) => {
   );
 
   if (stdOutput) {
-    if (process.argv.includes("--htmlOutput")) {
+    if (cliArgs.htmlOutput) {
       console.log(
         `<span style="color:red;">${ErrorPre} ${errorBody.replace(
           /\n/g,
@@ -46,7 +44,7 @@ module.exports.parseError = (filename, errorBody, stdOutput, cwd) => {
     ) {
       console.error(colorizer(errorBody));
     } else {
-      error(`${ErrorPre}: ${bold(errorBody)}`);
+      log.error(`${ErrorPre}: ${bold(errorBody)}`);
     }
   }
 
@@ -68,9 +66,11 @@ module.exports.parseError = (filename, errorBody, stdOutput, cwd) => {
         regExp = new RegExp(pattern, "gis");
       } catch (er) {
         //
-        error("===========================================================");
-        error(er.message);
-        error(
+        log.error(
+          "==========================================================="
+        );
+        log.error(er.message);
+        log.error(
           "Check error definition in the directory:",
           dirname(langInfo.configFile)
         );
@@ -158,7 +158,7 @@ module.exports.parseError = (filename, errorBody, stdOutput, cwd) => {
         !solution.includes(`${filename}.exe`)
       ) {
         if (stdOutput) {
-          if (process.argv.includes("--htmlOutput")) {
+          if (cliArgs.htmlOutput) {
             console.log("<BR/>");
             console.log(
               `${
@@ -182,7 +182,7 @@ module.exports.parseError = (filename, errorBody, stdOutput, cwd) => {
               )
             );
           } else {
-            error(
+            log.error(
               yellow(
                 `Possible solution ${solutionNumber}: ${bold(yellow(solution))}`
               )

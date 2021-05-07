@@ -4,10 +4,6 @@ module.exports.transformTest = (
   options = {}
 ) => {
   const { Transform } = require("stream");
-  const { red, bold } = require("@nexssp/ansi");
-  const { warn, ok, error } = require("../../lib/log");
-  const cliArgs = require("minimist")(process.argv);
-  const { inspect } = require("util");
   const { cleanTerminalColors } = require("../../lib/terminal");
   return new Transform({
     objectMode: true,
@@ -37,15 +33,15 @@ module.exports.transformTest = (
               cleanTerminalColors(testingData[k] + "") !==
               cleanTerminalColors(data[k] + "")
             ) {
-              error(bold(red(testingData[k])), `Not Equal to`);
-              error(bold(red(data[k])));
+              log.error(bold(red(testingData[k])), `Not Equal to`);
+              log.error(bold(red(data[k])));
               errorExists = true;
             } else {
-              ok(bold(`Field ${k} is correct:`, data[k]));
+              log.ok(bold(`Field ${k} is correct:`, data[k]));
             }
           });
           if (errorExists) {
-            warn("Program has been terminated.");
+            log.warn("Program has been terminated.");
             process.exit();
           }
         }

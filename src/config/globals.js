@@ -1,5 +1,6 @@
 const { nConst } = require("@nexssp/const");
-const os = require("@nexssp/os");
+// We load nConst as global function
+nConst("nConst", nConst);
 
 nConst("NEXSSP_VERSION", require("../../package.json").version);
 
@@ -14,6 +15,8 @@ nConst("ddd", require("@nexssp/dddebug").ddd);
 // Get only keys but validate them
 nConst("stack", require("@nexssp/stack").stack, process);
 nConst("nexss", require("../nexss-core/arguments").keys);
+
+const os = require("@nexssp/os");
 nConst("distro", os.name(), process);
 nConst("distroVersion", os.v(), process);
 nConst("sudo", os.sudo(), process);
@@ -32,7 +35,10 @@ try {
 // Later to make usage below on whole system.
 nConst("fs", require("fs"));
 nConst("path", require("path"));
+
 nConst("cliArgs", require("minimist")(process.argv.slice(2)));
+nConst("isErrorPiped", cliArgs.nxsPipeErrors || cliArgs[nexss["error:pipe"]]);
+
 nConst("PROCESS_CWD", process.cwd());
 nConst("shell", os.getShell(), process);
 const globalConfigPath = path.normalize(

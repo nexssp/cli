@@ -2,7 +2,6 @@ Nexss();
 
 function Nexss() {
   const { NEXSS_SPECIAL_CHAR } = require("../../config/defaults");
-  const { error, warn, di, dg, dbg } = require("@nexssp/logdebug");
   const { inspect } = require("util");
 
   const { ensureInstalled, pathWinToLinux } = require("../../lib/terminal");
@@ -12,22 +11,11 @@ function Nexss() {
 
   const url = require("url");
 
-  // nexss s OR nexss start is ommiting
-  let paramNumber = 2;
-  if (process.argv[2] === "s" || process.argv[2] === "start") {
-    paramNumber = 3;
-  }
-  const cliArgs = require("minimist")(process.argv.slice(paramNumber));
+  let fileOrDirectory = Array.isArray(cliArgs._) && cliArgs._.slice(1).shift();
 
-  let fileOrDirectory = Array.isArray(cliArgs._) && cliArgs._.shift();
-
-  if (
-    (!fileOrDirectory && process.argv[2] === "start") ||
-    process.argv[2] === "s"
-  ) {
+  if ((!fileOrDirectory && cliArgs._[0] === "start") || cliArgs._[0] === "s") {
     fileOrDirectory = ".";
   }
-
   if (fileOrDirectory) {
     if (
       path.extname(fileOrDirectory) === ".nexss"
@@ -50,7 +38,6 @@ function Nexss() {
       }
     } else {
       // CLEANUP IF THIS IS NOT URL, REMOVE END / OR \ AND REPLACE TO /
-
       if (!isURL(fileOrDirectory)) {
         fileOrDirectory = fileOrDirectory.replace(/\\/g, "/");
         fileOrDirectory = path
@@ -59,7 +46,7 @@ function Nexss() {
       }
 
       if (fileOrDirectory === "." && !fs.existsSync("./_nexss.yml")) {
-        warn("Nothing to run");
+        log.warn("Nothing to run");
         process.exit(0);
       }
 
@@ -122,7 +109,7 @@ function Nexss() {
   } else {
     if (!cliArgs.nxsLive || !cache.exists(cacheFileName, "1y")) {
       if (files.length === 0) {
-        warn(
+        log.warn(
           "Nothing to run. To add files to the project please use 'nexss file add myfile.[language extension]'"
         );
         process.exit();
@@ -133,8 +120,13 @@ function Nexss() {
         debug: (nexssConfig && nexssConfig.debug) || cliArgs.debug,
       };
 
-      if (nexssConfig && nexssConfig.data)
+      if (nexssConfig && nexssConfig.data) {
+        // You cannot overwrite below values.
+        delete nexssConfig.data.nexss;
+        // delete nexssConfig.data.cwd; ?? to check
+        delete nexssConfig.data.start;
         Object.assign(startData, nexssConfig.data);
+      }
 
       // if (cliArgs.debug) di(`startData: ${yellow(inspect(startData))}`);
 
@@ -149,7 +141,7 @@ function Nexss() {
 
       // let nexssResult = [() => "process.stdin"];
 
-      const noStdin = process.argv.includes("--nxsI");
+      const noStdin = hasStdin;
       // nexssResult.push({ stream: "readable", cmd: startData });
       // { stream: "transformError", cmd: "Some text" }
       nexssResult.push({ stream: "readable", cmd: startData });
@@ -167,7 +159,7 @@ function Nexss() {
         process.nexssFilename = path.normalize(fileName);
 
         if (!file.name) {
-          error(
+          log.error(
             "file needs to have `name` field in the `files` section of the _nexss.yml config file. Please see examples/packages."
           );
           process.exit();
@@ -189,11 +181,13 @@ function Nexss() {
 
           nexssResult.push(transformInParams);
         }
+
         let stream = "transformNexss";
 
         const parsed = url.parse(fileName);
-        if (parsed.hash) {
-          const fileArgsHash = file.args;
+
+        if (isSpecialChar() || cliArgs._.length === 0 || !process.argv[2]) {
+          // const fileArgsHash = file.args;
           delete file.args;
           nexssResult.push({
             stream: "transformHash",

@@ -1,5 +1,5 @@
 module.exports = () => {
-  const { colors, black, whiteBG } = require("@nexssp/ansi");
+  const { colors } = require("@nexssp/ansi");
 
   Object.values(colors).forEach((e) => {
     if (

@@ -2,8 +2,6 @@ const fs = require("fs");
 // const dirTree = require("directory-tree");
 const { NEXSS_PACKAGES_PATH } = require("../../config/config");
 const packagesPath = `${NEXSS_PACKAGES_PATH}`;
-const cliArgs = require("minimist")(process.argv);
-const { bold, green } = require("@nexssp/ansi");
 if (!fs.existsSync(packagesPath)) {
   console.log(
     `Packages path ${bold(packagesPath)} does not exist. Installing..`
@@ -43,7 +41,7 @@ authors.forEach((author) => {
                       stdio: "inherit",
                     })
                   );
-                  success(
+                  log.success(
                     `Package update checked. ${packagesPath}/${author}/${pkg}/${details}`
                   );
                 } catch (er) {
@@ -133,7 +131,7 @@ authors.forEach((author) => {
 });
 
 if (pkgs.length > 0) {
-  if (cliArgs._.slice(4).length > 0) {
+  if (cliArgs._.slice(2).length > 0) {
     var options = {
       // pre: "<",
       // post: ">",
@@ -142,7 +140,7 @@ if (pkgs.length > 0) {
       },
     };
     let fuzzy = require("fuzzy");
-    let fuzzyResult = fuzzy.filter(cliArgs._.slice(4).join(" "), pkgs, options);
+    let fuzzyResult = fuzzy.filter(cliArgs._.slice(2).join(" "), pkgs, options);
     pkgs = fuzzyResult.map(function (el) {
       return el.original;
     });

@@ -1,9 +1,5 @@
 module.exports.transformValidation = (area = "input", options = {}) => {
   const { Transform } = require("stream");
-  const { red, bold } = require("@nexssp/ansi");
-  const { di, ok, error } = require("../../lib/log");
-  const cliArgs = require("minimist")(process.argv);
-  const { inspect } = require("util");
   const validationMessages = require("./validationMessages");
   return new Transform({
     objectMode: true,
@@ -54,7 +50,7 @@ module.exports.transformValidation = (area = "input", options = {}) => {
                     "'" + k.name + "'"
                   );
                 } else {
-                  error(
+                  log.error(
                     bold(
                       `Specify validation type or correct to the right one on the _nexss.yml: '${validation.type}' `
                     )
@@ -88,12 +84,12 @@ module.exports.transformValidation = (area = "input", options = {}) => {
             }
           });
           if (errorExists.length > 0) {
-            error(
+            log.error(
               `${bold("File/Package:")} ${process.nexssCWD}\\${
                 process.nexssFilename
               }`
             );
-            error(`${red("Data (" + area + ") Validation Error(s)")}`);
+            log.error(`${red("Data (" + area + ") Validation Error(s)")}`);
             console.log(bold(errorExists.join("\n")));
             console.log(bold("DATA:"));
             console.log(JSON.stringify(data, null, 2));

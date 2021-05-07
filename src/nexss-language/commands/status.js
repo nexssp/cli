@@ -1,28 +1,25 @@
 const fs = require("fs");
 // const dirTree = require("directory-tree");
 const { NEXSS_LANGUAGES_PATH } = require("../../config/config");
-const { info, warn, error, header } = require("../../lib/log");
-const { red, bold, yellow, purple, underscore } = require("@nexssp/ansi");
-const cliArgs = require("minimist")(process.argv);
 const { execSync } = require("child_process");
-const fg = require("fast-glob");
+// const fg = require("fast-glob");
 
 const cache = require("../../lib/cache");
 cache.clean("nexss_core_getLanguages_*");
 
 process.chdir(NEXSS_LANGUAGES_PATH);
-header("Starting");
+log.header("Starting");
 const languages = fs.readdirSync(".");
 languages.forEach((langDir) => {
   if (fs.existsSync(`${langDir}/.git`)) {
     try {
       checkStatus(langDir);
     } catch (er) {
-      error(er);
+      log.error(er);
       process.exit();
     }
   } else {
-    info(`${bold(langDir)} is not git repository, ommiting`);
+    log.info(`${bold(langDir)} is not git repository, ommiting`);
   }
 });
 

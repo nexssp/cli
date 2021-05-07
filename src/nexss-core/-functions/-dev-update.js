@@ -1,10 +1,8 @@
 module.exports = () => {
   const { NEXSS_SRC_PATH } = require("../../config/config");
-  const { success, error } = require("../../lib/log");
-  const { bold } = require("@nexssp/ansi");
   const { existsSync } = require("fs");
   if (existsSync(__dirname + "/../../.git")) {
-    const tag = process.argv[3];
+    const tag = cliArgs._[3];
     if (!tag) {
       console.error("Enter version number eg. 2.0, 2.1.. or master");
       process.exit(1);
@@ -14,9 +12,9 @@ module.exports = () => {
         cwd: `${NEXSS_SRC_PATH}`,
         stdio: "inherit",
       });
-      success(`Nexss PROGRAMMER changed to tag: ${tag}`);
+      log.success(`Nexss PROGRAMMER changed to tag: ${tag}`);
     } catch (er) {
-      error(`There was an error during change Nexss PROGRAMMER to ${tag}`);
+      log.error(`There was an error during change Nexss PROGRAMMER to ${tag}`);
       console.error(er);
       process.exit();
     }

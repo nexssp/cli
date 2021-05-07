@@ -2,8 +2,6 @@ const NEXSS_CACHE_PATH = require("os").homedir() + "/.nexss/cache";
 const fs = require("fs"),
   { extname } = require("path");
 
-const { yellow, red } = require("@nexssp/ansi");
-
 const getFileUpdatedDate = (path) => {
   const stats = fs.statSync(path);
   return stats.mtime;
@@ -31,7 +29,7 @@ const clean = (glob) => {
 };
 
 const exists = (path, duration) => {
-  if (!process.argv.includes("--nocache")) {
+  if (!cliArgs.nocache) {
     if (duration) {
       const pathToCache = fileCachePath(path);
       if (fs.existsSync(pathToCache)) {
@@ -45,7 +43,7 @@ const exists = (path, duration) => {
       }
 
       if (recreateCache) {
-        if (process.argv.includes("--debug")) {
+        if (cliArgs.debug) {
           console.log(yellow("Recreating cache..."));
         }
       } else if (fs.existsSync(pathToCache)) {

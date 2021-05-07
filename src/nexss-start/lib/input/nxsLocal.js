@@ -1,5 +1,3 @@
-const { error } = require("../../../lib/log");
-
 module.exports = (data) => {
   if (data.nxsLocal) {
     let nxsLocal = data.nxsLocal;
@@ -9,14 +7,14 @@ module.exports = (data) => {
 
     for (local of nxsLocal) {
       if (!data[local]) {
-        error(
+        log.error(
           `nxsLocal:Global var '${local}' does not exist. Remove nxsLocal=${local}`
         );
         data.nxsStop = true;
       }
 
       if (data[`_${local}`] && !data.nxsLocalForce) {
-        error(
+        log.error(
           `You have used nxsLocal however there is data with name ${local} already. 
 Use nxsLocalForce if you don't want to see this message`
         );

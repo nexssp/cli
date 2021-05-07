@@ -1,9 +1,6 @@
 const { getFiles } = require("./start/files");
 const minimist = require("minimist");
 const { NEXSS_SPECIAL_CHAR } = require("../../config/defaults");
-const { error } = require("@nexssp/logdebug");
-const { bold, yellow } = require("@nexssp/ansi");
-const { di } = require("../../lib/log");
 
 require("@nexssp/extend")("string");
 
@@ -83,7 +80,7 @@ const nexssFileParser = (content, filename, nxsArgs) => {
       const lineNxsPlatform = args.nxsPlatform;
       const { checkPlatform } = require("../../lib/platform");
       if (!checkPlatform(lineNxsPlatform)) {
-        di(
+        log.di(
           `line ommited (platform not match): \n${bold(yellow("LINE"))}: `,
           orgLine
         );
@@ -157,7 +154,7 @@ const nexssFileParser = (content, filename, nxsArgs) => {
               !require("fs").existsSync(toCheck) &&
               !repos[f.name.split("/")[0]]
             ) {
-              error(
+              log.error(
                 bold("\nFile does not exist in local and remote folders:\n"),
                 bold(yellow(toCheck))
               );

@@ -10,8 +10,7 @@ module.exports.transformFile = (file, x, y) => {
   const { createReadStream, existsSync } = require("fs");
   const { extname } = require("path");
   const { nxsDebugTitle } = require("./output/nxsDebug");
-  const { timeElapsed } = require("../../nexss-start/lib/output/nxsTime");
-  const { bold } = require("@nexssp/ansi");
+  // const { timeElapsed } = require("../../nexss-start/lib/output/nxsTime");
   return new Transform({
     objectMode: true,
     highWaterMark: require("../../config/defaults").highWaterMark,

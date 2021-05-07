@@ -5,14 +5,10 @@
  * 2018/10/01 initial version
  * 2019/08/12 modified for version 2.
  */
-
-const { bold, yellow, green } = require("@nexssp/ansi");
-const { info } = require("../../lib/log");
-
 const languages = require("../lib/language");
 
-const comma = process.argv.includes("--comma");
-const list = process.argv.includes("--list");
+const comma = cliArgs.comma;
+const list = cliArgs.list;
 
 (async () => {
   let languagesList = await languages.getLanguages();
@@ -36,7 +32,7 @@ const list = process.argv.includes("--list");
     process.exit();
   }
 
-  info(`Installed languages`);
+  log.info(`Installed languages`);
   const Table = require("cli-table3");
   var table = new Table({
     head: [green("extension"), green("name"), green("descr"), green("url")],

@@ -1,7 +1,6 @@
 module.exports.writeableStdout = () => {
   const { Writable } = require("stream");
   const { timeElapsed } = require("../lib/output/nxsTime");
-  // const isDebug = process.argv.indexOf("--validate") >= 0;
   const { isJson } = require("../../lib/data/json");
 
   return new Writable({
@@ -73,7 +72,7 @@ module.exports.writeableStdout = () => {
           timeElapsed(process.nxsTime);
         } catch (error) {
           // console.log("-------------------------------------------error", error);
-          if (process.argv.indexOf("--nxsModule") >= 0) {
+          if (cliArgs.nxsModule >= 0) {
             process.stdout.write(JSON.stringify({ nxsOut: chunk }));
           } else {
             chunk =

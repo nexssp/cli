@@ -1,8 +1,5 @@
 const fs = require("fs");
 const path = require("path");
-const copydir = require("copy-dir");
-const { warn, info, hr, header } = require("../../lib/log");
-const { bold, red, yellow, green } = require("@nexssp/ansi");
 const exists = fs.existsSync;
 
 const {
@@ -12,10 +9,10 @@ const {
 const { loadConfigContent } = require("../../lib/config");
 let nexssConfig = loadConfigContent(NEXSS_PROJECT_CONFIG_PATH);
 
-let search = process.argv[4];
+let search = cliArgs._[2];
 
-info(`Projects from ${bold(NEXSS_PROJECTS_DB)}`);
-header();
+log.info(`Projects from ${bold(NEXSS_PROJECTS_DB)}`);
+log.header();
 if (exists(NEXSS_PROJECTS_DB)) {
   if (search) console.log(`Searching: ${yellow(bold(search))}`);
   const projects = require(NEXSS_PROJECTS_DB);
@@ -34,14 +31,14 @@ if (exists(NEXSS_PROJECTS_DB)) {
     }
     let workDir = projects[e].workDir;
     if (!exists(workDir)) {
-      warn(e, red(" NOT EXISTS "), projects[e].workDir);
+      log.warn(e, red(" NOT EXISTS "), projects[e].workDir);
       return;
     }
     let isNexss = exists(path.join(workDir, "_nexss.yml"));
     if (isNexss) {
-      info(yellow(e), green(bold("NEXSSP")), projects[e].workDir);
+      log.info(yellow(e), green(bold("NEXSSP")), projects[e].workDir);
     } else {
-      info(yellow(e), " ", projects[e].workDir);
+      log.info(yellow(e), " ", projects[e].workDir);
     }
   });
 }

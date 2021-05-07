@@ -2,9 +2,6 @@ const fs = require("fs");
 // const dirTree = require("directory-tree");
 const { NEXSS_PACKAGES_PATH } = require("../../config/config");
 const packagesPath = `${NEXSS_PACKAGES_PATH}`;
-const cliArgs = require("minimist")(process.argv);
-
-const { success } = require("@nexssp/logdebug");
 
 let pkgs = [];
 // TODO: To fix below syntac - make more efficient! works for now
@@ -17,20 +14,19 @@ process.chdir(packagesPath);
 
 const spawnOptions = require("../../config/spawnOptions");
 
-if (process.argv[4]) {
-  // console.log(`You have selected package: ${bold(process.argv[4])}`);
-  if (!fs.existsSync(`${process.env.NEXSS_PACKAGES_PATH}/${process.argv[4]}`)) {
+if (cliArgs._[4]) {
+  if (!fs.existsSync(`${process.env.NEXSS_PACKAGES_PATH}/${cliArgs._[4]}`)) {
     console.error(
       `Package ${red(
-        process.argv[4]
+        cliArgs._[4]
       )} not found. To install new packages eg: ${green(
-        bold(` nexss pkg install ${process.argv[4]}`)
+        bold(` nexss pkg install ${cliArgs._[4]}`)
       )}`
     );
     process.exitCode = 1;
     return;
   }
-  authors = [process.argv[4]];
+  authors = [cliArgs._[4]];
 }
 
 authors.forEach((author) => {
@@ -55,7 +51,7 @@ authors.forEach((author) => {
                       cwd: `${packagesPath}/${author}/${pkg}/${details}`,
                     })
                   );
-                  success(
+                  log.success(
                     `Completed init for package ${packagesPath}/${author}/${pkg}/${details}`
                   );
                 } catch (er) {
@@ -134,7 +130,7 @@ authors.forEach((author) => {
 });
 
 if (pkgs.length > 0) {
-  if (cliArgs._.slice(4).length > 0) {
+  if (cliArgs._.slice(6).length > 0) {
     var options = {
       // pre: "<",
       // post: ">",
@@ -143,7 +139,7 @@ if (pkgs.length > 0) {
       },
     };
     let fuzzy = require("fuzzy");
-    let fuzzyResult = fuzzy.filter(cliArgs._.slice(4).join(" "), pkgs, options);
+    let fuzzyResult = fuzzy.filter(cliArgs._.slice(6).join(" "), pkgs, options);
     pkgs = fuzzyResult.map(function (el) {
       return el.original;
     });

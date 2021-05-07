@@ -1,7 +1,5 @@
 module.exports = (data) => {
   if (data.nxsStop) {
-    const cliArgs = require("minimist")(process.argv);
-    const { bold, red } = require("@nexssp/ansi");
     r = 0;
     if (data.nxsStopReason) {
       console.log(

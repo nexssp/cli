@@ -1,8 +1,3 @@
-// console.log(
-//   "There is a default file (the same name as plugin - if exists then run it rather then help)"
-// );
-const { yellow } = require("@nexssp/ansi");
-const { info } = require("../../lib/log");
 const { displayProcesses } = require("../../lib/proc");
 const config = require(`../../nexss-language/languages/config.${process.platform}`);
 
@@ -16,5 +11,5 @@ if (process.platform !== "win32") {
   );
 }
 
-info(yellow(`Nexss Processes`));
+log.info(yellow(`Nexss Processes`));
 displayProcesses();

@@ -4,14 +4,17 @@
  * Author: Marcin Polak / nexss.com
  * 2018/10/01 initial version
  */
+
 require("./nexss-core/init.js");
 require("@nexssp/extend")("array");
+
+log.dc(bold("∞ Starting Nexss Programmer.."));
 
 if (process.platform !== "Windows") {
   process.argv = process.argv.argStripQuotes();
 }
 
-log.dc(bold("∞ Starting Nexss Programmer.."));
+nConst("hasStdin", cliArgs[nexss[":i"]]);
 
 const NEXSS_SRC_PATH = process.env.NEXSS_SRC_PATH;
 const NEXSS_PACKAGES_PATH = process.env.NEXSS_PACKAGES_PATH;
@@ -34,16 +37,19 @@ if (process.argv[2] && process.argv[2].startsWith("-")) {
 
 // Get first parameter as plugin name.
 let plugin = cliArgs._[0];
-if (plugin) plugin += "";
-// Aliases eg start -> s. Each package has also own aliases for commands.
-// TO IMPLEMENT, NEW FEATURE: Aliases per project, per folder
-const aliases = require("./aliases.json");
+if (plugin) {
+  plugin += ""; // can be a number..
+  const aliases = require("./aliases.json");
 
-if (aliases[plugin]) {
-  plugin = aliases[plugin];
+  if (aliases[plugin]) {
+    plugin = aliases[plugin];
+  }
+} else {
+  plugin = "$#";
 }
 
-if (!plugin) plugin = NEXSS_SPECIAL_CHAR;
+// Aliases eg start -> s. Each package has also own aliases for commands.
+// TO IMPLEMENT, NEW FEATURE: Aliases per project, per folder
 
 // display main help eg: nexss help
 if (!plugin.startsWith(NEXSS_SPECIAL_CHAR) && (!plugin || plugin === "help")) {
@@ -52,23 +58,9 @@ if (!plugin.startsWith(NEXSS_SPECIAL_CHAR) && (!plugin || plugin === "help")) {
 }
 
 // During development you can create package name as plugin which is not allowed.
-if (
-  fs.existsSync(`${NEXSS_SRC_PATH}/nexss-${plugin}/`) &&
-  fs.existsSync(`${NEXSS_PACKAGES_PATH}/${plugin}`)
-) {
-  log.error("NEXSS DEVELOPER WARNING !");
-  log.error(
-    `THE PLUGIN ${NEXSS_SRC_PATH}/nexss-${plugin} colide with package ${NEXSS_PACKAGES_PATH}/${plugin}`
-  );
-  log.error(
-    `There CANNOT be the same name for plugin and package. PLEASE CHANGE THE PACKAGE NAME!`
-  );
-  log.error(`Nexss Programmer will not continue until it is done.`);
-  return;
-}
-let fileOrFolderExists;
+require("./nexss-dev").checkValidPluginName(plugin);
 
-const packageName = plugin.split("/")[0];
+let fileOrFolderExists;
 
 // Replacer so you can build shortcuts like P
 if (process.aliases[plugin]) {
@@ -77,14 +69,16 @@ if (process.aliases[plugin]) {
 
 const { isURL } = require("./lib/data/url");
 
+const packageName = plugin.split("/")[0];
+
 if (
   plugin.startsWith(NEXSS_SPECIAL_CHAR) ||
   fs.existsSync(plugin) ||
   isURL(plugin)
 ) {
   fileOrFolderExists = plugin;
-  process.argv[2] = plugin;
-  process.argv[1] = "start";
+  cliArgs._[1] = plugin;
+  cliArgs._[0] = "start";
   plugin = "start";
 } else if (
   fs.existsSync(`${NEXSS_PACKAGES_PATH}/${plugin}`) ||
@@ -97,8 +91,8 @@ if (
     installPackages(NEXSS_PACKAGES_PATH, packageName);
   }
   fileOrFolderExists = `${NEXSS_PACKAGES_PATH}/${plugin}`;
-  process.argv[2] = `${NEXSS_PACKAGES_PATH}/${plugin}`;
-  process.argv[1] = "start";
+  cliArgs._[1] = `${NEXSS_PACKAGES_PATH}/${plugin}`;
+  cliArgs._[0] = "start";
   plugin = "start";
 } else if (!fs.existsSync(`${NEXSS_SRC_PATH}/nexss-${plugin}/nexssPlugin.js`)) {
   const { perLanguage } = require("./nexss-language/lib/perLanguage");
@@ -118,13 +112,13 @@ if (fs.existsSync(`${NEXSS_SRC_PATH}/nexss-${plugin}/aliases.json`)) {
 }
 
 // Here loads when help is needed for particular command eg nexss file add help for 'file add'
-if (process.argv[4] === "help" && command) {
+if (cliArgs._[2] === "help" && command) {
   //help for command
   const helpFile = `${NEXSS_SRC_PATH}/nexss-${plugin}/commands/${command}.md`;
   try {
     if (fs.existsSync(helpFile)) {
       const helpContent = fs.readFileSync(helpFile);
-      console.info(helpContent.toString());
+      require("./nexss-core/markdown").displayMarkdown(helpContent.toString());
     } else {
       console.log(`file ${helpFile} not found.`);
     }
@@ -137,8 +131,8 @@ if (process.argv[4] === "help" && command) {
 }
 
 // TODO: New testing system to implement. Now working for the Nexss Programmer, not packages.
-// Use older version of Nexss Programmer 2.3.x-
-if (fileOrFolderExists && process.argv[2] === "test") {
+// TODO: Use older version of Nexss Programmer 2.3.x-
+if (fileOrFolderExists && cliArgs._[0] === "test") {
   //help for command
   process.chdir(fileOrFolderExists);
 
@@ -171,7 +165,10 @@ switch (command) {
           const helpContent = fs.readFileSync(
             `${fileOrFolderExists}/README.md`
           );
-          console.info(helpContent.toString());
+
+          require("./nexss-core/markdown").displayMarkdown(
+            helpContent.toString()
+          );
         } else {
           const { extname } = require("path");
           if (fs.existsSync(fileOrFolderExists)) {
@@ -190,7 +187,7 @@ switch (command) {
       const helpContent = fs.readFileSync(
         `${NEXSS_SRC_PATH}/nexss-${plugin}/help.md`
       );
-      console.info(helpContent.toString());
+      require("./nexss-core/markdown").displayMarkdown(helpContent.toString());
     } catch (error) {
       console.log(error);
       log.error(`Long help is not found for plugin nexss-${plugin}`);
@@ -218,15 +215,12 @@ switch (command) {
           );
         }
       } else {
-        //We check if there is command with the same name as plugin to run it
+        // First we check if the command exists
         if (
           fs.existsSync(
             `${NEXSS_SRC_PATH}/nexss-${plugin}/commands/${plugin}.js`
           )
         ) {
-          // log.d(
-          //   yellow(`Loading plugin.. ./nexss-${plugin}/commands/${plugin}.js`)
-          // );
           require(`./nexss-${plugin}/commands/${plugin}.js`);
         } else {
           let helpContent = "";
@@ -235,7 +229,7 @@ switch (command) {
               `${NEXSS_SRC_PATH}/nexss-${plugin}/help.md`
             );
           } catch (e) {
-            error(
+            log.error(
               `File ${helpContent} has not been found. This maybe the issue that you have installed different versions of Nexss Programmer. Try use --nocache option to recreate cache.`
             );
             process.exit(1);
@@ -249,9 +243,12 @@ switch (command) {
           helpContent += `${bold("Commands available")} for nexss-${bold(
             plugin
           )}
+
 ${bold(filesList.join(", "))}
 example to display help 'nexss ${plugin} ${filesList[0]} help'`;
-          console.info(helpContent.toString());
+          require("./nexss-core/markdown").displayMarkdown(
+            helpContent.toString()
+          );
         }
       }
     } catch (err) {

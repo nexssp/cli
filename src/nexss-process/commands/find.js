@@ -1,26 +1,23 @@
 const find = require("find-process");
-const { green, bold, yellow } = require("@nexssp/ansi");
-const { error } = require("../../lib/log");
-let whatToFind = process.argv[4];
+let whatToFind = cliArgs._[2];
 
 if (!["port", "pid", "name"].includes(whatToFind)) {
   if (isNaN(whatToFind)) {
     // You don't have to specify the 'name' after find
     // eg this is equal nexss ps find myproc AND nexss ps find name myproc
     console.log(`Finding process '${whatToFind}'..`);
-    process.argv[5] = whatToFind;
+    cliArgs._[3] = whatToFind;
     whatToFind = "name";
   } else {
     console.log(`Finding process with id '${whatToFind}'..`);
-    process.argv[5] = whatToFind;
+    cliArgs._[3] = whatToFind;
     whatToFind = "pid";
   }
-  console.log();
 }
 // https://www.npmjs.com/package/find-process
 switch (whatToFind) {
   case "port":
-    const port = process.argv[5];
+    const port = cliArgs._[3];
     find("port", port).then(function (list) {
       const Table = require("cli-table3");
 
@@ -40,7 +37,7 @@ switch (whatToFind) {
     });
     break;
   case "pid":
-    const pid = process.argv[5];
+    const pid = cliArgs._[3];
     find("pid", pid).then(function (list) {
       const Table = require("cli-table3");
 
@@ -55,7 +52,7 @@ switch (whatToFind) {
     });
     break;
   case "name":
-    const name = process.argv[5];
+    const name = cliArgs._[3];
     find("name", name, true).then(function (list) {
       const Table = require("cli-table3");
       var table = new Table({
@@ -76,8 +73,8 @@ switch (whatToFind) {
     });
     break;
   default:
-    error(`Only find pid, name or port is available for searching.`);
-    error(`eg: nexss ps find port 8000 or nexss ps find name node`);
+    log.error(`Only find pid, name or port is available for searching.`);
+    log.error(`eg: nexss ps find port 8000 or nexss ps find name node`);
     process.exit();
     break;
 }

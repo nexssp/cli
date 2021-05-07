@@ -13,7 +13,7 @@ function getLanguagesConfigFiles() {
   paths.push(
     path.join(__dirname, "..", ...languagePathArray).replace(/\\/g, "/")
   );
-  // di(`Languages Path: ${nexssLanguagesConfigPath}`);
+  // log.di(`Languages Path: ${nexssLanguagesConfigPath}`);
 
   // PROJECTPATH/languages/php/win32/nexss.config.js
   paths.push(

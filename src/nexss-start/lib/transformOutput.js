@@ -1,8 +1,5 @@
 module.exports.transformOutput = (x, y, z) => {
   const { Transform } = require("stream");
-
-  const { error, warn, ok, isErrorPiped } = require("../../lib/log");
-  const { bold, red } = require("@nexssp/ansi");
   const nxsFieldModule = require("./output/nxsField");
   const nxsFieldsModule = require("./output/nxsFields");
   const nxsConcatModule = require("./output/nxsConcat");
@@ -191,7 +188,7 @@ module.exports.transformOutput = (x, y, z) => {
 
         // console.log(data);
         // self.push(data.toString("utf8").trim());
-        if (process.argv.includes("--nxsDataSize")) {
+        if (cliArgs.nxsDataSize) {
           const {
             dataSize,
           } = require("../../nexss-start/lib/output/nxsDataSize");

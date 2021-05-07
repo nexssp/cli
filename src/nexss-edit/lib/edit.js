@@ -1,6 +1,4 @@
 module.exports.edit = (filename) => {
-  const { error } = require("../../lib/log");
-  const { bold } = require("@nexssp/ansi");
   const extension = require("path").extname(filename);
   const { getLangByFilename } = require("../../nexss-language/lib/language");
   const languageSelected = getLangByFilename(`example.${extension}`, true);
@@ -22,7 +20,7 @@ module.exports.edit = (filename) => {
     filename = ".";
   } else {
     if (!require("fs").existsSync(filename)) {
-      error(`${bold(filename)} not found.`);
+      log.error(`${bold(filename)} not found.`);
       process.exit(1);
     }
   }

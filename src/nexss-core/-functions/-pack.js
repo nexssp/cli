@@ -1,4 +1,3 @@
-const { bold, blue, yellow, grey, red } = require("@nexssp/ansi");
 const { pack } = require("@nexssp/packunpack");
 const minimist = require("minimist");
 const program = "nexss";

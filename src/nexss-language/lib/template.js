@@ -1,8 +1,6 @@
 const nexssLanguages = require("../../nexss-language/lib/language");
 const { getFiles } = require("../../lib/fs");
 const { join, extname, dirname } = require("path");
-const { error } = require("../../lib/log");
-const { bold } = require("@nexssp/ansi");
 
 module.exports.templateNames = (arg) => {
   if (arg) {
@@ -88,10 +86,10 @@ module.exports.getTemplatesPaths = (ext) => {
   const langFileTemplates = join(langPath, templateFolder);
 
   if (!require("fs").existsSync(langFileTemplates)) {
-    error(
+    log.error(
       `Folder ${langFileTemplates} with templates does not exist. Probably has been manually deleted.`
     );
-    error(
+    log.error(
       `Please run with --nocache to recreate cache and try again. eg: 'nexss Id --nocache'`
     );
     process.exit();

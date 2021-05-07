@@ -2,7 +2,7 @@ const fs = require("fs");
 // const dirTree = require("directory-tree");
 const { NEXSS_PACKAGES_PATH } = require("../../config/config");
 const packagesPath = `${NEXSS_PACKAGES_PATH}`;
-const cliArgs = require("minimist")(process.argv);
+
 const authors = fs.readdirSync(packagesPath);
 
 let pkgs = [];
@@ -64,7 +64,7 @@ authors.forEach((author) => {
 });
 
 if (pkgs.length > 0) {
-  if (cliArgs._.slice(4).length > 0) {
+  if (cliArgs._.slice(6).length > 0) {
     var options = {
       // pre: "<",
       // post: ">",
@@ -73,7 +73,7 @@ if (pkgs.length > 0) {
       },
     };
     let fuzzy = require("fuzzy");
-    let fuzzyResult = fuzzy.filter(cliArgs._.slice(4).join(" "), pkgs, options);
+    let fuzzyResult = fuzzy.filter(cliArgs._.slice(6).join(" "), pkgs, options);
     pkgs = fuzzyResult.map(function (el) {
       return el.original;
     });

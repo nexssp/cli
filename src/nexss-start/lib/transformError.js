@@ -4,8 +4,6 @@ module.exports.transformError = (
   options = {}
 ) => {
   const { Transform } = require("stream");
-  const { yellow } = require("@nexssp/ansi");
-  const { di } = require("../../lib/log");
   const { inspect } = require("util");
   return new Transform({
     highWaterMark: require("../../config/defaults").highWaterMark,
@@ -20,7 +18,7 @@ module.exports.transformError = (
       //   process.stdout.cursorTo(0);
       // }
       chunk = chunk.toString();
-      di(`${yellow(title)} \n ${inspect(chunk)}\n${yellow(title)} \n`);
+      log.di(`${yellow(title)} \n ${inspect(chunk)}\n${yellow(title)} \n`);
       //chunk.teeeeeeet = "works!!";
       //   process.stdout.write(
       //     `ERROR TRANSFORMER:${title}\n================\n${chunk}======================\n`

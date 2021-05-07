@@ -1,10 +1,7 @@
-const { nConst } = require("@nexssp/const");
-
 // const nxsInModule = require("./input/nxsIn");
 module.exports.readable = (startData) => {
   const { Readable } = require("stream");
   const fs = require("../../lib/fs");
-  const { info, error } = require("@nexssp/logdebug");
   let paramNumber = 2;
   if (process.argv[2] === "s" || process.argv[2] === "start") {
     paramNumber = 3;
@@ -38,7 +35,7 @@ module.exports.readable = (startData) => {
 
   // TEST DATA
   if (cliArgs.nxsTest) {
-    info("Testing enabled");
+    log.info("Testing enabled");
     let testDataPassed = cliArgs.testData || cliArgs.testdata;
     if (!testDataPassed) {
       testData = require("../../config/testingData.json");
@@ -48,13 +45,13 @@ module.exports.readable = (startData) => {
         testData = require(testDataPath);
       } catch (_) {
         if (!fs.existsSync(testDataPath)) {
-          error(
+          log.error(
             `Your test data ${bold(
               testDataPath
             )} must be valid json or JavaScript/NodeJS file!`
           );
         } else {
-          error(
+          log.error(
             `Your test data ${bold(
               testDataPath
             )} must be valid json or JavaScript/NodeJS file!`
@@ -64,7 +61,7 @@ module.exports.readable = (startData) => {
         process.exit();
       }
     }
-    info("Testing Input Data", JSON.stringify(testData, 2));
+    log.info("Testing Input Data", JSON.stringify(testData, 2));
     Object.assign(startData, testData);
   }
   // STDIN -trim just to avoid extra params from JSON
@@ -89,7 +86,7 @@ module.exports.readable = (startData) => {
       dataStdin = JSON.parse(stdinRead);
     } catch (er) {
       if (stdinRead.startsWith("SyntaxError: ")) {
-        error(stdinRead);
+        log.error(stdinRead);
         process.exitCode = 1;
         return;
       }

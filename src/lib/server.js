@@ -1,9 +1,7 @@
-const { yellow, bold } = require("@nexssp/ansi");
 const { spawn } = require("child_process");
 const { PassThrough } = require("stream");
 const parser = require("url");
 const http = require("http");
-const { info, warn, error } = require("./log");
 const fs = require("fs");
 const path = require("path");
 
@@ -16,7 +14,7 @@ module.exports.startServer = (server, opts, runSequence) => {
   //   console.log("addr: " + add);
   // });
   const hostAddress = `${host}:${port}`;
-  info(`Starting server.. ${yellow(hostAddress)}, CTRL+C (twice) to exit.`);
+  log.info(`Starting server.. ${yellow(hostAddress)}, CTRL+C (twice) to exit.`);
 
   let nexssStartArgs = process.argv.splice(2);
   // console.log(nexssStartArgs);
@@ -49,7 +47,7 @@ module.exports.startServer = (server, opts, runSequence) => {
   }
   const keyPem = server && server.key ? server.key : null;
   if (keyPem && !fs.existsSync(keyPem)) {
-    error(
+    log.error(
       `Server key '${server.key}' which is specified in the _nexss.yml does not exist. (./key.pem?)`
     );
     process.exit();
@@ -57,7 +55,7 @@ module.exports.startServer = (server, opts, runSequence) => {
   const certPem = server && server.cert ? server.cert : null;
 
   if (certPem && !fs.existsSync(certPem)) {
-    error(
+    log.error(
       `Server cert '${server.key}' which is specified in the _nexss.yml does not exist. (./cert.pem?)`
     );
     process.exit();

@@ -1,5 +1,5 @@
 module.exports.note = (...args) => {
-  const isLearningMode = process.argv.indexOf("--nxsLearning") >= 0;
+  const isLearningMode = cliArgs.nxsLearning;
   if (isLearningMode) {
     console.error(`Learning note:`, ...args);
   }

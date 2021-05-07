@@ -8,8 +8,6 @@
 
 const imageWith = 100;
 
-const { bold, yellow, green } = require("@nexssp/ansi");
-const { info } = require("../../lib/log");
 const { dirname, join, extname } = require("path");
 const {
   readdirSync,
@@ -35,7 +33,7 @@ console.log(`Result path: ${resultPath}`);
 console.log(`Logos path: ${logosPath}`);
 (async () => {
   let languagesList = await languages.getLanguages();
-  info(`Installed languages`);
+  log.info(`Installed languages`);
   let res = [];
   for (var key in languagesList) {
     let details = languagesList[key];

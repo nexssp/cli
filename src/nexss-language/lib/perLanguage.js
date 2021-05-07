@@ -15,7 +15,7 @@ const perLanguage = (extension) => {
 
     let builder;
     if (!compiler) {
-      const { getBuilder } = require("./nexss-start/lib/start/builder");
+      const { getBuilder } = require("./builder");
       builder = getBuilder({
         path: "",
         name: `test${languageSelected.extensions[0]}`,
@@ -35,14 +35,14 @@ const perLanguage = (extension) => {
 
     // INSTALL / UNINSTALL
     if (
-      (process.argv[3] === "install" || process.argv[3] === "uninstall") &&
-      (!process.argv[4] || argsNoAffect.includes(process.argv[4]))
+      (cliArgs._[1] === "install" || cliArgs._[1] === "uninstall") &&
+      (!cliArgs._[2] || argsNoAffect.includes(cliArgs._[2]))
     ) {
-      if (process.argv[4] === "--" || process.argv[4] === "--nocache") {
-        delete process.argv[4];
+      if (cliArgs._[2] === "--" || cliArgs._[2] === "--nocache") {
+        delete cliArgs._[2];
       }
 
-      if (process.argv[3] === "install") {
+      if (cliArgs._[1] === "install") {
         const installCommand = `${
           compiler && compiler.install ? compiler.install : builder.install
         } ${pmArguments.join(" ")}`;
@@ -269,7 +269,7 @@ const perLanguage = (extension) => {
           extensions: languageSelected.extensions,
           configFile: languageSelected.configFile,
         };
-        if (process.argv.includes("--json")) {
+        if (cliArgs.json) {
           console.info(JSON.stringify(info));
         } else {
           console.info(info);
@@ -286,7 +286,7 @@ const perLanguage = (extension) => {
         //   }
         // });
 
-        if (process.argv.includes("--json")) {
+        if (cliArgs.json) {
           console.info(JSON.stringify(languageSelected));
         } else {
           console.info(languageSelected);

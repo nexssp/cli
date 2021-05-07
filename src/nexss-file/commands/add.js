@@ -26,8 +26,6 @@ Object.defineProperty(Object.prototype, "push", {
 
 const cliArgs = require("minimist")(process.argv.slice(3));
 const { searchData } = require("../../lib/search");
-const { yellow, bold } = require("@nexssp/ansi");
-const { error, ok, success, info } = require("../../lib/log");
 const {
   NEXSS_PROJECT_SRC_PATH,
   NEXSS_PROJECT_CONFIG_PATH,
@@ -46,7 +44,7 @@ if (
     options.fileName
   )
 ) {
-  error(`Add valid filename like: mycorrectfilename.[extension]. Examples:
+  log.error(`Add valid filename like: mycorrectfilename.[extension]. Examples:
 nexss file add myfile.js
 nexss f a myfile.rs`);
   process.exit(0);
@@ -65,7 +63,7 @@ if (
 }
 
 if (fs.existsSync(options.filePath) && !cliArgs.force && !cliArgs.f) {
-  error(`File already exists: ${options.fileName}`);
+  log.error(`File already exists: ${options.fileName}`);
   process.exit(0);
 }
 
@@ -78,14 +76,14 @@ let questions = [];
 if (options.template) {
   if (extname(options.template)) {
     if (!isAbsolute(options.template)) {
-      error(`Please enter template name without extension or pass the absolute path. Example:
+      log.error(`Please enter template name without extension or pass the absolute path. Example:
 nexss file add myprogram.js --template=default
 nexss file add myprogram.js --template=helloWorld
 `);
       process.exit(0);
     } else {
       if (existsSync(options.template)) {
-        error(`The template${options.template} does not exist.`);
+        log.error(`The template${options.template} does not exist.`);
         process.exit(0);
       }
     }
@@ -151,17 +149,19 @@ function execute(options) {
     options.templatePath = templatesPath;
 
     if (!fs.existsSync(options.templatePath)) {
-      error(`Template ${bold(options.template)} does not exist.`);
-      error(`File ${bold(normalize(options.fileName))} has not been created.`);
+      log.error(`Template ${bold(options.template)} does not exist.`);
+      log.error(
+        `File ${bold(normalize(options.fileName))} has not been created.`
+      );
       process.exit(0);
     } else {
-      info(
+      log.info(
         `Using ${bold(options.template)} template. Creating from template...`
       );
 
       const directory = dirname(filePath);
       if (!fs.existsSync(directory)) {
-        info(
+        log.info(
           `src/ folder not found. creating in the main folder. ${NEXSS_PROJECT_SRC_PATH}`
         );
       }
@@ -169,17 +169,17 @@ function execute(options) {
       try {
         fs.copyFileSync(options.templatePath, filePath);
 
-        ok(`File ${yellow(bold(normalize(filePath)))} has been created.`);
+        log.ok(`File ${yellow(bold(normalize(filePath)))} has been created.`);
       } catch (err) {
         if (err.code === "ENOENT") {
-          error(
+          log.error(
             `Error during copy from ${normalize(
               options.templatePath
             )} to ${filePath}`
           );
           return;
         } else if (err.code === "EACCES") {
-          error(
+          log.error(
             `Error during copy from ${normalize(
               options.templatePath
             )} to ${filePath}. Permission denied. You may need to run this as root? or change permissions?`
@@ -205,7 +205,7 @@ function execute(options) {
           !cliArgs.f &&
           configContent.findByProp("files", "name", options.fileName)
         ) {
-          info(
+          log.info(
             yellow(
               `File '${normalize(
                 options.fileName
@@ -218,7 +218,7 @@ function execute(options) {
             name: options.fileName,
           });
           saveConfigContent(configContent, NEXSS_PROJECT_CONFIG_PATH);
-          success("Done.");
+          log.success("Done.");
         }
       }
     }

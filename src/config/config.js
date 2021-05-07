@@ -9,7 +9,6 @@ const { join, dirname, normalize } = require("path");
 const cache = require("../lib/cache");
 const { homedir } = require("os");
 const { existsSync } = require("fs");
-const { bold } = require("@nexssp/ansi");
 // User home directory for .nexss eg: C:\Users\mapoart\.nexss
 const home = homedir();
 

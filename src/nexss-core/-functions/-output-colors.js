@@ -1,29 +1,10 @@
+const changeConfig = require("../lib/changeConfig");
+// This module modify config based on the filename so it is easier to make another one with docs.
+// For example this one changes arg:progress
 module.exports = () => {
-  const json = require("../../lib/data/json");
-  let newConfig = Object.assign({}, process.nexssGlobalConfig);
-  if (!newConfig.colors) {
-    newConfig.colors = {};
-  }
+  const argumentFromFilename = process.argv[2];
+  const valueOfArgument = cliArgs._[0];
 
-  let value = process.argv[3];
-
-  const validParameters = ["enable", "1", "disable", "0"];
-  if (!validParameters.includes(value)) {
-    log.error(`You can only use: ${validParameters.join(", ")}`);
-  } else {
-    switch (value) {
-      case "enable":
-        value = 1;
-        break;
-      case "disable":
-        value = 0;
-        break;
-      default:
-        break;
-    }
-
-    Object.assign(newConfig, { colors: { output: value * 1 } });
-    console.log("colors: ", newConfig.colors);
-    fs.writeFileSync(process.nexssGlobalConfigPath, json.stringify(newConfig));
-  }
+  changeConfig(argumentFromFilename, valueOfArgument);
+  process.exit(0);
 };

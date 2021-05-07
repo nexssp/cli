@@ -1,7 +1,6 @@
 module.exports.writeableStdout = () => {
   const { Writable } = require("stream");
   const { timeElapsed } = require("../lib/output/nxsTime");
-  // const isDebug = ~process.argv.indexOf("--validate");
   const { isJson } = require("../../lib/data/json");
 
   return new Writable({
@@ -128,6 +127,7 @@ module.exports.writeableStdout = () => {
         if (chunk.display) {
           console.log(bold(yellow(chunk.display)));
         }
+
         timeElapsed(process.nxsTime);
         // Below must be here as for example Blender will not display
         // Progress of rendering, some stdout will be cut etc.

@@ -1,7 +1,5 @@
 // SEQUENCES
 // more: https://github.com/nexssp/cli/wiki/Sequences
-const { error } = require("../../../lib/log");
-const { bold } = require("@nexssp/ansi");
 const getSequence = (seqName, nexssConfig, passedData) => {
   if (!seqName) {
     return (
@@ -11,14 +9,14 @@ const getSequence = (seqName, nexssConfig, passedData) => {
   }
 
   if (!nexssConfig) {
-    error(
+    log.error(
       "You can use 'sequences' ONLY in the Nexss Programmer Project. Create new project in the current folder by 'nexss project new .'"
     );
     process.exit();
   }
 
   if (!nexssConfig.sequences) {
-    error(
+    log.error(
       `There is no 'sequences' section in the _nexss.yml file: ${nexssConfig.filePath}
 more: https://github.com/nexssp/cli/wiki/Sequences`
     );
@@ -30,13 +28,13 @@ more: https://github.com/nexssp/cli/wiki/Sequences`
   seqName = foundSequence && foundSequence.seq;
   // console.log("FOUND SEQNAME: ", foundSequence);
   if (!nexssConfig.sequences[seqName]) {
-    error(`${seqName} sequence does not exist in the _nexss.yml`);
-    error(`searchSequence: ${foundSequence}`);
+    log.error(`${seqName} sequence does not exist in the _nexss.yml`);
+    log.error(`searchSequence: ${foundSequence}`);
     console.log("PATH: ", bold(nexssConfig.filePath));
     if (nexssConfig.sequences) {
       console.log("Sequences: ");
       // When the server is running we do not display terminal colors, formatting etc
-      if (process.argv.includes("--htmlOutput")) {
+      if (cliArgs.htmlOutput) {
         console.log(nexssConfig.sequences);
       } else {
         console.log(

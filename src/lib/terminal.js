@@ -1,16 +1,6 @@
 const execSync = require("child_process").execSync;
-const { bold } = require("@nexssp/ansi");
-const { error, warn, info, success, dbg, dy } = require("@nexssp/logdebug");
-const { db } = require("./log");
-// const { EOL } = require("os");
+
 const EOL = "\n";
-// let paramNumber = 2;
-// if (process.argv[2] === "s" || process.argv[2] === "start") {
-//   paramNumber = 3;
-// }
-
-const cliArgs = require("minimist")(process.argv);
-
 const platform = process.platform;
 const which = platform === "win32" ? "cmd /c where" : "command -v";
 
@@ -81,18 +71,18 @@ const ensureInstalled = (pkg, installCommand, options = {}) => {
     log.info(`installing ${yellow(bold(pkg))}, please wait..`);
 
     if (
-      !process.argv.includes("--progress") &&
+      !cliArgs.progress &&
       !(
         process.nexssGlobalConfig &&
         process.nexssGlobalConfig[nexss["arg:progress"]]
       )
     ) {
-      info("To see all installation messages use --progress.");
+      log.info("To see all installation messages use --progress.");
       defaultOptions.stdio = ["ignore", "pipe", "pipe"];
     }
 
-    if (process.argv.includes("--nxsLearning")) {
-      info(`run: ${installCommand}`);
+    if (cliArgs.nxsLearning) {
+      log.info(`run: ${installCommand}`);
     }
 
     try {
@@ -104,7 +94,7 @@ const ensureInstalled = (pkg, installCommand, options = {}) => {
           .join(` ${shellCommandSeparator} `),
         defaultOptions
       );
-      success(`${pkg} has been installed by: ${installCommand}`);
+      log.success(`${pkg} has been installed by: ${installCommand}`);
     } catch (er) {
       log.info(er.stdout ? er.stdout.toString() : "");
       log.info(er.stderr ? er.stderr.toString() : "");
@@ -139,13 +129,15 @@ const ensureInstalled = (pkg, installCommand, options = {}) => {
     if (cliArgs.verbose && !pkg.startsWith("wsl")) {
       const exploded = path.split(EOL);
       if (exploded.length > 1) {
-        dbg(
+        log.dbg(
           `${bold(pkg)} has been found at multiple location(s) ${EOL}${bold(
             path
           )}${EOL}and this one is used: ${bold(exploded[0])}`
         );
       } else {
-        dbg(`${bold(pkg)} has been found at the location ${bold(exploded[0])}`);
+        log.dbg(
+          `${bold(pkg)} has been found at the location ${bold(exploded[0])}`
+        );
       }
     }
     return path;

@@ -1,15 +1,13 @@
 const { nohup } = require("./nohup");
 const { ensureInstalled, which } = require("./terminal");
-const { warn, error, success, di } = require("./log");
-const { bold } = require("@nexssp/ansi");
 
 module.exports.checkRedis = (comm) => {
-  di("Checking communication channels / Redis");
+  log.di("Checking communication channels / Redis");
 
   if (comm) {
     const redisServer = which("redis-server");
     if (!redisServer) {
-      warn(
+      log.warn(
         "This project needs communication channel. Install and Start Redis server."
       );
       switch (process.platform) {
@@ -41,14 +39,14 @@ module.exports.checkRedis = (comm) => {
 
     this.redis = new Redis({ port, host, password });
     this.redis.on("error", (err) => {
-      error(bold(err));
-      warn("Starting Redis Server..");
+      log.error(bold(err));
+      log.warn("Starting Redis Server..");
       nohup("redis-server");
       //process.exit(1);
     });
 
     this.redis.on("connect", () => {
-      success(`Connected to redis ${host}:${port}`);
+      log.success(`Connected to redis ${host}:${port}`);
     });
 
     return this.redis;
