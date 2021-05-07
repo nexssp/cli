@@ -7,6 +7,7 @@ module.exports.worker = function ({
   options,
   startStreamTime,
   callback,
+  StreamCache,
 } = {}) {
   const { nxsDebugTitle } = require("./output/nxsDebug");
   const { timeElapsed } = require("./output/nxsTime");
@@ -14,7 +15,10 @@ module.exports.worker = function ({
   const { spawn } = require("child_process");
   const { parseError } = require("./error");
   const { colorizer } = require("./colorizer");
-  // NOTE: below showing that are not used, but they ARE!!!
+
+  // If nexssCache enabled, output will be cached first and then send out.
+  // Output is passed to another stream after is send out partly.
+  const nexssCache = StreamCache;
 
   let startCompilerTime;
   //Yes startStreamTime below

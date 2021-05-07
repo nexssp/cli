@@ -19,6 +19,8 @@ const arguments = {
     "When platform does not match, command will not run, however it will return exitCode:0, so it can continue.",
   ":i":
     "When you run a program, from version 2.4.4, you need to pass n:i to start programes associated with JSON stdin so helloWorld, default etc.",
+  "stream:cache":
+    "Enables cache for streams, so each stream is freed(send to another one after finish.)",
 };
 
 // Proxy is used to not duplicate data or making constants etc. We use Object but when key does not exist

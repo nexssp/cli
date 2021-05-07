@@ -7,6 +7,7 @@ module.exports.transformNexss = (
     inputData,
     cwd,
     env,
+    StreamCache,
   } = defaultExecuteOptions
 ) => {
   const { defaultExecuteOptions } = require("../../config/defaults");
@@ -20,7 +21,6 @@ module.exports.transformNexss = (
   return new Transform({
     objectMode: true,
     transform(chunk, encoding, callback) {
-      nexssCache = false;
       const argsDisplay = args
         .filter((e) => !e.includes("--debug"))
         .filter((e) => !e.startsWith("--nxs"))
@@ -97,6 +97,7 @@ module.exports.transformNexss = (
         fileName,
         options,
         startStreamTime,
+        StreamCache: cliArgs[nexss["stream:cache"]],
         callback,
       });
 
