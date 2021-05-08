@@ -1,6 +1,8 @@
 const NEXSS_CACHE_PATH = require("os").homedir() + "/.nexss/cache";
 const fs = require("fs"),
   { extname } = require("path");
+const { setImmediate } = require("timers");
+const json = require("../lib/data/json");
 
 const getFileUpdatedDate = (path) => {
   const stats = fs.statSync(path);
@@ -47,12 +49,12 @@ const exists = (path, duration) => {
           console.log(yellow("Recreating cache..."));
         }
       } else if (fs.existsSync(pathToCache)) {
+        let resultToString;
         //Cache exists so we get result from cache
         if (extname(pathToCache) !== ".json") {
           resultToString = fs.readFileSync(pathToCache);
         } else {
           resultToString = fs.readFileSync(pathToCache);
-          const json = require("../lib/data/json");
           resultToString = json.parse(resultToString);
         }
 
@@ -64,14 +66,18 @@ const exists = (path, duration) => {
 
 const write = (path, content) => {
   const pathToCache = fileCachePath(path);
-  fs.writeFileSync(pathToCache, content);
+  setImmediate(() => {
+    fs.writeFileSync(pathToCache, content);
+  });
 };
 
 const writeJSON = (filename, content) => {
-  module.exports.write(
-    filename,
-    JSON.stringify(content, (k, v) => (typeof v === "function" ? "" + v : v))
-  );
+  setImmediate(() => {
+    write(
+      filename,
+      JSON.stringify(content, (k, v) => (typeof v === "function" ? "" + v : v))
+    );
+  });
 };
 
 const read = (path) => {
@@ -85,9 +91,8 @@ const read = (path) => {
   return content;
 };
 
-const readJSON = (filename) => {
-  const data = module.exports.read(filename);
-  const json = require("../lib/data/json");
+function readJSON(filename) {
+  let data = read(filename);
 
   try {
     return json.parse(data, function (k, v) {
@@ -101,16 +106,18 @@ const readJSON = (filename) => {
       return v;
     });
   } catch (e) {
-    console.error("ERROR:", e);
+    console.error("ERROR:", "filename: ", filename, "JSON:", data.toString());
     process.exit();
   }
-};
+}
+
 const del = (path) => {
   const pathToCache = fileCachePath(path);
-  if (!fs.existsSync(pathToCache)) {
-    return;
-  }
-  return fs.unlinkSync(pathToCache);
+  setImmediate(() => {
+    if (fs.existsSync(pathToCache)) {
+      return fs.unlinkSync(pathToCache);
+    }
+  });
 };
 
 module.exports = {

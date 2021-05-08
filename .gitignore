@@ -4,3 +4,4 @@ devNotes.md
 .vscode
 dist
 nexssp-cli-*.tgz
+dev.json

@@ -3,6 +3,7 @@ const execSync = require("child_process").execSync;
 const buildNocache = "--no-cache";
 const path = require("path");
 const cliArgs = require("minimist")(process.argv.slice(2));
+const { yellow, bold, green } = require("@nexssp/ansi");
 
 if (!cliArgs._[0]) {
   console.error("You need to pass dockerFile filename as argument.");

@@ -39,8 +39,17 @@ function getLanguagesConfigFiles() {
 
 module.exports.getLanguages = (recreateCache) => {
   const getLanguagesCacheName = `nexss_core_getLanguages__.json`;
+
+  if (process.languages && !recreateCache) {
+    log.dm(`¦ Reading all languages data from cache.`);
+    return process.languages;
+  } else {
+    log.dm(`¦ making configuration for all language config.`);
+  }
+
   if (!recreateCache && cache.exists(getLanguagesCacheName, "1y")) {
-    return cache.readJSON(getLanguagesCacheName);
+    process.languages = cache.readJSON(getLanguagesCacheName);
+    return process.languages;
   }
 
   let result = {};
@@ -76,6 +85,8 @@ module.exports.getLanguages = (recreateCache) => {
   if (Object.keys(result).length > 0) {
     cache.writeJSON(getLanguagesCacheName, result);
   }
+
+  process.languages = result;
 
   return result;
 };
