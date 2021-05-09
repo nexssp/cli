@@ -1,5 +1,5 @@
 const { parseData } = require("@nexssp/expression-parser");
-const nxsExecute = require("./output/nxsExecute");
+
 module.exports.transformHash = (cmd, inputData, options) => {
   const { Transform } = require("stream");
   const { nxsDebugData } = require("./output/nxsDebug");
@@ -23,27 +23,27 @@ module.exports.transformHash = (cmd, inputData, options) => {
         execCommand = n.substring(char.length);
       }
 
-      if (cliArgs.nxsComments) {
-        //??
-        if (n.length === 0) {
-          log.info(inputData._.join(" "));
-        } else {
-          const splitter = n.split(":");
-          if (splitter.length === 1) {
-            log.info(splitter[0]);
-          } else {
-            switch (splitter[0]) {
-              case "warn":
-                log.warn(splitter[1]);
-                break;
-              default:
-                log.error(splitter[1], "Command not found.");
-                callback(null, { status: "error", data: chunk.data });
-                return;
-            }
-          }
-        }
-      }
+      // if (cliArgs.nxsComments) {
+      //   //??
+      //   if (n.length === 0) {
+      //     log.info(inputData._.join(" "));
+      //   } else {
+      //     const splitter = n.split(":");
+      //     if (splitter.length === 1) {
+      //       log.info(splitter[0]);
+      //     } else {
+      //       switch (splitter[0]) {
+      //         case "warn":
+      //           log.warn(splitter[1]);
+      //           break;
+      //         default:
+      //           log.error(splitter[1], "Command not found.");
+      //           callback(null, { status: "error", data: chunk.data });
+      //           return;
+      //       }
+      //     }
+      //   }
+      // }
       let newData = chunk.data;
 
       // We add the data from the command line --
@@ -55,12 +55,14 @@ module.exports.transformHash = (cmd, inputData, options) => {
             execExclamationMark,
           } = require("../lib/specialCommands/!.js");
           execExclamationMark(execCommand);
+          newData["nxsOut"] = newData["nxsIn"];
           break;
         case "!!":
           const {
             execDoubleExclamationMark,
           } = require("../lib/specialCommands/!!.js");
           newData = execDoubleExclamationMark(execCommand, newData);
+          newData["nxsOut"] = newData["nxsIn"];
           break;
         default:
           break;

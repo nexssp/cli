@@ -69,7 +69,7 @@ const { isURL } = require("./lib/data/url");
 
 const packageName = plugin.split("/")[0];
 
-if (isSpecialChar(plugin) || fs.existsSync(plugin) || isURL(plugin)) {
+if (startWithSpecialChar(plugin) || fs.existsSync(plugin) || isURL(plugin)) {
   fileOrFolderExists = plugin;
   cliArgs._[1] = plugin;
   cliArgs._[0] = "start";
