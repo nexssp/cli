@@ -65,8 +65,6 @@ module.exports.writeableStdout = () => {
             );
             console.error(JSON.stringify(Object.keys(chunk)));
           } else {
-            console.log(chunk);
-
             chunk =
               typeof chunk === "object" || typeof chunk === "number"
                 ? JSON.stringify(chunk)

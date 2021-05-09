@@ -109,7 +109,6 @@ module.exports.readable = (startData) => {
 
   const { parseData } = require("@nexssp/expression-parser");
   startData = parseData(startData, ["nexss", "cwd", "start"]);
-
   // Remove first parameter (script name)
   // Delete empty _
   // if (cliArgs._ && cliArgs._.shift) {
