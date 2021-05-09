@@ -11,6 +11,19 @@ module.exports = (data, field) => {
           } else {
             console.log(data[field]);
           }
+        } else {
+          if (data[field]) {
+            // stdout is used for ! and !! special commands.
+            console.log(data[field]);
+          }
+
+          if (data["stdout"]) {
+            console.log(data["stdout"]);
+          }
+          if (data["stderr"]) {
+            console.log("Error:");
+            console.log(data["stderr"]);
+          }
         }
       }
     } else {
