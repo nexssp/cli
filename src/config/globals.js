@@ -56,7 +56,7 @@ if (fs.existsSync(process.nexssGlobalConfigPath)) {
 
 const { checkPlatform } = require("../lib/platform");
 
-const nxsPlatform = cliArgs.nxsPlatform ?? cliArgs[nexss["platform:check"]];
+const nxsPlatform = cliArgs.nxsPlatform || cliArgs[nexss["platform:check"]];
 
 if (nxsPlatform && nxsPlatform.split) {
   const platforms = nxsPlatform.split(",");
