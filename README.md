@@ -41,6 +41,8 @@ Example:
 - `nexss r install` OR `nexss py install` OR `nexss php install` OR ..
 - `nexss [language file extension] install`
 
+- **NEW:** easy shortcuts: `nexss py d` (creates file with default template), `nexss py h` (with helloWorld template), `nexss py e` (and empty file - if exists in the templates - !empty.[extension]) **(2.4.8+)**
+
 ### Compile, compose over **50** programming languages
 
 if there is no compiler installed, nexss programmer will install it automatically.

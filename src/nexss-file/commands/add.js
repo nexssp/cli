@@ -34,7 +34,6 @@ const fs = require("fs");
 const { loadConfigContent, saveConfigContent } = require("../../lib/config");
 const nexssLanguages = require("../../nexss-language/lib/language");
 const { extraFunctions } = require("../lib/fileExtraOptions");
-const { exit } = require("process");
 
 var options = {};
 options.fileName = cliArgs._[1] || options.fileName || "";
@@ -73,7 +72,25 @@ var lang = nexssLanguages.getLang(options.extension);
 
 let questions = [];
 
-if (options.template) {
+if (
+  options.template ||
+  cliArgs.helloWorld ||
+  cliArgs.HelloWorld ||
+  cliArgs.default ||
+  cliArgs.empty
+) {
+  if (cliArgs.helloWorld) {
+    options.template = "helloWorld";
+  } else if (cliArgs.HelloWorld) {
+    options.template = "HelloWorld";
+  } else if (cliArgs.default) {
+    options.template = "default";
+  } else if (cliArgs.empty) {
+    options.template = "!empty";
+  } else if (cliArgs.e) {
+    options.template = "!empty";
+  }
+
   if (extname(options.template)) {
     if (!isAbsolute(options.template)) {
       log.error(`Please enter template name without extension or pass the absolute path. Example:

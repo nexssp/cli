@@ -1,3 +1,17 @@
+function exec(command) {
+  try {
+    require("child_process").execSync(command, {
+      stdio: "inherit",
+      detached: false,
+      shell: process.shell,
+      cwd: process.cwd(),
+    });
+  } catch (error) {
+    console.log(`Command failed ${command}`);
+    console.error(error.message);
+  }
+}
+
 const perLanguage = (extension) => {
   const { getLangByFilename } = require("./language");
 
@@ -7,6 +21,36 @@ const perLanguage = (extension) => {
   // To use lang specific commands use
   // `nexss js install OR nexss php install` NOT!-> nexss .js install
   if (extension.split(".").length === 1 && languageSelected) {
+    const params = cliArgs.f || cliArgs.ff ? ` -f` : "";
+    switch (cliArgs._[1]) {
+      case "e":
+        exec(`nexss file add empty.${cliArgs._[0]} --empty${params}`);
+        process.exit(0);
+      case "h":
+        // Java has HelloWorld as it is required to work as className.
+        if (cliArgs._[0] !== "java") {
+          exec(
+            `nexss file add helloWorld.${cliArgs._[0]} --helloWorld${params}`
+          );
+        } else {
+          exec(
+            `nexss file add HelloWorld.${cliArgs._[0]} --HelloWorld${params}`
+          );
+        }
+
+        process.exit(0);
+      case "d":
+        if (cliArgs._[0] !== "java") {
+          exec(`nexss file add default.${cliArgs._[0]} --default${params}`);
+        } else {
+          exec(`nexss file add Default.${cliArgs._[0]} --Default${params}`);
+        }
+        process.exit(0);
+      default:
+        console.log("command not found.");
+        process.exit(1);
+    }
+
     const { getCompiler } = require("./compiler");
     const compiler = getCompiler({
       path: "",
