@@ -15,7 +15,7 @@ module.exports.worker = function ({
   const { spawn } = require("child_process");
   const { parseError } = require("./error");
   const { colorizer } = require("./colorizer");
-
+  const { parseData } = require("@nexssp/expression-parser");
   // If nexssCache enabled, output will be cached first and then send out.
   // Output is passed to another stream after is send out partly.
   const nexssCache = StreamCache;
@@ -208,12 +208,7 @@ module.exports.worker = function ({
   j = chunk.data;
 
   try {
-    const { expressionParser } = require("./expressionParser");
-    Object.keys(j).forEach((e) => {
-      if (!["nexss", "cwd", "start"].includes(e)) {
-        j[e] = expressionParser(j, j[e]);
-      }
-    });
+    j = parseData(j, ["nexss", "cwd", "start"]);
   } catch (error) {
     log.dbg(`Error on parsing data: ${chunk}`);
   }

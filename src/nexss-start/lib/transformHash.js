@@ -1,5 +1,4 @@
-const { ddd } = require("@nexssp/dddebug");
-
+const { parseData } = require("@nexssp/expression-parser");
 module.exports.transformHash = (cmd, inputData, options) => {
   const { Transform } = require("stream");
   const { nxsDebugData } = require("./output/nxsDebug");
@@ -41,12 +40,8 @@ module.exports.transformHash = (cmd, inputData, options) => {
       let newData = chunk.data;
 
       newData = Object.assign(newData, options.inputData);
-      const { expressionParser } = require("./expressionParser");
-      Object.keys(newData).forEach((e) => {
-        if (!["nexss", "cwd", "start"].includes(e)) {
-          newData[e] = expressionParser(newData, newData[e]);
-        }
-      });
+
+      newData = parseData(newData, ["nexss", "cwd", "start"]);
 
       // This stream allow to make vars eg. $#
       if (newData.nxsAs) {

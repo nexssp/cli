@@ -107,12 +107,8 @@ module.exports.readable = (startData) => {
 
   // console.error("NEXSS/info:", stdinRead, "end");
 
-  const { expressionParser } = require("../lib/expressionParser");
-  Object.keys(startData).forEach((e) => {
-    if (!["nexss", "cwd", "start"].includes(e)) {
-      startData[e] = expressionParser(startData, startData[e]);
-    }
-  });
+  const { parseData } = require("@nexssp/expression-parser");
+  startData = parseData(startData, ["nexss", "cwd", "start"]);
 
   // Remove first parameter (script name)
   // Delete empty _

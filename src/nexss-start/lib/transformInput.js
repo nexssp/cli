@@ -2,7 +2,6 @@ module.exports.transformInput = (x, y, params) => {
   const nxsInModule = require("./input/nxsIn");
   const { nxsDebugData } = require("./output/nxsDebug");
   require("@nexssp/extend")("string");
-  const { expressionParser } = require("./expressionParser");
   const cliArgsParser = require("minimist");
   const nxsStop = require("./start/nxsStop");
   const nxsGlobal = require("./input/nxsGlobal");
@@ -77,11 +76,8 @@ module.exports.transformInput = (x, y, params) => {
           Object.assign(data, params.inputData);
         }
 
-        Object.keys(data).forEach((e) => {
-          if (!["nexss", "cwd", "start"].includes(e)) {
-            data[e] = expressionParser(data, data[e]);
-          }
-        });
+        const { parseData } = require("@nexssp/expression-parser");
+        data = parseData(data, ["nexss", "cwd", "start"]);
 
         // if (params && params.inputData && params.inputData.nxsInFrom) {
         //   data.nxsInFrom = params.inputData.nxsInFrom;

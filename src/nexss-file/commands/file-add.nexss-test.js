@@ -1,12 +1,24 @@
 module.exports = {
   nexsstests: [
     {
-      params: ["nexss js h", /xxxxxa  fsdf sd asgasg asg sdg sadg xxxxx/],
+      params: ["nexss js e", /File empty.js has been created./],
+    },
+    {
+      params: ["nexss js d", /File default.js has been created./],
+    },
+    {
+      params: ["nexss js h", /File helloWorld.js has been created./],
+    },
+    {
+      params: ["nexss f a my1.js --default", /File my1.js has been created./],
+    },
+    {
+      params: ["nexss f a my2.js --empty", /File my2.js has been created./],
     },
     {
       params: [
-        "nexss f a my.v --default",
-        /xxxxxa  fsdf sd asgasg asg sdg sadg xxxxx/,
+        "nexss f a my3.js --helloWorld",
+        /File my3.js has been created./,
       ],
     },
   ],

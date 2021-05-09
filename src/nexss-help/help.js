@@ -37,7 +37,7 @@ const os = require("os");
 
       return Promise.all(
         commands
-          .filter((c) => c.indexOf(".md") < 0)
+          .filter((c) => !~c.indexOf(".md") && !~c.indexOf(".nexss-test.js"))
           .map(async (command) => {
             // const shortHelp = require(`${NEXSS_SRC_PATH}/${
             //   entry.name

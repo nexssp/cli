@@ -11,7 +11,7 @@ module.exports.transformOutput = (x, y, z) => {
   // const nxsInModule = require("./input/nxsIn");
   const { nxsDebugData } = require("./output/nxsDebug");
   require("@nexssp/extend")("string");
-  const { expressionParser } = require("./expressionParser");
+  const { parseData } = require("@nexssp/expression-parser");
   const { cleanup } = require("./output/nxsOutputParams");
   const nxsStop = require("./start/nxsStop");
   return new Transform({
@@ -76,15 +76,13 @@ module.exports.transformOutput = (x, y, z) => {
       Object.assign(data, cliArgs);
       // Parsing values insde the template !!
       // You can use variables now!!!
-
+      data = parseData(data);
       Object.keys(data).forEach((e) => {
         if (!["nexss", "cwd", "start"].includes(e)) {
           if (!e.startsWith("__") && e.startsWith("_")) {
             // All vars which starts with _ are automatically cleaned up
             // as they are local for execute one Nexss Programmer Node.
             delete data[e];
-          } else {
-            data[e] = expressionParser(data, data[e]);
           }
         }
       });

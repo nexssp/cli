@@ -229,9 +229,10 @@ switch (command) {
             process.exit(1);
           }
           const fg = require("fast-glob");
-          const files = fg.sync([
-            `${__dirname}/nexss-${plugin}/commands/*.md`.replace(/\\/g, "/"),
-          ]);
+          const files = fg.sync(
+            [`${__dirname}/nexss-${plugin}/commands/*.md`.replace(/\\/g, "/")],
+            { ignore: ["!*/**/*.nexss-test.js"] }
+          );
           const { basename } = require("path");
           let filesList = files.map((f) => basename(f).replace(".md", ""));
           helpContent += `${bold("Commands available")} for nexss-${bold(
