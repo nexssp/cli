@@ -42,7 +42,7 @@ more: https://github.com/nexssp/cli/wiki/Sequences`
         );
       }
     }
-    process.exit();
+    process.exit(1);
   } else {
     const seqBody = nexssConfig.sequences[seqName];
 

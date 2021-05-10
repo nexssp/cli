@@ -2,7 +2,7 @@ module.exports = {
   nexsstests: [
     {
       title: "Default sequence",
-      params: ["nexss Nexss/Test/Sequences", /"sequence":"default"/],
+      params: ["nexss Nexss/Test/Sequences", /"sequence":"default"/, ,],
     },
     {
       title: "Named sequence",
@@ -13,6 +13,9 @@ module.exports = {
       params: [
         "nexss Nexss/Test/Sequences --seq=wrong",
         /sequence does not exist in the _nexss.yml/,
+        {
+          exitCode: 1,
+        },
       ],
     },
     {
@@ -23,6 +26,7 @@ module.exports = {
         `"nxsParam_0": "aboutxasdasd",
   "nxsParam_1": "x",
   "nxsParam_2": "asdasd"`,
+        { testFunction: "nSpawn" },
       ],
     },
     {
@@ -44,6 +48,7 @@ module.exports = {
       params: [
         "nexss Nexss/Test/Sequences --seq=mytestdata",
         `"myparam1": "overwritten"`,
+        { testFunction: "nSpawn" },
       ],
     },
     // Below is not working on some of the Linux distributions

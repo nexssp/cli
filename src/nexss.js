@@ -10,9 +10,9 @@ require("@nexssp/extend")("array");
 
 log.dc(bold("∞ Starting Nexss Programmer.."));
 
-if (process.platform !== "Windows") {
-  process.argv = process.argv.argStripQuotes();
-}
+// if (process.platform !== "Windows") {
+//   process.argv = process.argv.argStripQuotes();
+// }
 
 nConst("hasStdin", cliArgs[nexss[":i"]]);
 

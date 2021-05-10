@@ -72,10 +72,12 @@ module.exports = {
     {
       title: "--nxsSelect from pipe Array",
       type: "shouldContain",
+      testProgram: "nSpawn", // default nExec
       params:
+        // For windows we remove ' from surrounded piped json
         process.platform === "win32"
           ? [
-              'echo \'{"array":["x","y","z"]}\' | nexss Id --nxsSelect=array',
+              'echo {"array":["x","y","z"]} | nexss Id --nxsSelect=array',
               /"Select":"x","Select_2":"y","Select_3":"z"/,
             ]
           : [

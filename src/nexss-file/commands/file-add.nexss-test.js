@@ -1,4 +1,5 @@
 module.exports = {
+  defaultTestFunction: "nSpawn",
   nexsstests: [
     {
       params: ["nexss js e", /File empty.js has been created./],

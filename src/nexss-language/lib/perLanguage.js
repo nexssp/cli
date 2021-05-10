@@ -14,41 +14,45 @@ function exec(command) {
 
 const perLanguage = (extension) => {
   const { getLangByFilename } = require("./language");
+  const { nSpawn } = require("@nexssp/system");
 
-  // We check if thiscan be language specified action like
+  // We check if this can be language specified action like
   // --> eg. nexss js install socketio
   const languageSelected = getLangByFilename(`example.${extension}`);
   // To use lang specific commands use
   // `nexss js install OR nexss php install` NOT!-> nexss .js install
+
+  // First special quick functions per lanugage e,h, and d
+  // So empty, helloWorld and default templates.
   if (extension.split(".").length === 1 && languageSelected) {
     const params = cliArgs.f || cliArgs.ff ? ` -f` : "";
+    let commandToRun;
     switch (cliArgs._[1]) {
       case "e":
-        exec(`nexss file add empty.${cliArgs._[0]} --empty${params}`);
-        process.exit(0);
+        commandToRun = `nexss file add empty.${cliArgs._[0]} --empty${params}`;
+        break;
       case "h":
         // Java has HelloWorld as it is required to work as className.
         if (cliArgs._[0] !== "java") {
-          exec(
-            `nexss file add helloWorld.${cliArgs._[0]} --helloWorld${params}`
-          );
+          commandToRun = `nexss file add helloWorld.${cliArgs._[0]} --helloWorld${params}`;
         } else {
-          exec(
-            `nexss file add HelloWorld.${cliArgs._[0]} --HelloWorld${params}`
-          );
+          commandToRun = `nexss file add HelloWorld.${cliArgs._[0]} --HelloWorld${params}`;
         }
-
-        process.exit(0);
+        break;
       case "d":
         if (cliArgs._[0] !== "java") {
-          exec(`nexss file add default.${cliArgs._[0]} --default${params}`);
+          commandToRun = `nexss file add default.${cliArgs._[0]} --default${params}`;
         } else {
-          exec(`nexss file add Default.${cliArgs._[0]} --Default${params}`);
+          commandToRun = `nexss file add Default.${cliArgs._[0]} --Default${params}`;
         }
-        process.exit(0);
-      default:
-        console.log("command not found.");
-        process.exit(1);
+        break;
+    }
+
+    if (commandToRun) {
+      nSpawn(commandToRun, {
+        stdio: "inherit",
+      });
+      return;
     }
 
     const { getCompiler } = require("./compiler");
@@ -348,7 +352,7 @@ const perLanguage = (extension) => {
           compiler && compiler.install ? compiler.command : builder.command
         }`;
 
-        const { ensureInstalled } = require("./lib/terminal");
+        const { ensureInstalled } = require("../../lib/terminal");
         ensureInstalled(command, installCommand, { verbose: true });
 
         // Below runs like:
@@ -405,7 +409,10 @@ const perLanguage = (extension) => {
           log.dg(`Running FUNCTION ${argument}(${cliArgs._.join(",")})`);
           runCommand(...cliArgs._);
         } else {
-          const pmArguments = process.argv.slice(4);
+          const pmArguments = process.argv
+            .filter((e) => e !== "--debug")
+            .slice(4);
+
           runCommand =
             runCommand &&
             runCommand.replace(
@@ -416,29 +423,40 @@ const perLanguage = (extension) => {
           function escapeShellArg(arg) {
             return `"${arg}"`;
           }
-          const arguments =
-            process.platform === "win32"
-              ? `${pmArguments.join(" ")}`
-              : `${pmArguments.map(escapeShellArg).join(" ")}`;
 
+          const arguments = pmArguments.map(escapeShellArg).join(" ");
           const command = `${runCommand} ${arguments}`;
-          const spawnOptions = require("./config/spawnOptions");
+          const spawnOptions = require("../../config/spawnOptions");
 
           log.dg(`RUN: ${bold(command)}, cwd: ${process.cwd()}`);
 
-          try {
-            child_process.execSync(
-              command,
-              spawnOptions({
-                stdio: "inherit",
-                detached: false,
-                cwd: process.cwd(),
-                maxBuffer: 1024 * 1024 * 100,
-              })
-            );
-          } catch (error) {
-            console.log(`Command failed ${command}`);
+          const { nExec } = require("@nexssp/system");
+          const result = nExec(command, spawnOptions());
+
+          if (result.exitCode !== 0) {
+            if (cliArgs.debug) {
+              console.error("There was an error:");
+              console.error(result.stderr);
+            }
+          } else {
+            process.stdout.write(result.stdout);
           }
+
+          // try {
+          //   require("child_process").execSync(
+          //     command,
+          //     spawnOptions({
+          //       // windowsVerbatimArguments: true,
+          //       stdio: "inherit",
+          //       detached: false,
+          //       cwd: process.cwd(),
+          //       maxBuffer: 1024 * 1024 * 100,
+          //     })
+          //   );
+          // } catch (error) {
+          //   console.log(error.message);
+          //   console.log(`Command failed ${command}`);
+          // }
         }
         return;
       default:

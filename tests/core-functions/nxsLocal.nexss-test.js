@@ -1,4 +1,5 @@
 module.exports = {
+  defaultTestFunction: "nSpawn",
   nexsstests: [
     {
       title: "--nxsLocal (1)",

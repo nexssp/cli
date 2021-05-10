@@ -12,14 +12,14 @@ module.exports = {
     {
       title: "Run depends on platform .nexss file",
       params: [
-        "nexss Nexss/Test/Platform/example1.nexss",
+        "nexss Nexss/Test/Platform/example1.nexss --nxsPipeErrors",
         process.platform === "win32"
           ? "This command will appear only on All Windowses"
           : "This command will appear only on Linux distros", // add MacOS later
       ],
     },
     {
-      title: "Run depends on platform - exitCode 1",
+      title: "Run depends on platform - exitCode 1 for Windows",
       params: [
         `nexss Output/End "works on Ubuntu" --nxsPlatform="UBUNTU"`,
         process.platform === "win32"
@@ -28,7 +28,8 @@ module.exports = {
           ? "works on Ubuntu"
           : "",
         {
-          exitCode: 1, // Checks if the number of error code
+          exitCode: process.platform === "win32" ? 1 : 0, // Checks if the number of error code
+          testFunction: "nSpawn",
         },
       ],
     },
@@ -41,7 +42,10 @@ module.exports = {
           : process.distroTag2 === "Ubuntu"
           ? "works on Ubuntu"
           : "",
-        // { exitCode: 0 },
+        {
+          exitCode: 0, // Checks if the number of error code
+          testFunction: "nSpawn",
+        },
       ],
     },
     // ##################################################

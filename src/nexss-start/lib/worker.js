@@ -181,6 +181,9 @@ module.exports.worker = function ({
       } else {
         // callback(null, "Error during5: " + nexssCommand);
       }
+
+      process.exitCode = 1;
+
       this.errBuffer = "";
     }
   });

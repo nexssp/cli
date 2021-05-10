@@ -1,4 +1,5 @@
 module.exports = {
+  defaultTestFunction: "nSpawn",
   nexsstests: [
     {
       title: "Create New Project",
