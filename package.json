@@ -1,7 +1,7 @@
 {
   "name": "@nexssp/cli",
   "homepage": "https://nexss.com",
-  "version": "2.4.15",
+  "version": "2.4.16",
   "description": "Nexss PROGRAMMER - Over 50 programming languages together..",
   "main": "src/nexss.js",
   "bin": {
@@ -49,7 +49,7 @@
   "license": "MIT",
   "dependencies": {
     "@nexssp/ansi": "^1.1.1",
-    "@nexssp/cache": "^1.0.2",
+    "@nexssp/cache": "^1.0.3",
     "@nexssp/const": "^1.0.13",
     "@nexssp/dddebug": "^1.0.5",
     "@nexssp/ensure": "^1.0.2",
