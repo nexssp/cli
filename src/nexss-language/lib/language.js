@@ -1,4 +1,7 @@
 const cache = require("@nexssp/cache");
+if (cliArgs.nocache) {
+  cache.recreateCache(); //set flag to recreate cache
+}
 
 function getLanguagesConfigFiles() {
   let paths = [];

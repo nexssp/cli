@@ -3,6 +3,9 @@ const fs = require("fs");
 const { NEXSS_LANGUAGES_PATH } = require("../../config/config");
 const { ensureInstalled } = require("@nexssp/ensure");
 const cache = require("@nexssp/cache");
+if (cliArgs.nocache) {
+  cache.recreateCache(); //set flag to recreate cache
+}
 cache.clean("nexss_core_getLanguages_*");
 
 process.chdir(NEXSS_LANGUAGES_PATH);

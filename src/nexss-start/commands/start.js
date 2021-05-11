@@ -88,6 +88,9 @@ function Nexss() {
   files = files.filter(Boolean);
 
   const cache = require("@nexssp/cache");
+  if (cliArgs.nocache) {
+    cache.recreateCache(); //set flag to recreate cache
+  }
   const cacheFileName = "myCache.json";
   let nexssResult = [];
   let nexssBuild = [];

@@ -64,7 +64,6 @@ module.exports.worker = function ({
   this.worker.stderr &&
     this.worker.stderr.on &&
     this.worker.stderr.on("data", function (err) {
-      console.log("DATA!!!!! ERROR!!!");
       const errorString = err.toString();
       if (errorString.includes("NEXSS/")) {
         const exploded = errorString.split("NEXSS");
@@ -136,9 +135,6 @@ module.exports.worker = function ({
             : require("util").inspect(data)
         );
         setImmediate(() => {
-          // Checking if data is
-
-          // First we check fast
           if (chunk) {
             chunk.nexssCommand = nexssCommand;
             const dataToPush = pushData(data, chunk);

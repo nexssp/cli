@@ -5,6 +5,9 @@ const { execSync } = require("child_process");
 // const fg = require("fast-glob");
 
 const cache = require("@nexssp/cache");
+if (cliArgs.nocache) {
+  cache.recreateCache(); //set flag to recreate cache
+}
 cache.clean("nexss_core_getLanguages_*");
 
 process.chdir(NEXSS_LANGUAGES_PATH);
