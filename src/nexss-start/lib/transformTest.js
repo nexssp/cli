@@ -4,7 +4,7 @@ module.exports.transformTest = (
   options = {}
 ) => {
   const { Transform } = require("stream");
-  const { cleanTerminalColors } = require("../../lib/terminal");
+  require("@nexssp/extend")("string"); // stripTerminalColors
   return new Transform({
     objectMode: true,
     highWaterMark: require("../../config/defaults").highWaterMark,
@@ -15,10 +15,6 @@ module.exports.transformTest = (
           log.dr(`× Stream:Cancelled transformTest`);
           callback(null, chunk);
           return;
-          // } else if (chunk.status === "platform-notmach") {
-          //   log.dr(`× Canceled Stream: Test: platform-notmatch`);
-          //   callback(null, chunk);
-          //   return;
         }
 
         log.di(`↳ Stream: transformTest`);
@@ -30,8 +26,8 @@ module.exports.transformTest = (
           let errorExists;
           Object.keys(testingData).forEach((k) => {
             if (
-              cleanTerminalColors(testingData[k] + "") !==
-              cleanTerminalColors(data[k] + "")
+              (testingData[k] + "").StripTerminalColors() !==
+              (data[k] + "").StripTerminalColors()
             ) {
               log.error(bold(red(testingData[k])), `Not Equal to`);
               log.error(bold(red(data[k])));

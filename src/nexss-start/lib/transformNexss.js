@@ -14,7 +14,7 @@ module.exports.transformNexss = (
 
   const { Transform } = require("stream");
   const { worker } = require("./worker");
-  require("@nexssp/extend")("string");
+  require("@nexssp/extend")("string", "array");
 
   const learning = require("./learning");
 
@@ -73,6 +73,7 @@ module.exports.transformNexss = (
       let args2 = args.remove("--nocache");
       // args2 = args2.remove("--debug");
       args2 = args2.remove("--nxsPipeErrors");
+      args2 = args2.remove("--nxsBuild");
       args2 = args2.remove("--nxsTest");
       args2 = args2.remove("--nxsDebugData");
       args2 = args2.remove("--nxsI");

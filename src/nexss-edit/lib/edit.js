@@ -13,8 +13,10 @@ module.exports.edit = (filename) => {
   }
 
   const editorSelected = editors[editorId];
-  const { ensureInstalled } = require("../../lib/terminal");
-  ensureInstalled(editorSelected.command, editorSelected.install);
+  const { ensureInstalled } = require("@nexssp/ensure");
+  ensureInstalled(editorSelected.command, editorSelected.install, {
+    progress: cliArgs.progress,
+  });
 
   if (!filename) {
     filename = ".";

@@ -1,11 +1,13 @@
 module.exports.installPackages = (destinationFolder, packageName) => {
   // We make sure git is installed.
-  const { ensureInstalled } = require("../../lib/terminal");
+  const { ensureInstalled } = require("@nexssp/ensure");
   const config = require(`../../nexss-language/languages/config.${process.platform}`);
   const osPM =
     config.osPackageManagers[Object.keys(config.osPackageManagers)[0]];
 
-  ensureInstalled("git", `${osPM.installCommand} git`);
+  ensureInstalled("git", `${osPM.installCommand} git`, {
+    progress: cliArgs.progress,
+  });
 
   try {
     let repos = require("../repos.json");

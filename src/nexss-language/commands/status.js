@@ -4,7 +4,7 @@ const { NEXSS_LANGUAGES_PATH } = require("../../config/config");
 const { execSync } = require("child_process");
 // const fg = require("fast-glob");
 
-const cache = require("../../lib/cache");
+const cache = require("@nexssp/cache");
 cache.clean("nexss_core_getLanguages_*");
 
 process.chdir(NEXSS_LANGUAGES_PATH);

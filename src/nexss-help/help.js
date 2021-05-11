@@ -1,11 +1,13 @@
+require("@nexssp/extend")("array", "object"); // array flat / nodejs 10 + invert for object
 const fs = require("fs");
+
 // Display default commands
 const { NEXSS_SRC_PATH } = require("../config/config.js");
-const { invert } = require("../lib/helper");
-const aliases = invert(require("../aliases.json"));
-require("../lib/arrays"); // array flat / nodejs 10
+
+const aliases = require("../aliases.json").invert();
 const os = require("os");
 // console.log(path.dirname(path.dirname(process.execPath)));
+
 (async () => {
   // const EOL = require("os").EOL;
   const EOL = "\n";
@@ -27,9 +29,7 @@ const os = require("os");
       );
       let commandAliases = {};
       if (fs.existsSync(`${NEXSS_SRC_PATH}/${entry.name}/aliases.json`)) {
-        commandAliases = invert(
-          require(`${NEXSS_SRC_PATH}/${entry.name}/aliases.json`)
-        );
+        commandAliases = require(`${NEXSS_SRC_PATH}/${entry.name}/aliases.json`).invert();
       }
 
       // console.log(entries);

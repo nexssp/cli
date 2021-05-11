@@ -44,7 +44,6 @@ const pushData = (data, chunk) => {
           reason: reason ? reason : "reason not specified",
           status: "end",
           data,
-          command: process.nexssCMD,
         };
       }
 
@@ -65,7 +64,6 @@ const pushData = (data, chunk) => {
       stream: "ok",
       error: "not a json",
       data,
-      command: process.nexssCMD,
     };
   }
 };

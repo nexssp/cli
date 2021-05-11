@@ -1,17 +1,5 @@
 //await sleep(100)
 
-module.exports.invert = function (obj) {
-  var new_obj = {};
-
-  for (var prop in obj) {
-    if (obj.hasOwnProperty(prop)) {
-      new_obj[obj[prop]] = prop;
-    }
-  }
-
-  return new_obj;
-};
-
 const sleep = require("util").promisify(setTimeout);
 
 // must be function not () => {}, to work this
@@ -51,22 +39,5 @@ Object.defineProperty(Object.prototype, "pushUnique", {
     this[uniqueProp] = what;
   },
 });
-
-// Below was for NodeJS 10
-// if (!Array.prototype.flat) {
-//   Array.prototype.flat = function (depth) {
-//     var flattend = [];
-//     (function flat(array, depth) {
-//       for (let el of array) {
-//         if (Array.isArray(el) && depth > 0) {
-//           flat(el, depth - 1);
-//         } else {
-//           flattend.push(el);
-//         }
-//       }
-//     })(this, Math.floor(depth) || 1);
-//     return flattend;
-//   };
-// }
 
 module.exports.sleep = sleep;

@@ -5,14 +5,20 @@ const { colorizer } = require("./colorizer");
 // Below is created in the globals.js
 // const isErrorPiped = cliArgs.nxsPipeErrors || cliArgs[nexss["error:pipe"]];
 // more here: https://github.com/nexssp/cli/wiki/Errors-Solutions
-module.exports.parseError = (filename, errorBody, stdOutput, cwd) => {
+module.exports.parseError = (
+  filename,
+  errorBody,
+  stdOutput,
+  cwd,
+  isErrorPiped
+) => {
   if (errorBody && errorBody.trim) {
     errorBody = errorBody.trim();
   }
 
   cwd = cwd || process.cwd();
   const langInfo = getLangByFilename(filename);
-  const ErrorPre = path.normalize(
+  const ErrorPre = require("path").normalize(
     isAbsolute(filename) ? filename : `${cwd}/${filename}`
   );
 

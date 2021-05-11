@@ -1,5 +1,5 @@
 const { nohup } = require("./nohup");
-const { ensureInstalled, which } = require("./terminal");
+const { ensureInstalled, which } = require("@nexssp/ensure");
 
 module.exports.checkRedis = (comm) => {
   log.di("Checking communication channels / Redis");
@@ -12,13 +12,19 @@ module.exports.checkRedis = (comm) => {
       );
       switch (process.platform) {
         case "win32":
-          ensureInstalled("redis-server", "scoop install redis");
+          ensureInstalled("redis-server", "scoop install redis", {
+            progress: cliArgs.progress,
+          });
           break;
         case "linux":
-          ensureInstalled("redis-server", "apt-get -y install redis");
+          ensureInstalled("redis-server", "apt-get -y install redis", {
+            progress: cliArgs.progress,
+          });
           break;
         case "darwin":
-          ensureInstalled("redis-server", "brew install redis");
+          ensureInstalled("redis-server", "brew install redis", {
+            progress: cliArgs.progress,
+          });
           break;
         default:
           console.error("Your Os is not supported yet by Nexss PROGRAMMER");

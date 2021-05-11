@@ -44,8 +44,6 @@ module.exports.nxsDebugData = (data, title, color) => {
         break;
     }
 
-    // if (process.nexssCMD) console.error(yellow("COMMAND: " + process.nexssCMD));
-
     if (process.previousDATA) {
       if (data["nxsDebug"] !== "nodiff") {
         if (typeof data["nxsDebug"] !== "boolean") {

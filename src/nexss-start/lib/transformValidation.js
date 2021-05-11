@@ -15,29 +15,12 @@ module.exports.transformValidation = (area = "input", options = {}) => {
         let data = chunk.data;
         const opts = options;
         if (opts && Array.isArray(opts)) {
-          // try {
-          //   data = JSON.parse(data);
-          // } catch (er) {
-          //   error(
-          //     `There was an issue with JSON going out from command: ${bold(
-          //       process.nexssCMD ? process.nexssCMD : "unknown"
-          //     )}:`
-          //   );
-          //   error(
-          //     `Current dir: ${bold(
-          //       process.nexssCWD ? process.nexssCWD : "unknown"
-          //     )}:`
-          //   );
-          //   error(data);
-          // }
-
           let errorExists = [];
           // more: https://github.com/nexssp/cli/wiki/Data-Validation
 
           opts.forEach((k) => {
             if (k.validate) {
               k.validate.forEach((validation) => {
-                // console.log("VALIDATION!!!!!:", validation, "kname!!", k.name);
                 let message;
                 if (validation.message) {
                   message = validation.message.replace(

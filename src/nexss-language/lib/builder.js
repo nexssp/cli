@@ -1,7 +1,7 @@
 const { getLangByFilename } = require("./language");
 const fs = require("fs");
 const path = require("path");
-const { ensureInstalled } = require("../../lib/terminal");
+const { ensureInstalled } = require("@nexssp/ensure");
 
 module.exports.getBuilder = (file) => {
   const fileName = file.name;
@@ -35,7 +35,9 @@ module.exports.getBuilder = (file) => {
   }
 
   if (!cmd) cmd = builder.cmd;
-  ensureInstalled(cmd, builder.install);
+  ensureInstalled(cmd, builder.install, {
+    progress: cliArgs.progress,
+  });
 
   return builder;
 };

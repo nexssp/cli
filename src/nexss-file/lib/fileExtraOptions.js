@@ -1,4 +1,4 @@
-const { which } = require("../../lib/terminal");
+const { which } = require("@nexssp/ensure");
 
 module.exports.extraFunctions = (templatePath) => {
   // Extra operation for the template like installations, files copy, info

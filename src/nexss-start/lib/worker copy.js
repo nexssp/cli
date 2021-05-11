@@ -1,3 +1,5 @@
+const { defaultConsoleType } = require("@nexssp/logdebug");
+
 module.exports.worker = function ({
   self,
   chunk,
@@ -8,13 +10,10 @@ module.exports.worker = function ({
   startStreamTime,
   callback,
   StreamCache,
-  isErrorPiped,
 } = {}) {
   options = options || {};
   argsStrings = argsStrings || [];
-  if (!fileName) {
-    fileName = argsStrings[0];
-  }
+
   const { nxsDebugTitle } = require("./output/nxsDebug");
   const { timeElapsed } = require("./output/nxsTime");
   const { pushData } = require("./transformNexssLib");
@@ -115,11 +114,14 @@ module.exports.worker = function ({
   this.worker.stdout &&
     this.worker.stdout.on &&
     this.worker.stdout.on("data", function (data) {
+      console.log("DATA!!!!! NOERROR!!!");
+
       data = data.toString();
+
       if (nexssCache) {
         nexssCacheData += data;
       } else {
-        log.dbg(`\n${nexssCommand}: `, require("util").inspect(data), "\n");
+        log.dbg("\n\nOUT FROM STDOUT", require("util").inspect(data), "\n\n");
         if (data === "\n" || data === "\r\n") {
           log.dy(
             "In the stdout there is '\\n' received from the transformNexss Worker.",
@@ -127,7 +129,9 @@ module.exports.worker = function ({
           );
           return; // we do not want to pass through the whole stream \n
         }
-        log.dg(`<< Data: ${bold(data.length + " B.")}, cmd:${nexssCommand}`);
+        log.dg(
+          `<< Data: ${bold(data.length + " B.")}, cmd:${process.nexssCMD}`
+        );
 
         log.dg(
           "insp -->",
@@ -144,8 +148,7 @@ module.exports.worker = function ({
             const dataToPush = pushData(data, chunk);
             self.push(dataToPush);
           } else {
-            // It's not a stream, we output data
-            callback(data);
+            callback(null, data);
           }
 
           timeElapsed(startCompilerTime, `Response from ${bold(nexssCommand)}`);
@@ -190,10 +193,11 @@ module.exports.worker = function ({
   // });
   this.worker.on &&
     this.worker.on("close", () => {
+      console.log("WORKER CLOSED!!!");
       timeElapsed(startCompilerTime, `Close/End Worker ${bold(nexssCommand)}`);
       if (self) self.end();
 
-      if (process.nxsErrorExists && !isErrorPiped) {
+      if (process.nxsErrorExists && !cliArgs.nxsPipeErrors) {
         // console.log("There was an error during run..", this.worker.cmd);
         // callback(null, { stream: "cancel", status: "error" });
       } else {
@@ -222,7 +226,10 @@ module.exports.worker = function ({
     nxsDebugTitle(" ! Executed: " + cmd, j, "yellow");
   }
 
+  process.nexssCMD = nexssCommand;
+
   if (this.worker.stdin) {
+    console.log("WORKER STDIN!!");
     this.worker.stdin.end();
   }
   return this.worker;

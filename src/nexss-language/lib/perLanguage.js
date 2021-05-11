@@ -99,9 +99,12 @@ const perLanguage = (extension) => {
           compiler && compiler.install ? compiler.command : builder.command
         } ${pmArguments.join(" ")}`;
 
-        const { ensureInstalled } = require("./lib/terminal");
+        const { ensureInstalled } = require("@nexssp/ensure");
 
-        let p = ensureInstalled(command, installCommand, { verbose: true });
+        let p = ensureInstalled(command, installCommand, {
+          verbose: true,
+          progress: cliArgs.progress,
+        });
         if (p) {
           log.info(
             `${blue(bold(languageSelected.title))} is installed at:\n${p}`
@@ -352,8 +355,11 @@ const perLanguage = (extension) => {
           compiler && compiler.install ? compiler.command : builder.command
         }`;
 
-        const { ensureInstalled } = require("../../lib/terminal");
-        ensureInstalled(command, installCommand, { verbose: true });
+        const { ensureInstalled } = require("@nexssp/ensure");
+        ensureInstalled(command, installCommand, {
+          verbose: true,
+          progress: cliArgs.progress,
+        });
 
         // Below runs like:
         // Per compiler run command if not exists main run command else display error that is not specified.
@@ -486,12 +492,14 @@ const perLanguage = (extension) => {
           path: "",
           name: `test${languageSelected.extensions[0]}`,
         });
-        const { ensureInstalled } = require("../../lib/terminal");
+        const { ensureInstalled } = require("@nexssp/ensure");
         if (!compiler) {
           compiler = builder;
         }
 
-        ensureInstalled(compiler.command, compiler.install);
+        ensureInstalled(compiler.command, compiler.install, {
+          progress: cliArgs.progress,
+        });
 
         const pmArguments = process.argv.slice(3);
         const command = `${

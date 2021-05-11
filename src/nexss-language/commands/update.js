@@ -1,8 +1,8 @@
 const fs = require("fs");
 // const dirTree = require("directory-tree");
 const { NEXSS_LANGUAGES_PATH } = require("../../config/config");
-const { ensureInstalled } = require("../../lib/terminal");
-const cache = require("../../lib/cache");
+const { ensureInstalled } = require("@nexssp/ensure");
+const cache = require("@nexssp/cache");
 cache.clean("nexss_core_getLanguages_*");
 
 process.chdir(NEXSS_LANGUAGES_PATH);
@@ -10,7 +10,9 @@ process.chdir(NEXSS_LANGUAGES_PATH);
 const config = require(`../../nexss-language/languages/config.${process.platform}`);
 const osPM = config.osPackageManagers[Object.keys(config.osPackageManagers)[0]];
 
-ensureInstalled("git", `${osPM.installCommand} git`);
+ensureInstalled("git", `${osPM.installCommand} git`, {
+  progress: cliArgs.progress,
+});
 const spawnOptions = require("../../config/spawnOptions");
 
 const languages = fs.readdirSync(".");

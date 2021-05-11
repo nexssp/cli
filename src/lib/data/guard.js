@@ -22,10 +22,22 @@ const validDatatypes = {
   Number: () => [1, 1234, 36936936936936936936936936936936936936936936936936],
   Boolean: () => [true, false],
   Undefined: () => [undefined],
-  Function: () => [() => {}, function() {}, () => "somestring"],
+  Function: () => [() => {}, function () {}, () => "somestring"],
   Null: () => [null],
-  Map: () => [new Map(), new Map([["key1", "value1"], ["key2", "value2"]])],
-  Set: () => [new Set(), new Set([["key1", "value1"], ["key2", "value2"]])],
+  Map: () => [
+    new Map(),
+    new Map([
+      ["key1", "value1"],
+      ["key2", "value2"],
+    ]),
+  ],
+  Set: () => [
+    new Set(),
+    new Set([
+      ["key1", "value1"],
+      ["key2", "value2"],
+    ]),
+  ],
   GeneratorFunction: () => [function* x() {}],
   Promise: () => [Promise.resolve() /*, Promise.reject()*/],
   Stream: () => [
@@ -34,15 +46,15 @@ const validDatatypes = {
     new stream.Transform(),
     new stream.Stream(),
     new stream.Duplex(),
-    new stream.PassThrough()
+    new stream.PassThrough(),
   ],
   File: () => [`${__dirname}/guard.js`, `${__dirname}/guard.test.js`],
   Directory: () => [`${__dirname}/../datatype`],
-  Exists: () => [`${__dirname}/guard.js`, `${__dirname}/../datatype`]
+  Exists: () => [`${__dirname}/guard.js`, `${__dirname}/../datatype`],
   // async *[Symbol.asyncIterator]() {}
 };
 
-const is = async (what = "Object", v) => {
+const is = (what = "Object", v) => {
   if (!validDatatypes[what]) {
     throw new Error(`Guard module not allow for ${what} datatype.`);
   }
@@ -78,7 +90,7 @@ const is = async (what = "Object", v) => {
   return stat.isDirectory(v);
 };
 
-const getFileUpdatedDate = async path => {
+const getFileUpdatedDate = async (path) => {
   const stats = fs.stat(path);
   return stats.mtime;
 };
@@ -89,11 +101,11 @@ const isOlder = async (file1, file2) => {
   return (await mtimeFile1) < (await mtimeFile2);
 };
 
-const Exists = async fileOrDir => {
+const Exists = async (fileOrDir) => {
   return is("Exists", fileOrDir);
 };
 
-const isEmpty = async (what, v) => {
+const isEmpty = (what, v) => {
   switch (what) {
     case "Object":
       return Object.keys(v).length === 0;

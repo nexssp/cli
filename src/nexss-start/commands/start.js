@@ -1,7 +1,7 @@
 Nexss();
 
 function Nexss() {
-  const { ensureInstalled, pathWinToLinux } = require("../../lib/terminal");
+  const { ensureInstalled } = require("@nexssp/ensure");
 
   const { isURL } = require("../../lib/data/url");
   const { getFiles } = require("../lib/start/files"); //.50
@@ -87,7 +87,7 @@ function Nexss() {
 
   files = files.filter(Boolean);
 
-  const cache = require("../../lib/cache");
+  const cache = require("@nexssp/cache");
   const cacheFileName = "myCache.json";
   let nexssResult = [];
   let nexssBuild = [];
@@ -216,12 +216,15 @@ function Nexss() {
 
                 let spawnOptions = {};
                 // let spawnOptions =  { detached: true };
-
+                let builder;
                 let compiler = Object.assign({}, getCompiler(file));
-                if (Object.keys(compiler).length > 0) {
-                  if (compiler.args) {
-                    // console.log(compiler.args, "REPLACE", fileName);
 
+                if (cliArgs.nxsBuild) {
+                  builder = Object.assign({}, getBuilder(file));
+                }
+
+                if (!builder && Object.keys(compiler).length > 0) {
+                  if (compiler.args) {
                     compiler.args = compiler.args
                       .replace(/<file>/g, fileName)
                       .replace(
@@ -232,96 +235,91 @@ function Nexss() {
                     compiler.args = compiler.args.split(" ");
                   }
 
-                  let builder;
+                  // We make sure compiler is installed
+                  compilerAdded = true;
+                  if (compiler.command) {
+                    // Installation of the compiler
+                    let compilerInstallOptions = {};
 
-                  if (
-                    !builder ||
-                    (compiler && compiler.args && !cliArgs.nxsBuild)
-                  ) {
-                    // We make sure compiler is installed
-                    compilerAdded = true;
-                    if (compiler.command) {
-                      // Installation of the compiler
-                      let compilerInstallOptions = {};
+                    if (compiler.shell) {
+                      compilerInstallOptions = { shell: "Powershell" };
+                    }
 
-                      if (compiler.shell) {
-                        compilerInstallOptions = { shell: "Powershell" };
-                      }
+                    compilerInstallOptions.progress = cliArgs.progress;
 
-                      ensureInstalled(
-                        compiler.command,
-                        compiler.install,
-                        compilerInstallOptions
-                      );
+                    ensureInstalled(
+                      compiler.command,
+                      compiler.install,
+                      compilerInstallOptions
+                    );
 
-                      if (
-                        (compiler.command === "bash" ||
-                          compiler.command === "wsl") &&
-                        process.platform === "win32"
-                      ) {
-                        // on Windows it's using the WSL (Windows Subsystem Linux)
-                        // So we convert the path to from c:\abc to /mnt/c/abc.....
-                        try {
-                          if (!Array.isArray(compiler.args)) {
-                            compiler.args = pathWinToLinux(compiler.args);
-                          } else {
-                            compiler.args = compiler.args.map((e) =>
-                              pathWinToLinux(e)
-                            );
-                          }
-                        } catch (error) {
-                          console.error(
-                            "args on the compiler: ",
-                            compiler.args
+                    if (
+                      (compiler.command === "bash" ||
+                        compiler.command === "wsl") &&
+                      process.platform === "win32"
+                    ) {
+                      // on Windows it's using the WSL (Windows Subsystem Linux)
+                      // So we convert the path to from c:\abc to /mnt/c/abc.....
+                      const { pathWinToLinux } = require("@nexssp/os");
+
+                      try {
+                        if (!Array.isArray(compiler.args)) {
+                          compiler.args = pathWinToLinux(compiler.args);
+                        } else {
+                          compiler.args = compiler.args.map((e) =>
+                            pathWinToLinux(e)
                           );
                         }
+                      } catch (error) {
+                        console.error("args on the compiler: ", compiler.args);
                       }
-                      if (compiler.command == "elixir") {
-                        spawnOptions.shell = true;
-                      }
                     }
-
-                    let fileArgs;
-                    if (file.args) {
-                      fileArgs = file.args;
+                    if (compiler.command == "elixir") {
+                      spawnOptions.shell = true;
                     }
+                  }
 
-                    let cmd =
-                      compiler.command ||
-                      (compiler.args && compiler.args.shift());
+                  let fileArgs;
+                  if (file.args) {
+                    fileArgs = file.args;
+                  }
 
-                    // VALIDATION
-                    if (file.input) {
-                      nexssResult.push({
-                        stream: "transformValidation",
-                        cmd: `input`,
-                        args: file.input,
-                      });
-                    }
+                  let cmd =
+                    compiler.command ||
+                    (compiler.args && compiler.args.shift());
 
-                    if (compiler && compiler.stream) {
-                      stream = compiler.stream;
-                    }
+                  // VALIDATION
+                  if (file.input) {
                     nexssResult.push({
-                      stream,
-                      // eg. cmd = php
-                      cmd,
-                      // args = ["my.php", "args from config", "static args"]
-                      args: compiler.args,
-                      data: file.data,
-                      options: spawnOptions,
-                      fileName: path.normalize(fileName),
-                      // inputData: fileArgs,
-                      cwd: file.path,
-                      env: file.env ? file.env : null,
+                      stream: "transformValidation",
+                      cmd: `input`,
+                      args: file.input,
                     });
                   }
+
+                  if (compiler && compiler.stream) {
+                    stream = compiler.stream;
+                  }
+                  nexssResult.push({
+                    stream,
+                    // eg. cmd = php
+                    cmd,
+                    // args = ["my.php", "args from config", "static args"]
+                    args: compiler.args,
+                    data: file.data,
+                    options: spawnOptions,
+                    fileName: path.normalize(fileName),
+                    // inputData: fileArgs,
+                    cwd: file.path,
+                    env: file.env ? file.env : null,
+                  });
                 } else {
                   const builder = getBuilder(file);
 
                   let exeFile = path.resolve(
                     `_nexss/${path.basename(fileName)}.exe`
                   );
+
                   const builderArgs = builder.args
                     .replace(/<file>/g, path.resolve(fileName))
                     //.replace(/<destinationPath>/g, dirname(exeFile))

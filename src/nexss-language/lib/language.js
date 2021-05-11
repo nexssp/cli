@@ -1,4 +1,4 @@
-const cache = require("../../lib/cache");
+const cache = require("@nexssp/cache");
 
 function getLanguagesConfigFiles() {
   let paths = [];
@@ -147,17 +147,22 @@ module.exports.getLang = (ext, recreateCache) => {
 
       const langRepositories = require("../repos.json");
 
-      const { ensureInstalled } = require("../../lib/terminal");
+      const { ensureInstalled } = require("@nexssp/ensure");
 
       const config = require(`../../nexss-language/languages/config.${process.platform}`);
 
       const osPM =
         config.osPackageManagers[Object.keys(config.osPackageManagers)[0]];
       if (langRepositories[ext]) {
-        ensureInstalled(osPM.keyOfItem, osPM.installation);
+        ensureInstalled(osPM.keyOfItem, osPM.installation, {
+          progress: cliArgs.progress,
+        });
         ensureInstalled(
           "git",
-          `${osPM.install ? osPM.install : osPM.installCommand} git`
+          `${osPM.install ? osPM.install : osPM.installCommand} git`,
+          {
+            progress: cliArgs.progress,
+          }
         );
 
         const repoName = path.basename(langRepositories[ext]);
@@ -288,6 +293,6 @@ module.exports.getLang = (ext, recreateCache) => {
 };
 
 module.exports.getLangByFilename = (name, recreateCache) => {
-  const ext = path.extname(name);
+  const ext = require("path").extname(name);
   return module.exports.getLang(ext, recreateCache);
 };
