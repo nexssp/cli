@@ -19,9 +19,9 @@ nConst("hasStdin", cliArgs[nexss[":i"]]);
 const NEXSS_SRC_PATH = process.env.NEXSS_SRC_PATH;
 const NEXSS_PACKAGES_PATH = process.env.NEXSS_PACKAGES_PATH;
 if (!cliArgs[nexss["process:title"]]) {
-  process.title = `nexss (${NEXSSP_VERSION}:${
-    process.pid
-  }) ${process.argv.slice(2).join(" ")}`;
+  process.title = `nexss (${NEXSSP_VERSION}:${process.pid}) ${process.argv
+    .slice(2)
+    .join(" ")}`;
 } else {
   process.title = cliArgs[nexss["process:title"]];
   delete cliArgs[nexss["process:title"]];
