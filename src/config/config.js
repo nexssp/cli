@@ -155,7 +155,7 @@ const NEXSS_PROJECT_SRC_PATH = NEXSS_PROJECT_PATH
 
 const getConfigCacheName = `nexss_core_main_config__.json`;
 
-cache.setup(process.env.NEXSS_CACHE_PATH);
+cache.setup(process.env.NEXSS_CACHE_PATH, true);
 if (cliArgs.nocache) {
   cache.recreateCache(); //set flag to recreate cache
 }
