@@ -7,9 +7,6 @@
 require("../lib/helper");
 const { join, dirname, normalize } = require("path");
 const cache = require("@nexssp/cache");
-if (cliArgs.nocache) {
-  cache.recreateCache(); //set flag to recreate cache
-}
 const { homedir } = require("os");
 const { existsSync } = require("fs");
 // User home directory for .nexss eg: C:\Users\mapoart\.nexss
@@ -48,9 +45,14 @@ function getConfig() {
     ));
 
   // Cache directory for .nexss eg: C:\Users\mapoart\.nexss\.cache
+  // We use below default version for usage per project
+  const isInstalledGlobally = require("is-installed-globally");
   const NEXSS_CACHE_PATH =
     process.env.NEXSS_CACHE_PATH ||
-    (process.env.NEXSS_CACHE_PATH = normalize(`${NEXSS_HOME_PATH}/cache`));
+    (process.env.NEXSS_CACHE_PATH = normalize(
+      `${NEXSS_HOME_PATH}/cache` +
+        (!isInstalledGlobally ? `/${NEXSSP_VERSION}` : "")
+    ));
 
   const NEXSS_BACKUP_PATH =
     process.env.NEXSS_BACKUP_PATH ||
@@ -152,6 +154,12 @@ const NEXSS_PROJECT_SRC_PATH = NEXSS_PROJECT_PATH
   : undefined;
 
 const getConfigCacheName = `nexss_core_main_config__.json`;
+
+cache.setup(process.env.NEXSS_CACHE_PATH);
+if (cliArgs.nocache) {
+  cache.recreateCache(); //set flag to recreate cache
+}
+
 let config;
 if (existsSync(NEXSS_HOME_PATH) && cache.exists(getConfigCacheName, "1y")) {
   config = JSON.parse(cache.read(getConfigCacheName));

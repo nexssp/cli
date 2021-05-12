@@ -93,3 +93,49 @@ if there is no compiler installed, nexss programmer will install it automaticall
 ## Functions
 
 - --nxsI - interactive mode
+
+## All commands
+
+things to notice: nxsOut is a default output from a package, or function if use with Nexss Programmer project.
+standard files
+
+## Installation
+
+```sh
+npm i @nexssp/cli -g # install nexss programmer globally. Run everywere
+npm init && npm i @nexssp/cli@2.4.17 # install per project
+
+```
+
+## Helper Functions
+
+```sh
+nexss -env # displays environment info: versions, paths, package managers etc.
+```
+
+### Create new files
+
+```sh
+# Below we use package Id which generates unique Id.
+nexss py h # it will create new helloWorld template for python
+nexss js d # new default template for NodeJS
+nexss v e # new empty template for Vlang
+nexss file add my.r # it will show new templ
+```
+
+### Compile programs / Installing programming environments
+
+```sh
+nexss helloWorld.py # it will compile program (if compiler does not exist, it will be installed)
+
+```
+
+```sh
+nexss Id # Generates Id in the nxsOut
+nexss Id --nxsAs="X" # if nxsAs it will be saved as
+nexss Id --nxsAs="X" --server # it will start a server
+nexss Id --nxsField # nxsField can be used for select data from some field. here nxsField is the same as nxsField=nxsOut
+nexss https://nexss.com --nxsField --server # It will serve nexss.com on new address
+
+
+```

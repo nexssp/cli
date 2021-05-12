@@ -3,6 +3,8 @@ const fs = require("fs");
 const { NEXSS_LANGUAGES_PATH } = require("../../config/config");
 const { ensureInstalled } = require("@nexssp/ensure");
 const cache = require("@nexssp/cache");
+
+cache.setup(process.env.NEXSS_CACHE_PATH);
 if (cliArgs.nocache) {
   cache.recreateCache(); //set flag to recreate cache
 }

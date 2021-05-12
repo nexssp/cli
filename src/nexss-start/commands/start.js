@@ -88,6 +88,8 @@ function Nexss() {
   files = files.filter(Boolean);
 
   const cache = require("@nexssp/cache");
+
+  cache.setup(process.env.NEXSS_CACHE_PATH);
   if (cliArgs.nocache) {
     cache.recreateCache(); //set flag to recreate cache
   }
