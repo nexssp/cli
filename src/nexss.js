@@ -71,8 +71,8 @@ const packageName = plugin.split("/")[0];
 
 if (startWithSpecialChar(plugin) || fs.existsSync(plugin) || isURL(plugin)) {
   fileOrFolderExists = plugin;
-  cliArgs._[1] = plugin;
-  cliArgs._[0] = "start";
+  cliArgs._.shift();
+  cliArgs._.unshift("start", plugin);
   plugin = "start";
 } else if (
   fs.existsSync(`${NEXSS_PACKAGES_PATH}/${plugin}`) ||
@@ -85,8 +85,8 @@ if (startWithSpecialChar(plugin) || fs.existsSync(plugin) || isURL(plugin)) {
     installPackages(NEXSS_PACKAGES_PATH, packageName);
   }
   fileOrFolderExists = `${NEXSS_PACKAGES_PATH}/${plugin}`;
-  cliArgs._[1] = `${NEXSS_PACKAGES_PATH}/${plugin}`;
-  cliArgs._[0] = "start";
+  cliArgs._.shift();
+  cliArgs._.unshift("start", `${NEXSS_PACKAGES_PATH}/${plugin}`);
   plugin = "start";
 } else if (!fs.existsSync(`${NEXSS_SRC_PATH}/nexss-${plugin}/nexssPlugin.js`)) {
   const { perLanguage } = require("./nexss-language/lib/perLanguage");
@@ -108,17 +108,49 @@ if (fs.existsSync(`${NEXSS_SRC_PATH}/nexss-${plugin}/aliases.json`)) {
 // Here loads when help is needed for particular command eg nexss file add help for 'file add'
 if (cliArgs._[2] === "help" && command) {
   //help for command
-  const helpFile = `${NEXSS_SRC_PATH}/nexss-${plugin}/commands/${command}.md`;
-  try {
-    if (fs.existsSync(helpFile)) {
-      const helpContent = fs.readFileSync(helpFile);
-      require("./nexss-core/markdown").displayMarkdown(helpContent.toString());
-    } else {
-      console.log(`file ${helpFile} not found.`);
+
+  if (!path.isAbsolute(command)) {
+    const helpFile = `${NEXSS_SRC_PATH}/nexss-${plugin}/commands/${command}.md`;
+    try {
+      if (fs.existsSync(helpFile)) {
+        const helpContent = fs.readFileSync(helpFile);
+        require("./nexss-core/markdown").displayMarkdown(
+          helpContent.toString()
+        );
+      } else {
+        console.log(`file ${helpFile} not found.`);
+      }
+    } catch (error) {
+      console.log(error);
+      process.exit();
     }
-  } catch (error) {
-    console.log(error);
-    process.exit();
+  } else {
+    if (fileOrFolderExists) {
+      if (fs.existsSync(`${fileOrFolderExists}/README.md`)) {
+        const helpContent = fs.readFileSync(`${fileOrFolderExists}/README.md`);
+
+        require("./nexss-core/markdown").displayMarkdown(
+          helpContent.toString()
+        );
+      } else {
+        const { extname } = require("path");
+        if (fs.existsSync(fileOrFolderExists)) {
+          const f = fs.readdirSync(`${fileOrFolderExists}/`);
+          f.filter(
+            (e) => [".json", ".git", ".gitignore"].indexOf(extname(e)) !== 0
+          ).forEach((e) => (e !== ".git" ? console.log(`${e}`) : ""));
+        } else {
+          console.log(`${fileOrFolderExists} has not been found.`);
+        }
+      }
+
+      return;
+    }
+
+    const helpContent = fs.readFileSync(
+      `${NEXSS_SRC_PATH}/nexss-${plugin}/help.md`
+    );
+    require("./nexss-core/markdown").displayMarkdown(helpContent.toString());
   }
 
   return;
@@ -150,105 +182,54 @@ if (fileOrFolderExists && cliArgs._[0] === "test") {
   return;
 }
 
-switch (command) {
-  case "help":
-    try {
-      // Help for package
-      if (fileOrFolderExists) {
-        if (fs.existsSync(`${fileOrFolderExists}/README.md`)) {
-          const helpContent = fs.readFileSync(
-            `${fileOrFolderExists}/README.md`
-          );
-
-          require("./nexss-core/markdown").displayMarkdown(
-            helpContent.toString()
-          );
-        } else {
-          const { extname } = require("path");
-          if (fs.existsSync(fileOrFolderExists)) {
-            const f = fs.readdirSync(`${fileOrFolderExists}/`);
-            f.filter(
-              (e) => [".json", ".git", ".gitignore"].indexOf(extname(e)) !== 0
-            ).forEach((e) => (e !== ".git" ? console.log(`${e}`) : ""));
-          } else {
-            console.log(`${fileOrFolderExists} has not been found.`);
-          }
-        }
-
-        return;
-      }
-
-      const helpContent = fs.readFileSync(
-        `${NEXSS_SRC_PATH}/nexss-${plugin}/help.md`
+try {
+  if (
+    !fileOrFolderExists &&
+    command &&
+    !["command", "test", "edit"].includes(plugin)
+  ) {
+    if (
+      fs.existsSync(`${NEXSS_SRC_PATH}/nexss-${plugin}/commands/${command}.js`)
+    ) {
+      require(`./nexss-${plugin}/commands/${command}.js`);
+    } else {
+      log.error(
+        `Command ${bold(command)} has not been found for nexss-${bold(plugin)}.`
       );
-      require("./nexss-core/markdown").displayMarkdown(helpContent.toString());
-    } catch (error) {
-      console.log(error);
-      log.error(`Long help is not found for plugin nexss-${plugin}`);
     }
-    break;
-
-  default:
-    try {
-      if (
-        !fileOrFolderExists &&
-        command &&
-        !["command", "test", "edit"].includes(plugin)
-      ) {
-        if (
-          fs.existsSync(
-            `${NEXSS_SRC_PATH}/nexss-${plugin}/commands/${command}.js`
-          )
-        ) {
-          require(`./nexss-${plugin}/commands/${command}.js`);
-        } else {
-          log.error(
-            `Command ${bold(command)} has not been found for nexss-${bold(
-              plugin
-            )}.`
-          );
-        }
-      } else {
-        // First we check if the command exists
-        if (
-          fs.existsSync(
-            `${NEXSS_SRC_PATH}/nexss-${plugin}/commands/${plugin}.js`
-          )
-        ) {
-          require(`./nexss-${plugin}/commands/${plugin}.js`);
-        } else {
-          let helpContent = "";
-          try {
-            helpContent = fs.readFileSync(
-              `${NEXSS_SRC_PATH}/nexss-${plugin}/help.md`
-            );
-          } catch (e) {
-            log.error(
-              `File ${helpContent} has not been found. This maybe the issue that you have installed different versions of Nexss Programmer. Try use --nocache option to recreate cache.`
-            );
-            process.exit(1);
-          }
-          const fg = require("fast-glob");
-          const files = fg.sync(
-            [`${__dirname}/nexss-${plugin}/commands/*.md`.replace(/\\/g, "/")],
-            { ignore: ["!*/**/*.nexss-test.js"] }
-          );
-          const { basename } = require("path");
-          let filesList = files.map((f) => basename(f).replace(".md", ""));
-          helpContent += `${bold("Commands available")} for nexss-${bold(
-            plugin
-          )}
+  } else {
+    // First we check if the command exists
+    if (
+      fs.existsSync(`${NEXSS_SRC_PATH}/nexss-${plugin}/commands/${plugin}.js`)
+    ) {
+      require(`./nexss-${plugin}/commands/${plugin}.js`);
+    } else {
+      let helpContent = "";
+      try {
+        helpContent = fs.readFileSync(
+          `${NEXSS_SRC_PATH}/nexss-${plugin}/help.md`
+        );
+      } catch (e) {
+        log.error(
+          `File ${helpContent} has not been found. This maybe the issue that you have installed different versions of Nexss Programmer. Try use --nocache option to recreate cache.`
+        );
+        process.exit(1);
+      }
+      const fg = require("fast-glob");
+      const files = fg.sync(
+        [`${__dirname}/nexss-${plugin}/commands/*.md`.replace(/\\/g, "/")],
+        { ignore: ["!*/**/*.nexss-test.js"] }
+      );
+      const { basename } = require("path");
+      let filesList = files.map((f) => basename(f).replace(".md", ""));
+      helpContent += `${bold("Commands available")} for nexss-${bold(plugin)}
 
 ${bold(filesList.join(", "))}
 example to display help 'nexss ${plugin} ${filesList[0]} help'`;
-          require("./nexss-core/markdown").displayMarkdown(
-            helpContent.toString()
-          );
-        }
-      }
-    } catch (err) {
-      log.error(err);
-      console.log(err);
+      require("./nexss-core/markdown").displayMarkdown(helpContent.toString());
     }
-    break;
+  }
+} catch (err) {
+  log.error(err);
+  console.log(err);
 }

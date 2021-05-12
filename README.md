@@ -92,7 +92,7 @@ if there is no compiler installed, nexss programmer will install it automaticall
 
 ## Functions
 
-- --nxsI - interactive mode
+- --nxsI - interactive mode. When you need input from the user, use this flag.
 
 ## All commands
 
@@ -103,31 +103,37 @@ standard files
 
 ```sh
 npm i @nexssp/cli -g # install nexss programmer globally. Run everywere
-npm init && npm i @nexssp/cli@2.4.17 # install per project
+npm init && npm i @nexssp/cli@2.4.20 # install per project
 
 ```
 
 ## Helper Functions
 
 ```sh
+nexss -help # displays all availabe helper functions
 nexss -env # displays environment info: versions, paths, package managers etc.
 ```
 
 ### Create new files
 
 ```sh
-# Below we use package Id which generates unique Id.
+# Below we use package Id which generates unique Id (shorcuts)
 nexss py h # it will create new helloWorld template for python
 nexss js d # new default template for NodeJS
 nexss v e # new empty template for Vlang
+
 nexss file add my.r # it will show new templ
+nexss file add my.r help # displays help for function
+nexss Id help # displays help for package (Id is a Nexss Programmer's package)
 ```
 
 ### Compile programs / Installing programming environments
 
 ```sh
+npx nexss program.r # without installing, just compile and run program
 nexss helloWorld.py # it will compile program (if compiler does not exist, it will be installed)
-
+nexss php run "print('x');" # 2.2.37+
+nexss file add my.rs --edit # Will open list of templates for particular language, install editor (if not exists) and open file for editing.
 ```
 
 ```sh
@@ -135,7 +141,7 @@ nexss Id # Generates Id in the nxsOut
 nexss Id --nxsAs="X" # if nxsAs it will be saved as
 nexss Id --nxsAs="X" --server # it will start a server
 nexss Id --nxsField # nxsField can be used for select data from some field. here nxsField is the same as nxsField=nxsOut
-nexss https://nexss.com --nxsField --server # It will serve nexss.com on new address
+nexss https://nexss.com --nxsField --server # As nexss [url] reads url, with --server it will serve the url on 127.0.0.1:9369
 
 
 ```
