@@ -229,7 +229,7 @@ module.exports.transformOutput = (x, y, z) => {
           from: "transform-output",
           status: "ok",
           data,
-          display: chunk.display,
+          // display: chunk.display,
         });
       }
       // } else {

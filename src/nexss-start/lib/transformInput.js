@@ -19,7 +19,7 @@ module.exports.transformInput = (x, y, params) => {
           stream: "cancel",
           status: "ok",
           data: chunk.data,
-          display: chunk.display,
+          // display: chunk.display,
         });
         return;
         // } else if (
@@ -46,7 +46,7 @@ module.exports.transformInput = (x, y, params) => {
         callback(null, {
           status: "error",
           data: chunk,
-          display: chunk.display,
+          // display: chunk.display,
         });
         return;
       }
@@ -99,7 +99,7 @@ module.exports.transformInput = (x, y, params) => {
           from: "transform-input",
           status: "ok",
           data,
-          display: chunk.display,
+          // display: chunk.display,
         });
       }
     },

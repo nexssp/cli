@@ -184,6 +184,7 @@ if (fileOrFolderExists && cliArgs._[0] === "test") {
 
 try {
   if (
+    command !== "help" &&
     !fileOrFolderExists &&
     command &&
     !["command", "test", "edit"].includes(plugin)

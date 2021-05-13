@@ -22,6 +22,10 @@ module.exports = {
       ],
     },
     {
+      title: "Help per core",
+      params: ["nexss package help", /Modify global Nexss PROGRAMMER packages/],
+    },
+    {
       title: "Help per package",
       params: ["nexss Id help", /Generates unique id/],
     },

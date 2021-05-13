@@ -1,6 +1,7 @@
 const cache = require("@nexssp/cache");
 
 cache.setup(process.env.NEXSS_CACHE_PATH, true);
+
 if (cliArgs.nocache) {
   cache.recreateCache(); //set flag to recreate cache
 }
@@ -45,6 +46,7 @@ function getLanguagesConfigFiles() {
 module.exports.getLanguages = (recreateCache) => {
   const getLanguagesCacheName = `nexss_core_getLanguages__.json`;
 
+  // Cache L1 - memory
   if (process.languages && !recreateCache) {
     log.dm(`¦ Reading all languages data from cache.`);
     return process.languages;
@@ -52,6 +54,7 @@ module.exports.getLanguages = (recreateCache) => {
     log.dm(`¦ making configuration for all language config.`);
   }
 
+  // Cache L2 - file
   if (!recreateCache && cache.exists(getLanguagesCacheName, "1y")) {
     process.languages = cache.readJSON(getLanguagesCacheName);
     return process.languages;
@@ -110,9 +113,8 @@ module.exports.languageNames = () => {
 };
 
 module.exports.getLang = (ext, recreateCache) => {
-  // Cache L1
-
   if (ext) {
+    // Cache L1
     if (process.languages && process.languages[ext]) {
       log.dm(
         `¦ Reading language (ext: ${process.languages[ext].title}) data from cache.`

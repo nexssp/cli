@@ -76,6 +76,7 @@ module.exports.transformNexss = (
       args2 = args2.remove("--nxsBuild");
       args2 = args2.remove("--nxsTest");
       args2 = args2.remove("--nxsDebugData");
+      args2 = args2.remove("--nxsDebug");
       args2 = args2.remove("--nxsI");
       args2 = args2.remove("--debug");
       args2 = args2.filter((e) => !e.startsWith("--nxsAs"));

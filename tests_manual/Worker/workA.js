@@ -1,7 +1,7 @@
 console.log("WORKING!!!!!!!!!");
 console.log("args!!", process.argv.slice(2));
 
-console.log(xxxx);
+// console.log(xxxx);
 (async () => {
   setTimeout(() => {
     console.log("works!!! after 500");

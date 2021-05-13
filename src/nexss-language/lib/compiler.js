@@ -29,13 +29,14 @@ module.exports.getCompiler = (file) => {
     log.error(
       "Maybe there is a program with the same name as command of Nexss Programmer?"
     );
-    log.error(
-      "Eg. You execute `nexss " +
-        cliArgs._[0] +
-        " install` and you are in the folder with the `" +
-        cliArgs._[0] +
-        "` program."
-    );
+    if (cliArgs)
+      log.error(
+        "Eg. You execute `nexss " +
+          cliArgs._[0] +
+          " install` and you are in the folder with the `" +
+          cliArgs._[0] +
+          "` program."
+      );
     process.exit(1);
   }
 
@@ -45,13 +46,10 @@ module.exports.getCompiler = (file) => {
   ld_compiler = languageDefinition.compilers;
 
   // We check for custom compiler at the top of the file
-
   if (path.extname(fileName) && fs.existsSync(fileName)) {
-    if (cliArgs.verbose) {
-      log.info(
-        `Checking for the config in the program (eg. nexss-compiler:).. (top part of the file:${fileName})`
-      );
-    }
+    log.di(
+      `Checking for the config in the program (eg. nexss-compiler:).. (top part of the file:${fileName})`
+    );
 
     // TODO: Later fix for efficient, read only lines which are needed
     // The one which starts with nexss-
@@ -69,11 +67,9 @@ module.exports.getCompiler = (file) => {
     file.compiler &&
     !ld_compiler[file && file.compiler && file.compiler.split(" ")[0]]
   ) {
-    if (cliArgs.verbose) {
-      log.warn(
-        `Compiler has been set to ${file.compiler} from file but not exists. Using default one.`
-      );
-    }
+    log.warn(
+      `Compiler has been set to ${file.compiler} from file but not exists. Using default one.`
+    );
     delete file.compiler;
   }
 

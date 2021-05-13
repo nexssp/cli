@@ -26,7 +26,7 @@ const pushData = (data, chunk) => {
 
       if (!data.nxsStop) {
         return {
-          display: chunk.display,
+          // display: chunk.display,
           command: chunk.nexssCommand,
           from: "transform-nexss",
           status: "ok",
@@ -37,7 +37,7 @@ const pushData = (data, chunk) => {
         delete data.nxsStop;
         delete data.nxsStopReason;
         return {
-          display: chunk.display,
+          // display: chunk.display,
           command: chunk.nexssCommand,
           from: "transform-nexss",
           stream: "stop",
@@ -58,7 +58,7 @@ const pushData = (data, chunk) => {
 
   if (!jsonData) {
     return {
-      display: chunk.display,
+      // display: chunk.display,
       command: chunk.nexssCommand,
       from: "transform-nexss",
       stream: "ok",

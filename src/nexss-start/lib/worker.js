@@ -1,3 +1,6 @@
+const { red, bold, yellow } = require("@nexssp/ansi");
+const log = require("@nexssp/logdebug");
+
 module.exports.worker = function ({
   self,
   chunk,
@@ -15,6 +18,17 @@ module.exports.worker = function ({
   if (!fileName) {
     fileName = argsStrings[0];
   }
+
+  if (!callback) {
+    callback = (x) => {
+      if (x) process.stdout.write(x);
+    }; // custom function for callback (eg inside another stream)
+  } else if (typeof callback !== "function") {
+    throw new Error(
+      "Callback needs to be a function. But received: " + typeof callback
+    );
+  }
+
   const { nxsDebugTitle } = require("./output/nxsDebug");
   const { timeElapsed } = require("./output/nxsTime");
   const { pushData } = require("./transformNexssLib");
@@ -25,7 +39,8 @@ module.exports.worker = function ({
   // If nexssCache enabled, output will be cached first and then send out.
   // Output is passed to another stream after is send out partly.
   const nexssCache = StreamCache;
-
+  let dataOnError = [{ chunk_in: chunk }]; // just to display if end with error. Think about better way.
+  let dataOnErrorCWD = chunk.data.cwd;
   let startCompilerTime;
   //Yes startStreamTime below
   if (startStreamTime) {
@@ -34,17 +49,19 @@ module.exports.worker = function ({
   }
   options.maxBuffer = 1024 * 1024 * 100;
   options.highWaterMark = 1024 * 1024 * 100;
-  log.dc(
-    bold(`  Adding cliArgs (argsStrings to the run command): Stream: Nexss..`),
-    argsStrings.join(" ")
+  log.dy(
+    `Spawning ..${cmd}`,
+    "with args ",
+    argsStrings.join(" "),
+    "cwd: ",
+    process.cwd()
   );
-  log.dy(`Spawning ..${cmd}`, argsStrings.join(" "), "cwd: ", process.cwd());
-  this.worker = spawn(cmd, argsStrings, options);
+  const Worker1 = spawn(cmd, argsStrings, options);
 
   const nexssCommand = `${cmd} ${argsStrings.join(" ").trim()}`;
-  this.worker.cmd = nexssCommand;
-  this.worker.on &&
-    this.worker.on("error", (err) => {
+  Worker1.cmd = nexssCommand;
+  Worker1.on &&
+    Worker1.on("error", (err) => {
       // throw Error(err);
       switch (err.code) {
         case "ENOENT":
@@ -61,10 +78,11 @@ module.exports.worker = function ({
       }
     });
 
-  this.worker.stderr &&
-    this.worker.stderr.on &&
-    this.worker.stderr.on("data", function (err) {
+  Worker1.stderr &&
+    Worker1.stderr.on &&
+    Worker1.stderr.on("data", function (err) {
       const errorString = err.toString();
+      // Nexss Programmers messages go through stderr
       if (errorString.includes("NEXSS/")) {
         const exploded = errorString.split("NEXSS");
         exploded.forEach((element) => {
@@ -104,21 +122,37 @@ module.exports.worker = function ({
           parseError(
             fileName,
             this.errBuffer,
-            argsStrings.includes("--pipeerrors")
+            argsStrings.includes("--nxsPipeErrors")
           );
         this.errBuffer = "";
       }
     });
 
   var nexssCacheData = "";
-  this.worker.stdout &&
-    this.worker.stdout.on &&
-    this.worker.stdout.on("data", function (data) {
+  Worker1.stdout &&
+    Worker1.stdout.on &&
+    Worker1.stdout.on("data", function (data) {
       data = data.toString();
+      const optionsWithoutEnv = Object.assign({}, options, { env: "hidden" });
+      dataOnError.push({
+        data_from_worker: data,
+        command: nexssCommand,
+        options: optionsWithoutEnv,
+        cwd: dataOnErrorCWD,
+      });
+
       if (nexssCache) {
         nexssCacheData += data;
       } else {
-        log.dbg(`\n${nexssCommand}: `, require("util").inspect(data), "\n");
+        log.dbg(
+          `\n${nexssCommand}: `,
+          require("util").inspect(data, {
+            compact: true,
+            depth: 5,
+            breakLength: 80,
+          }),
+          "\n"
+        );
         if (data === "\n" || data === "\r\n") {
           log.dy(
             "In the stdout there is '\\n' received from the transformNexss Worker.",
@@ -126,7 +160,7 @@ module.exports.worker = function ({
           );
           return; // we do not want to pass through the whole stream \n
         }
-        log.dg(`<< Data: ${bold(data.length + " B.")}, cmd:${nexssCommand}`);
+        log.dg(`>> Data: ${bold(data.length + " B.")}, cmd:${nexssCommand}`);
 
         log.dg(
           "insp -->",
@@ -134,13 +168,16 @@ module.exports.worker = function ({
             ? require("util").inspect(data.substr(0, 400)) + "...(400chars)"
             : require("util").inspect(data)
         );
+
         setImmediate(() => {
           if (chunk) {
             chunk.nexssCommand = nexssCommand;
             const dataToPush = pushData(data, chunk);
             self.push(dataToPush);
+            dataOnError.push({ chunk_out: dataToPush });
           } else {
             // It's not a stream, we output data
+            dataOnError.push({ not_stream_push: dataToPush });
             callback(data);
           }
 
@@ -149,9 +186,9 @@ module.exports.worker = function ({
       }
     });
 
-  // self.pipe(this.worker);
+  // self.pipe(Worker1);
   // !!NOTE: Below can't be 'finish' as it's not showing all errors.
-  this.worker.stderr.on("end", function () {
+  Worker1.stderr.on("end", function () {
     if (nexssCache) {
       chunk.nexssCommand = nexssCommand;
       const dataToPush = pushData(nexssCacheData, chunk);
@@ -177,20 +214,51 @@ module.exports.worker = function ({
     }
   });
 
-  //   this.worker.stdout.on("end", () => {
+  Worker1.on("exit", function (code) {
+    if (code !== 0) {
+      console.log(red(bold("\nNexss Programmer ERROR:")));
+      console.log("\nCurrent Data: ");
+      console.log(
+        require("util").inspect(dataOnError, {
+          compact: true,
+          depth: 5,
+          breakLength: 80,
+          colors: true,
+        })
+      );
+
+      log.error(
+        `\n${bold(yellow(Worker1.cmd))} has ended with exitCode ${yellow(
+          bold(code)
+        )}. \n` + bold(`Nexss Programmer will not continue.`)
+      );
+
+      console.log(
+        require("util").inspect(dataOnError.slice(1, -1), {
+          compact: true,
+          depth: 5,
+          breakLength: 80,
+          colors: true,
+        })
+      );
+      process.exit(code);
+    }
+  });
+
+  //   Worker1.stdout.on("end", () => {
   //     this.bufferCompleted = true;
   //   });
 
-  // this.worker.on("close", () => {
+  // Worker1.on("close", () => {
   //   timeElapsed(startCompilerTime, `Close Worker ${bold(nexssCommand)}`);
   // });
-  this.worker.on &&
-    this.worker.on("close", () => {
+  Worker1.on &&
+    Worker1.on("close", () => {
       timeElapsed(startCompilerTime, `Close/End Worker ${bold(nexssCommand)}`);
       if (self) self.end();
 
       if (process.nxsErrorExists && !isErrorPiped) {
-        // console.log("There was an error during run..", this.worker.cmd);
+        // console.log("There was an error during run..", Worker1.cmd);
         // callback(null, { stream: "cancel", status: "error" });
       } else {
         callback(null);
@@ -210,7 +278,7 @@ module.exports.worker = function ({
 
       // ============================
       // Worker receive JSON
-      this.worker.stdin.write(Buffer.from(JSON.stringify(j)));
+      Worker1.stdin.write(Buffer.from(JSON.stringify(j)));
       // =======================
     } catch (error) {
       log.dbg(`ERROR WRITING TO PIPE:`, chunk);
@@ -218,8 +286,8 @@ module.exports.worker = function ({
     nxsDebugTitle(" ! Executed: " + cmd, j, "yellow");
   }
 
-  if (this.worker.stdin) {
-    this.worker.stdin.end();
+  if (Worker1.stdin) {
+    Worker1.stdin.end();
   }
-  return this.worker;
+  return Worker1;
 };
