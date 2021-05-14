@@ -14,5 +14,6 @@ let nexsstests = [
 // }
 
 module.exports = {
+  defaultTestFunction: "nSpawn",
   nexsstests,
 };

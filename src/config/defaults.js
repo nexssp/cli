@@ -21,10 +21,23 @@ nConst("isSpecialChar", function (char) {
 });
 
 nConst("startWithSpecialChar", function (char) {
-  const specialChars = ["$#", "$", "::", ":", "!!", "!", "%", "***", "**", "*"]; // $# is depracated
+  const specialChars = [
+    "$#",
+    "$",
+    "::",
+    ":",
+    "!!",
+    "!",
+    "%",
+    "***",
+    "**",
+    "*",
+    "^^",
+    "^",
+  ]; // $# is depracated
   for (let index = 0; index < specialChars.length; index++) {
-    if (char.startsWith(specialChars[index])) {
-      return specialChars[index];
+    if (char && char.startsWith(specialChars[index])) {
+      return specialChars[index] + "";
     }
   }
 });

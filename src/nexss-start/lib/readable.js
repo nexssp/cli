@@ -6,7 +6,7 @@ module.exports.readable = (startData) => {
   if (process.argv[2] === "s" || process.argv[2] === "start") {
     paramNumber = 3;
   }
-  const cliArgs = require("minimist")(process.argv.slice(paramNumber));
+  let cliArgs = require("minimist")(process.argv.slice(paramNumber));
   const { cleanup } = require("./output/nxsOutputParams");
   var s = new Readable({
     objectMode: true,
@@ -21,12 +21,27 @@ module.exports.readable = (startData) => {
   // process.nxsOut = cliArgs.nxsOut;
   // delete cliArgs.nxsOut;
 
-  if (cliArgs._ && cliArgs._.shift) {
+  if (!startWithSpecialChar(cliArgs._[0])) {
+    // if (cliArgs._ && cliArgs._.shift) {
+    //   cliArgs._.shift();
+    //   if (cliArgs._.length === 0) {
+    //     delete cliArgs._;
+    //   }
+    // }
+  } else {
+    let char;
+    if ((char = startWithSpecialChar(cliArgs._[0]))) {
+      // cliArgs = { _: cliArgs._[0] };
+      cliArgs._[0] = cliArgs._[0].replace(char, "");
+    }
+
     cliArgs._.shift();
     if (cliArgs._.length === 0) {
       delete cliArgs._;
     }
   }
+
+  // console.log(cliArgs);
 
   cliArgsCleaned = cleanup(cliArgs);
   startData.nexss = NEXSSP_VERSION;

@@ -1,4 +1,4 @@
-module.exports.transformOutput = (x, y, z) => {
+module.exports.transformOutput = (cmd, currentArgs, options) => {
   const { Transform } = require("stream");
   const nxsFieldModule = require("./output/nxsField");
   const nxsFieldsModule = require("./output/nxsFields");
@@ -52,7 +52,7 @@ module.exports.transformOutput = (x, y, z) => {
         //   callback(null, chunk);
         //   return;
       } else {
-        log.di(`↳ Stream: transformOutput`);
+        log.di(`↳ Stream: transformOutput: ${cmd.name}`);
       }
 
       // Do we need it here???
@@ -63,7 +63,7 @@ module.exports.transformOutput = (x, y, z) => {
       // Not a json data so we don't do anything here
       let data = chunk.data;
 
-      let cliArgs = require("minimist")(y);
+      let cliArgs = require("minimist")(currentArgs);
       delete cliArgs._;
 
       delete cliArgs.nxsTime;

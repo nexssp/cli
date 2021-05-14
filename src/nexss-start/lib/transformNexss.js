@@ -15,7 +15,7 @@ module.exports.transformNexss = (
   const { Transform } = require("stream");
   const { worker } = require("./worker");
   require("@nexssp/extend")("string", "array");
-
+  const { cleanNexssArgs } = require("./cleanNexssArgs");
   const learning = require("./learning");
 
   return new Transform({
@@ -70,26 +70,10 @@ module.exports.transformNexss = (
 
       options.env = env;
       process.nexssCWD = cwd;
-      let args2 = args.remove("--nocache");
-      // args2 = args2.remove("--debug");
-      args2 = args2.remove("--nxsPipeErrors");
-      args2 = args2.remove("--nxsBuild");
-      args2 = args2.remove("--nxsTest");
-      args2 = args2.remove("--nxsDebugData");
-      args2 = args2.remove("--nxsDebug");
-      args2 = args2.remove("--nxsI");
-      args2 = args2.remove("--debug");
-      args2 = args2.filter((e) => !e.startsWith("--nxsAs"));
-      let argsStrings = args2;
-      if (process.platform === "win32") {
-        argsStrings = args2.map((a) =>
-          ~a.indexOf("=") ? `${a.replace("=", '="')}"` : a
-        );
-      } else {
-        argsStrings = args2.map((a) =>
-          ~a.indexOf("=") ? `${a.replace("=", "='")}'` : a
-        );
-      }
+
+      let argsStrings = cleanNexssArgs(args);
+
+      argsStrings = argsStrings.argvAddQuotes();
 
       this.worker = worker({
         self,

@@ -35,6 +35,7 @@ module.exports.writeableStdout = () => {
         if (cliArgs.nxsOut && typeof cliArgs.nxsOut == "boolean") {
           console.log(data["nxsOut"]);
         }
+
         // Cleanup display
 
         if (process.stdout.isTTY) {

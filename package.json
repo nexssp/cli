@@ -1,7 +1,7 @@
 {
   "name": "@nexssp/cli",
   "homepage": "https://nexss.com",
-  "version": "2.4.22",
+  "version": "2.4.23",
   "description": "Nexss PROGRAMMER - Over 50 programming languages together..",
   "main": "src/nexss.js",
   "bin": {
@@ -54,7 +54,7 @@
     "@nexssp/dddebug": "^1.0.5",
     "@nexssp/ensure": "^1.0.2",
     "@nexssp/expression-parser": "^1.0.3",
-    "@nexssp/extend": "^1.0.12",
+    "@nexssp/extend": "^1.0.13",
     "@nexssp/logdebug": "^1.0.15",
     "@nexssp/min": "^1.0.6",
     "@nexssp/os": "^1.0.30",

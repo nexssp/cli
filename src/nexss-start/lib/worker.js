@@ -42,6 +42,7 @@ module.exports.worker = function ({
   let dataOnError = [{ chunk_in: chunk }]; // just to display if end with error. Think about better way.
   let dataOnErrorCWD = chunk.data.cwd;
   let startCompilerTime;
+  let exitCode;
   //Yes startStreamTime below
   if (startStreamTime) {
     // nxsTime
@@ -173,8 +174,8 @@ module.exports.worker = function ({
           if (chunk) {
             chunk.nexssCommand = nexssCommand;
             const dataToPush = pushData(data, chunk);
-            self.push(dataToPush);
             dataOnError.push({ chunk_out: dataToPush });
+            if (!exitCode) self.push(dataToPush);
           } else {
             // It's not a stream, we output data
             dataOnError.push({ not_stream_push: dataToPush });
@@ -216,6 +217,7 @@ module.exports.worker = function ({
 
   Worker1.on("exit", function (code) {
     if (code !== 0) {
+      exitCode = code;
       console.log(red(bold("\nNexss Programmer ERROR:")));
       console.log("\nCurrent Data: ");
       console.log(

@@ -56,6 +56,8 @@ const { isURL } = require("../../../lib/data/url");
 // Move later to separate file, The same is in the nexssFileParser.js
 
 const getFiles = (folder, args, env, ccc) => {
+  console.log(folder);
+  process.exit(1);
   const assert = require("assert");
   assert(folder, "missing path");
   const command = folder.name;
@@ -185,7 +187,7 @@ const getFiles = (folder, args, env, ccc) => {
   }
   let config_files;
   if (!config) {
-    log.dy(
+    log.warn(
       `No config file in ${path.normalize(
         folderAbsolute
       )} searching for the index.nexss OR start.nexss `
@@ -289,7 +291,7 @@ const getFiles = (folder, args, env, ccc) => {
         }
       }
 
-      if (config && config.errors) {
+      if (config.errors) {
         file.errors = config.errors;
       }
 
@@ -352,7 +354,7 @@ const getFiles = (folder, args, env, ccc) => {
       }
       // ?????? process.chdir(cwd);
       // console.log(file);
-      file.command = command !== "." ? command : file.name;
+      file.command = command;
       return file;
       //}
     });

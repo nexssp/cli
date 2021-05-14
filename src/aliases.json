@@ -9,5 +9,6 @@
   "cmd": "command",
   "s": "start",
   "pkg": "package",
-  "e": "edit"
+  "e": "edit",
+  "o": "os"
 }

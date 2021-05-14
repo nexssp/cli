@@ -1,4 +1,4 @@
-module.exports.transformInput = (x, y, params) => {
+module.exports.transformInput = (cmd, currentArgs, params) => {
   const nxsInModule = require("./input/nxsIn");
   const { nxsDebugData } = require("./output/nxsDebug");
   require("@nexssp/extend")("string");

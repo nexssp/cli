@@ -1,6 +1,7 @@
 const { parseData } = require("@nexssp/expression-parser");
 
 module.exports.transformHash = (cmd, inputData, options) => {
+  require("@nexssp/extend")("array");
   const { Transform } = require("stream");
   const { nxsDebugData } = require("./output/nxsDebug");
   return new Transform({
@@ -19,9 +20,16 @@ module.exports.transformHash = (cmd, inputData, options) => {
       // Below probably is not necessary as it is redirected to this
       // stream based on the data
       const char = startWithSpecialChar(n);
+      let execCommand;
       if (char) {
         execCommand = n.substring(char.length);
       }
+
+      if (cmd.specialArgs) {
+        execCommand += ` ${cmd.specialArgs.argvAddQuotes().join(" ")}`;
+      }
+
+      // Arguments
 
       // if (cliArgs.nxsComments) {
       //   //??
@@ -49,20 +57,28 @@ module.exports.transformHash = (cmd, inputData, options) => {
       // We add the data from the command line --
       newData = Object.assign(newData, options.inputData);
 
+      log.dy(`Transform HASH: ${char} ${execCommand} ${inputData}`);
+
       switch (char) {
-        case "!":
-          const {
-            execExclamationMark,
-          } = require("../lib/specialCommands/!.js");
-          execExclamationMark(execCommand);
-          newData["nxsOut"] = newData["nxsIn"];
+        case "^":
+          const { execCircAccent } = require("../lib/specialCommands/^.js");
+          execCircAccent(execCommand, inputData);
+          // newData["nxsOut"] = newData["nxsIn"];
           break;
-        case "!!":
+        case "^^":
           const {
-            execDoubleExclamationMark,
-          } = require("../lib/specialCommands/!!.js");
-          newData = execDoubleExclamationMark(execCommand, newData);
-          newData["nxsOut"] = newData["nxsIn"];
+            execDoubleCircAccent,
+          } = require("../lib/specialCommands/^^.js");
+          let resultNewData = execDoubleCircAccent(
+            execCommand,
+            inputData,
+            newData
+          );
+
+          newData.nxsOut = resultNewData.nxsOut;
+
+          // newData["nxsOut"] = newData["nxsIn"];
+
           break;
         default:
           break;
@@ -81,7 +97,7 @@ module.exports.transformHash = (cmd, inputData, options) => {
           newData[newData.nxsAs] =
             nxsInData.length > 1 ? nxsInData : nxsInData[0];
 
-          console.log(newData[newData.nxsAs]);
+          // console.log(newData[newData.nxsAs]);
         } else {
           newData.nxsOut = newData.nxsIn;
         }

@@ -2,7 +2,7 @@ Nexss();
 
 function Nexss() {
   const { ensureInstalled } = require("@nexssp/ensure");
-
+  const { cleanNexssArgs } = require("../lib/cleanNexssArgs");
   const { isURL } = require("../../lib/data/url");
   const { getFiles } = require("../lib/start/files"); //.50
 
@@ -85,6 +85,7 @@ function Nexss() {
     files = [files];
   }
 
+  // Here we have array of files
   files = files.filter(Boolean);
 
   const cache = require("@nexssp/cache");
@@ -152,10 +153,11 @@ function Nexss() {
 
         // log.db(`∘ Preparing ${fileName}..`);
 
+        // Do we need below here??
         if (file.path && fs.existsSync(file.path)) process.chdir(file.path);
-
         process.nexssCWD = file.path;
         process.nexssFilename = path.normalize(fileName);
+        // ======================
 
         if (!file.name) {
           log.error(
@@ -166,7 +168,7 @@ function Nexss() {
         if (!noStdin) {
           let transformInParams = {
             stream: "transformInput",
-            cmd: "in",
+            cmd: file,
           };
 
           if (file.args) {
@@ -190,14 +192,20 @@ function Nexss() {
           cliArgs._.length === 0 ||
           !process.argv
         ) {
-          // const fileArgsHash = file.args;
-          const streamForSpecialChar = getStreamBasedOnSpecialChar(file.name);
-
           delete file.args;
-          nexssResult.push({
+          const streamForSpecialChar = getStreamBasedOnSpecialChar(file.name);
+          let addHashParams = {
             stream: streamForSpecialChar,
             cmd: file,
-          });
+          };
+          // For now we only adds arguments to ! and !! commands
+          // if (["^", "^^"].includes(startWithSpecialChar(file.name))) {
+          //   addHashParams.inputData = cleanNexssArgs(process.argv.slice(3));
+          // }
+
+          nexssResult.push(addHashParams);
+
+          // const fileArgsHash = file.args;
         } else {
           if (parsed.href) {
             switch (parsed.protocol) {
@@ -279,9 +287,6 @@ function Nexss() {
                         console.error("args on the compiler: ", compiler.args);
                       }
                     }
-                    if (compiler.command == "elixir") {
-                      spawnOptions.shell = true;
-                    }
                   }
 
                   let fileArgs;
@@ -305,11 +310,13 @@ function Nexss() {
                   if (compiler && compiler.stream) {
                     stream = compiler.stream;
                   }
+
                   nexssResult.push({
                     stream,
                     // eg. cmd = php
                     cmd,
                     // args = ["my.php", "args from config", "static args"]
+                    specialArgs: file.args,
                     args: compiler.args,
                     data: file.data,
                     options: spawnOptions,
@@ -363,7 +370,7 @@ function Nexss() {
 
         nexssResult.push({
           stream: "transformOutput",
-          cmd: "out",
+          cmd: file,
           // options: spawnOptions
         });
 

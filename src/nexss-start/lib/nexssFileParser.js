@@ -75,6 +75,7 @@ const nexssFileParser = (content, filename, nxsArgs) => {
           });
         }
       }
+
       const lineNxsPlatform = args.nxsPlatform;
       const { checkPlatform } = require("../../lib/platform");
       if (!checkPlatform(lineNxsPlatform)) {
@@ -101,6 +102,8 @@ const nexssFileParser = (content, filename, nxsArgs) => {
       // console.log("filename:        ", filename);
       // console.log("path:        ", pathFilename);
       // console.log("args:        ", args);
+
+      // Install package if not exists..
       if (name) {
         const pname = name.split("/")[0];
         // If this is package and is not installed install
@@ -123,56 +126,76 @@ const nexssFileParser = (content, filename, nxsArgs) => {
           // console.log(`${pname} does not exist  `);
         }
         //=========================================================
-        let f = getFiles(
-          {
+
+        if (["^", "^^"].includes(startWithSpecialChar(name))) {
+          // if command contains -- it will use as nexss programmer parameters eg. nxsAs= etc.
+          let indexOfDashDash = splitter.indexOf("--");
+          if (indexOfDashDash >= 1) {
+            args = splitter.slice(indexOfDashDash + 1);
+            splitter = splitter.slice(0, indexOfDashDash);
+          }
+
+          return {
             name,
+            specialArgs: splitter, // This is just command which takes parameters as a raw line.
             lineNumber,
-            filename,
             path: pathFilename,
-          },
-          args
-        );
+            filename,
+            args,
+          };
+        } else {
+          let f = getFiles(
+            {
+              name,
+              lineNumber,
+              filename,
+              path: pathFilename,
+            },
+            args
+          );
 
-        // console.log(f);
-        // process.exit(1);
+          // console.log(f);
+          // process.exit(1);
 
-        // When run - .nexss first is look at local folder then remote (eg. packages)
+          // When run - .nexss first is look at local folder then remote (eg. packages)
 
-        if (
-          f.name &&
-          !startWithSpecialChar(f.name) &&
-          !f.name.startsWith("http")
-        ) {
-          let toCheck = require("path").join(f.path, f.name);
-          if (!require("fs").existsSync(toCheck)) {
-            f.path = pathFilename;
-            toCheck = require("path").join(f.path, f.name);
-            const repos = require("../../nexss-package/repos.json");
-            if (
-              !require("fs").existsSync(toCheck) &&
-              !repos[f.name.split("/")[0]]
-            ) {
-              log.error(
-                bold("\nFile does not exist in local and remote folders:\n"),
-                bold(yellow(toCheck))
-              );
+          if (
+            f.name &&
+            !startWithSpecialChar(f.name) &&
+            !f.name.startsWith("http")
+          ) {
+            let toCheck = require("path").join(f.path, f.name);
+            if (!require("fs").existsSync(toCheck)) {
+              f.path = pathFilename;
+              toCheck = require("path").join(f.path, f.name);
+              const repos = require("../../nexss-package/repos.json");
+              if (
+                !require("fs").existsSync(toCheck) &&
+                !repos[f.name.split("/")[0]]
+              ) {
+                log.error(
+                  bold("\nFile does not exist in local and remote folders:\n"),
+                  bold(yellow(toCheck))
+                );
+              }
             }
           }
-        }
 
-        // console.log("Result:", f);
-        // console.log(
-        //   "=========================================================="
-        // );
-        return f;
+          // console.log("Result:", f);
+          // console.log(
+          //   "=========================================================="
+          // );
+          // console.log(f);
+          return f;
+        }
       } else {
         // console.log(
         //   "NO RESULT."
         // );
       }
     })
-
     .flat();
+
   return files;
 };
 

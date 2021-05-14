@@ -21,3 +21,19 @@
 
 //       this.worker.stderr.on("data", function (err) {
 //         const errorString = err.toString();
+
+const { nSpawn } = require("@nexssp/system");
+const { getPM } = require("@nexssp/os");
+require("@nexssp/extend")("array");
+
+// parsed2 = parsed.map((a) => a.replace(/=('?)(.*[^'])('?)$/, '="$2"'));
+
+let parsed = process.argv.slice(4);
+parsed = parsed.argvAddQuotes();
+
+const command = getPM("install") + " " + parsed.join(" ");
+
+console.log(command);
+process.exit(1);
+
+nSpawn(command, { stdio: "inherit" });
