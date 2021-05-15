@@ -59,7 +59,7 @@ module.exports = {
     {
       title: "Thest calculations field with package",
       params: [
-        "nexss $# 'x\\${Math.PI}zzz' --nxsAs=A",
+        "nexss $# 'x\\${Math.PI}zzz' --nxsAs=B",
         "x3.141592653589793zzz",
       ],
     },

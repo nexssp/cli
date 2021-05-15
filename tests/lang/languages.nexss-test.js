@@ -24,7 +24,7 @@ module.exports = {
       type: "shouldContain",
       params: [
         "nexss file add Default${uniqueTestValue} --t=default --f",
-        /OK  File (.*) has been created/,
+        /OK File (.*) has been created/,
       ],
     },
     {

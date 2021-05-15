@@ -149,15 +149,18 @@ const nexssFileParser = (content, filename, nxsArgs) => {
             args,
           };
         } else {
-          let f = getFiles(
-            {
-              name,
-              lineNumber,
-              filename,
-              path: pathFilename,
-            },
-            args
-          );
+          let params = {
+            name,
+            lineNumber,
+            filename,
+            path: pathFilename,
+          };
+
+          if (nxsArgs.seq) {
+            params.seq = nxsArgs.seq;
+          }
+
+          let f = getFiles(params, args);
 
           // console.log(f);
           // process.exit(1);
