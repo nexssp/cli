@@ -1,3 +1,8 @@
+/**
+ * Copyright 2018-2021 Nexss.com. All rights reserved.
+ * This source code is governed by a License which can be found in the LICENSE file.
+ */
+
 module.exports.transformOutput = (cmd, currentArgs, options) => {
   const { Transform } = require("stream");
   const nxsFieldModule = require("./output/nxsField");

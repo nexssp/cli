@@ -1,3 +1,8 @@
+/**
+ * Copyright 2018-2021 Nexss.com. All rights reserved.
+ * This source code is governed by a License which can be found in the LICENSE file.
+ */
+
 const { red, bold, yellow } = require("@nexssp/ansi");
 const log = require("@nexssp/logdebug");
 
@@ -242,8 +247,8 @@ module.exports.worker = function ({
           colors: true,
         })
       );
-      process.exit(code);
     }
+    if (code !== 0) process.exit(code);
   });
 
   //   Worker1.stdout.on("end", () => {

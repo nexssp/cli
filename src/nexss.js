@@ -1,8 +1,7 @@
 #!/usr/bin/env node
-/*
- * Title: Nexss Programmer CLI
- * Author: Marcin Polak / nexss.com
- * 2018/10/01 initial version
+/**
+ * Copyright 2018-2021 Nexss.com. All rights reserved.
+ * This source code is governed by a License which can be found in the LICENSE file.
  */
 
 // When $# is passed on Linux it becomes 0 when arguments are parsed.

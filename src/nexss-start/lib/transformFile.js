@@ -1,8 +1,6 @@
-/*
- * Title: Nexss PROGRAMMER 2.2
- * Description: Tranform File Stream Module
- * Author: Marcin Polak
- * 2018/08/14 initial version
+/**
+ * Copyright 2018-2021 Nexss.com. All rights reserved.
+ * This source code is governed by a License which can be found in the LICENSE file.
  */
 
 module.exports.transformFile = (file, x, y) => {

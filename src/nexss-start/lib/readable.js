@@ -1,3 +1,8 @@
+/**
+ * Copyright 2018-2021 Nexss.com. All rights reserved.
+ * This source code is governed by a License which can be found in the LICENSE file.
+ */
+
 // const nxsInModule = require("./input/nxsIn");
 module.exports.readable = (startData) => {
   const { Readable } = require("stream");
