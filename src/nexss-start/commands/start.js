@@ -8,12 +8,12 @@ Nexss();
 function Nexss() {
   const { ensureInstalled } = require("@nexssp/ensure");
   const { isURL } = require("../../lib/data/url");
-  const url = require("url");
   let fileOrDirectory = Array.isArray(cliArgs._) && cliArgs._.slice(1).shift();
 
   if ((!fileOrDirectory && cliArgs._[0] === "start") || cliArgs._[0] === "s") {
     fileOrDirectory = ".";
   }
+
   if (fileOrDirectory) {
     const nexssFileParser = require("../lib/nexssFileParser");
     if (path.extname(fileOrDirectory) === ".nexss") {
@@ -29,6 +29,9 @@ function Nexss() {
     }
   }
 
+  // console.log(files);
+  // process.exit(1);
+
   let nexssConfig;
 
   if (!isURL(fileOrDirectory) && !startWithSpecialChar(fileOrDirectory)) {
@@ -40,10 +43,9 @@ function Nexss() {
       return;
     } else if (fs.lstatSync(fileOrDirectory).isFile()) {
       const dirname = path.dirname(fileOrDirectory);
-      const configFileDirname = `${dirname}/_nexss.yml`;
-      if (fs.existsSync(configFileDirname) && fs.lstatSync(configFileDirname)) {
-        nexssConfig = loadConfigContent(configFileDirname);
-      }
+      try {
+        nexssConfig = loadConfigContent(`${dirname}/_nexss.yml`);
+      } catch (error) {}
     } else {
       nexssConfig = loadConfigContent(`${fileOrDirectory}/_nexss.yml`);
     }
@@ -57,7 +59,6 @@ function Nexss() {
   files = files.filter(Boolean);
 
   const cache = require("@nexssp/cache");
-
   cache.setup(process.env.NEXSS_CACHE_PATH, true);
   if (cliArgs.nocache) {
     cache.recreateCache(); //set flag to recreate cache
@@ -95,25 +96,14 @@ function Nexss() {
       Object.assign(startData, nexssConfig.data);
     }
 
-    // if (cliArgs.debug) di(`startData: ${yellow(inspect(startData))}`);
-
+    const noStdin = cliArgs[nexss[":i"]];
     nexssBuild.push({ stream: "readable", cmd: startData });
-
-    if (cliArgs.debug) {
-      nexssBuild.push({
-        stream: "transformError",
-        cmd: "Builder Started.",
-      });
-    }
-
-    // let nexssResult = [() => "process.stdin"];
-
-    const noStdin = hasStdin;
-    // nexssResult.push({ stream: "readable", cmd: startData });
-    // { stream: "transformError", cmd: "Some text" }
     nexssResult.push({ stream: "readable", cmd: startData });
+
     const { getCompiler } = require("../../nexss-language/lib/compiler");
     const { getBuilder } = require("../../nexss-language/lib/builder");
+
+    require("@nexssp/extend")("string"); // replacement below for url.parse is depracated
 
     for (let file of files) {
       let fileName = file.name;
@@ -152,7 +142,7 @@ function Nexss() {
 
       let stream = "transformNexss";
 
-      const parsed = url.parse(fileName);
+      let parsed = fileName.parseURL();
 
       if (
         startWithSpecialChar(file.name) ||
@@ -309,13 +299,6 @@ function Nexss() {
                   stream: "transformNexss",
                   cmd,
                   args: builderArgs,
-                  options: spawnOptions,
-                  fileName,
-                });
-
-                nexssBuild.push({
-                  stream: "transformError",
-                  cmd: "BUILD RESULTS:",
                   options: spawnOptions,
                   fileName,
                 });

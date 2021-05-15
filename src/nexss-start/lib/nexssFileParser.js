@@ -5,6 +5,7 @@
 
 const { getFiles } = require("./start/files");
 const minimist = require("minimist");
+const fs = require("fs");
 require("@nexssp/extend")("string");
 
 function preVars(isn) {
@@ -156,7 +157,11 @@ const nexssFileParser = (content, filename, nxsArgs) => {
             path: pathFilename,
           };
 
-          if (nxsArgs.seq) {
+          if (
+            nxsArgs.seq &&
+            (name === "." || fs.lstatSync(name).isDirectory(name))
+          ) {
+            // console.log(name, "Adding seq!!!", nxsArgs.seq);
             params.seq = nxsArgs.seq;
           }
 
@@ -203,7 +208,6 @@ const nexssFileParser = (content, filename, nxsArgs) => {
       }
     })
     .flat();
-
   return files;
 };
 

@@ -18,8 +18,6 @@ log.dc(bold("∞ Starting Nexss Programmer.."));
 //   process.argv = process.argv.argStripQuotes();
 // }
 
-nConst("hasStdin", cliArgs[nexss[":i"]]);
-
 const NEXSS_SRC_PATH = process.env.NEXSS_SRC_PATH;
 const NEXSS_PACKAGES_PATH = process.env.NEXSS_PACKAGES_PATH;
 if (!cliArgs[nexss["process:title"]]) {

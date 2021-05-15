@@ -22,7 +22,6 @@ async function run(operations, options = {}) {
 
   const finalOperations = operations.map((element, index) => {
     const { transformNexss } = require("./transformNexss");
-    const { transformError } = require("./transformError");
     const { transformFile } = require("./transformFile");
     const { writeableStdout } = require("./writeableStdout");
     const { transformTest } = require("./transformTest");

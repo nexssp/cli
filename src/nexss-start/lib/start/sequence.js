@@ -18,7 +18,7 @@ const getSequence = (seqName, nexssConfig, passedData) => {
   if (!nexssConfig.sequences) {
     log.error(
       `There is no 'sequences' section in the _nexss.yml file: ${nexssConfig.filePath}
-more: https://github.com/nexssp/cli/wiki/Sequences`
+more: https://github.com/nexssp/cli/wiki/Sequences\nYou have tried to load '${seqName}'`
     );
     process.exit();
   }
