@@ -1,7 +1,7 @@
 {
   "name": "@nexssp/cli",
   "homepage": "https://nexss.com",
-  "version": "2.4.25",
+  "version": "2.4.26",
   "description": "Nexss PROGRAMMER - Over 50 programming languages together..",
   "main": "src/nexss.js",
   "bin": {
