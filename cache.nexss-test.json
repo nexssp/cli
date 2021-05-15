@@ -1,0 +1,1320 @@
+[
+  [
+    {
+      "file": "C:\\Users\\mapoart\\.nexssCli24/tests/exp-parser.nexss-test.js",
+      "results": [
+        {
+          "title": "exp parser JSON - .nexss file",
+          "params": [
+            "nexss Nexss/Test/ExpressionParser/expressionParserTest.nexss",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/exp-parser.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "{\"nexss\":\"2.4.23\",\"start\":1621061739496,\"cwd\":\"C:\\\\Users\\\\mapoart\\\\.nexss\\\\packages/Nexss/Test/ExpressionParser\",\"__dirname\":\"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-g0y9go\",\"nxsIn\":[\"Nexss/Test/ExpressionParser/expressionParserTest.nexss\"],\"func1\":\"() => 5+5\",\"func2\":\"() => {return 20+16.1}\",\"func3\":\"(x) => {return x+1000}\",\"func4\":\"(x) => x*x\",\"func1Result\":\"10\",\"func2Result\":\"36.1\",\"func3Result\":\"1005\",\"func4Result\":\"100\"}",
+          "testBody": "nexss Nexss/Test/ExpressionParser/expressionParserTest.nexss shouldContain -> /\"func1Result\":\"10\"*/",
+          "ok": true
+        },
+        {
+          "title": "exp parser JSON - project",
+          "params": [
+            "nexss Nexss/Test/ExpressionParser",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/exp-parser.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "{\"nexss\":\"2.4.23\",\"start\":1621061739665,\"cwd\":\"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-g0y9go\",\"nxsIn\":[\"Nexss/Test/ExpressionParser\"],\"func1\":\"() => 5+5\",\"func2\":\"() => {return 20+16.1}\",\"func3\":\"(x) => {return x+1000}\",\"func4\":\"(x) => x*x\",\"func1Result\":\"10\",\"func2Result\":\"36.1\",\"func3Result\":\"1005\",\"func4Result\":\"100\"}",
+          "testBody": "nexss Nexss/Test/ExpressionParser shouldContain -> /\"func4Result\":\"100\"/",
+          "ok": true
+        }
+      ],
+      "totalOk": 2,
+      "totalFailed": 0
+    }
+  ],
+  [
+    {
+      "file": "C:\\Users\\mapoart\\.nexssCli24/tests/platform.nexss-test.js",
+      "results": [
+        {
+          "title": "Run depends on platform .nexss file",
+          "params": [
+            "nexss Nexss/Test/Platform/example1.nexss --nxsPipeErrors",
+            "This command will appear only on All Windowses"
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/platform.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "15 May 08:55:40 ⁉ WARN Nexss/Test/Platform/example1.nexss\nThis command will appear only on All Windowses\n15 May 08:55:40 ¡ INFO This command will appear only on Windows10 OR MacOS.\n{\"nexss\":\"2.4.23\",\"start\":1621061740120,\"cwd\":\"C:\\\\Users\\\\mapoart\\\\.nexss\\\\packages/Nexss/Test/Platform\",\"nxsPipeErrors\":true,\"__dirname\":\"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-bws60s\"}",
+          "testBody": "nexss Nexss/Test/Platform/example1.nexss --nxsPipeErrors shouldContain -> This command will appear only on All Windowses",
+          "ok": true
+        },
+        {
+          "title": "Run depends on platform - exitCode 1 for Windows",
+          "params": [
+            "nexss Output/End \"works on Ubuntu\" --nxsPlatform=\"UBUNTU\"",
+            "UBUNTU did not match with your platform win32",
+            {
+              "exitCode": 1,
+              "testFunction": "nSpawn"
+            }
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/platform.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "Nexss Programmer: UBUNTU did not match with your platform win32, WINDOWS10 or WINDOWS. Program will NOT continue.",
+          "testBody": "nexss Output/End \"works on Ubuntu\" --nxsPlatform=\"UBUNTU\" shouldContain -> UBUNTU did not match with your platform win32",
+          "ok": true
+        },
+        {
+          "title": "Run depends on platform - exitCode 0",
+          "params": [
+            "nexss Output/End \"works on Ubuntu\" --platform:check=\"UBUNTU\" --platform:noerror",
+            "UBUNTU did not match with your platform win32",
+            {
+              "exitCode": 0,
+              "testFunction": "nSpawn"
+            }
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/platform.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "15 May 08:55:40 ⁉ WARN WARN:  Nexss Programmer: UBUNTU did not match with your platform win32, WINDOWS10 or WINDOWS. But program WILL continue.",
+          "testBody": "nexss Output/End \"works on Ubuntu\" --platform:check=\"UBUNTU\" --platform:noerror shouldContain -> UBUNTU did not match with your platform win32",
+          "ok": true
+        },
+        {
+          "title": "Thest calculations field with $#",
+          "params": [
+            "nexss Id --pi='x\\${Math.PI}zzz' --nxsAs=A",
+            "x3.141592653589793zzz"
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/platform.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "{\"nexss\":\"2.4.23\",\"start\":1621061740681,\"cwd\":\"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-bws60s\",\"pi\":\"'x3.141592653589793zzz'\",\"A\":\"ckopeb0ev00006ktab0nhh0cd\"}",
+          "testBody": "nexss Id --pi='x\\${Math.PI}zzz' --nxsAs=A shouldContain -> x3.141592653589793zzz",
+          "ok": true
+        },
+        {
+          "title": "Thest calculations field with package",
+          "params": [
+            "nexss $# 'x\\${Math.PI}zzz' --nxsAs=A",
+            "x3.141592653589793zzz"
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/platform.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "{\"nexss\":\"2.4.23\",\"start\":1621061740884,\"cwd\":\"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-bws60s\",\"A\":\"'x3.141592653589793zzz'\"}",
+          "testBody": "nexss $# 'x\\${Math.PI}zzz' --nxsAs=A shouldContain -> x3.141592653589793zzz",
+          "ok": true
+        }
+      ],
+      "totalOk": 5,
+      "totalFailed": 0
+    }
+  ],
+  [
+    {
+      "file": "C:\\Users\\mapoart\\.nexssCli24/tests/sequences.nexss-test.js",
+      "results": [
+        {
+          "title": "Default sequence",
+          "params": [
+            "nexss Nexss/Test/Sequences",
+            {},
+            null
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/sequences.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "{\"myparam1\":\"works\",\"nexss\":\"2.4.23\",\"start\":1621061741241,\"cwd\":\"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-0uy74r\",\"sequence\":\"default\"}",
+          "testBody": "nexss Nexss/Test/Sequences shouldContain -> /\"sequence\":\"default\"/",
+          "ok": true
+        },
+        {
+          "title": "Named sequence",
+          "params": [
+            "nexss Nexss/Test/Sequences --seq=one",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/sequences.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "{\"myparam1\":\"works\",\"nexss\":\"2.4.23\",\"start\":1621061742403,\"cwd\":\"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-0uy74r\",\"seq\":\"one\",\"sequence\":\"one\"}",
+          "testBody": "nexss Nexss/Test/Sequences --seq=one shouldContain -> /\"sequence\":\"one\"/",
+          "ok": true
+        },
+        {
+          "title": "Wrong sequence",
+          "params": [
+            "nexss Nexss/Test/Sequences --seq=wrong",
+            {},
+            {
+              "exitCode": 1
+            }
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/sequences.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "PATH:  C:\\Users\\mapoart\\.nexss\\packages\\Nexss\\Test\\Sequences\\_nexss.yml\nSequences: \n{\n  default: [ { name: 'default.ps1' }, [length]: 1 ],\n  one: [ { name: 'one.ps1' }, [length]: 1 ],\n  debug: [ { name: 'Debug' }, [length]: 1 ],\n  '^about(.)(.*)': { seq: 'debug' },\n  '^2about(?<found1>.)(?<found2>.)(?<found3>.*)': [ { name: 'default.ps1', data: { x: 5555 } }, [length]: 1 ],\n  '^3about(?<found4>.)(?<found5>.)(?<found6>.*)': { seq: 'debug' },\n  'about*': { seq: 'debug' },\n  mytestdata: [ { name: 'Debug', data: { myparam1: 'overwritten' } }, [length]: 1 ],\n  'openFile/(?<openFile>.*)': [\n    { name: 'src/openFile.nexss', data: { folder: 'xxworks!!!!!' } },\n    [length]: 1\n  ]\n}\n15 May 08:55:43 × ERROR undefined sequence does not exist in the _nexss.yml\n15 May 08:55:43 × ERROR searchSequence: undefined",
+          "testBody": "nexss Nexss/Test/Sequences --seq=wrong shouldContain -> /sequence does not exist in the _nexss.yml/",
+          "ok": true
+        },
+        {
+          "title": "Capture Group",
+          "params": [
+            "nexss Nexss/Test/Sequences --seq=aboutxasdasd",
+            "\"nxsParam_0\": \"aboutxasdasd\",\n  \"nxsParam_1\": \"x\",\n  \"nxsParam_2\": \"asdasd\"",
+            {
+              "testFunction": "nSpawn"
+            }
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/sequences.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "15 May 08:55:43 ∇ TRACE {\n  \"myparam1\": \"works\",\n  \"nexss\": \"2.4.23\",\n  \"start\": 1621061743590,\n  \"cwd\": \"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-0uy74r\",\n  \"seq\": \"aboutxasdasd\",\n  \"nxsParam_0\": \"aboutxasdasd\",\n  \"nxsParam_1\": \"x\",\n  \"nxsParam_2\": \"asdasd\",\n  \"nxsIn\": [\n    \"Nexss/Test/Sequences\"\n  ],\n  \"resultField_1\": \"nxsOut\"\n}\n{\"myparam1\":\"works\",\"nexss\":\"2.4.23\",\"start\":1621061743590,\"cwd\":\"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-0uy74r\",\"seq\":\"aboutxasdasd\",\"nxsParam_0\":\"aboutxasdasd\",\"nxsParam_1\":\"x\",\"nxsParam_2\":\"asdasd\"}",
+          "testBody": "nexss Nexss/Test/Sequences --seq=aboutxasdasd shouldContain -> \"nxsParam_0\": \"aboutxasdasd\",\n  \"nxsParam_1\": \"x\",\n  \"nxsParam_2\": \"asdasd\"",
+          "ok": true
+        },
+        {
+          "title": "Naming Group",
+          "params": [
+            "nexss Nexss/Test/Sequences --seq=2aboutxasdasd",
+            "\"found1\":\"x\",\"found2\":\"a\",\"found3\":\"sdasd\""
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/sequences.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "{\"myparam1\":\"works\",\"nexss\":\"2.4.23\",\"start\":1621061743946,\"cwd\":\"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-0uy74r\",\"seq\":\"2aboutxasdasd\",\"x\":5555,\"found1\":\"x\",\"found2\":\"a\",\"found3\":\"sdasd\",\"sequence\":\"default\"}",
+          "testBody": "nexss Nexss/Test/Sequences --seq=2aboutxasdasd shouldContain -> \"found1\":\"x\",\"found2\":\"a\",\"found3\":\"sdasd\"",
+          "ok": true
+        },
+        {
+          "title": "Naming Group - with -seq",
+          "params": [
+            "nexss Nexss/Test/Sequences --seq=3aboutxasdasd",
+            "\"found4\":\"x\",\"found5\":\"a\",\"found6\":\"sdasd\""
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/sequences.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "15 May 08:55:45 ∇ TRACE {\n  \"myparam1\": \"works\",\n  \"nexss\": \"2.4.23\",\n  \"start\": 1621061745003,\n  \"cwd\": \"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-0uy74r\",\n  \"seq\": \"3aboutxasdasd\",\n  \"found4\": \"x\",\n  \"found5\": \"a\",\n  \"found6\": \"sdasd\",\n  \"nxsIn\": [\n    \"Nexss/Test/Sequences\"\n  ],\n  \"resultField_1\": \"nxsOut\"\n}\n{\"myparam1\":\"works\",\"nexss\":\"2.4.23\",\"start\":1621061745003,\"cwd\":\"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-0uy74r\",\"seq\":\"3aboutxasdasd\",\"found4\":\"x\",\"found5\":\"a\",\"found6\":\"sdasd\"}",
+          "testBody": "nexss Nexss/Test/Sequences --seq=3aboutxasdasd shouldContain -> \"found4\":\"x\",\"found5\":\"a\",\"found6\":\"sdasd\"",
+          "ok": true
+        },
+        {
+          "title": "Data in the sequences Overwrite",
+          "params": [
+            "nexss Nexss/Test/Sequences --seq=mytestdata",
+            "\"myparam1\": \"overwritten\"",
+            {
+              "testFunction": "nSpawn"
+            }
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/sequences.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "15 May 08:55:45 ∇ TRACE {\n  \"myparam1\": \"overwritten\",\n  \"nexss\": \"2.4.23\",\n  \"start\": 1621061745356,\n  \"cwd\": \"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-0uy74r\",\n  \"seq\": \"mytestdata\",\n  \"nxsIn\": [\n    \"Nexss/Test/Sequences\"\n  ],\n  \"resultField_1\": \"nxsOut\"\n}\n{\"myparam1\":\"overwritten\",\"nexss\":\"2.4.23\",\"start\":1621061745356,\"cwd\":\"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-0uy74r\",\"seq\":\"mytestdata\"}",
+          "testBody": "nexss Nexss/Test/Sequences --seq=mytestdata shouldContain -> \"myparam1\": \"overwritten\"",
+          "ok": true
+        }
+      ],
+      "totalOk": 7,
+      "totalFailed": 0
+    }
+  ],
+  [
+    {
+      "file": "C:\\Users\\mapoart\\.nexssCli24/tests/welcome.nexss-test.js",
+      "results": [
+        {
+          "params": [
+            "nexss",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/welcome.nexss-test.js",
+          "title": "nexss",
+          "testType": "shouldContain",
+          "result": "{\"nexss\":\"2.4.23\",\"start\":1621061745550,\"cwd\":\"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-3j32s7\"}",
+          "testBody": "nexss shouldContain -> /\"nexss\":\"(\\d).(\\d*).(\\d*)\"/",
+          "ok": true
+        }
+      ],
+      "totalOk": 1,
+      "totalFailed": 0
+    }
+  ],
+  [
+    {
+      "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/env.nexss-test.js",
+      "results": [
+        {
+          "title": "NEXSS_APPS_PATH",
+          "params": [
+            "nexss Id --testEnv='${process.env.NEXSS_APPS_PATH}'",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/env.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "{\"nexss\":\"2.4.23\",\"start\":1621061745846,\"cwd\":\"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-yxaigf\",\"testEnv\":\"'C:\\\\Users\\\\mapoart\\\\.nexssApps'\",\"nxsOut\":\"ckopeb4eb0000gcta2wr21onj\"}",
+          "testBody": "nexss Id --testEnv='${process.env.NEXSS_APPS_PATH}' shouldContain -> /\"testEnv\":\".*\\.nexssApps/",
+          "ok": true
+        },
+        {
+          "title": "NEXSS_LANGUAGES_PATH",
+          "params": [
+            "nexss Id --testEnv='${process.env.NEXSS_LANGUAGES_PATH}'",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/env.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "{\"nexss\":\"2.4.23\",\"start\":1621061746202,\"cwd\":\"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-yxaigf\",\"testEnv\":\"'C:\\\\Users\\\\mapoart\\\\.nexss\\\\languages'\",\"nxsOut\":\"ckopeb4o80000xotadhxfg1c8\"}",
+          "testBody": "nexss Id --testEnv='${process.env.NEXSS_LANGUAGES_PATH}' shouldContain -> /\"testEnv\":\".*\\.nexss.*languages/",
+          "ok": true
+        },
+        {
+          "title": "NEXSS_HOME_PATH",
+          "params": [
+            "nexss Id --testEnv='${process.env.NEXSS_HOME_PATH}'",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/env.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "{\"nexss\":\"2.4.23\",\"start\":1621061746559,\"cwd\":\"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-yxaigf\",\"testEnv\":\"'C:\\\\Users\\\\mapoart\\\\.nexss'\",\"nxsOut\":\"ckopeb4y50000j0ta2ly4532y\"}",
+          "testBody": "nexss Id --testEnv='${process.env.NEXSS_HOME_PATH}' shouldContain -> /\"testEnv\":\".*\\.nexss.*\"/",
+          "ok": true
+        }
+      ],
+      "totalOk": 3,
+      "totalFailed": 0
+    }
+  ],
+  [
+    {
+      "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/func.nexss-test.js",
+      "results": [
+        {
+          "params": [
+            "nexss -version",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/func.nexss-test.js",
+          "title": "nexss -version",
+          "testType": "shouldContain",
+          "result": "2.4.23",
+          "testBody": "nexss -version shouldContain -> /(\\d).(\\d).(\\d)/",
+          "ok": true
+        },
+        {
+          "params": [
+            "nexss -help",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/func.nexss-test.js",
+          "title": "nexss -help",
+          "testType": "shouldContain",
+          "result": "List of quick/helper (-) functions\n-arg-progress.md - Displays available colors for .nexss files\n-bg.md - Starts nexss in the background.\n-dev-colors.md - Disable colorized output result\n-dev-help.md - shows help for devs like constants, paths tips and tricks\n-dev-update.md - Updates code to the branch of the choice.\n-dev-validation.md - Displays available validation for use in \\_nexss.yml.\n-env.md - Displays os, distro name, versions and package managers..\n-global-config.md - Displays variables in the global config\n-help.md - This help info\n-output-colors.md - Displays available colors for .nexss files\n-pack.md - Pack selected files and folders eg. nexss -pack myfile1 myfolder2 myfile3 mypack.tar.gz\n-version.md - Shows version of the Nexss Programmer.",
+          "testBody": "nexss -help shouldContain -> /List of quick\\/helper/",
+          "ok": true
+        },
+        {
+          "params": [
+            "nexss -env",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/func.nexss-test.js",
+          "title": "nexss -env",
+          "testType": "shouldContain",
+          "result": "nexss (2.4.23:3052) -env\n\nEnvironment Variables\nNEXSS_SRC_PATH=C:\\Users\\mapoart\\.nexssCli24\\src\nNEXSS_HOME_PATH=C:\\Users\\mapoart\\.nexss\nNEXSS_APPS_PATH=C:\\Users\\mapoart\\.nexssApps\nNEXSS_LANGUAGES_PATH=C:\\Users\\mapoart\\.nexss\\languages\nNEXSS_PACKAGES_PATH=C:\\Users\\mapoart\\.nexss\\packages\nNEXSS_CACHE_PATH=C:\\Users\\mapoart\\.nexss\\cache\\2.4.21\nNEXSS_BACKUP_PATH=C:\\Users\\mapoart\\.nexss\\backup\nNEXSS_PROJECT_PATH=undefined\n\nOS Information\nWindows version:\t Microsoft Windows [Version 10.0.19042.985]\nInstall command:\t scoop install\nUpdate command:\t\t scoop update\nUninstall command:\t scoop uninstall\nTags:\t WINDOWS10, WINDOWS (to use in a distro recognition)",
+          "testBody": "nexss -env shouldContain -> /(Environment Variables|Tags:\\/)/",
+          "ok": true
+        },
+        {
+          "params": [
+            "nexss -dev-colors",
+            "bold  grey  greyBG"
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/func.nexss-test.js",
+          "title": "nexss -dev-colors",
+          "testType": "shouldContain",
+          "result": "bold  grey  greyBG  purple  purpleBG  underscore  red  redBG  redBG2  green  greenBG  greenBG2  blue  blueBG  blueBG2  yellow  yellowBG  yellowBG2  magenta  magentaBG  magentaBG2  cyan  cyanBG  orangeBG  white  whiteBG  black  blackBG",
+          "testBody": "nexss -dev-colors shouldContain -> bold  grey  greyBG",
+          "ok": true
+        },
+        {
+          "params": [
+            "nexss -dev-validation",
+            "required:"
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/func.nexss-test.js",
+          "title": "nexss -dev-validation",
+          "testType": "shouldContain",
+          "result": "{\n  required: { message: '<Field> is required.', regexp: /\\S/ },\n  number: { message: '<Field> must be a number.', regexp: /^[0-9]*$/ },\n  float: {\n    message: '<Field> must be a FLOAT number.',\n    regexp: /^[+-]?([0-9]*[.])?[0-9]+$/\n  },\n  bool: {\n    message: '<Field> must be true or false, 1 or 0',\n    regexp: /^(true|false|1|0)$/\n  }\n}",
+          "testBody": "nexss -dev-validation shouldContain -> required:",
+          "ok": true
+        },
+        {
+          "params": [
+            "nexss -global-config",
+            "Global config path:"
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/func.nexss-test.js",
+          "title": "nexss -global-config",
+          "testType": "shouldContain",
+          "result": "Global config path: C:\\Users\\mapoart\\.nexss\\config.json\n{ arg: {}, 'arg:progress': 1, output: {}, 'output:colors': 1 }",
+          "testBody": "nexss -global-config shouldContain -> Global config path:",
+          "ok": true
+        },
+        {
+          "params": [
+            "nexss -dev-help",
+            "Constants:\nnConst"
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/func.nexss-test.js",
+          "title": "nexss -dev-help",
+          "testType": "shouldContain",
+          "result": "Constants:\nnConst, isSpecialChar, startWithSpecialChar, getStreamBasedOnSpecialChar, NEXSSP_VERSION, aliases, ddd, stack, nexss, distro, distroVersion, sudo, distros, replacePMByDistro, distroTag1, distroTag2, mem, fs, path, cliArgs, isErrorPiped, PROCESS_CWD, shell, nexssGlobalConfigPath, hasStdin,",
+          "testBody": "nexss -dev-help shouldContain -> Constants:\nnConst",
+          "ok": true
+        },
+        {
+          "title": "nexss -arg-progress = error no value",
+          "params": [
+            "nexss -arg-progress",
+            "You can only use: enable, 1, disable, 0. Your value: undefined",
+            {
+              "exitCode": 1
+            }
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/func.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "15 May 08:55:47 × ERROR You can only use: enable, 1, disable, 0. Your value: undefined",
+          "testBody": "nexss -arg-progress shouldContain -> You can only use: enable, 1, disable, 0. Your value: undefined",
+          "ok": true
+        },
+        {
+          "title": "nexss -output-colors = error no value",
+          "params": [
+            "nexss -output-colors",
+            "You can only use: enable, 1, disable, 0",
+            {
+              "exitCode": 1
+            }
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/func.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "15 May 08:55:47 × ERROR You can only use: enable, 1, disable, 0. Your value: undefined",
+          "testBody": "nexss -output-colors shouldContain -> You can only use: enable, 1, disable, 0",
+          "ok": true
+        },
+        {
+          "title": "nexss -arg-progress ok",
+          "params": [
+            "nexss -arg-progress 1",
+            "arg:progress 1"
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/func.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "arg:progress 1",
+          "testBody": "nexss -arg-progress 1 shouldContain -> arg:progress 1",
+          "ok": true
+        },
+        {
+          "title": "nexss -output-colors ok",
+          "params": [
+            "nexss -output-colors 1",
+            "output:colors 1"
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/func.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "output:colors 1",
+          "testBody": "nexss -output-colors 1 shouldContain -> output:colors 1",
+          "ok": true
+        }
+      ],
+      "totalOk": 11,
+      "totalFailed": 0
+    }
+  ],
+  [
+    {
+      "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/help.nexss-test.js",
+      "results": [
+        {
+          "title": "Help display",
+          "params": [
+            "nexss help",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/help.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "____                                                              \n|..          | |             ``..      ..''             ..''''             ..'''' \n|  ``..      | |______           ``..''              .''                .''       \n|      ``..  | |                 ..'`..           ..'                ..'          \n|          ``| |___________  ..''      ``.. ....''             ....''             \nProgrammer 2.4.23, NodeJS v14.16.1, OS: win32 10.0.19042  \nnexss cache rebuild|r Rebuild cache (handy also during dev of Nexss Programmer)\nnexss command|cmd add|a Add a new command to the project.\nnexss command|cmd Execute a command eg. `nexss cmd findUpdatedFiles`.\nnexss command|cmd delete|d Deletes defined command from the `_nexss.yml` config file.\nnexss command|cmd list|l List of the available commands.\nnexss config get|g Prints config settings from the `_nexss.yml`.\nnexss config set|s Sets a config data in the config file `_nexss.yml`.\nnexss core .gitignore \nnexss edit|e Edit file with common editors.\nnexss file|f add|a Adds a new file to the project (with template selection)\nnexss file|f delete|rm Deletes files from the nexss programmer project.\nnexss file|f list|l List of the files in the nexss programmer project/package.\nnexss language|l format1 Creates a folder with logos and json file with all the languages.\nnexss language|l list|l List of the installed languages.\nnexss language|l status|s Get changes not staged, untracked files on all languages. (For Developers)\nnexss language|l update|u Updates the installed languages to the latest version.\nnexss os|o install|i Run installer for particular OS.\nnexss package|pkg add|a Adds nexss package to the actual folder.\nnexss package|pkg init All installed packages have 'init' command run: `nexss cmd init`\nnexss package|pkg install Install packages\nnexss package|pkg list|l Lists/search for available packages installed globally.\nnexss package|pkg pack Packs the packages as dist.\nnexss package|pkg update|u Updates all packages from the repositories.\nnexss process|ps clean|c Clean all stopped processes eg. `nexss ps clean`\nnexss process|ps find|f Find process by port, pid or name.\nnexss process|ps Displays processes.\nnexss process|ps stop|s Stop process\nnexss project|p attach|a Attach a project (and adds to the global list)\nnexss project|p info|i Info about project with statistics eg nexss p info\nnexss project|p new|n Adds a new project\nnexss project|p remove|rm Remove a project from the central base of projects.\nnexss project|p rename|ren Rename a project (field name in the `_nexss.yml` file)\nnexss project|p search|s Search through attached projects.\nnexss start|s Starts a whole project. The same as `nexss .` or `nexss Path/FolderName`\nTo display help add 'help': nexss command help OR nexss package help",
+          "testBody": "nexss help shouldContain -> /To display help add 'help': nexss command help OR nexss package help/",
+          "ok": true
+        },
+        {
+          "title": "Help display - with an aliast (src/aliases.js)",
+          "params": [
+            "nexss h",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/help.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "____                                                              \n|..          | |             ``..      ..''             ..''''             ..'''' \n|  ``..      | |______           ``..''              .''                .''       \n|      ``..  | |                 ..'`..           ..'                ..'          \n|          ``| |___________  ..''      ``.. ....''             ....''             \nProgrammer 2.4.23, NodeJS v14.16.1, OS: win32 10.0.19042  \nnexss cache rebuild|r Rebuild cache (handy also during dev of Nexss Programmer)\nnexss command|cmd add|a Add a new command to the project.\nnexss command|cmd Execute a command eg. `nexss cmd findUpdatedFiles`.\nnexss command|cmd delete|d Deletes defined command from the `_nexss.yml` config file.\nnexss command|cmd list|l List of the available commands.\nnexss config get|g Prints config settings from the `_nexss.yml`.\nnexss config set|s Sets a config data in the config file `_nexss.yml`.\nnexss core .gitignore \nnexss edit|e Edit file with common editors.\nnexss file|f add|a Adds a new file to the project (with template selection)\nnexss file|f delete|rm Deletes files from the nexss programmer project.\nnexss file|f list|l List of the files in the nexss programmer project/package.\nnexss language|l format1 Creates a folder with logos and json file with all the languages.\nnexss language|l list|l List of the installed languages.\nnexss language|l status|s Get changes not staged, untracked files on all languages. (For Developers)\nnexss language|l update|u Updates the installed languages to the latest version.\nnexss os|o install|i Run installer for particular OS.\nnexss package|pkg add|a Adds nexss package to the actual folder.\nnexss package|pkg init All installed packages have 'init' command run: `nexss cmd init`\nnexss package|pkg install Install packages\nnexss package|pkg list|l Lists/search for available packages installed globally.\nnexss package|pkg pack Packs the packages as dist.\nnexss package|pkg update|u Updates all packages from the repositories.\nnexss process|ps clean|c Clean all stopped processes eg. `nexss ps clean`\nnexss process|ps find|f Find process by port, pid or name.\nnexss process|ps Displays processes.\nnexss process|ps stop|s Stop process\nnexss project|p attach|a Attach a project (and adds to the global list)\nnexss project|p info|i Info about project with statistics eg nexss p info\nnexss project|p new|n Adds a new project\nnexss project|p remove|rm Remove a project from the central base of projects.\nnexss project|p rename|ren Rename a project (field name in the `_nexss.yml` file)\nnexss project|p search|s Search through attached projects.\nnexss start|s Starts a whole project. The same as `nexss .` or `nexss Path/FolderName`\nTo display help add 'help': nexss command help OR nexss package help",
+          "testBody": "nexss h shouldContain -> /To display help add 'help': nexss command help OR nexss package help/",
+          "ok": true
+        },
+        {
+          "title": "Help per core package",
+          "params": [
+            "nexss file add help",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/help.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "# Add\n\nAdds a new file to the project (with template selection)\n\n## Examples\n\n    nexss file add my.pl\n    nexss f add my.php\n    nexss f a myfile.java --noconfig # it will create file but not add to the config\n    nexss file add myfile1.js -f -t=helloWorld # will choice the helloWorld Template. -f for overwrite existing file (be careful)\n\nEach language has own separate templates. If you wrote extension .pl - then Perl templates will be displayed, other extension, other language's templates.",
+          "testBody": "nexss file add help shouldContain -> /Adds a new file to the project \\(with template selection\\)/",
+          "ok": true
+        },
+        {
+          "title": "Help per core",
+          "params": [
+            "nexss package help",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/help.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "# Nexss Package\n\nManage packages for Nexss Programmer\n\n## Modify global Nexss PROGRAMMER packages\n\n    nexss pkg add Blender --saveNexss # You can modify code from now in your folder and use it for your project.\n    nexss pkg init\n    nexss pkg init Id # Run command init on the Id (installs package)\n    nexss pkg install Id # installs package (Id cannot exists in the NEXSS_PACKAGES_PATH)\n    nexss pkg install all # installs all packages\n\n## Examples\n\n    nexss pkg add Mouse/Move --x=10 --y=200\n    nexss pkg add Local/Folder\n    nexss pkg add Keyboard --type=\"#d\" --copyPackage --saveNexss  --forceNexss # --copyPackage to the current folder (you can modify)\n    \n\nCommands available for nexss-package\n\nadd, init, install, list, pack, update\nexample to display help 'nexss package add help'",
+          "testBody": "nexss package help shouldContain -> /Modify global Nexss PROGRAMMER packages/",
+          "ok": true
+        },
+        {
+          "title": "Help per package",
+          "params": [
+            "nexss Id help",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/help.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "# Id - Nexss PROGRAMMER 2.x\n\nGenerates unique id\n\n## Example\n\n    nexss Id # will store new id in the nxsOut field\n    nexss Id --nxsAs=myfield # will store the id in the myfield",
+          "testBody": "nexss Id help shouldContain -> /Generates unique id/",
+          "ok": true
+        }
+      ],
+      "totalOk": 5,
+      "totalFailed": 0
+    }
+  ],
+  [
+    {
+      "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/nxsGlobal.nexss-test.js",
+      "results": [
+        {
+          "title": "--nxsGlobal (1)",
+          "params": [
+            "nexss Id --x=1 --_y=369x --nxsGlobal=y",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/nxsGlobal.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "{\"nexss\":\"2.4.23\",\"start\":1621061749009,\"cwd\":\"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-9rpyd7\",\"x\":1,\"y\":\"369x\",\"nxsOut\":\"ckopeb6u60000u4ta2t4q8odx\"}",
+          "testBody": "nexss Id --x=1 --_y=369x --nxsGlobal=y shouldContain -> /\"y\":\"369x\"/",
+          "ok": true
+        },
+        {
+          "title": "--nxsGlobal (multiple)",
+          "params": [
+            "nexss Id --x=1 --_y=369123x --_w=369456y --nxsGlobal=y,w",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/nxsGlobal.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "{\"nexss\":\"2.4.23\",\"start\":1621061749363,\"cwd\":\"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-9rpyd7\",\"x\":1,\"y\":\"369123x\",\"w\":\"369456y\",\"nxsOut\":\"ckopeb73z00005gta6ah6bqnc\"}",
+          "testBody": "nexss Id --x=1 --_y=369123x --_w=369456y --nxsGlobal=y,w shouldContain -> /\"y\":\"369123x\",\"w\":\"369456y\"/",
+          "ok": true
+        },
+        {
+          "title": "--nxsGlobal (multiple 2)",
+          "params": [
+            "nexss Id --x=1 --_y=369123x --_w=369456y --nxsGlobal=y --nxsGlobal=w",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/nxsGlobal.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "{\"nexss\":\"2.4.23\",\"start\":1621061749717,\"cwd\":\"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-9rpyd7\",\"x\":1,\"y\":\"369123x\",\"w\":\"369456y\",\"nxsOut\":\"ckopeb7dt0000pcta134m0p5b\"}",
+          "testBody": "nexss Id --x=1 --_y=369123x --_w=369456y --nxsGlobal=y --nxsGlobal=w shouldContain -> /\"y\":\"369123x\",\"w\":\"369456y\"/",
+          "ok": true
+        },
+        {
+          "title": "--nxsGlobal no nxsForce",
+          "params": [
+            "nexss Id --x=1 --_y=369123x --_w=369456y --nxsGlobal=x --nxsGlobal=w",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/nxsGlobal.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "Nexss Programmer execution stopped by command nxsStop. \n  Reason: \"nxsGlobal:Local var '_x' does not exist. Remove nxsGlobal=x\"",
+          "testBody": "nexss Id --x=1 --_y=369123x --_w=369456y --nxsGlobal=x --nxsGlobal=w shouldContain -> /nxsGlobal:Local var '_x' does not exist. Remove nxsGlobal=x/",
+          "ok": true
+        },
+        {
+          "title": "--nxsGlobal --nxsGlobalForce",
+          "params": [
+            "nexss Id --x=1 --_y=369123x --_w=369456y --nxsGlobal=x --nxsGlobal=w --nxsGlobalForce",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/nxsGlobal.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "Nexss Programmer execution stopped by command nxsStop. \n  Reason: \"nxsGlobal:Local var '_x' does not exist. Remove nxsGlobal=x\"",
+          "testBody": "nexss Id --x=1 --_y=369123x --_w=369456y --nxsGlobal=x --nxsGlobal=w --nxsGlobalForce shouldContain -> /nxsGlobal:Local var '_x' does not exist. Remove nxsGlobal=x/",
+          "ok": true
+        }
+      ],
+      "totalOk": 5,
+      "totalFailed": 0
+    }
+  ],
+  [
+    {
+      "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/nxsLocal.nexss-test.js",
+      "results": [
+        {
+          "title": "--nxsLocal (1)",
+          "params": [
+            "nexss Debug --x=369x --_y=369234x --nxsLocal=x",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/nxsLocal.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "15 May 08:55:50 ∇ TRACE {\n  \"debug\": true,\n  \"nexss\": \"2.4.23\",\n  \"start\": 1621061750659,\n  \"cwd\": \"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-8bzda4\",\n  \"_y\": \"369234x\",\n  \"nxsLocal\": \"x\",\n  \"nxsIn\": [\n    \"Debug\"\n  ],\n  \"_x\": \"369x\",\n  \"resultField_1\": \"nxsOut\"\n}\n{\"debug\":true,\"nexss\":\"2.4.23\",\"start\":1621061750659,\"cwd\":\"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-8bzda4\",\"x\":\"369x\"}",
+          "testBody": "nexss Debug --x=369x --_y=369234x --nxsLocal=x shouldContain -> /\"_x\": \"369x\"/",
+          "ok": true
+        },
+        {
+          "title": "--nxsLocal (multiple)",
+          "params": [
+            "nexss Debug --x=369w --c=369wc --_y=369123x --_w=369456y --nxsLocal=x,c",
+            "  \"_x\": \"369w\",\n  \"_c\": \"369wc\""
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/nxsLocal.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "15 May 08:55:51 ∇ TRACE {\n  \"debug\": true,\n  \"nexss\": \"2.4.23\",\n  \"start\": 1621061751006,\n  \"cwd\": \"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-8bzda4\",\n  \"_y\": \"369123x\",\n  \"_w\": \"369456y\",\n  \"nxsLocal\": \"x,c\",\n  \"nxsIn\": [\n    \"Debug\"\n  ],\n  \"_x\": \"369w\",\n  \"_c\": \"369wc\",\n  \"resultField_1\": \"nxsOut\"\n}\n{\"debug\":true,\"nexss\":\"2.4.23\",\"start\":1621061751006,\"cwd\":\"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-8bzda4\",\"x\":\"369w\",\"c\":\"369wc\"}",
+          "testBody": "nexss Debug --x=369w --c=369wc --_y=369123x --_w=369456y --nxsLocal=x,c shouldContain ->   \"_x\": \"369w\",\n  \"_c\": \"369wc\"",
+          "ok": true
+        },
+        {
+          "title": "--nxsLocal (multiple)",
+          "params": [
+            "nexss Debug --x=369w --c=369wc --_y=369123x --_w=369456y --nxsLocal=x --nxsLocal=c",
+            "  \"_x\": \"369w\",\n  \"_c\": \"369wc\""
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/nxsLocal.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "15 May 08:55:51 ∇ TRACE {\n  \"debug\": true,\n  \"nexss\": \"2.4.23\",\n  \"start\": 1621061751354,\n  \"cwd\": \"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-8bzda4\",\n  \"_y\": \"369123x\",\n  \"_w\": \"369456y\",\n  \"nxsLocal\": [\n    \"x\",\n    \"c\"\n  ],\n  \"nxsIn\": [\n    \"Debug\"\n  ],\n  \"_x\": \"369w\",\n  \"_c\": \"369wc\",\n  \"resultField_1\": \"nxsOut\"\n}\n{\"debug\":true,\"nexss\":\"2.4.23\",\"start\":1621061751354,\"cwd\":\"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-8bzda4\",\"x\":\"369w\",\"c\":\"369wc\"}",
+          "testBody": "nexss Debug --x=369w --c=369wc --_y=369123x --_w=369456y --nxsLocal=x --nxsLocal=c shouldContain ->   \"_x\": \"369w\",\n  \"_c\": \"369wc\"",
+          "ok": true
+        },
+        {
+          "title": "--nxsLocal no nxsForce",
+          "params": [
+            "nexss Debug --x=1 --_x=1234 --_y=369123x --_w=369456y --nxsLocal=x",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/nxsLocal.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "15 May 08:55:51 × ERROR You have used nxsLocal however there is data with name x already. \nUse nxsLocalForce if you don't want to see this message",
+          "testBody": "nexss Debug --x=1 --_x=1234 --_y=369123x --_w=369456y --nxsLocal=x shouldContain -> /You have used nxsLocal however there is data with name x already/",
+          "ok": true
+        },
+        {
+          "title": "--nxsLocal var does not exist",
+          "params": [
+            "nexss Debug --x=1 --_y=369123x --_w=369456y --nxsLocal=x --nxsLocal=w --nxsLocalForce",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/nxsLocal.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "15 May 08:55:52 × ERROR nxsLocal:Global var 'w' does not exist. Remove nxsLocal=w",
+          "testBody": "nexss Debug --x=1 --_y=369123x --_w=369456y --nxsLocal=x --nxsLocal=w --nxsLocalForce shouldContain -> /nxsLocal:Global var 'w' does not exist. Remove nxsLocal=w/",
+          "ok": true
+        },
+        {
+          "title": "--nxsLocal --nxsLocalForce",
+          "params": [
+            "nexss Debug --y=369w --_y=369123x --_w=369456y --nxsLocal=y --nxsLocalForce",
+            "  \"_y\": \"369w\",\n  \"_w\": \"369456y\""
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/nxsLocal.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "15 May 08:55:52 ∇ TRACE {\n  \"debug\": true,\n  \"nexss\": \"2.4.23\",\n  \"start\": 1621061752294,\n  \"cwd\": \"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-8bzda4\",\n  \"_y\": \"369w\",\n  \"_w\": \"369456y\",\n  \"nxsLocal\": \"y\",\n  \"nxsLocalForce\": true,\n  \"nxsIn\": [\n    \"Debug\"\n  ],\n  \"resultField_1\": \"nxsOut\"\n}\n{\"debug\":true,\"nexss\":\"2.4.23\",\"start\":1621061752294,\"cwd\":\"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-8bzda4\",\"y\":\"369w\"}",
+          "testBody": "nexss Debug --y=369w --_y=369123x --_w=369456y --nxsLocal=y --nxsLocalForce shouldContain ->   \"_y\": \"369w\",\n  \"_w\": \"369456y\"",
+          "ok": true
+        }
+      ],
+      "totalOk": 6,
+      "totalFailed": 0
+    }
+  ],
+  [
+    {
+      "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/output.nexss-test.js",
+      "results": [
+        {
+          "title": "--nxsField",
+          "params": [
+            "nexss Id --nxsAs=cuid --nxsField=cuid",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/output.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "ckopeb9n5000048tae7c991vf",
+          "testBody": "nexss Id --nxsAs=cuid --nxsField=cuid shouldContain -> /^[a-zA-Z0-9_]*$/",
+          "ok": true
+        },
+        {
+          "title": "--nxsFields",
+          "params": [
+            "nexss Id --nxsAs=cuid --nxsFields=cuid,start",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/output.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "{\"cuid\":\"ckopeb9ww0000w4ta8one2msr\",\"start\":1621061752995}",
+          "testBody": "nexss Id --nxsAs=cuid --nxsFields=cuid,start shouldContain -> /{\"cuid\":\"[a-zA-Z0-9]*\",\"start\":[0-9]*.[0-9]*}/",
+          "ok": true
+        },
+        {
+          "title": "--nxsPretty",
+          "params": [
+            "nexss Id --nxsPretty",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/output.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "{\n    \"nexss\": \"2.4.23\",\n    \"start\": 1621061753349,\n    \"cwd\": \"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-h0apim\",\n    \"nxsOut\": \"ckopeba6q0000csta4weaaza7\"\n}",
+          "testBody": "nexss Id --nxsPretty shouldContain -> /{\\n\\t*\"*\"*/s",
+          "ok": true
+        },
+        {
+          "title": "--nxsConcat",
+          "params": [
+            "nexss Id --nxsConcat=\"start,cwd\"",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/output.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "{\"nexss\":\"2.4.23\",\"start\":1621061753705,\"cwd\":\"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-h0apim\",\"nxsOut\":\"ckopebagn0000hsta9g7ye0rh\",\"nxsConcatResults\":[1621061753705,\"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-h0apim\"]}",
+          "testBody": "nexss Id --nxsConcat=\"start,cwd\" shouldContain -> /\"nxsConcatResults\":[[0-9]*.[0-9]*\\,\"[A-Z/].*\"]/",
+          "ok": true
+        },
+        {
+          "title": "--nxsGlue",
+          "params": [
+            "nexss Id --myPath=CDE --myPath=\"Program Files\" --nxsConcat=\"myPath\" --nxsGlue=PATH --debug",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/output.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "15 May 08:55:53 | ∞ Starting Nexss Programmer..\n15 May 08:55:53 | ⊛ Set the process title:  nexss (2.4.23:12040) Id --myPath=CDE --myPath=Program Files --nxsConcat=myPath --nxsGlue=PATH --debug\n15 May 08:55:53 | ➤ Setup language for: src/index.js\n15 May 08:55:53 | ¦ Reading language config (ext: .js)\n15 May 08:55:53 | Checking for the config in the program (eg. nexss-compiler:).. (top part of the file:src/index.js)\n15 May 08:55:54 | >> Executing..\n15 May 08:55:54 | × Stream: Readable stdin is empty.\n15 May 08:55:54 |   Adding cliArgs: Stream: Readable.. { _: [ 'Id' ], myPath: [ 'CDE', 'Program Files' ], debug: true }\n15 May 08:55:54 | ↳ Stream: transformInput\n15 May 08:55:54 | ↳ Stream: transformNexss: node src/index.js --myPath=CDE --myPath=Program Files\n15 May 08:55:54 | Spawning ..node with args  src/index.js --myPath=\"CDE\" --myPath=\"Program Files\" cwd:  C:\\Users\\mapoart\\AppData\\Local\\Temp\\Nexss-test-h0apim\n15 May 08:55:54 | ⇋ Waiting for: node\n\nnode src/index.js --myPath=\"CDE\" --myPath=\"Program Files\":  '{\"debug\":true,\"nexss\":\"2.4.23\",\"start\":1621061754061,\"cwd\":\"C:\\\\\\\\Users\\\\\\\\mapoart\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\Nexss-test-h0apim\",\"myPath\":[\"CDE\",\"Program Files\"],\"nxsOut\":\"ckopebaql0000dota8adl3qrr\"}' \n\n15 May 08:55:54 | >> Data: 191 B., cmd:node src/index.js --myPath=\"CDE\" --myPath=\"Program Files\"\n15 May 08:55:54 | insp --> '{\"debug\":true,\"nexss\":\"2.4.23\",\"start\":1621061754061,\"cwd\":\"C:\\\\\\\\Users\\\\\\\\mapoart\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\Nexss-test-h0apim\",\"myPath\":[\"CDE\",\"Program Files\"],\"nxsOut\":\"ckopebaql0000dota8adl3qrr\"}'\n15 May 08:55:54 | ↳ Stream: transformOutput: src/index.js\n15 May 08:55:54 | ↳ Stream: Writeable stdout\n{\"debug\":true,\"nexss\":\"2.4.23\",\"start\":1621061754061,\"cwd\":\"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-h0apim\",\"myPath\":[\"CDE\",\"Program Files\"],\"nxsOut\":\"ckopebaql0000dota8adl3qrr\",\"nxsConcatResults\":\"CDE\\\\Program Files\"}\nNexss Programmer: 93.89ms",
+          "testBody": "nexss Id --myPath=CDE --myPath=\"Program Files\" --nxsConcat=\"myPath\" --nxsGlue=PATH --debug shouldContain -> /\"nxsConcatResults\":\"CDE.*Program Files\"/",
+          "ok": true
+        },
+        {
+          "title": "--nxsDelete",
+          "type": "shouldNotContain",
+          "params": [
+            "nexss Id --nxsDelete=\"cwd\"",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/output.nexss-test.js",
+          "testType": "shouldNotContain",
+          "result": "{\"nexss\":\"2.4.23\",\"start\":1621061754418,\"nxsOut\":\"ckopebb0f0000iotaebhxekge\"}",
+          "testBody": "nexss Id --nxsDelete=\"cwd\" shouldNotContain -> /\"cwd\"/",
+          "ok": true
+        },
+        {
+          "title": "--nxsRenameFrom --nxsRenameTo",
+          "type": "shouldContain",
+          "params": [
+            "nexss Id --nxsRenameFrom=cwd --nxsRenameTo=myNewVariableFromCWD",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/output.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "{\"nexss\":\"2.4.23\",\"start\":1621061754773,\"nxsOut\":\"ckopebbab000054ta1p02h5rd\",\"myNewVariableFromCWD\":\"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-h0apim\"}",
+          "testBody": "nexss Id --nxsRenameFrom=cwd --nxsRenameTo=myNewVariableFromCWD shouldContain -> /\"myNewVariableFromCWD\"/",
+          "ok": true
+        },
+        {
+          "title": "--nxsRenameFrom --nxsRenameTo (previous value deleted)",
+          "type": "shouldNotContain",
+          "params": [
+            null,
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/output.nexss-test.js",
+          "testType": "shouldNotContain",
+          "result": "{\"nexss\":\"2.4.23\",\"start\":1621061754773,\"nxsOut\":\"ckopebbab000054ta1p02h5rd\",\"myNewVariableFromCWD\":\"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-h0apim\"}",
+          "testBody": "null shouldNotContain -> /\"cwd\"/",
+          "ok": true
+        },
+        {
+          "title": "--nxsSelect",
+          "type": "shouldContain",
+          "params": [
+            "nexss Id --var1=myval1 --var1=myval2 --var1=myval3 --var1=myval4 --nxsDelete=cuid,Select_2 --nxsSelect=\"var1\"",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/output.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "{\"nexss\":\"2.4.23\",\"start\":1621061755131,\"cwd\":\"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-h0apim\",\"nxsOut\":\"ckopebbk80000d4tah7vh92j5\",\"Select\":\"myval1\",\"Select_3\":\"myval3\",\"Select_4\":\"myval4\"}",
+          "testBody": "nexss Id --var1=myval1 --var1=myval2 --var1=myval3 --var1=myval4 --nxsDelete=cuid,Select_2 --nxsSelect=\"var1\" shouldContain -> /\"Select\":\"myval1\",\"Select_3\":\"myval3\",\"Select_4\":\"myval4\"/",
+          "ok": true
+        },
+        {
+          "title": "--nxsSelect + --nxsDelete",
+          "type": "shouldNotContain",
+          "params": [
+            null,
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/output.nexss-test.js",
+          "testType": "shouldNotContain",
+          "result": "{\"nexss\":\"2.4.23\",\"start\":1621061755131,\"cwd\":\"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-h0apim\",\"nxsOut\":\"ckopebbk80000d4tah7vh92j5\",\"Select\":\"myval1\",\"Select_3\":\"myval3\",\"Select_4\":\"myval4\"}",
+          "testBody": "null shouldNotContain -> /\"cuid\":\"*\"/",
+          "ok": true
+        },
+        {
+          "title": "--nxsSelect + --nxsDelete",
+          "type": "shouldNotContain",
+          "params": [
+            null,
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/output.nexss-test.js",
+          "testType": "shouldNotContain",
+          "result": "{\"nexss\":\"2.4.23\",\"start\":1621061755131,\"cwd\":\"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-h0apim\",\"nxsOut\":\"ckopebbk80000d4tah7vh92j5\",\"Select\":\"myval1\",\"Select_3\":\"myval3\",\"Select_4\":\"myval4\"}",
+          "testBody": "null shouldNotContain -> /\"Select_2\":\"*\"/",
+          "ok": true
+        },
+        {
+          "title": "--nxsSelect from pipe Array",
+          "type": "shouldContain",
+          "testProgram": "nSpawn",
+          "params": [
+            "echo {\"array\":[\"x\",\"y\",\"z\"]} | nexss Id --nxsSelect=array",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/output.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "{\"nexss\":\"2.4.23\",\"start\":1621061755497,\"cwd\":\"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-h0apim\",\"nxsOut\":\"ckopebbuf0000o4ta6j051ksw\",\"Select\":\"x\",\"Select_2\":\"y\",\"Select_3\":\"z\"}",
+          "testBody": "echo {\"array\":[\"x\",\"y\",\"z\"]} | nexss Id --nxsSelect=array shouldContain -> /\"Select\":\"x\",\"Select_2\":\"y\",\"Select_3\":\"z\"/",
+          "ok": true
+        }
+      ],
+      "totalOk": 12,
+      "totalFailed": 0
+    }
+  ],
+  [
+    {
+      "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/run.nexss-test.js",
+      "results": [
+        {
+          "params": [
+            "nexss js run \"console.log('xxxx')\"",
+            {},
+            {
+              "testFunction": "nSpawn"
+            }
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/core-functions/run.nexss-test.js",
+          "title": "nexss js run \"console.log('xxxx')\"",
+          "testType": "shouldContain",
+          "result": "xxxx",
+          "testBody": "nexss js run \"console.log('xxxx')\" shouldContain -> /^xxxx/",
+          "ok": true
+        }
+      ],
+      "totalOk": 1,
+      "totalFailed": 0
+    }
+  ],
+  [
+    {
+      "file": "C:\\Users\\mapoart\\.nexssCli24/tests/errors/errors.nexss-test.js",
+      "results": [
+        {
+          "title": "Check for file is required field.",
+          "params": [
+            "nexss Nexss/Test/Errors",
+            "'file' is required"
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/errors/errors.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "'file' is required.\nDATA:\n{\n  \"debug\": true,\n  \"nexss\": \"2.4.23\",\n  \"start\": 1621061756718,\n  \"cwd\": \"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-7bzgwr\",\n  \"nxsIn\": [\n    \"Nexss/Test/Errors\"\n  ]\n}\n15 May 08:55:56 × ERROR File/Package: C:\\Users\\mapoart\\.nexss\\packages\\Nexss\\Test\\Errors\\src\\errors5.js\n15 May 08:55:56 × ERROR Data (input) Validation Error(s)",
+          "testBody": "nexss Nexss/Test/Errors shouldContain -> 'file' is required",
+          "ok": true
+        },
+        {
+          "title": "Check for OK message (Please wait.. installing additional compilers)",
+          "params": [
+            "nexss Nexss/Test/Errors --file=any.jpg",
+            "Error 1/2 from file 1: Standard STDERR"
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/errors/errors.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "15 May 08:55:57 √ OK This is nexss ok message\nError rrrorrr!!\n15 May 08:55:57 ⁉ WARN This is nexss warn message\nAnother one!!\n15 May 08:55:57 √ OK OK Nexss message FROM PHP\r\nError FROM PHP\n15 May 08:55:58 ⁉ WARN Warning from Powershell\n'text' is required.\nDATA:\n{\n  \"debug\": true,\n  \"nexss\": \"2.4.23\",\n  \"start\": 1621061757556,\n  \"cwd\": \"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-7bzgwr\",\n  \"file\": \"any.jpg\",\n  \"nxsIn\": [\n    \"Nexss/Test/Errors\"\n  ],\n  \"test\": \"test\"\n}\n15 May 08:55:57 × ERROR C:\\Users\\mapoart\\AppData\\Local\\Temp\\Nexss-test-7bzgwr\\src\\errors1.js: Error 1/2 from file 1: Standard STDERR\n15 May 08:55:57 × ERROR C:\\Users\\mapoart\\.nexss\\packages\\Nexss\\Test\\Errors\\src\\errors1.js: Warning from file (Between errors No 1/2 and 2/2)\nError 2/2 from file 1: Standard STDERR\n15 May 08:55:57 × ERROR This is nexss error message\n15 May 08:55:58 × ERROR C:\\Users\\mapoart\\.nexss\\packages\\Nexss\\Test\\Errors\\src\\errors4.ps1: Error from Powershell\n15 May 08:55:58 × ERROR File/Package: C:/Users/mapoart/.nexss/packages/Nexss/Test/Errors\\src\\errors5.js\n15 May 08:55:58 × ERROR Data (output) Validation Error(s)",
+          "testBody": "nexss Nexss/Test/Errors --file=any.jpg shouldContain -> Error 1/2 from file 1: Standard STDERR",
+          "ok": true
+        },
+        {
+          "title": "Check for warning message",
+          "params": [
+            null,
+            "Warning from file (Between errors No 1/2 and 2/2)"
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/errors/errors.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "15 May 08:55:57 √ OK This is nexss ok message\nError rrrorrr!!\n15 May 08:55:57 ⁉ WARN This is nexss warn message\nAnother one!!\n15 May 08:55:57 √ OK OK Nexss message FROM PHP\r\nError FROM PHP\n15 May 08:55:58 ⁉ WARN Warning from Powershell\n'text' is required.\nDATA:\n{\n  \"debug\": true,\n  \"nexss\": \"2.4.23\",\n  \"start\": 1621061757556,\n  \"cwd\": \"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-7bzgwr\",\n  \"file\": \"any.jpg\",\n  \"nxsIn\": [\n    \"Nexss/Test/Errors\"\n  ],\n  \"test\": \"test\"\n}\n15 May 08:55:57 × ERROR C:\\Users\\mapoart\\AppData\\Local\\Temp\\Nexss-test-7bzgwr\\src\\errors1.js: Error 1/2 from file 1: Standard STDERR\n15 May 08:55:57 × ERROR C:\\Users\\mapoart\\.nexss\\packages\\Nexss\\Test\\Errors\\src\\errors1.js: Warning from file (Between errors No 1/2 and 2/2)\nError 2/2 from file 1: Standard STDERR\n15 May 08:55:57 × ERROR This is nexss error message\n15 May 08:55:58 × ERROR C:\\Users\\mapoart\\.nexss\\packages\\Nexss\\Test\\Errors\\src\\errors4.ps1: Error from Powershell\n15 May 08:55:58 × ERROR File/Package: C:/Users/mapoart/.nexss/packages/Nexss/Test/Errors\\src\\errors5.js\n15 May 08:55:58 × ERROR Data (output) Validation Error(s)",
+          "testBody": "null shouldContain -> Warning from file (Between errors No 1/2 and 2/2)",
+          "ok": true
+        },
+        {
+          "title": "Check for warning message",
+          "params": [
+            null,
+            "Error 2/2 from file 1: Standard STDERR"
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/errors/errors.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "15 May 08:55:57 √ OK This is nexss ok message\nError rrrorrr!!\n15 May 08:55:57 ⁉ WARN This is nexss warn message\nAnother one!!\n15 May 08:55:57 √ OK OK Nexss message FROM PHP\r\nError FROM PHP\n15 May 08:55:58 ⁉ WARN Warning from Powershell\n'text' is required.\nDATA:\n{\n  \"debug\": true,\n  \"nexss\": \"2.4.23\",\n  \"start\": 1621061757556,\n  \"cwd\": \"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-7bzgwr\",\n  \"file\": \"any.jpg\",\n  \"nxsIn\": [\n    \"Nexss/Test/Errors\"\n  ],\n  \"test\": \"test\"\n}\n15 May 08:55:57 × ERROR C:\\Users\\mapoart\\AppData\\Local\\Temp\\Nexss-test-7bzgwr\\src\\errors1.js: Error 1/2 from file 1: Standard STDERR\n15 May 08:55:57 × ERROR C:\\Users\\mapoart\\.nexss\\packages\\Nexss\\Test\\Errors\\src\\errors1.js: Warning from file (Between errors No 1/2 and 2/2)\nError 2/2 from file 1: Standard STDERR\n15 May 08:55:57 × ERROR This is nexss error message\n15 May 08:55:58 × ERROR C:\\Users\\mapoart\\.nexss\\packages\\Nexss\\Test\\Errors\\src\\errors4.ps1: Error from Powershell\n15 May 08:55:58 × ERROR File/Package: C:/Users/mapoart/.nexss/packages/Nexss/Test/Errors\\src\\errors5.js\n15 May 08:55:58 × ERROR Data (output) Validation Error(s)",
+          "testBody": "null shouldContain -> Error 2/2 from file 1: Standard STDERR",
+          "ok": true
+        },
+        {
+          "title": "NexssStdin should not be there",
+          "type": "shouldNotContain",
+          "params": [
+            "nexss Nexss/Test/Errors",
+            "NexssStdin"
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/errors/errors.nexss-test.js",
+          "testType": "shouldNotContain",
+          "result": "'file' is required.\nDATA:\n{\n  \"debug\": true,\n  \"nexss\": \"2.4.23\",\n  \"start\": 1621061759524,\n  \"cwd\": \"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-7bzgwr\",\n  \"nxsIn\": [\n    \"Nexss/Test/Errors\"\n  ]\n}\n15 May 08:55:59 × ERROR File/Package: C:\\Users\\mapoart\\.nexss\\packages\\Nexss\\Test\\Errors\\src\\errors5.js\n15 May 08:55:59 × ERROR Data (input) Validation Error(s)",
+          "testBody": "nexss Nexss/Test/Errors shouldNotContain -> NexssStdin",
+          "ok": true
+        }
+      ],
+      "totalOk": 5,
+      "totalFailed": 0
+    }
+  ],
+  [
+    {
+      "file": "C:\\Users\\mapoart\\.nexssCli24/tests/errors/solutions.nexss-test.js",
+      "results": [
+        {
+          "title": "Check error solution define before you use it",
+          "params": [
+            "nexss Nexss/Test/ErrorsSolutions/src/errors1.js",
+            "Define 'testNotExistVariable2' before you use it.",
+            {
+              "exitCode": 1
+            }
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/errors/solutions.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "Nexss Programmer ERROR:\n\nCurrent Data: \n[ { chunk_in:\n     { from: 'transform-input',\n       status: 'ok',\n       data:\n        { nexss: '2.4.23',\n          start: 1621061759809,\n          cwd: 'C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-kwzo5',\n          nxsIn: [ 'Nexss/Test/ErrorsSolutions/src/errors1.js' ] } } } ]\n[]\n15 May 08:55:59 × ERROR C:\\Users\\mapoart\\.nexss\\packages\\Nexss\\Test\\ErrorsSolutions\\src\\errors1.js: C:\\Users\\mapoart\\.nexss\\packages\\Nexss\\Test\\ErrorsSolutions\\src\\errors1.js:19\r\n  testNotExistVariable2++;\r\n  ^\r\n\r\nReferenceError: testNotExistVariable2 is not defined\r\n    at Socket.<anonymous> (C:\\Users\\mapoart\\.nexss\\packages\\Nexss\\Test\\ErrorsSolutions\\src\\errors1.js:19:3)\r\n    at Socket.emit (events.js:315:20)\r\n    at addChunk (internal/streams/readable.js:309:12)\r\n    at readableAddChunk (internal/streams/readable.js:284:9)\r\n    at Socket.Readable.push (internal/streams/readable.js:223:10)\r\n    at Pipe.onStreamRead (internal/stream_base_commons.js:188:23)\n15 May 08:55:59 × ERROR Possible solution 1: Define 'testNotExistVariable2' before you use it.\n15 May 08:55:59 × ERROR \nnode C:\\Users\\mapoart\\.nexss\\packages\\Nexss\\Test\\ErrorsSolutions\\src\\errors1.js has ended with exitCode 1. \nNexss Programmer will not continue.",
+          "testBody": "nexss Nexss/Test/ErrorsSolutions/src/errors1.js shouldContain -> Define 'testNotExistVariable2' before you use it.",
+          "ok": true
+        },
+        {
+          "title": "Define 'DefineBeforeUseVar' before you use it",
+          "params": [
+            "nexss Nexss/Test/ErrorsSolutions/src/errors2.js",
+            "Possible solution 1: Define 'DefineBeforeUseVar' before you use it",
+            {
+              "exitCode": 1
+            }
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/errors/solutions.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "Nexss Programmer ERROR:\n\nCurrent Data: \n[ { chunk_in:\n     { from: 'transform-input',\n       status: 'ok',\n       data:\n        { nexss: '2.4.23',\n          start: 1621061760166,\n          cwd: 'C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-kwzo5',\n          nxsIn: [ 'Nexss/Test/ErrorsSolutions/src/errors2.js' ] } } } ]\n[]\n15 May 08:56:00 × ERROR C:\\Users\\mapoart\\.nexss\\packages\\Nexss\\Test\\ErrorsSolutions\\src\\errors2.js: C:\\Users\\mapoart\\.nexss\\packages\\Nexss\\Test\\ErrorsSolutions\\src\\errors2.js:13\r\n  console.log(DefineBeforeUseVar);\r\n              ^\r\n\r\nReferenceError: DefineBeforeUseVar is not defined\r\n    at Socket.<anonymous> (C:\\Users\\mapoart\\.nexss\\packages\\Nexss\\Test\\ErrorsSolutions\\src\\errors2.js:13:15)\r\n    at Socket.emit (events.js:315:20)\r\n    at addChunk (internal/streams/readable.js:309:12)\r\n    at readableAddChunk (internal/streams/readable.js:284:9)\r\n    at Socket.Readable.push (internal/streams/readable.js:223:10)\r\n    at Pipe.onStreamRead (internal/stream_base_commons.js:188:23)\n15 May 08:56:00 × ERROR Possible solution 1: Define 'DefineBeforeUseVar' before you use it.\n15 May 08:56:00 × ERROR \nnode C:\\Users\\mapoart\\.nexss\\packages\\Nexss\\Test\\ErrorsSolutions\\src\\errors2.js has ended with exitCode 1. \nNexss Programmer will not continue.",
+          "testBody": "nexss Nexss/Test/ErrorsSolutions/src/errors2.js shouldContain -> Possible solution 1: Define 'DefineBeforeUseVar' before you use it",
+          "ok": true
+        },
+        {
+          "title": "Check String Solution",
+          "params": [
+            "nexss Nexss/Test/ErrorsSolutions/src/errors3.js",
+            "Possible solution 1: Did you forget semi-colon ';' ?",
+            {
+              "exitCode": 1
+            }
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/errors/solutions.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "Nexss Programmer ERROR:\n\nCurrent Data: \n[ { chunk_in:\n     { from: 'transform-input',\n       status: 'ok',\n       data:\n        { nexss: '2.4.23',\n          start: 1621061760515,\n          cwd: 'C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-kwzo5',\n          nxsIn: [ 'Nexss/Test/ErrorsSolutions/src/errors3.js' ] } } } ]\n[]\n15 May 08:56:00 × ERROR C:\\Users\\mapoart\\.nexss\\packages\\Nexss\\Test\\ErrorsSolutions\\src\\errors3.js: C:\\Users\\mapoart\\.nexss\\packages\\Nexss\\Test\\ErrorsSolutions\\src\\errors3.js:16\r\n  process.stdout.write(JSON.stringify(NexssStdout));\r\n         ^\r\n\r\nSyntaxError: Unexpected token '.'\r\n    at wrapSafe (internal/modules/cjs/loader.js:979:16)\r\n    at Module._compile (internal/modules/cjs/loader.js:1027:27)\r\n    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)\r\n    at Module.load (internal/modules/cjs/loader.js:928:32)\r\n    at Function.Module._load (internal/modules/cjs/loader.js:769:14)\r\n    at Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)\r\n    at internal/main/run_main_module.js:17:47\n15 May 08:56:00 × ERROR Possible solution 1: Did you forget semi-colon ';' ?\n15 May 08:56:00 × ERROR \nnode C:\\Users\\mapoart\\.nexss\\packages\\Nexss\\Test\\ErrorsSolutions\\src\\errors3.js has ended with exitCode 1. \nNexss Programmer will not continue.",
+          "testBody": "nexss Nexss/Test/ErrorsSolutions/src/errors3.js shouldContain -> Possible solution 1: Did you forget semi-colon ';' ?",
+          "ok": true
+        }
+      ],
+      "totalOk": 3,
+      "totalFailed": 0
+    }
+  ],
+  [
+    {
+      "file": "C:\\Users\\mapoart\\.nexssCli24/tests/new/specialchar.nexss-test.js",
+      "results": [
+        {
+          "title": "Special char $#",
+          "params": [
+            "nexss $# 1",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/new/specialchar.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "{\"nexss\":\"2.4.23\",\"start\":1621061760718,\"cwd\":\"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-lmpx1\",\"nxsIn\":[1]}",
+          "testBody": "nexss $# 1 shouldContain -> /\"nxsIn\":\\[1\\]/",
+          "ok": true
+        }
+      ],
+      "totalOk": 1,
+      "totalFailed": 0
+    }
+  ],
+  [
+    {
+      "file": "C:\\Users\\mapoart\\.nexssCli24/tests/project/command.nexss-test.js",
+      "results": [
+        {
+          "title": "Create New Project",
+          "params": [
+            "nexss project new MyTestProject -f",
+            "SUCCESS Project 'MyTestProject' is ready"
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/project/project.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "15 May 08:56:03 ¡ INFO Creating project 'MyTestProject'\ncreating project C:\\Users\\mapoart\\AppData\\Local\\Temp\\Nexss-test-in4zce\\MyTestProject\n15 May 08:56:03 √ SUCCESS Using default template. Copying files...\n15 May 08:56:03 √ SUCCESS Project 'MyTestProject' is ready. \nGo to the project by command 'cd MyTestProject'",
+          "testBody": "nexss project new MyTestProject -f shouldContain -> SUCCESS Project 'MyTestProject' is ready",
+          "ok": true
+        },
+        {
+          "title": "Check command add",
+          "params": [
+            "nexss cmd add init dir",
+            "SUCCESS Done..",
+            {
+              "keepchdir": "MyTestProject",
+              "chdir": "MyTestProject"
+            }
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/project/command.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "Adding command 'init' as 'dir'\n15 May 08:56:01 √ SUCCESS Done..",
+          "testBody": "nexss cmd add init dir shouldContain -> SUCCESS Done..",
+          "ok": true
+        },
+        {
+          "title": "Check command run command",
+          "params": [
+            "nexss cmd init",
+            "Volume in"
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/project/command.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "Volume in drive C is Windows\r\n Volume Serial Number is 4C63-A987\r\n\r\n Directory of C:\\Users\\mapoart\\AppData\\Local\\Temp\\Nexss-test-qqawd\\MyTestProject\r\n\r\n15.05.2021  08:56    <DIR>          .\r\n15.05.2021  08:56    <DIR>          ..\r\n15.05.2021  08:56                10 config.env\r\n15.05.2021  08:56                94 LICENSE\r\n15.05.2021  08:56               148 README.md\r\n15.05.2021  08:56    <DIR>          src\r\n15.05.2021  08:56                74 _nexss.yml\r\n               4 File(s)            326 bytes\r\n               3 Dir(s)  12 271 316 992 bytes free",
+          "testBody": "nexss cmd init shouldContain -> Volume in",
+          "ok": true
+        },
+        {
+          "title": "Check command is already in the project",
+          "params": [
+            "nexss cmd add init nexss Id",
+            "is already in the config file"
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/project/command.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "Adding command 'init' as 'nexss Id'\n15 May 08:56:01 ⁉ WARN Command 'init' is already in the config file _nexss.yml\nAvailable predefined commands in _nexss.yml: (usage: nexss command *name*)\n┌──────┬─────────┐\n│ name │ command │\n├──────┼─────────┤\n│ init │ dir     │\n└──────┴─────────┘",
+          "testBody": "nexss cmd add init nexss Id shouldContain -> is already in the config file",
+          "ok": true
+        },
+        {
+          "title": "List commands",
+          "params": [
+            "nexss cmd",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/project/command.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "Available predefined commands in _nexss.yml: (usage: nexss command *name*)\n┌──────┬─────────┐\n│ name │ command │\n├──────┼─────────┤\n│ init │ dir     │\n└──────┴─────────┘",
+          "testBody": "nexss cmd shouldContain -> /init.*(dir|ls)/",
+          "ok": true
+        }
+      ],
+      "totalOk": 5,
+      "totalFailed": 0
+    }
+  ],
+  [
+    {
+      "file": "C:\\Users\\mapoart\\.nexssCli24/tests/project/multiple-projects.nexss-test.js",
+      "results": [
+        {
+          "title": "MultipleProjects",
+          "params": [
+            "nexss Nexss/Test/MultipleProjects",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/project/multiple-projects.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "{\"debug\":true,\"nexss\":\"2.4.23\",\"start\":1621061761952,\"cwd\":\"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-i1sxh\",\"nxsIn\":[\"Nexss/Test/MultipleProjects\"],\"Hello1\":\"Hello 1 Test MultipleProjects\",\"test\":\"test2\",\"Hello2\":\"Hello 2 Test MultipleProjects\"}",
+          "testBody": "nexss Nexss/Test/MultipleProjects shouldContain -> /\"Hello1\":\"Hello 1 Test MultipleProjects\",\"test\":\"test2\",\"Hello2\":\"Hello 2 Test MultipleProjects\"/",
+          "ok": true
+        },
+        {
+          "title": "MultipleProjects - long path to nexss file",
+          "params": [
+            "nexss Nexss/Test/MultipleProjects/src/test.nexss",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/project/multiple-projects.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "{\"nexss\":\"2.4.23\",\"start\":1621061763448,\"cwd\":\"C:\\\\Users\\\\mapoart\\\\.nexss\\\\packages/Nexss/Test/MultipleProjects/src\",\"__dirname\":\"C:\\\\Users\\\\mapoart\\\\AppData\\\\Local\\\\Temp\\\\Nexss-test-i1sxh\",\"nxsIn\":[\"Nexss/Test/MultipleProjects/src/test.nexss\"],\"Hello1\":\"Hello 1 Test MultipleProjects\",\"test\":\"test2\",\"Hello2\":\"Hello 2 Test MultipleProjects\"}",
+          "testBody": "nexss Nexss/Test/MultipleProjects/src/test.nexss shouldContain -> /\"Hello1\":\"Hello 1 Test MultipleProjects\",\"test\":\"test2\",\"Hello2\":\"Hello 2 Test MultipleProjects\"/",
+          "ok": true
+        }
+      ],
+      "totalOk": 2,
+      "totalFailed": 0
+    }
+  ],
+  [
+    {
+      "file": "C:\\Users\\mapoart\\.nexssCli24/tests/project/notin.nexss-test.js",
+      "results": [
+        {
+          "title": "Check not in the Nexss Programmer Project",
+          "type": "shouldContain",
+          "params": [
+            "nexss cmd",
+            "You are not in the Nexss Programmer project folder."
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/project/notin.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "You are not in the Nexss Programmer project folder.",
+          "testBody": "nexss cmd shouldContain -> You are not in the Nexss Programmer project folder.",
+          "ok": true
+        }
+      ],
+      "totalOk": 1,
+      "totalFailed": 0
+    }
+  ],
+  [
+    {
+      "file": "C:\\Users\\mapoart\\.nexssCli24/tests/project/project.nexss-test.js",
+      "results": [
+        {
+          "title": "Create New Project",
+          "params": [
+            "nexss project new MyTestProject -f",
+            "SUCCESS Project 'MyTestProject' is ready"
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/project/project.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "15 May 08:56:03 ¡ INFO Creating project 'MyTestProject'\ncreating project C:\\Users\\mapoart\\AppData\\Local\\Temp\\Nexss-test-in4zce\\MyTestProject\n15 May 08:56:03 √ SUCCESS Using default template. Copying files...\n15 May 08:56:03 √ SUCCESS Project 'MyTestProject' is ready. \nGo to the project by command 'cd MyTestProject'",
+          "testBody": "nexss project new MyTestProject -f shouldContain -> SUCCESS Project 'MyTestProject' is ready",
+          "ok": true
+        },
+        {
+          "title": "Add file to the Project",
+          "type": "shouldContain",
+          "params": [
+            "nexss file add myfile1.js -f -t=helloWorld",
+            "myfile1.js has been created.",
+            {
+              "keepchdir": "MyTestProject",
+              "chdir": "MyTestProject"
+            }
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/project/project.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "15 May 08:56:04 ¡ INFO Using helloWorld.js template. Creating from template...\n15 May 08:56:04 √ OK File src\\myfile1.js has been created.\n15 May 08:56:04 √ SUCCESS Done.",
+          "testBody": "nexss file add myfile1.js -f -t=helloWorld shouldContain -> myfile1.js has been created.",
+          "ok": true
+        },
+        {
+          "title": "Display Project info",
+          "params": [
+            "nexss p i",
+            "Name: MyTestProject"
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/project/project.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "Current Project: \nName: MyTestProject\n\nFiles: 1 nexss f add myfile.php\n┌─────────┬──────────────────┐\n│ (index) │       name       │\n├─────────┼──────────────────┤\n│    0    │ 'src/myfile1.js' │\n└─────────┴──────────────────┘\nTo display config 'nexss config get'",
+          "testBody": "nexss p i shouldContain -> Name: MyTestProject",
+          "ok": true
+        },
+        {
+          "title": "Add file to the Project (already exists)",
+          "params": [
+            "nexss file add myfile1.js",
+            "File already exists: myfile1.js"
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/project/project.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "15 May 08:56:04 × ERROR File already exists: myfile1.js",
+          "testBody": "nexss file add myfile1.js shouldContain -> File already exists: myfile1.js",
+          "ok": true
+        },
+        {
+          "title": "Add file to the Project (forced)",
+          "params": [
+            "nexss file add myfile1.js -f -t=helloWorld",
+            "myfile1.js has been created."
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/project/project.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "15 May 08:56:04 ¡ INFO Using helloWorld.js template. Creating from template...\n15 May 08:56:04 √ OK File src\\myfile1.js has been created.\n15 May 08:56:04 √ SUCCESS Done.",
+          "testBody": "nexss file add myfile1.js -f -t=helloWorld shouldContain -> myfile1.js has been created.",
+          "ok": true
+        },
+        {
+          "title": "Check project info",
+          "params": [
+            "nexss project info",
+            "Current Project"
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/project/project.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "Current Project: \nName: MyTestProject\n\nFiles: 2 nexss f add myfile.php\n┌─────────┬──────────────────┐\n│ (index) │       name       │\n├─────────┼──────────────────┤\n│    0    │ 'src/myfile1.js' │\n│    1    │ 'src/myfile1.js' │\n└─────────┴──────────────────┘\nTo display config 'nexss config get'",
+          "testBody": "nexss project info shouldContain -> Current Project",
+          "ok": true
+        },
+        {
+          "title": "Check project attach to nexss db",
+          "params": [
+            "nexss p a --force --keywords=\"mykeyword1,mykeyword2\" --description=\"description\" --repo=\"repository\" --editor=\"editor\" --note=\"note\"",
+            "INFO Attaching project from current folder"
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/project/project.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "15 May 08:56:07 ¡ INFO Attaching project from current folder C:\\Users\\mapoart\\AppData\\Local\\Temp\\Nexss-test-in4zce\\MyTestProject\n15 May 08:56:07 ¡ INFO This is Nexss PROGRAMMER project.\n15 May 08:56:07 ¡ INFO Project name: MyTestProject\n15 May 08:56:07 ¡ INFO Description: description\n15 May 08:56:07 ¡ INFO Keywords: mykeyword1,mykeyword2\n15 May 08:56:07 ¡ INFO Repo: repository\n15 May 08:56:07 ¡ INFO Editor: editor\n15 May 08:56:07 ¡ INFO Note: note",
+          "testBody": "nexss p a --force --keywords=\"mykeyword1,mykeyword2\" --description=\"description\" --repo=\"repository\" --editor=\"editor\" --note=\"note\" shouldContain -> INFO Attaching project from current folder",
+          "ok": true
+        },
+        {
+          "title": "Search Project",
+          "params": [
+            "nexss p search MyTestProject",
+            "MyTestProject NEXSSP"
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/project/project.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "15 May 08:56:07 ¡ INFO Projects from C:\\Users\\mapoart\\.nexss\\projects.json\n================================================================================\nSearching: MyTestProject\n15 May 08:56:07 ¡ INFO MyTestProject NEXSSP C:\\Users\\mapoart\\AppData\\Local\\Temp\\Nexss-test-in4zce\\MyTestProject",
+          "testBody": "nexss p search MyTestProject shouldContain -> MyTestProject NEXSSP",
+          "ok": true
+        },
+        {
+          "title": "Remove project from nexss db / Project not exists",
+          "params": [
+            "nexss p remove not-exists-project",
+            "project not-exists-project does not exist"
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/project/project.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "15 May 08:56:07 × ERROR project not-exists-project does not exist in C:\\Users\\mapoart\\.nexss\\projects.json",
+          "testBody": "nexss p remove not-exists-project shouldContain -> project not-exists-project does not exist",
+          "ok": true
+        },
+        {
+          "title": "Remove test project from nexss db / Project EXIST",
+          "params": [
+            "nexss p remove MyTestProject",
+            "SUCCESS Done.."
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/tests/project/project.nexss-test.js",
+          "testType": "shouldContain",
+          "result": "15 May 08:56:07 √ SUCCESS Done..",
+          "testBody": "nexss p remove MyTestProject shouldContain -> SUCCESS Done..",
+          "ok": true
+        }
+      ],
+      "totalOk": 10,
+      "totalFailed": 0
+    }
+  ],
+  [
+    {
+      "file": "C:\\Users\\mapoart\\.nexssCli24/src/nexss-file/commands/file-add.nexss-test.js",
+      "results": [
+        {
+          "params": [
+            "nexss js e",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/src/nexss-file/commands/file-add.nexss-test.js",
+          "title": "nexss js e",
+          "testType": "shouldContain",
+          "result": "15 May 08:56:07 ¡ INFO Using !empty.js template. Creating from template...\n15 May 08:56:07 √ OK File empty.js has been created.",
+          "testBody": "nexss js e shouldContain -> /File empty.js has been created./",
+          "ok": true
+        },
+        {
+          "params": [
+            "nexss js d",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/src/nexss-file/commands/file-add.nexss-test.js",
+          "title": "nexss js d",
+          "testType": "shouldContain",
+          "result": "15 May 08:56:07 ¡ INFO Using default.js template. Creating from template...\n15 May 08:56:07 √ OK File default.js has been created.",
+          "testBody": "nexss js d shouldContain -> /File default.js has been created./",
+          "ok": true
+        },
+        {
+          "params": [
+            "nexss js h",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/src/nexss-file/commands/file-add.nexss-test.js",
+          "title": "nexss js h",
+          "testType": "shouldContain",
+          "result": "15 May 08:56:08 ¡ INFO Using helloWorld.js template. Creating from template...\n15 May 08:56:08 √ OK File helloWorld.js has been created.",
+          "testBody": "nexss js h shouldContain -> /File helloWorld.js has been created./",
+          "ok": true
+        },
+        {
+          "params": [
+            "nexss f a my1.js --default",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/src/nexss-file/commands/file-add.nexss-test.js",
+          "title": "nexss f a my1.js --default",
+          "testType": "shouldContain",
+          "result": "15 May 08:56:08 ¡ INFO Using default.js template. Creating from template...\n15 May 08:56:08 √ OK File my1.js has been created.",
+          "testBody": "nexss f a my1.js --default shouldContain -> /File my1.js has been created./",
+          "ok": true
+        },
+        {
+          "params": [
+            "nexss f a my2.js --empty",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/src/nexss-file/commands/file-add.nexss-test.js",
+          "title": "nexss f a my2.js --empty",
+          "testType": "shouldContain",
+          "result": "15 May 08:56:08 ¡ INFO Using !empty.js template. Creating from template...\n15 May 08:56:08 √ OK File my2.js has been created.",
+          "testBody": "nexss f a my2.js --empty shouldContain -> /File my2.js has been created./",
+          "ok": true
+        },
+        {
+          "params": [
+            "nexss f a my3.js --helloWorld",
+            {}
+          ],
+          "file": "C:\\Users\\mapoart\\.nexssCli24/src/nexss-file/commands/file-add.nexss-test.js",
+          "title": "nexss f a my3.js --helloWorld",
+          "testType": "shouldContain",
+          "result": "15 May 08:56:08 ¡ INFO Using helloWorld.js template. Creating from template...\n15 May 08:56:08 √ OK File my3.js has been created.",
+          "testBody": "nexss f a my3.js --helloWorld shouldContain -> /File my3.js has been created./",
+          "ok": true
+        }
+      ],
+      "totalOk": 6,
+      "totalFailed": 0
+    }
+  ]
+]

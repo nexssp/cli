@@ -5,6 +5,11 @@
  * 2018/10/01 initial version
  */
 
+// When $# is passed on Linux it becomes 0 when arguments are parsed.
+if (process.platform !== "win32" && process.argv[2] + "" === "0") {
+  process.argv[2] = "$#";
+}
+
 require("./nexss-core/init.js");
 require("@nexssp/extend")("array");
 
