@@ -216,8 +216,7 @@ module.exports.worker = function ({
   });
 
   Worker1.on("exit", function (code) {
-    if (code !== 0) {
-      exitCode = code;
+    if (code !== 0 && dataOnError.length > 1) {
       console.log(red(bold("\nNexss Programmer ERROR:")));
       console.log("\nCurrent Data: ");
       console.log(

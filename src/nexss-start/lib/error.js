@@ -18,9 +18,10 @@ module.exports.parseError = (
 
   cwd = cwd || process.cwd();
   const langInfo = getLangByFilename(filename);
-  const ErrorPre = require("path").normalize(
-    isAbsolute(filename) ? filename : `${cwd}/${filename}`
-  );
+  const ErrorPre =
+    require("path").normalize(
+      isAbsolute(filename) ? filename : `${cwd}/${filename}`
+    ) + ":\n";
 
   if (stdOutput) {
     if (cliArgs.htmlOutput) {
@@ -32,9 +33,9 @@ module.exports.parseError = (
       );
     } else {
       if (isErrorPiped) {
-        console.log(`ERROR ${ErrorPre}:${bold(errorBody)}`);
+        console.log(`ERROR ${ErrorPre}${bold(errorBody)}`);
       } else {
-        console.error(`ERROR ${ErrorPre}:${bold(errorBody)}`);
+        console.error(`ERROR ${ErrorPre}${bold(errorBody)}`);
       }
     }
   } else {
@@ -50,7 +51,8 @@ module.exports.parseError = (
     ) {
       console.error(colorizer(errorBody));
     } else {
-      log.error(`${ErrorPre}: ${bold(errorBody)}`);
+      log.error(`${bold(ErrorPre)}`);
+      console.log(`${errorBody}`);
     }
   }
 
