@@ -50,7 +50,7 @@
   "dependencies": {
     "@nexssp/ansi": "^1.1.2",
     "@nexssp/cache": "^2.0.4",
-    "@nexssp/command": "^1.0.7",
+    "@nexssp/command": "^1.0.9",
     "@nexssp/config": "^1.0.7",
     "@nexssp/const": "^1.0.13",
     "@nexssp/data": "^1.0.5",
