@@ -1,0 +1,48 @@
+[
+  {
+    "plugin": "@nexssp/command",
+    "trigger": "command",
+    "aliases": ["cmd"],
+    "ommit": [],
+    "through": true
+  },
+  {
+    "plugin": "@nexssp/config",
+    "trigger": "config",
+    "aliases": ["cfg"],
+    "ommit": [],
+    "through": true
+  },
+  {
+    "plugin": "@nexssp/file",
+    "trigger": "file",
+    "aliases": ["f"],
+    "ommit": [],
+    "through": true
+  },
+  {
+    "plugin": "@nexssp/language",
+    "ommit": ["format1"],
+    "through": true
+  },
+  {
+    "plugin": "@nexssp/os",
+    "trigger": "os",
+    "ommit": [],
+    "through": true
+  },
+  {
+    "plugin": "@nexssp/package",
+    "trigger": "package",
+    "aliases": ["pkg"],
+    "ommit": [],
+    "through": true
+  },
+  {
+    "plugin": "@nexssp/project",
+    "trigger": "project",
+    "aliases": ["p"],
+    "ommit": [],
+    "through": true
+  }
+]

@@ -5,3 +5,4 @@ devNotes.md
 dist
 nexssp-cli-*.tgz
 dev.json
+cache.nexss-test.json

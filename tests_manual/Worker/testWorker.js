@@ -1,18 +1,18 @@
-global.log = require("@nexssp/logdebug");
-Object.assign(global, require("@nexssp/ansi"));
+global.log = require('@nexssp/logdebug')
+Object.assign(global, require('@nexssp/ansi'))
 
-const { worker } = require("../../src/nexss-start/lib/worker");
+const { worker } = require('../../src/main/lib/worker')
 
-let chunk; //data to passs
+let chunk // data to passs
 
-let options; //spawn
-let startStreamTime = true; // eg process.hrtime()
+let options // spawn
+const startStreamTime = true // eg process.hrtime()
 
-let streamCache; //if you want to stream cache
+let streamCache // if you want to stream cache
 
-let callback;
+let callback
 
-let cmd = "node"; // eg node
-let filename = "workA.js"; //eg abc.js
-let argsStrings = [filename];
-worker({ cmd, filename, callback, argsStrings, startStreamTime });
+const cmd = 'node' // eg node
+const filename = 'workA.js' // eg abc.js
+const argsStrings = [filename]
+worker({ cmd, filename, callback, argsStrings, startStreamTime })

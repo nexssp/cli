@@ -1,10 +1,10 @@
 module.exports = {
-  defaultTestFunction: "nSpawn",
+  defaultTestFunction: 'nSpawn',
   nexsstests: [
     {
-      title: "Check error solution define before you use it",
+      title: 'Check error solution define before you use it',
       params: [
-        "nexss Nexss/Test/ErrorsSolutions/src/errors1.js",
+        'nexss Nexss/Test/ErrorsSolutions/src/errors1.js',
         "Define 'testNotExistVariable2' before you use it.",
         { exitCode: 1 },
       ],
@@ -18,7 +18,7 @@ module.exports = {
       ],
     },
     {
-      title: "Check String Solution",
+      title: 'Check String Solution',
       params: [
         `nexss Nexss/Test/ErrorsSolutions/src/errors3.js`,
         "Possible solution 1: Did you forget semi-colon ';' ?",

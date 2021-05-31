@@ -1,14 +1,14 @@
 {
   "name": "@nexssp/cli",
   "homepage": "https://nexss.com",
-  "version": "2.4.28",
+  "version": "2.5.0",
   "description": "Nexss PROGRAMMER - Over 50 programming languages together..",
-  "main": "src/nexss.js",
+  "main": "lib/nexss.js",
   "bin": {
-    "nexss": "src/nexss.js"
+    "nexss": "lib/nexss.js"
   },
   "files": [
-    "src/**/*",
+    "lib/**/*",
     "Nexss.png",
     "nexss_kod_qr.png"
   ],
@@ -48,38 +48,42 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@nexssp/ansi": "^1.1.1",
-    "@nexssp/cache": "^1.0.4",
+    "@nexssp/ansi": "^1.1.2",
+    "@nexssp/cache": "^2.0.2",
+    "@nexssp/command": "^1.0.6",
+    "@nexssp/config": "^1.0.7",
     "@nexssp/const": "^1.0.13",
-    "@nexssp/dddebug": "^1.0.5",
-    "@nexssp/ensure": "^1.0.2",
+    "@nexssp/data": "^1.0.5",
+    "@nexssp/dddebug": "^1.0.7",
+    "@nexssp/ensure": "^1.1.3",
     "@nexssp/expression-parser": "^1.0.3",
-    "@nexssp/extend": "^1.0.14",
-    "@nexssp/logdebug": "^1.0.15",
-    "@nexssp/os": "^1.0.31",
+    "@nexssp/extend": "^2.0.3",
+    "@nexssp/file": "^1.0.9",
+    "@nexssp/language": "^1.1.0",
+    "@nexssp/logdebug": "^1.0.18",
+    "@nexssp/os": "^2.0.17",
     "@nexssp/packunpack": "^1.0.6",
+    "@nexssp/plugin": "^1.0.5",
+    "@nexssp/project": "^1.0.7",
     "@nexssp/stack": "^1.0.9",
-    "@nexssp/system": "^1.0.12",
+    "@nexssp/system": "^1.1.5",
     "axios": "^0.21.1",
-    "cli-table3": "^0.6.0",
     "copy-dir": "^1.3.0",
     "dotenv": "^8.6.0",
     "fast-glob": "^3.2.5",
     "find-process": "^1.4.4",
     "fs-extra": "^9.1.0",
     "fuzzy": "^0.1.3",
-    "inquirer": "^7.0.0",
-    "inquirer-autocomplete-prompt": "^1.3.0",
-    "ioredis": "^4.27.2",
+    "ioredis": "^4.27.3",
     "is-installed-globally": "^0.4.0",
-    "js-yaml": "^4.1.0",
     "json-colorizer": "^2.2.2",
     "json-diff": "^0.5.4",
-    "marked": "^2.0.3",
+    "marked": "^2.0.6",
     "marked-terminal": "^4.1.1",
     "minimist": "^1.2.5",
     "string-argv": "^0.3.1",
-    "string.prototype.matchall": "^4.0.4"
+    "string.prototype.matchall": "^4.0.5",
+    "v8-compile-cache": "^2.3.0"
   },
   "author": {
     "name": "Marcin Polak",
@@ -97,7 +101,7 @@
     }
   ],
   "devDependencies": {
-    "@nexssp/min": "^1.0.6",
-    "@nexssp/test": "^1.0.19"
+    "@nexssp/test": "^1.1.3",
+    "prettier": "^2.3.0"
   }
 }

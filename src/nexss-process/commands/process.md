@@ -1,3 +1,0 @@
-# nexss ps
-
-Displays processes.
