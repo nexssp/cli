@@ -1,5 +1,7 @@
 # NEW NEXSS PROGRAMMER 2.5 ✅
 
+Note. If you are experiencing any issues please **let us know**! You can still use **2.4** version.
+
 Now it can be also used as separate tools or libraries. Check it out.
 
 ## Cli tools and libraries
