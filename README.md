@@ -1,4 +1,4 @@
-# NEW NEXSS PROGRAMMER 2.5 ✅
+# NEW NEXSS PROGRAMMER 2.5
 
 Note. If you are experiencing any issues please **let us know**! You can still use **2.4** version.
 
@@ -6,31 +6,33 @@ Now it can be also used as separate tools or libraries. Check it out.
 
 ## Cli tools and libraries
 
-- @nexssp/**cli** - nexss programmer - all tools, languages together
-- @nexssp/**command** - easy terminal commands
-- @nexssp/**config** - config system yml, json
-- @nexssp/**file** - file templates with over 50 programming language
-- @nexssp/**ensure** - ensure mulitple os packages installed
-- @nexssp/**cache** - caching library
-- @nexssp/**languages** - install programming environments, manage packages for each language
-- @nexssp/**min** - minimizing library
-- @nexssp/**os** - multiple os library
-- @nexssp/**process** - managing process library
-- @nexssp/**project** - managing Nexss Programmer projects, create new
-- @nexssp/**test** - testing library
+- [@nexssp/**cli**](https://www.npmjs.com/package/@nexssp/cli) - nexss programmer - all tools, languages together
+- [@nexssp/**command**](https://www.npmjs.com/package/@nexssp/command) - easy terminal commands
+- [@nexssp/**config**](https://www.npmjs.com/package/@nexssp/config) - config system yml, json
+- [@nexssp/**file**](https://www.npmjs.com/package/@nexssp/file) - file templates with over 50 programming language
+- [@nexssp/**ensure**](https://www.npmjs.com/package/@nexssp/ensure) - ensure mulitple os packages installed
+- [@nexssp/**cache**](https://www.npmjs.com/package/@nexssp/cache) - caching library
+- [@nexssp/**language**](https://www.npmjs.com/package/@nexssp/language) - install programming environments, manage packages for each language
+- [@nexssp/**min**](https://www.npmjs.com/package/@nexssp/min) - minimizing library
+- [@nexssp/**os**](https://www.npmjs.com/package/@nexssp/os) - multiple os library
+- [@nexssp/**package**](https://www.npmjs.com/package/@nexssp/package) - managing Nexss Programmer packages (git repositories)
+- @nexssp/**process** - managing process library (will be added in future versions - it is available up to 2.4.x as nexss programmer feature)
+- [@nexssp/**project**](https://www.npmjs.com/package/@nexssp/project) - managing Nexss Programmer projects, create new
+- [@nexssp/**test**](https://www.npmjs.com/package/@nexssp/test) - testing library
 
 ## Libraries
 
-- @nexssp/**ansi** - colors, cursor
-- @nexssp/**const** - constants in JS/NodeJS
-- @nexssp/**data** - data validate, test
-- @nexssp/**dddebug** - debugging functions
-- @nexssp/**expression-parser** - variable template system
-- @nexssp/**extend** - extend standard functions of JavaScript/NodeJS
-- @nexssp/**logdebug** - logging, debugging script
-- @nexssp/**plugin** - plugin system
-- @nexssp/**stack** - pretty error stack
-- @nexssp/**system** - run system commands
+- [@nexssp/**ansi**](https://www.npmjs.com/package/@nexssp/ansi) - colors, cursor
+- [@nexssp/**const**](https://www.npmjs.com/package/@nexssp/const) - constants in JS/NodeJS
+- [@nexssp/**data**](https://www.npmjs.com/package/@nexssp/data) - data validate, test
+- [@nexssp/**dddebug**](https://www.npmjs.com/package/@nexssp/dddebug) - debugging functions
+- [@nexssp/**expression-parser**](https://www.npmjs.com/package/@nexssp/expression-parser) - variable template system
+- [@nexssp/**extend**](https://www.npmjs.com/package/@nexssp/extend) - extend standard functions of JavaScript/NodeJS
+- [@nexssp/**logdebug**](https://www.npmjs.com/package/@nexssp/logdebug) - logging, debugging script
+- [@nexssp/**packunpack**](https://www.npmjs.com/package/@nexssp/packunpack) - pack/unpack library with .gitignore
+- [@nexssp/**plugin** ](https://www.npmjs.com/package/@nexssp/plugin)- plugin system
+- [@nexssp/**stack**](https://www.npmjs.com/package/@nexssp/stack) - pretty error stack
+- [@nexssp/**system**](https://www.npmjs.com/package/@nexssp/system) - run system commands
 
 ```sh
 ✅ npm i @nexssp/cli -g #  Or npx @nexssp/cli
