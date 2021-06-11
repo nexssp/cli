@@ -1,8 +1,6 @@
 # NEW NEXSS PROGRAMMER 2.5
 
-Note. If you are experiencing any issues please **let us know**! You can still use **2.4** version.
-
-Now it can be also used as separate tools or libraries. Check it out.
+Now you can also use nexss programmer as separate tools.. and as a full cli tool: [@nexssp/**cli**](https://www.npmjs.com/package/@nexssp/cli)
 
 ## Cli tools and libraries
 
@@ -139,14 +137,13 @@ Note: **nxsOut** is a default output/variable/field from a package, or function 
 ```sh
 npm i @nexssp/cli -g # install nexss programmer globally. Run everywere
 npm init && npm i @nexssp/cli@2.4.20 # install per project
-
 ```
 
 ## Helper Functions
 
 ```sh
-nexss -help # displays all availabe helper functions
-nexss -env # displays environment info: versions, paths, package managers etc.
+nexss -help # displays all available helper functions
+nexss -env # displays environment info: versions, paths, package managers etc. (nexssp-os env)
 ```
 
 ### Create new files from templates
@@ -238,4 +235,10 @@ nexss my.nexss --nxsDryFiles # Will show files collected (which will be run) in 
 nexss.my.nexss --nxsDry # will show the streams which are generated, with compilers, builders
 ```
 
-✘ WIP - Add more here later..
+✅ WIP - Add more here later..
+
+## NOTE
+
+Nexss Programmer apart from being innovative technology, uses great libraries and technologies. Please consider also support them.
+
+More here: [**Nexss.com**](https://nexss.com/)
