@@ -241,4 +241,8 @@ nexss.my.nexss --nxsDry # will show the streams which are generated, with compil
 
 Nexss Programmer apart from being innovative technology, uses great libraries and technologies. Please consider also support them.
 
+For some of the languages compiler installations for Windows we use great Scoop from Luke Sampson. Please also consider support him.
+
+Thank you.
+
 More here: [**Nexss.com**](https://nexss.com/)
