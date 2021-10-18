@@ -44,5 +44,12 @@
     "aliases": ["p"],
     "ommit": [],
     "through": true
+  },
+  {
+    "plugin": "@nexssp/ensure",
+    "trigger": "ensure",
+    "ommit": [],
+    "through": true,
+    "commandsPath":"lib/cli/commands"
   }
 ]
