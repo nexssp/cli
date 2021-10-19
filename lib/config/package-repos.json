@@ -1,6 +1,7 @@
 {
   "3rdPartyLibraries": "https://github.com/nexssp/package_3rdpartylibraries.git",
   "App": "https://github.com/nexssp/package_app.git",
+  "Audio": "https://github.com/nexssp/package_audio.git",
   "Blender": "https://github.com/nexssp/package_blender.git",
   "Clipboard": "https://github.com/nexssp/package_clipboard.git",
   "Convert": "https://github.com/nexssp/package_convert.git",
