@@ -50,6 +50,13 @@
     "trigger": "ensure",
     "ommit": [],
     "through": true,
-    "commandsPath":"lib/cli/commands"
+    "commandsPath": "lib/cli/commands"
+  },
+  {
+    "plugin": "@nexssp/os",
+    "trigger": "os",
+    "ommit": [],
+    "through": false,
+    "commandsPath": "lib/cli/commands"
   }
 ]
