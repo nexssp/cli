@@ -59,7 +59,7 @@
     "@nexssp/expression-parser": "^1.0.3",
     "@nexssp/extend": "^2.0.3",
     "@nexssp/file": "^1.0.16",
-    "@nexssp/language": "^1.1.9",
+    "@nexssp/language": "^1.1.10",
     "@nexssp/logdebug": "^1.0.18",
     "@nexssp/os": "^2.0.18",
     "@nexssp/package": "^1.0.17",
