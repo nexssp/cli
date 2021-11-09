@@ -6,6 +6,22 @@ Now you can also use nexss programmer as separate tools.. and as a full cli tool
 
 Guys, we are looking for people who are willing to join our team. Please see latest job openings: <https://nexss.com/nexss-career.html>
 
+## Latest news
+
+Now you can create new different types of projects with **hot reloading** easy:
+
+- **Vue2**
+- **React17**
+
+more soon.
+
+```sh
+nexss p vue2 myvue2-project # creates new vue2 project with hotreloading.
+nexss p vue2 myvue2-project --install # -- install all needed libs
+nexss p react17 react17-project # creates new react17 project with hotreloading.
+# the same --install cen be used here.
+```
+
 ## Cli tools and libraries
 
 - [@nexssp/**cli**](https://www.npmjs.com/package/@nexssp/cli) - nexss programmer - all tools, languages together

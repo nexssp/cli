@@ -65,7 +65,7 @@
     "@nexssp/package": "^1.0.17",
     "@nexssp/packunpack": "^1.0.6",
     "@nexssp/plugin": "^1.0.5",
-    "@nexssp/project": "^1.0.7",
+    "@nexssp/project": "^1.0.14",
     "@nexssp/stack": "^1.0.9",
     "@nexssp/system": "^1.1.6",
     "axios": "^0.24.0",
