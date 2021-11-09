@@ -8,6 +8,10 @@ Guys, we are looking for people who are willing to join our team. Please see lat
 
 ## Latest news
 
+```sh
+nexss py help # diplays more info about available commands / per language
+```
+
 Now you can create new different types of projects with **hot reloading** easy:
 
 - **Vue2**
