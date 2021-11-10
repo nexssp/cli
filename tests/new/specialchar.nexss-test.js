@@ -5,4 +5,4 @@ module.exports = {
       params: ['nexss $# 1', /"nxsIn":\[1\]/],
     },
   ],
-};
+}

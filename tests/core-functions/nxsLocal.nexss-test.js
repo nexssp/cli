@@ -3,10 +3,7 @@ module.exports = {
   nexsstests: [
     {
       title: '--nxsLocal (1)',
-      params: [
-        'nexss Debug --x=369x --_y=369234x --nxsLocal=x',
-        /"_x": "369x"/,
-      ],
+      params: ['nexss Debug --x=369x --_y=369234x --nxsLocal=x', /"_x": "369x"/],
     },
     {
       title: '--nxsLocal (multiple)',
@@ -50,4 +47,4 @@ module.exports = {
       ],
     },
   ],
-};
+}

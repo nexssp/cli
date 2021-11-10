@@ -7,7 +7,7 @@ const nexsstests = [
       /"MY1":".*".*"MY2":".*".*"MY3":".*".*"MY4":".*".*"MY5":".*".*"MY6":".*"/,
     ],
   },
-];
+]
 
 // if (process.platform === "win32") {
 //   nexsstests = [];
@@ -16,4 +16,4 @@ const nexsstests = [
 module.exports = {
   defaultTestFunction: 'nSpawn',
   nexsstests,
-};
+}

@@ -1,21 +1,17 @@
 function getPackagesPaths(folder = '') {
-  const paths = [];
-  const fg = require('fast-glob');
-  const languagePathArray = ['**', `*-test.nexss`];
-  const path = require('path');
+  const paths = []
+  const fg = require('fast-glob')
+  const languagePathArray = ['**', `*-test.nexss`]
+  const path = require('path')
 
   // ../languages/php/win32.nexss.config.js
 
-  paths.push(
-    path
-      .join(process.env.NEXSS_PACKAGES_PATH, ...languagePathArray)
-      .replace(/\\/g, '/')
-  );
+  paths.push(path.join(process.env.NEXSS_PACKAGES_PATH, ...languagePathArray).replace(/\\/g, '/'))
 
-  return fg.sync(paths);
+  return fg.sync(paths)
 }
 
-const values = getPackagesPaths();
+const values = getPackagesPaths()
 module.exports = {
   values,
   startFrom: '',
@@ -36,4 +32,4 @@ module.exports = {
       ],
     },
   ],
-};
+}

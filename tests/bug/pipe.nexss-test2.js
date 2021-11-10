@@ -9,10 +9,7 @@ let nexsstests = [
   },
   {
     title: 'Simply Pipe',
-    params: [
-      'nexss Id --nxsAs=MY1 | nexss Id --nxsAs=MY2',
-      /"MY1":".*".*"MY2":".*"/,
-    ],
+    params: ['nexss Id --nxsAs=MY1 | nexss Id --nxsAs=MY2', /"MY1":".*".*"MY2":".*"/],
   },
   {
     title: 'Long Pipe',
@@ -21,12 +18,12 @@ let nexsstests = [
       /"MY1":".*".*"MY2":".*".*"MY3":".*".*"MY4":".*".*"MY5":".*".*"MY6":".*"/,
     ],
   },
-];
+]
 
 if (process.platform === 'win32') {
-  nexsstests = [];
+  nexsstests = []
 }
 
 module.exports = {
   nexsstests,
-};
+}

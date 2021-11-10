@@ -12,12 +12,8 @@ module.exports = {
       params: ['nexss Nexss/Test/Errors', "'file' is required"],
     },
     {
-      title:
-        'Check for OK message (Please wait.. installing additional compilers)',
-      params: [
-        'nexss Nexss/Test/Errors --file=any.jpg',
-        'Error 1/2 from file 1: Standard STDERR',
-      ],
+      title: 'Check for OK message (Please wait.. installing additional compilers)',
+      params: ['nexss Nexss/Test/Errors --file=any.jpg', 'Error 1/2 from file 1: Standard STDERR'],
     },
     {
       title: 'Check for warning message',
@@ -33,4 +29,4 @@ module.exports = {
       params: ['nexss Nexss/Test/Errors', 'NexssStdin'],
     },
   ],
-};
+}

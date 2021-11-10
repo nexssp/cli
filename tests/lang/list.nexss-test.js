@@ -10,4 +10,4 @@ module.exports = {
       params: ['nexss l l --list', /\.\w+(\n\.\w+)+/],
     },
   ],
-};
+}

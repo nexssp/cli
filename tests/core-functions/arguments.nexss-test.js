@@ -3,10 +3,7 @@ module.exports = {
   nexsstests: [
     {
       title: 'NEXSS_APPS_PATH',
-      params: [
-        "nexss Id --testEnv='${process.env.NEXSS_APPS_PATH}'",
-        /"testEnv":".*\.nexssApps/,
-      ],
+      params: ["nexss Id --testEnv='${process.env.NEXSS_APPS_PATH}'", /"testEnv":".*\.nexssApps/],
     },
     {
       title: 'NEXSS_LANGUAGES_PATH',
@@ -17,10 +14,7 @@ module.exports = {
     },
     {
       title: 'NEXSS_HOME_PATH',
-      params: [
-        "nexss Id --testEnv='${process.env.NEXSS_HOME_PATH}'",
-        /"testEnv":".*\.nexss.*"/,
-      ],
+      params: ["nexss Id --testEnv='${process.env.NEXSS_HOME_PATH}'", /"testEnv":".*\.nexss.*"/],
     },
   ],
-};
+}

@@ -1,4 +1,4 @@
-const os = require('@nexssp/os');
+const os = require('@nexssp/os')
 
 const linuxOmmit = [
   '.html',
@@ -25,19 +25,19 @@ const linuxOmmit = [
   '.zig',
   '.m',
   '.adb', // !!!!!!!!
-];
+]
 
 switch (os.name()) {
   case os.distros.UBUNTU:
-    linuxOmmit.push('.ex'); // Output stops / NODEJS10
-    linuxOmmit.push('.exs');
-    linuxOmmit.push('.erl'); // Works but - testing shows failed.
-    linuxOmmit.push('.kts'); // REMOVED COMPLETELY
-    linuxOmmit.push('.dart');
-    linuxOmmit.push('.clj');
-    linuxOmmit.push('.raku');
-    linuxOmmit.push('.d');
-    break;
+    linuxOmmit.push('.ex') // Output stops / NODEJS10
+    linuxOmmit.push('.exs')
+    linuxOmmit.push('.erl') // Works but - testing shows failed.
+    linuxOmmit.push('.kts') // REMOVED COMPLETELY
+    linuxOmmit.push('.dart')
+    linuxOmmit.push('.clj')
+    linuxOmmit.push('.raku')
+    linuxOmmit.push('.d')
+    break
 }
 
-module.exports = { linuxOmmit };
+module.exports = { linuxOmmit }

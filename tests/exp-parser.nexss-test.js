@@ -12,4 +12,4 @@ module.exports = {
       params: ['nexss Nexss/Test/ExpressionParser', /"func4Result":"100"/],
     },
   ],
-};
+}

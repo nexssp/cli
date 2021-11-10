@@ -20,6 +20,6 @@ const windowsOmmit = [
   '.wsf', // TO IMPLEMENT default, helloWorld
   '.bat', // finish the json,
   '.html', // is used only for templates
-];
+]
 
-module.exports = { windowsOmmit };
+module.exports = { windowsOmmit }

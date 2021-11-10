@@ -55,4 +55,4 @@ nConst`,
       params: ['nexss -output-colors 1', 'output:colors 1'],
     },
   ],
-};
+}
