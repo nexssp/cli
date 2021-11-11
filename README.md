@@ -2,6 +2,17 @@
 
 Now you can also use nexss programmer as separate tools.. and as a full cli tool: [@nexssp/**cli**](https://www.npmjs.com/package/@nexssp/cli)
 
+## Note for Windows Python users
+
+Windows started pointing the **python.exe** and **python3.exe** files to their shop which cousing a lot of unstability and issues for many users. To prevent that and works your operating system smothly please run this command:
+
+```ps1
+# It will delete python.exe and python3.exe - sources of a lot of instability and issues.
+Remove-Item $env:USERPROFILE\AppData\Local\Microsoft\WindowsApps\python*.exe
+```
+
+You may need to install python manually if any other issues appear.
+
 ## Job Openings
 
 Guys, we are looking for people who are willing to join our team. Please see latest job openings: <https://nexss.com/nexss-career.html>
