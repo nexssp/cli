@@ -2,22 +2,24 @@
 
 Now you can also use nexss programmer as separate tools.. and as a full cli tool: [@nexssp/**cli**](https://www.npmjs.com/package/@nexssp/cli)
 
-## Note for Windows Python users
+## Note for Windows 10 and 11 Python users
 
-Windows started pointing the **python.exe** and **python3.exe** files to their shop which cousing a lot of unstability and issues for many users. To prevent that and works your operating system smothly please run this command:
+On Windows OS there are default files **python.exe** and **python3.exe** and they pointing to the shop which causing that is hard to install **Python** from other sources and issue appeared for many users. If you wish to use different **Python** distributions eg. provided by the Nexss Programmer please run below command. NOTE: you may want to make a backup to your files before deleting them entirely.
 
 ```ps1
-# It will delete python.exe and python3.exe - sources of a lot of instability and issues.
+# It will delete python.exe and python3.exe which point to the shop.
 Remove-Item $env:USERPROFILE\AppData\Local\Microsoft\WindowsApps\python*.exe
 ```
 
-You may need to install python manually if any other issues appear.
+You may need to install **Python** manually if any other issues appear and then use Nexss Programmer. It will recognize any installed python and you should be able to use the Nexss Programmer without any issues.
 
 ## Job Openings
 
 Guys, we are looking for people who are willing to join our team. Please see latest job openings: <https://nexss.com/nexss-career.html>
 
 ## Latest news
+
+Nexss Programmer has been tested on Windows 11. If you will notice any issues please create new issue.
 
 ```sh
 nexss py help # diplays more info about available commands / per language
@@ -27,6 +29,7 @@ Now you can create new different types of projects with **hot reloading** easy:
 
 - **Vue2**
 - **React17**
+- **Preact**
 
 more soon.
 
@@ -107,11 +110,11 @@ Programmer
 ## ✅ Nexss Programmer functionalities
 
 ✔ Easy programming for _**multiplatform**_ in over 50 programming languages,  
-✔ **Windows**, Linux: tested on: **Alpine**, **Amazon**, **Arch**, **CentOS**, **Debian**, **Fedora**, **FreeBSD**, **Gentoo**,**Mint**, **Oracle**, **Rhel**, **Suse Leap**, **Suse TumbleWeed**, **Ubuntu** and soon **MacOS**,  
+✔ **Windows 10 and 11**, Linux: tested on: **Alpine**, **Amazon**, **Arch**, **CentOS**, **Debian**, **Fedora**, **FreeBSD**, **Gentoo**,**Mint**, **Oracle**, **Rhel**, **Suse Leap**, **Suse TumbleWeed**, **Ubuntu** and soon **MacOS**,  
 ✔ **NodeJS** versions: 12+ => **12.x**, **14.x**, **15.x**, **16.x**, **17.x**  
 ✔ Over **50** programming languages: **Ada**, **Auto Hot Key**, **Autoit**, **Bash**, **Basic**, **Batch**, **C**, **Clojure**, **Coconut**, **Coffee Script**, **C++**, **Crystal**, **CSharp**, **D**, **Dart**, **Elixir**, **Erlang**, **Fortran**, **Go**, **Groovy**, **Haskell**, **Haxe**, **Hy**, **Java**, **JSON**, **Julia**, **Kotlin**, **LiveScript**, **Lua**, **Nexss**, **Nim**, **NodeJS**, **Octave**, **Perl**, **PHP**, **PowerShell**, **Pure Data**, **Python 2 & 3**, **R**, **Racket**, **Raku**, **Ruby**, **Rust**, **Scala**, **TCL/TK**, **Typescript**, **V**, **VBScript**, **Windows Scripting Host**, **Zig**
 
-🔥 **Nexss Programmer** is a cli tool 🔧 which helps to:
+🔥 **Nexss Programmer** is _not only_ **a cli tool** 🔧 which helps to:
 
 ### ✅ Easy and intuitively install programming environments
 
