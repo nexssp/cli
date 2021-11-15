@@ -19,7 +19,9 @@ Guys, we are looking for people who are willing to join our team. Please see lat
 
 ## Latest news
 
-Nexss Programmer has been tested on Windows 11. If you will notice any issues please create new issue.
+Nexss Programmer has been tested on Windows 11. If you will notice any issues please create [new issue](https://github.com/nexssp/project_vue3/issues).
+
+Display help about any language with `nexss [ext] help`
 
 ```sh
 nexss py help # diplays more info about available commands / per language
@@ -27,11 +29,10 @@ nexss py help # diplays more info about available commands / per language
 
 Now you can create new different types of projects with **hot reloading** easy:
 
+- **Vue3**
 - **Vue2**
 - **React17**
 - **Preact**
-
-more soon.
 
 ```sh
 nexss p vue2 myvue2-project # creates new vue2 project with hotreloading.
