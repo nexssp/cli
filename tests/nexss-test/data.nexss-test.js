@@ -5,7 +5,7 @@ module.exports = {
       title: 'Nexss/Test/Data/Flow',
       params: [
         'nexss Nexss/Test/Data/Flow',
-        /"kind":"youtube#searchListResponse".*"phpOutput":"Hello from PHP!.*"helloFromCrystal":".*"PythonOutput":"Hello from Python!/s,
+        /"kind":"youtube#searchListResponse".*"phpOutput":"Hello from PHP!.*"PythonOutput":"Hello from Python!/s,
       ],
     },
   ],
