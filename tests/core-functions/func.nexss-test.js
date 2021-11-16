@@ -8,7 +8,8 @@ module.exports = {
       params: ['nexss -help', /List of quick\/helper/],
     },
     {
-      params: ['nexss -env', /(Environment Variables|Tags:\/)/],
+      // params: ['nexss -env', /(Environment Variables|Tags:\/)/],
+      params: ['nexss -env', /function has been depracated. Please use nexss os env/],
     },
     {
       params: ['nexss -dev-colors', `bold  grey  greyBG`],
