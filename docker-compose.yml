@@ -1,0 +1,26 @@
+version: '3.0'
+services:
+  node17:
+    image: node:17-alpine3.13
+    working_dir: /nexssCli
+    command: sh -c  "npm ci && npm install -g && npm test"
+    volumes:
+      - ./:/nexssCli
+      - node_modules17:/nexssCli/node_modules
+      - node_tmp17:/nexssCli/.tmp
+      
+  node16:
+    image: node:16-alpine3.13
+    working_dir: /nexssCli
+    # command: sh -c  "npm ci && npm install -g && npm test"
+    command: sh
+    tty: true  
+    volumes:
+      - ./:/nexssCli
+      - node_modules16:/nexssCli/node_modules
+      - node_tmp16:/nexssCli/.tmp
+volumes:
+  node_modules17: null
+  node_tmp17: null
+  node_modules16: null
+  node_tmp16: null
