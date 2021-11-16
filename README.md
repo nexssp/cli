@@ -1,5 +1,13 @@
 # NEW NEXSS PROGRAMMER 2.5
 
+## Consider support us
+
+If you really like Nexss Programmer, The sources of it or your business benefits from it financially then We would really appreciate a small donation. For now You can either use **Ethereum**, **PayPal** or **Github** sponsorship for donations.
+
+Ethereum: **0xBFdA63dF06Fab2ddC08099257e4a419f8eecd991**.  
+Through [PayPal](https://www.paypal.me/mapoart)  
+Become a sponsor with [Github](https://github.com/sponsors/mapoart)
+
 Now you can also use nexss programmer as separate tools.. and as a full cli tool: [@nexssp/**cli**](https://www.npmjs.com/package/@nexssp/cli)
 
 ## Note for Windows 10 and 11 Python users
