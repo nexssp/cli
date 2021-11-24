@@ -1,33 +1,17 @@
 # NEW NEXSS PROGRAMMER 2.5
 
-## Consider support us
-
-If you really like Nexss Programmer, The sources of it or your business benefits from it financially then We would really appreciate a small donation. For now You can either use **Ethereum**, **PayPal** or **Github** sponsorship for donations.
-
-Ethereum: **0xBFdA63dF06Fab2ddC08099257e4a419f8eecd991**.  
-Through [PayPal](https://www.paypal.me/mapoart)  
-Become a sponsor with [Github](https://github.com/sponsors/mapoart)
-
-Now you can also use nexss programmer as separate tools.. and as a full cli tool: [@nexssp/**cli**](https://www.npmjs.com/package/@nexssp/cli)
-
-## Note for Windows 10 and 11 Python users
-
-On Windows OS there are default files **python.exe** and **python3.exe** and they pointing to the shop which causing that is hard to install **Python** from other sources and issue appeared for many users. If you wish to use different **Python** distributions eg. provided by the Nexss Programmer please run below command. NOTE: you may want to make a backup to your files before deleting them entirely.
-
-```ps1
-# It will delete python.exe and python3.exe which point to the shop.
-Remove-Item $env:USERPROFILE\AppData\Local\Microsoft\WindowsApps\python*.exe
-```
-
-You may need to install **Python** manually if any other issues appear and then use Nexss Programmer. It will recognize any installed python and you should be able to use the Nexss Programmer without any issues.
-
-## Job Openings
-
-Guys, we are looking for people who are willing to join our team. Please see latest job openings: <https://nexss.com/nexss-career.html>
+Now you can also use **Nexss Programmer** as [separate tools](https://www.npmjs.com/search?q=nexssp) and as a full cli tool: [@nexssp/**cli**](https://www.npmjs.com/package/@nexssp/cli)
 
 ## Latest news
 
-Nexss Programmer has been tested on Windows 11. If you will notice any issues please create [new issue](https://github.com/nexssp/project_vue3/issues).
+## Next versions (soon)
+
+- New file type: **.vue** - you will be able to serve your vue files and start your development quickly by command: `nexss myapp.vue --serve`
+- Separate, secure server package
+
+## New functionalities
+
+**Nexss Programmer** has been tested on Windows 11. If you will notice any issues please create [new issue](https://github.com/nexssp/project_vue3/issues).
 
 Display help about any language with `nexss [ext] help`
 
@@ -294,3 +278,26 @@ For some of the languages compiler installations for Windows we use great Scoop 
 Thank you.
 
 More here: [**Nexss.com**](https://nexss.com/)
+
+## Job Openings
+
+Guys, we are looking for people who are willing to join our team. Please see latest job openings: <https://nexss.com/nexss-career.html>
+
+## Please consider supporting our work
+
+If you really like Nexss.com and our work, including Nexss Programmer, the sources of it please consider support us. You can either use **Ethereum**, **PayPal** or **Github sponsorship** for donations. Thank you!
+
+Ethereum: **0xBFdA63dF06Fab2ddC08099257e4a419f8eecd991**.  
+Through [PayPal](https://www.paypal.me/mapoart)  
+Become a sponsor with [Github](https://github.com/sponsors/mapoart)
+
+## Note for Windows 10 and 11 Python users
+
+On Windows OS there are default files **python.exe** and **python3.exe** and they pointing to the shop which causing that is hard to install **Python** from other sources and issue appeared for many users. If you wish to use different **Python** distributions eg. provided by the Nexss Programmer please run below command. NOTE: you may want to make a backup to your files before deleting them entirely.
+
+```ps1
+# It will delete python.exe and python3.exe which point to the shop.
+Remove-Item $env:USERPROFILE\AppData\Local\Microsoft\WindowsApps\python*.exe
+```
+
+You may need to install **Python** manually if any other issues appear and then use Nexss Programmer. It will recognize any installed python and you should be able to use the Nexss Programmer without any issues.
