@@ -2,7 +2,7 @@
 
 From now **@nexssp/cli** -> **nexss**!
 
-NEW **(2.5.77+)**: Now you can just run `npx nexss`
+NEW **(2.5.78+)**: Now you can just run `npx nexss`
 
 Now you can also use **Nexss Programmer** as [separate tools](https://www.npmjs.com/search?q=nexssp) and as a full cli tool: [@nexssp/**cli**](https://www.npmjs.com/package/@nexssp/cli)
 
