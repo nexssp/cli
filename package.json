@@ -15,7 +15,7 @@
   "scripts": {
     "test": "nexssp-test --ignore=languages --ignore=bug --debug",
     "test:bug": "nexssp-test --ignore=languages --select=bug --debug",
-    "test:selected": "nexssp-test --ignore=languages --select=platform --debug",
+    "test:selected": "nexssp-test --ignore=languages --select=arguments --debug",
     "test:continue": "nexssp-test --ignore=languages --continueOnError --debug",
     "test:list": "nexssp-test --dry",
     "test:languages": "nexssp-test --select=languages --debug",

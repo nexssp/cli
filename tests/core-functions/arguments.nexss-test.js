@@ -2,19 +2,15 @@ module.exports = {
   notEval: true, // params won't be evaluated before begin.
   nexsstests: [
     {
-      title: 'NEXSS_APPS_PATH',
-      params: ["nexss Id --testEnv='${process.env.NEXSS_APPS_PATH}'", /"testEnv":".*\.nexssApps/],
-    },
-    {
-      title: 'NEXSS_LANGUAGES_PATH',
+      title: 'Pass arguments to the file',
       params: [
-        "nexss Id --testEnv='${process.env.NEXSS_LANGUAGES_PATH}'",
-        /"testEnv":".*\.nexss.*languages/,
+        'nexss Nexss/Test/Arguments/testArgs.js --x=1 mytestarg --y=2 mysecondarg',
+        /"test":\[.*"--x=1","mytestarg","--y=2","mysecondarg"/,
       ],
     },
     {
-      title: 'NEXSS_HOME_PATH',
-      params: ["nexss Id --testEnv='${process.env.NEXSS_HOME_PATH}'", /"testEnv":".*\.nexss.*"/],
+      title: 'Pass arguments in the project .nexss file',
+      params: ['nexss Nexss/Test/Arguments', /"test":\[.*"--myvar=5","x","y","z"\]/],
     },
   ],
 }
