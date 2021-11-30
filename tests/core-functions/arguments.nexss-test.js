@@ -12,5 +12,19 @@ module.exports = {
       title: 'Pass arguments in the project .nexss file',
       params: ['nexss Nexss/Test/Arguments', /"test":\[.*"--myvar=5","x","y","z"\]/],
     },
+    // {
+    //   title: 'Save to file(s) myfile1.txt and myfile2.txt',
+    //   params: ['nexss Nexss/Test/Arguments/test.nexss', /dsdasd/],
+    // },
+    // {
+    //   type: 'fileHasContent',
+    //   title: 'Pass arguments in .nexss file and save.',
+    //   params: ['myfile1.txt', /fileHasContent/],
+    // },
+    // {
+    //   type: 'fileHasContent',
+    //   title: 'Pass arguments in .nexss file and save.',
+    //   params: ['myfile2.txt', /fileHasContent/],
+    // },
   ],
 }
