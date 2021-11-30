@@ -1,10 +1,16 @@
 # NEW NEXSS PROGRAMMER 2.5
 
+**Nexss Programmer** from version **2.5.79+** started **SPEAKING!**. From now You will be able to hear results of your work! Soon there will be more **HUGE suprises..** Stay tuned..
+
+```sh
+nexss Speak Welcome to the Nexss Programmer.
+```
+
 From now **@nexssp/cli** -> **nexss**!
 
 NEW **(2.5.78+)**: Now you can just run `npx nexss`
 
-Now you can also use **Nexss Programmer** as [separate tools](https://www.npmjs.com/search?q=nexssp) and as a full cli tool: [@nexssp/**cli**](https://www.npmjs.com/package/@nexssp/cli)
+You can also use **Nexss Programmer** as [separate tools](https://www.npmjs.com/search?q=nexssp) and as a full cli tool: [@nexssp/**cli**](https://www.npmjs.com/package/@nexssp/cli)
 
 ## Latest news
 

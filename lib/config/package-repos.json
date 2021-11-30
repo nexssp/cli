@@ -21,6 +21,7 @@
   "Printer": "https://github.com/nexssp/package_printer.git",
   "Screen": "https://github.com/nexssp/package_screen.git",
   "Select": "https://github.com/nexssp/package_select.git",
+  "Speak": "https://github.com/nexssp/package_speak.git",
   "Storage": "https://github.com/nexssp/package_storage.git",
   "System": "https://github.com/nexssp/package_system.git",
   "Template": "https://github.com/nexssp/package_template.git",
