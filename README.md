@@ -1,6 +1,14 @@
 # NEW NEXSS PROGRAMMER 2.5
 
-**Nexss Programmer** from version **2.5.79+** started **SPEAKING!**. From now You will be able to hear results of your work! Soon there will be more **HUGE suprises..** Stay tuned..
+**Nexss Programmer** version **2.5.78+** can **SPEAK!**
+
+Here is a very basic example written in the nexss which speaking to you the website's title.
+
+Please keep in mind that in the **Nexss Programmer** you can use over _50 programming languages_ together and make solutions. For example you can make some statistics in R, Python or any language and you can speak periodically without any distructions of your work. **Unlimited possibilities.**.
+
+<i style="color:#22aa22">**And the most important: we would like to THANK YOU FOR YOUR SUPPORT! Have a wonderful day!**</i>
+
+![image](https://user-images.githubusercontent.com/53263666/144295624-6846d7e3-940c-4cb2-8f7e-b29a9e7b49f2.png)
 
 ```sh
 nexss Speak Welcome to the Nexss Programmer.
