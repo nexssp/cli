@@ -67,7 +67,7 @@
     "@nexssp/plugin": "^1.0.5",
     "@nexssp/project": "^1.0.18",
     "@nexssp/stack": "^1.0.9",
-    "@nexssp/system": "^1.1.7",
+    "@nexssp/system": "^1.1.8",
     "axios": "^0.24.0",
     "dotenv": "^10.0.0",
     "fast-glob": "^3.2.7",
@@ -97,7 +97,7 @@
     }
   ],
   "devDependencies": {
-    "@nexssp/test": "^1.1.7",
+    "@nexssp/test": "^1.1.9",
     "prettier": "^2.4.1"
   }
 }
