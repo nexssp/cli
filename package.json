@@ -97,7 +97,7 @@
     }
   ],
   "devDependencies": {
-    "@nexssp/test": "^1.1.9",
+    "@nexssp/test": "^1.1.10",
     "prettier": "^2.4.1"
   }
 }
