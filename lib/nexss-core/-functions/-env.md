@@ -3,5 +3,6 @@
 Displays os, distro name, versions and package managers..
 
 ```sh
-nexss -env
+
+nexss -env # depracated use `nexss os env` instead
 ```

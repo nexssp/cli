@@ -1,6 +1,6 @@
 # nexss -disable-colors
 
-Displays available colors for .nexss files
+Disable colorized output result
 
 ```sh
 nexss -colors enable # or 1

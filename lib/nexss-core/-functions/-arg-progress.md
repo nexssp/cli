@@ -1,8 +1,8 @@
-# nexss -disable-colors
+# nexss -arg-progress
 
-Displays available colors for .nexss files
+enable progress of the installators.
 
 ```sh
-nexss -colors enable # or 1
-nexss -colors disable # or 0
+nexss -arg-progress enable # or 1
+nexss -arg-progress disable # or 0
 ```
