@@ -1,5 +1,30 @@
 # NEW NEXSS PROGRAMMER 2.5
 
+## News
+
+### Nexss Clipboard/Save
+
+Save clipboard data as text or image ('bmp','gif','ico','jpg','jpeg','png','tif').
+
+Below command will save to file text or images with default filename
+nexssp_2021-12-07T10_51_33 of course with the proper date and extension will be genearated:
+
+```sh
+nexss Clipboard/Save
+```
+
+Another one will check if saved file is an image, if not it will stop and show available extensions:
+
+```sh
+nexss Clipboard/Save myfilename.png
+```
+
+There is more examples: `nexss Clipboard/Save help`.
+
+Note: _Clipboard/Save functionality was only tested on the Windows OS._
+
+### Nexss Speak
+
 **Nexss Programmer** version **2.5.78+** can **SPEAK!**
 
 Here is a very basic example written in the nexss which speaking to you the website's title.
