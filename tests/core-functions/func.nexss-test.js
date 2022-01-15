@@ -12,7 +12,7 @@ module.exports = {
       params: ['nexss -env', /function has been depracated. Please use nexss os env/],
     },
     {
-      params: ['nexss -dev-colors', `bold  grey  greyBG`],
+      params: ['nexss -dev-colors', /(reset|bold|italic)/],
     },
     {
       params: ['nexss -dev-validation', `required:`],

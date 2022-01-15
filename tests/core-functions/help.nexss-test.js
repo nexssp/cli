@@ -1,5 +1,5 @@
 const helpDisplay =
-  /nexss command(.*)nexss config(.*)nexss file(.*)nexss language(.*)nexss project(.*)/s
+  /nexss command(.*)nexss config(.*)nexss file(.*)nexss language(.*)nexss package(.*)nexss project(.*)nexss ensure(.*)/s
 // const helpDisplay =
 //   /nexss command[\s\S]*nexss config[\s\S]*nexss file[\s\S]*nexss language[\s\S]*nexss project[\s\S]*/
 module.exports = {

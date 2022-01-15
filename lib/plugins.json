@@ -26,12 +26,6 @@
     "through": true
   },
   {
-    "plugin": "@nexssp/os",
-    "trigger": "os",
-    "ommit": [],
-    "through": true
-  },
-  {
     "plugin": "@nexssp/package",
     "trigger": "package",
     "aliases": ["pkg"],
@@ -57,6 +51,6 @@
     "trigger": "os",
     "ommit": [],
     "through": false,
-    "commandsPath": "lib/cli/commands"
+    "commandsPath_deleted": "os/lib/cli/commands"
   }
 ]
