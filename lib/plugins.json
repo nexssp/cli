@@ -51,6 +51,6 @@
     "trigger": "os",
     "ommit": [],
     "through": false,
-    "commandsPath_deleted": "os/lib/cli/commands"
+    "commandsPath": "lib/cli/commands"
   }
 ]
