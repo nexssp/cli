@@ -76,9 +76,9 @@
     "is-installed-globally": "^0.4.0",
     "json-colorizer": "^2.2.2",
     "json-diff": "^0.7.3",
-    "minimist": "^1.2.5",
+    "minimist": "^1.2.6",
     "string-argv": "^0.3.1",
-    "string.prototype.matchall": "^4.0.6"
+    "string.prototype.matchall": "^4.0.7"
   },
   "author": {
     "name": "Marcin Polak",
@@ -97,6 +97,6 @@
   ],
   "devDependencies": {
     "@nexssp/test": "^1.1.10",
-    "prettier": "^2.6.0"
+    "prettier": "^2.6.1"
   }
 }
