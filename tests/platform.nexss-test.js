@@ -21,11 +21,11 @@ module.exports = {
     {
       title: 'Run depends on platform - exitCode 1 for Windows',
       params: [
-        `nexss Output/End "works on Ubuntu" --nxsPlatform="UBUNTU"`,
+        `nexss Output/End "works on Linux" --nxsPlatform="LINUX"`,
         process.platform === 'win32'
-          ? 'UBUNTU did not match with your platform win32'
+          ? 'LINUX did not match with your platform win32'
           : process.distroTag2 === 'Ubuntu'
-          ? 'works on Ubuntu'
+          ? 'works on Linux'
           : '',
         {
           exitCode: process.platform === 'win32' ? 1 : 0, // Checks if the number of error code
