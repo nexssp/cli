@@ -39,8 +39,9 @@ jobs:
           nexss
       - run: |
           "C:\\Program Files\\PowerShell\\7\\pwsh.exe" -command "Set-ExecutionPolicy RemoteSigned -scope CurrentUser" 
-          "C:\\Program Files\\PowerShell\7\pwsh.exe" -command "Invoke-WebRequest -useb get.scoop.sh -outfile 'install.ps1' 
-          .\install.ps1 -RunAsAdmin" && echo You may need to restart terminal window.
+          "C:\\Program Files\\PowerShell\7\pwsh.exe" -command "Invoke-WebRequest -useb get.scoop.sh -outfile 'install.ps1'" 
+          .\install.ps1 -RunAsAdmin
+          echo You may need to restart terminal window.
       - run: nexss Nexss/Test/Platform/example1.nexss --nxsPipeErrors --debug
       # ls /root/.nexss/packages/
       # nexss Nexss/Test/Sequences --seq=mytestdata --debug
