@@ -30,7 +30,7 @@ module.exports = {
           ? 'works on Linux'
           : '',
         {
-          exitCode: process.platform === 'win32' ? 1 : 0, // Checks if the number of error code
+          exitCode: process.platform === 'win32' || process.platform === 'darwin' ? 1 : 0, // Checks if the number of error code
           testFunction: 'nSpawn',
         },
       ],
