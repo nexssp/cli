@@ -39,5 +39,6 @@ jobs:
       - run: nexss
       # ls /root/.nexss/packages/
       # nexss Nexss/Test/Sequences --seq=mytestdata --debug
-      - run: Join-Path (Resolve-Path ~).Path "scoop\shims" >> $Env:GITHUB_PATH
+      # - run: Join-Path (Resolve-Path ~).Path "scoop\shims" >> $Env:GITHUB_PATH
+
       - run: yarn test
