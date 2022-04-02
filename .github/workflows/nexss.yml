@@ -37,6 +37,7 @@ jobs:
           npm install -g .
           npm run build --if-present
           nexss
+      - run: nexss Nexss/Test/Platform/example1.nexss --nxsPipeErrors
       # ls /root/.nexss/packages/
       # nexss Nexss/Test/Sequences --seq=mytestdata --debug
 
