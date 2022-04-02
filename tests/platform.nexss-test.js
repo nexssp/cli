@@ -15,7 +15,9 @@ module.exports = {
         'nexss Nexss/Test/Platform/example1.nexss --nxsPipeErrors',
         process.platform === 'win32'
           ? 'This command will appear only on All Windowses'
-          : 'This command will appear only on Linux distros', // add MacOS later
+          : process.platform === 'linux'
+          ? 'This command will appear only on Linux distros'
+          : 'This command will appear only on Windows10 OR macOS.', // add MacOS later
       ],
     },
     {
