@@ -63,7 +63,7 @@
     "@nexssp/logdebug": "^1.0.18",
     "@nexssp/markdown": "^1.0.1",
     "@nexssp/os": "^2.0.25",
-    "@nexssp/package": "^1.0.20",
+    "@nexssp/package": "^1.0.21",
     "@nexssp/packunpack": "^1.0.6",
     "@nexssp/plugin": "^1.0.9",
     "@nexssp/project": "^1.0.19",
