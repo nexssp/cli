@@ -37,6 +37,8 @@ jobs:
           npm install -g .
           npm run build --if-present
       - run: nexss
+      - run: nexss Id
+      - run: nexss Output/End "ABCDEF"
       # ls /root/.nexss/packages/
       # nexss Nexss/Test/Sequences --seq=mytestdata --debug
       # - run: Join-Path (Resolve-Path ~).Path "scoop\shims" >> $Env:GITHUB_PATH
