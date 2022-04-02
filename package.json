@@ -68,7 +68,7 @@
     "@nexssp/plugin": "^1.0.9",
     "@nexssp/project": "^1.0.19",
     "@nexssp/stack": "^1.0.9",
-    "@nexssp/system": "^1.1.8",
+    "@nexssp/system": "^1.1.10",
     "axios": "^0.26.1",
     "dotenv": "^16.0.0",
     "fast-glob": "^3.2.11",
