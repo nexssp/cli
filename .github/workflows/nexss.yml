@@ -2,7 +2,7 @@ name: Nexss CI
 
 on:
   push:
-    branches: [fixing-workflows]
+    branches: [master]
 
 jobs:
   build:
