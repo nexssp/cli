@@ -8,8 +8,8 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [windows-latest, windows-2019, ubuntu-latest, macos-latest, macos-10.15]
-        node-version: [12.x, 14.x, 16.x, 17.x]
+        os: [macos-10.15]
+        node-version: [16.x]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
@@ -37,7 +37,7 @@ jobs:
           npm install -g .
           npm run build --if-present
       - run: nexss
-      - run: nexss Id
+      - run: nexss Id --x=1 --_y=369x --nxsGlobal=y
       - run: nexss Output/End "ABCDEF"
       # ls /root/.nexss/packages/
       # nexss Nexss/Test/Sequences --seq=mytestdata --debug
