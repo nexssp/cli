@@ -2,6 +2,14 @@
 
 ## News
 
+### Nexss Programmer 3.0 alpha in Rust
+
+From the versions of 3.x, main engine of the Nexss Programmer will be written in **Rust**. If you are a *Rust programmer* (any level) and you wish to contribute to the Open Source community please contact us at **nexss.com**.
+
+### Support for Kali Linux
+
+Despite implementation of all languages has not been tested on Kali Linux, Nexss Programmer itself is already supported. For any issues please make a new item in the <https://github.com/nexssp/cli/issues>
+
 ### Nexss Clipboard/Save
 
 Save clipboard data as text or image ('bmp','gif','ico','jpg','jpeg','png','tif').
