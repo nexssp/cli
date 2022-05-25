@@ -6,6 +6,25 @@
 
 From the versions of 3.x, main engine of the Nexss Programmer will be written in **Rust**. If you are a *Rust programmer* (any level) and you wish to contribute to the Open Source community please contact us at **nexss.com**.
 
+### New language - Solidity
+
+Nexss Programmer 2.5.101 Supports **Solidity** - Solidity is an object-oriented, high-level language for implementing smart contracts.
+
+### More info about languages
+
+New `readme` functionality. You can now read more info from the README.md file from selected language eg.
+
+```sh
+nexss [ext] readme # eg:
+nexss rs readme # for Rust
+nexss sol readme # for Solidity etc. etc.
+
+nexss rs help # for more info like creator, year etc..
+nexss js help # ...
+```
+
+
+
 ### Support for Kali Linux
 
 Despite implementation of all languages has not been tested on Kali Linux, Nexss Programmer itself is already supported. For any issues please make a new item in the <https://github.com/nexssp/cli/issues>

@@ -46,6 +46,7 @@
   ".rs": "https://github.com/nexssp/language_rust.git",
   ".scala": "https://github.com/nexssp/language_scala.git",
   ".sh": "https://github.com/nexssp/language_bash.git",
+  ".sol": "https://github.com/nexssp/language_solidity.git",
   ".swift": "https://github.com/nexssp/language_swift.git",
   ".tcl": "https://github.com/nexssp/language_tcltk.git",
   ".ts": "https://github.com/nexssp/language_typescript.git",
