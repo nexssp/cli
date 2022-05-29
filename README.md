@@ -4,14 +4,14 @@
 
 ### Nexss Programmer 3.0 alpha in Rust
 
-From the versions of 3.x, main engine of the Nexss Programmer will be written in **Rust**. If you are a *Rust programmer* (any level) and you wish to contribute to the Open Source community please contact us at **nexss.com**.
+From the versions of 3.x, main engine of the Nexss Programmer will be written in **Rust**. If you are a _Rust programmer_ (any level) and you wish to contribute to the Open Source community please contact us at **nexss.com**: <jobs@nexss.com>
 
 ### Node.js and TypeScript - new runtime - Deno
 
 Deno is "A modern runtime for JavaScript and TypeScript.".
 
 ```sh
-# Node.js 
+# Node.js
 nexss js default compiler deno # set your default runtime to deno
 nexss js default compiler unset # to reset to default
 
@@ -25,10 +25,10 @@ or set compiler per file individually. Works for every implemented language.
 ```js
 // nexss-compiler: deno
 
-console.log(`Hello from Deno! ${Deno.version.deno}`);
+console.log(`Hello from Deno! ${Deno.version.deno}`)
 ```
 
-and run with `nexss myfile.js`
+and run with `nexss myfile.js` or `nexss myfile.ts`
 
 ### New language - Solidity
 
@@ -70,7 +70,7 @@ nexss Clipboard/Save myfilename.png
 
 There is more examples: `nexss Clipboard/Save help`.
 
-Note: *Clipboard/Save functionality was only tested on the Windows OS.*
+Note: _Clipboard/Save functionality was only tested on the Windows OS._
 
 ### Nexss Speak
 
@@ -78,7 +78,7 @@ Note: *Clipboard/Save functionality was only tested on the Windows OS.*
 
 Here is a very basic example written in the nexss which speaking to you the website's title.
 
-Please keep in mind that in the **Nexss Programmer** you can use over *50 programming languages* together and make solutions. For example you can make some statistics in R, Python or any language and you can speak periodically without any distructions of your work. **Unlimited possibilities.**.
+Please keep in mind that in the **Nexss Programmer** you can use over _50 programming languages_ together and make solutions. For example you can make some statistics in R, Python or any language and you can speak periodically without any distructions of your work. **Unlimited possibilities.**.
 
 <i style="color:#22aa22">**And the most important: we would like to THANK YOU FOR YOUR SUPPORT! Have a wonderful day!**</i>
 
@@ -199,7 +199,7 @@ Programmer
 ✔ **NodeJS** versions: 12+ => **12.x**, **14.x**, **15.x**, **16.x**, **17.x**  
 ✔ Over **50** programming languages: **Ada**, **Auto Hot Key**, **Autoit**, **Bash**, **Basic**, **Batch**, **C**, **Clojure**, **Coconut**, **Coffee Script**, **C++**, **Crystal**, **CSharp**, **D**, **Dart**, **Elixir**, **Erlang**, **Fortran**, **Go**, **Groovy**, **Haskell**, **Haxe**, **Hy**, **Java**, **JSON**, **Julia**, **Kotlin**, **LiveScript**, **Lua**, **Nexss**, **Nim**, **NodeJS**, **Octave**, **Perl**, **PHP**, **PowerShell**, **Pure Data**, **Python 2 & 3**, **R**, **Racket**, **Raku**, **Ruby**, **Rust**, **Scala**, **TCL/TK**, **Typescript**, **V**, **VBScript**, **Windows Scripting Host**, **Zig**
 
-🔥 **Nexss Programmer** is *not only* **a cli tool** 🔧 which helps to:
+🔥 **Nexss Programmer** is _not only_ **a cli tool** 🔧 which helps to:
 
 ### ✅ Easy and intuitively install programming environments
 
