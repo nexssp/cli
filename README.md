@@ -6,6 +6,30 @@
 
 From the versions of 3.x, main engine of the Nexss Programmer will be written in **Rust**. If you are a *Rust programmer* (any level) and you wish to contribute to the Open Source community please contact us at **nexss.com**.
 
+### Node.js and TypeScript - new runtime - Deno
+
+Deno is "A modern runtime for JavaScript and TypeScript.".
+
+```sh
+# Node.js 
+nexss js default compiler deno # set your default runtime to deno
+nexss js default compiler unset # to reset to default
+
+# TypeScript
+nexss ts default compiler deno # set your default runtime to deno
+nexss ts default compiler unset # to reset to default
+```
+
+or set compiler per file individually. Works for every implemented language.
+
+```js
+// nexss-compiler: deno
+
+console.log(`Hello from Deno! ${Deno.version.deno}`);
+```
+
+and run with `nexss myfile.js`
+
 ### New language - Solidity
 
 Nexss Programmer 2.5.101 Supports **Solidity** - Solidity is an object-oriented, high-level language for implementing smart contracts.
@@ -22,8 +46,6 @@ nexss sol readme # for Solidity etc. etc.
 nexss rs help # for more info like creator, year etc..
 nexss js help # ...
 ```
-
-
 
 ### Support for Kali Linux
 
@@ -48,7 +70,7 @@ nexss Clipboard/Save myfilename.png
 
 There is more examples: `nexss Clipboard/Save help`.
 
-Note: _Clipboard/Save functionality was only tested on the Windows OS._
+Note: *Clipboard/Save functionality was only tested on the Windows OS.*
 
 ### Nexss Speak
 
@@ -56,7 +78,7 @@ Note: _Clipboard/Save functionality was only tested on the Windows OS._
 
 Here is a very basic example written in the nexss which speaking to you the website's title.
 
-Please keep in mind that in the **Nexss Programmer** you can use over _50 programming languages_ together and make solutions. For example you can make some statistics in R, Python or any language and you can speak periodically without any distructions of your work. **Unlimited possibilities.**.
+Please keep in mind that in the **Nexss Programmer** you can use over *50 programming languages* together and make solutions. For example you can make some statistics in R, Python or any language and you can speak periodically without any distructions of your work. **Unlimited possibilities.**.
 
 <i style="color:#22aa22">**And the most important: we would like to THANK YOU FOR YOUR SUPPORT! Have a wonderful day!**</i>
 
@@ -129,7 +151,7 @@ nexss p react17 react17-project # creates new react17 project with hotreloading.
 - [@nexssp/**extend**](https://www.npmjs.com/package/@nexssp/extend) - extend standard functions of JavaScript/NodeJS
 - [@nexssp/**logdebug**](https://www.npmjs.com/package/@nexssp/logdebug) - logging, debugging script
 - [@nexssp/**packunpack**](https://www.npmjs.com/package/@nexssp/packunpack) - pack/unpack library with .gitignore
-- [@nexssp/**plugin** ](https://www.npmjs.com/package/@nexssp/plugin)- plugin system
+- [@nexssp/plugin](https://www.npmjs.com/package/@nexssp/plugin)- plugin system
 - [@nexssp/**stack**](https://www.npmjs.com/package/@nexssp/stack) - pretty error stack
 - [@nexssp/**system**](https://www.npmjs.com/package/@nexssp/system) - run system commands
 
@@ -177,7 +199,7 @@ Programmer
 ✔ **NodeJS** versions: 12+ => **12.x**, **14.x**, **15.x**, **16.x**, **17.x**  
 ✔ Over **50** programming languages: **Ada**, **Auto Hot Key**, **Autoit**, **Bash**, **Basic**, **Batch**, **C**, **Clojure**, **Coconut**, **Coffee Script**, **C++**, **Crystal**, **CSharp**, **D**, **Dart**, **Elixir**, **Erlang**, **Fortran**, **Go**, **Groovy**, **Haskell**, **Haxe**, **Hy**, **Java**, **JSON**, **Julia**, **Kotlin**, **LiveScript**, **Lua**, **Nexss**, **Nim**, **NodeJS**, **Octave**, **Perl**, **PHP**, **PowerShell**, **Pure Data**, **Python 2 & 3**, **R**, **Racket**, **Raku**, **Ruby**, **Rust**, **Scala**, **TCL/TK**, **Typescript**, **V**, **VBScript**, **Windows Scripting Host**, **Zig**
 
-🔥 **Nexss Programmer** is _not only_ **a cli tool** 🔧 which helps to:
+🔥 **Nexss Programmer** is *not only* **a cli tool** 🔧 which helps to:
 
 ### ✅ Easy and intuitively install programming environments
 
@@ -211,7 +233,7 @@ if there is no compiler installed, nexss programmer will install it automaticall
 # {"outputCPP":"Hello from C++ 17!","nexss":"2.2.35"}
 ```
 
-### ✅ And much, much more..
+### ✅ And much, much more
 
 - Checkout our **blog** on [nexss.com](https://nexss.com/11_blog-nexss-programmer/introduction/nexss-blog.html)
 - Documentation on [nexss programmer wiki](https://nexss.com/programmer_.html)
