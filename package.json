@@ -70,15 +70,15 @@
     "@nexssp/stack": "^1.0.9",
     "@nexssp/system": "^1.1.10",
     "axios": "^0.27.2",
-    "dotenv": "^16.0.2",
-    "fast-glob": "^3.2.11",
+    "dotenv": "^16.0.3",
+    "fast-glob": "^3.2.12",
     "fuzzy": "^0.1.3",
     "is-installed-globally": "^0.4.0",
     "json-colorizer": "^2.2.2",
     "json-diff": "^0.9.0",
-    "minimist": "^1.2.6",
+    "minimist": "^1.2.7",
     "string-argv": "^0.3.1",
-    "string.prototype.matchall": "^4.0.7"
+    "string.prototype.matchall": "^4.0.8"
   },
   "author": {
     "name": "Marcin Polak",
