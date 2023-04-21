@@ -1,10 +1,16 @@
-# NEW NEXSS PROGRAMMER 2.5
+# NEXSS PROGRAMMER 2.5.x
 
 ## News
 
-### Nexss Programmer 3.0 alpha in Rust
+### New Nexss Programmer 3.0+ in Golang
 
-From the versions of 3.x, main engine of the Nexss Programmer will be written in **Rust**. If you are a _Rust programmer_ (any level) and you wish to contribute to the Open Source community please contact us at **nexss.com**: <jobs@nexss.com>
+From the versions of 3.x, main engine of the Nexss Programmer will be written in **Golang**.
+
+### Wasm
+
+Nexss Programmer now supports Wasm files.
+
+WIP: compile and execute each programming language as Wasm+Wasi.
 
 ### Node.js and TypeScript - new runtime - Deno
 
