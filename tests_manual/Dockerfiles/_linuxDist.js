@@ -71,14 +71,13 @@ function imageExists(imageName) {
       maxBuffer: 10485760,
     })
     return true
-  } catch (e) {}
+  } catch (e) { }
   console.log(bold('Docker is working..'))
 }
 
 function createImage(imageName, dockerFile) {
-  const cmd = `docker build ${buildNocache} -q -t ${imageName} ${
-    dockerFile ? `-f ${dockerFile}` : ''
-  } .`
+  const cmd = `docker build ${buildNocache} -q -t ${imageName} ${dockerFile ? `-f ${dockerFile}` : ''
+    } .`
   console.log(`Run: ${cmd}`)
   try {
     const res = execSync(cmd, {
@@ -104,7 +103,7 @@ function pathToDocker(p) {
 }
 
 const pathNexssCli = pathToDocker(path.resolve(process.cwd(), '../../'))
-const pathDotNexss = pathToDocker(path.join(require('os').homedir(), '.nexss'))
+const pathDotNexss = pathToDocker(path.join("/mnt/h/", '.nexss'))
 const pathWork = pathToDocker(path.join(require('os').homedir(), '.nexssWork'))
 const pathApps = pathToDocker(path.join(require('os').homedir(), '.nexssApps'))
 const pathNexssPackages = pathToDocker(
@@ -125,15 +124,20 @@ if (tag.toLowerCase().includes('alpine')) {
 
 console.log(`Shell: ${shell}`)
 let command
+let attachNexssCommand = "cd /nexssCli/lib && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss"
+if (process.platform !== "win32") {
+  attachNexssCommand = "cd /nexssCli/lib && chmod +x nexss.js && ln -s /nexssCli/lib/nexss.js /usr/bin/nexss"
+}
+
 switch (cliArgs._[1]) {
   case 'local':
-    command = `docker run ${privileged} -u root -i ${detached} -v ${pathApps}:/root/.nexssApps -v ${pathWork}:/work -v ${pathNexssCli}:/nexssCli -v ${pathDotNexss}:/root/.nexss -v /root/.nexss/cache -v ${pathNexssPackages}:/packages -e DEBIAN_FRONTEND=noninteractive -t ${imageName} ${shell} -c "cd /nexssCli/lib && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && cd /work && ${shell}" `
+    command = `docker run ${privileged} -u root -i ${detached} -v ${pathApps}:/root/.nexssApps -v ${pathWork}:/work -v ${pathNexssCli}:/nexssCli -v ${pathDotNexss}:/root/.nexss -v /root/.nexss/cache -v ${pathNexssPackages}:/packages -e DEBIAN_FRONTEND=noninteractive -t ${imageName} ${shell} -c "${attachNexssCommand} && cd /work && ${shell}" `
     break
   case 'local-testlangs':
-    command = `docker run ${privileged} -i ${detached} -v ${pathApps}:/root/.nexssApps -v ${pathWork}:/work -v ${pathNexssCli}:/nexssCli -v ${pathDotNexss}:/root/.nexss -v /root/.nexss/cache -v ${pathNexssPackages}:/packages -e DEBIAN_FRONTEND=noninteractive -t ${imageName} ${shell} -c "cd /nexssCli/lib && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && cd /work && nexss test languages && ${shell}" `
+    command = `docker run ${privileged} -i ${detached} -v ${pathApps}:/root/.nexssApps -v ${pathWork}:/work -v ${pathNexssCli}:/nexssCli -v ${pathDotNexss}:/root/.nexss -v /root/.nexss/cache -v ${pathNexssPackages}:/packages -e DEBIAN_FRONTEND=noninteractive -t ${imageName} ${shell} -c "${attachNexssCommand} && cd /work && nexss test languages && ${shell}" `
     break
   case 'local-empty':
-    command = `docker run ${privileged} -i ${detached} -v /work -v ${pathNexssCli}:/nexssCli -e DEBIAN_FRONTEND=noninteractive -t ${imageName} ${shell} -c "cd /nexssCli/lib && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && cd /work && ${shell}" `
+    command = `docker run ${privileged} -i ${detached} -v /work -v ${pathNexssCli}:/nexssCli -e DEBIAN_FRONTEND=noninteractive -t ${imageName} ${shell} -c "${attachNexssCommand} && cd /work && ${shell}" `
     break
   case 'clone':
     command = `docker run ${privileged} ${detached} -it -v /work ${imageName} ${shell} -c "npx @nexssp/os install git && git clone --depth=1 https://github.com/nexssp/cli.git && cd cli && npm install && cd lib && chmod +x nexss.js && ln -s $(pwd)/nexss.js /usr/bin/nexss && cd /work && ${shell}"`
@@ -150,6 +154,8 @@ switch (cliArgs._[1]) {
 if (imageName === 'nexss:NixOS' || imageName === 'nexss:Alpine312') {
   command = command.replace(/\/bin\/bash/gi, '/bin/sh')
 }
+
+console.log(`Command: ${command}`)
 try {
   const res = execSync(
     // You can build packages inside the container, for dev whatever is needed.
