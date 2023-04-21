@@ -12,7 +12,7 @@ specifiers:
   '@nexssp/expression-parser': ^1.0.3
   '@nexssp/extend': ^2.0.9
   '@nexssp/file': ^1.0.19
-  '@nexssp/language': ^1.1.24
+  '@nexssp/language': ^1.1.25
   '@nexssp/logdebug': ^1.0.20
   '@nexssp/markdown': ^1.0.1
   '@nexssp/os': ^2.0.31
@@ -23,7 +23,7 @@ specifiers:
   '@nexssp/stack': ^1.0.9
   '@nexssp/system': ^1.1.10
   '@nexssp/test': ^1.1.16
-  axios: ^1.3.5
+  axios: ^1.3.6
   dotenv: ^16.0.3
   fast-glob: ^3.2.12
   fuzzy: ^0.1.3
@@ -47,7 +47,7 @@ dependencies:
   '@nexssp/expression-parser': 1.0.3
   '@nexssp/extend': 2.0.9
   '@nexssp/file': 1.0.19
-  '@nexssp/language': 1.1.24
+  '@nexssp/language': 1.1.25
   '@nexssp/logdebug': 1.0.20
   '@nexssp/markdown': 1.0.1
   '@nexssp/os': 2.0.31
@@ -57,7 +57,7 @@ dependencies:
   '@nexssp/project': 1.0.19
   '@nexssp/stack': 1.0.9
   '@nexssp/system': 1.1.10
-  axios: 1.3.5
+  axios: 1.3.6
   dotenv: 16.0.3
   fast-glob: 3.2.12
   fuzzy: 0.1.3
@@ -191,7 +191,7 @@ packages:
       '@nexssp/data': 1.0.8
       '@nexssp/ensure': 1.1.28
       '@nexssp/extend': 2.0.9
-      '@nexssp/language': 1.1.24
+      '@nexssp/language': 1.1.25
       '@nexssp/logdebug': 1.0.20
       '@nexssp/plugin': 1.0.9
       fs-extra: 10.1.0
@@ -201,8 +201,8 @@ packages:
       minimist: 1.2.8
     dev: false
 
-  /@nexssp/language/1.1.24:
-    resolution: {integrity: sha512-+31w78YHVilD1y+dUid/Gqs2yGykWss2Lvvd04vGxXjPQ9ZzbiU4y9dFjH5hu9OHzJAIcccQ/5DaIpxUIw4OZg==}
+  /@nexssp/language/1.1.25:
+    resolution: {integrity: sha512-wHuLYthc52jIvZGbAx6KYXlPAXr8qs5aICnuTzUQlMEuy3JlmuUxeBlOfUL58dAnyzaLsGRof6CChUNTkXS10Q==}
     hasBin: true
     dependencies:
       '@nexssp/ansi': 1.1.5
@@ -377,8 +377,8 @@ packages:
     engines: {node: '>= 0.4'}
     dev: false
 
-  /axios/1.3.5:
-    resolution: {integrity: sha512-glL/PvG/E+xCWwV8S6nCHcrfg1exGx7vxyUIivIA1iL7BIh6bePylCfVHwp6k13ao7SATxB6imau2kqY+I67kw==}
+  /axios/1.3.6:
+    resolution: {integrity: sha512-PEcdkk7JcdPiMDkvM4K6ZBRYq9keuVJsToxm2zQIM70Qqo2WHTdJZMXcG9X+RmRp2VPNUQC8W1RAGbgt6b1yMg==}
     dependencies:
       follow-redirects: 1.15.2
       form-data: 4.0.0
