@@ -11,7 +11,7 @@ jobs:
     continue-on-error: true
     strategy:
       matrix:
-        os: [windows-latest, windows-2019, ubuntu-latest, macos-latest, macos-10.15]
+        os: [windows-latest, windows-2019, ubuntu-latest, macos-latest, macos-12]
         node-version: [14.x, 16.x]
     runs-on: ${{ matrix.os }}
     steps:
