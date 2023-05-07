@@ -6,11 +6,15 @@
 
 From the versions of 3.x, main engine of the Nexss Programmer will be written in **Golang**.
 
+### Android
+
+Nexss Programmer now supports **Android** platforms (Experimental).
+
 ### Wasm
 
-Nexss Programmer now supports Wasm files.
+Nexss Programmer now supports **Wasm** files.
 
-NOTE: **WIP:** compile and execute each supported programming language as Wasm+Wasi and many more wasm related features..
+NOTE: **WIP:** compile and execute each supported programming language as **Wasm+Wasi** and many more wasm related features..
 
 ### Node.js and TypeScript - new runtime - Deno
 

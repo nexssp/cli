@@ -12,10 +12,10 @@ specifiers:
   '@nexssp/expression-parser': ^1.0.3
   '@nexssp/extend': ^2.0.9
   '@nexssp/file': ^1.0.19
-  '@nexssp/language': ^1.1.25
+  '@nexssp/language': ^1.1.26
   '@nexssp/logdebug': ^1.0.20
   '@nexssp/markdown': ^1.0.1
-  '@nexssp/os': ^2.0.31
+  '@nexssp/os': ^2.0.35
   '@nexssp/package': ^1.0.23
   '@nexssp/packunpack': ^1.0.6
   '@nexssp/plugin': ^1.0.9
@@ -23,7 +23,7 @@ specifiers:
   '@nexssp/stack': ^1.0.9
   '@nexssp/system': ^1.1.10
   '@nexssp/test': ^1.1.16
-  axios: ^1.3.6
+  axios: ^1.4.0
   dotenv: ^16.0.3
   fast-glob: ^3.2.12
   fuzzy: ^0.1.3
@@ -31,8 +31,8 @@ specifiers:
   json-colorizer: ^2.2.2
   json-diff: ^1.0.3
   minimist: ^1.2.8
-  prettier: ^2.8.7
-  string-argv: ^0.3.1
+  prettier: ^2.8.8
+  string-argv: ^0.3.2
   string.prototype.matchall: ^4.0.8
 
 dependencies:
@@ -47,17 +47,17 @@ dependencies:
   '@nexssp/expression-parser': 1.0.3
   '@nexssp/extend': 2.0.9
   '@nexssp/file': 1.0.19
-  '@nexssp/language': 1.1.25
+  '@nexssp/language': 1.1.26
   '@nexssp/logdebug': 1.0.20
   '@nexssp/markdown': 1.0.1
-  '@nexssp/os': 2.0.31
+  '@nexssp/os': 2.0.35
   '@nexssp/package': 1.0.23
   '@nexssp/packunpack': 1.0.6
   '@nexssp/plugin': 1.0.9
   '@nexssp/project': 1.0.19
   '@nexssp/stack': 1.0.9
   '@nexssp/system': 1.1.10
-  axios: 1.3.6
+  axios: 1.4.0
   dotenv: 16.0.3
   fast-glob: 3.2.12
   fuzzy: 0.1.3
@@ -65,12 +65,12 @@ dependencies:
   json-colorizer: 2.2.2
   json-diff: 1.0.3
   minimist: 1.2.8
-  string-argv: 0.3.1
+  string-argv: 0.3.2
   string.prototype.matchall: 4.0.8
 
 devDependencies:
   '@nexssp/test': 1.1.16
-  prettier: 2.8.7
+  prettier: 2.8.8
 
 packages:
 
@@ -112,7 +112,7 @@ packages:
       '@nexssp/dddebug': 1.0.7
       '@nexssp/extend': 2.0.9
       '@nexssp/logdebug': 1.0.20
-      '@nexssp/os': 2.0.31
+      '@nexssp/os': 2.0.35
       '@nexssp/plugin': 1.0.9
       '@nexssp/system': 1.1.10
       '@nexssp/test': 1.1.16
@@ -158,7 +158,7 @@ packages:
       '@nexssp/ansi': 1.1.5
       '@nexssp/data': 1.0.8
       '@nexssp/logdebug': 1.0.20
-      '@nexssp/os': 2.0.31
+      '@nexssp/os': 2.0.35
       '@nexssp/plugin': 1.0.9
       minimist: 1.2.8
     dev: false
@@ -191,7 +191,7 @@ packages:
       '@nexssp/data': 1.0.8
       '@nexssp/ensure': 1.1.28
       '@nexssp/extend': 2.0.9
-      '@nexssp/language': 1.1.25
+      '@nexssp/language': 1.1.26
       '@nexssp/logdebug': 1.0.20
       '@nexssp/plugin': 1.0.9
       fs-extra: 10.1.0
@@ -201,8 +201,8 @@ packages:
       minimist: 1.2.8
     dev: false
 
-  /@nexssp/language/1.1.25:
-    resolution: {integrity: sha512-wHuLYthc52jIvZGbAx6KYXlPAXr8qs5aICnuTzUQlMEuy3JlmuUxeBlOfUL58dAnyzaLsGRof6CChUNTkXS10Q==}
+  /@nexssp/language/1.1.26:
+    resolution: {integrity: sha512-GLTrtfGFCAws3p7ufyZFcYugYuzNFR1z+LLBcWnfOsUxypOQlM4FnLHljwNspIkoGeQhM+Wp0Tb9Cf3ywGTyxw==}
     hasBin: true
     dependencies:
       '@nexssp/ansi': 1.1.5
@@ -214,7 +214,7 @@ packages:
       '@nexssp/extend': 2.0.9
       '@nexssp/logdebug': 1.0.20
       '@nexssp/markdown': 1.0.1
-      '@nexssp/os': 2.0.31
+      '@nexssp/os': 2.0.35
       '@nexssp/plugin': 1.0.9
       '@nexssp/system': 1.1.10
       cli-table3: 0.6.3
@@ -233,8 +233,8 @@ packages:
     dependencies:
       '@nexssp/ansi': 1.1.5
 
-  /@nexssp/os/2.0.31:
-    resolution: {integrity: sha512-DMWOC4iHtflf6LWo7PwEXmzUpa4vD8pQCXAP3e5aH9VB1W53EHJDxFRi0IZB2UJvHl1WQinkXNPYudUayjyDMw==}
+  /@nexssp/os/2.0.35:
+    resolution: {integrity: sha512-Z/HEpr+9regWmrLk7fil17bEm3GIUn86bz2wFZpdHGmIV+ejTuMs1Mud+jit93MUOJMhgQCd3leFbxvfH6S5hg==}
     hasBin: true
     dependencies:
       '@nexssp/ansi': 1.1.5
@@ -254,7 +254,7 @@ packages:
       '@nexssp/ensure': 1.1.28
       '@nexssp/extend': 2.0.9
       '@nexssp/logdebug': 1.0.20
-      '@nexssp/os': 2.0.31
+      '@nexssp/os': 2.0.35
       '@nexssp/plugin': 1.0.9
       '@nexssp/system': 1.1.10
       fast-glob: 3.2.12
@@ -306,8 +306,8 @@ packages:
     resolution: {integrity: sha512-jE/62nMzniwrpo0fTGlt8Dhfl5fs4rLnhBIYShO22s9Nexyw7yyVcx/pConRKjzq2y09vjIz9cyhRDiEJZkm8g==}
     dependencies:
       '@nexssp/extend': 2.0.9
-      '@nexssp/os': 2.0.31
-      string-argv: 0.3.1
+      '@nexssp/os': 2.0.35
+      string-argv: 0.3.2
 
   /@nexssp/test/1.1.16:
     resolution: {integrity: sha512-amK+S4LxgaBZkYF2eQyss8s5OlZ5kxaLDZ2OFLrqBnDxhMaGy0xDnK1IueGb3PooX/N6se8/rBW61yiOCfdpUA==}
@@ -316,7 +316,7 @@ packages:
       '@nexssp/ansi': 1.1.5
       '@nexssp/extend': 2.0.9
       '@nexssp/logdebug': 1.0.20
-      '@nexssp/os': 2.0.31
+      '@nexssp/os': 2.0.35
       '@nexssp/system': 1.1.10
       fast-glob: 3.2.12
       minimist: 1.2.8
@@ -377,8 +377,8 @@ packages:
     engines: {node: '>= 0.4'}
     dev: false
 
-  /axios/1.3.6:
-    resolution: {integrity: sha512-PEcdkk7JcdPiMDkvM4K6ZBRYq9keuVJsToxm2zQIM70Qqo2WHTdJZMXcG9X+RmRp2VPNUQC8W1RAGbgt6b1yMg==}
+  /axios/1.4.0:
+    resolution: {integrity: sha512-S4XCWMEmzvo64T9GfvQDOXgYRDJ/wsSZc7Jvdgx5u1sd0JwsuPLqb3SYmusag+edF6ziyMensPVqLTSc1PiSEA==}
     dependencies:
       follow-redirects: 1.15.2
       form-data: 4.0.0
@@ -1201,8 +1201,8 @@ packages:
     resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
     engines: {node: '>=8.6'}
 
-  /prettier/2.8.7:
-    resolution: {integrity: sha512-yPngTo3aXUUmyuTjeTUT75txrf+aMh9FiD7q9ZE/i6r0bPb22g4FsE6Y338PQX1bmfy08i9QQCB7/rcUAVntfw==}
+  /prettier/2.8.8:
+    resolution: {integrity: sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     dev: true
@@ -1295,8 +1295,8 @@ packages:
     resolution: {integrity: sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==}
     dev: false
 
-  /string-argv/0.3.1:
-    resolution: {integrity: sha512-a1uQGz7IyVy9YwhqjZIZu1c8JO8dNIe20xBmSS6qu9kv++k3JGzCVmprbNN5Kn+BgzD5E7YYwg1CcjuJMRNsvg==}
+  /string-argv/0.3.2:
+    resolution: {integrity: sha512-aqD2Q0144Z+/RqG52NeHEkZauTAUWJO8c6yTftGJKO3Tja5tUgIfmIl6kExvhtxSDP7fXB6DvzkfMpCd/F3G+Q==}
     engines: {node: '>=0.6.19'}
 
   /string-width/4.2.3:
