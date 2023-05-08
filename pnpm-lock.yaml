@@ -15,10 +15,10 @@ specifiers:
   '@nexssp/language': ^1.1.26
   '@nexssp/logdebug': ^1.0.20
   '@nexssp/markdown': ^1.0.1
-  '@nexssp/os': ^2.0.35
+  '@nexssp/os': ^2.0.36
   '@nexssp/package': ^1.0.23
   '@nexssp/packunpack': ^1.0.6
-  '@nexssp/plugin': ^1.0.9
+  '@nexssp/plugin': ^1.0.10
   '@nexssp/project': ^1.0.19
   '@nexssp/stack': ^1.0.9
   '@nexssp/system': ^1.1.10
@@ -50,10 +50,10 @@ dependencies:
   '@nexssp/language': 1.1.26
   '@nexssp/logdebug': 1.0.20
   '@nexssp/markdown': 1.0.1
-  '@nexssp/os': 2.0.35
+  '@nexssp/os': 2.0.36
   '@nexssp/package': 1.0.23
   '@nexssp/packunpack': 1.0.6
-  '@nexssp/plugin': 1.0.9
+  '@nexssp/plugin': 1.0.10
   '@nexssp/project': 1.0.19
   '@nexssp/stack': 1.0.9
   '@nexssp/system': 1.1.10
@@ -112,8 +112,8 @@ packages:
       '@nexssp/dddebug': 1.0.7
       '@nexssp/extend': 2.0.9
       '@nexssp/logdebug': 1.0.20
-      '@nexssp/os': 2.0.35
-      '@nexssp/plugin': 1.0.9
+      '@nexssp/os': 2.0.36
+      '@nexssp/plugin': 1.0.10
       '@nexssp/system': 1.1.10
       '@nexssp/test': 1.1.16
       minimist: 1.2.8
@@ -125,7 +125,7 @@ packages:
     dependencies:
       '@nexssp/extend': 2.0.9
       '@nexssp/logdebug': 1.0.20
-      '@nexssp/plugin': 1.0.9
+      '@nexssp/plugin': 1.0.10
       minimist: 1.2.8
     dev: false
 
@@ -158,8 +158,8 @@ packages:
       '@nexssp/ansi': 1.1.5
       '@nexssp/data': 1.0.8
       '@nexssp/logdebug': 1.0.20
-      '@nexssp/os': 2.0.35
-      '@nexssp/plugin': 1.0.9
+      '@nexssp/os': 2.0.36
+      '@nexssp/plugin': 1.0.10
       minimist: 1.2.8
     dev: false
 
@@ -193,7 +193,7 @@ packages:
       '@nexssp/extend': 2.0.9
       '@nexssp/language': 1.1.26
       '@nexssp/logdebug': 1.0.20
-      '@nexssp/plugin': 1.0.9
+      '@nexssp/plugin': 1.0.10
       fs-extra: 10.1.0
       fuzzy: 0.1.3
       inquirer: 8.2.5
@@ -214,8 +214,8 @@ packages:
       '@nexssp/extend': 2.0.9
       '@nexssp/logdebug': 1.0.20
       '@nexssp/markdown': 1.0.1
-      '@nexssp/os': 2.0.35
-      '@nexssp/plugin': 1.0.9
+      '@nexssp/os': 2.0.36
+      '@nexssp/plugin': 1.0.10
       '@nexssp/system': 1.1.10
       cli-table3: 0.6.3
       fast-glob: 3.2.12
@@ -233,14 +233,14 @@ packages:
     dependencies:
       '@nexssp/ansi': 1.1.5
 
-  /@nexssp/os/2.0.35:
-    resolution: {integrity: sha512-Z/HEpr+9regWmrLk7fil17bEm3GIUn86bz2wFZpdHGmIV+ejTuMs1Mud+jit93MUOJMhgQCd3leFbxvfH6S5hg==}
+  /@nexssp/os/2.0.36:
+    resolution: {integrity: sha512-a+Ty7f3RuuHcRB/BGMVPMWjXrxDUyZAV0JJOt6CoSVNdgwpoTA/7202aDWNFCVPVtJeoDjQLu7Pdp3GieuJsFg==}
     hasBin: true
     dependencies:
       '@nexssp/ansi': 1.1.5
       '@nexssp/extend': 2.0.9
       '@nexssp/logdebug': 1.0.20
-      '@nexssp/plugin': 1.0.9
+      '@nexssp/plugin': 1.0.10
       '@nexssp/system': 1.1.10
 
   /@nexssp/package/1.0.23:
@@ -254,8 +254,8 @@ packages:
       '@nexssp/ensure': 1.1.28
       '@nexssp/extend': 2.0.9
       '@nexssp/logdebug': 1.0.20
-      '@nexssp/os': 2.0.35
-      '@nexssp/plugin': 1.0.9
+      '@nexssp/os': 2.0.36
+      '@nexssp/plugin': 1.0.10
       '@nexssp/system': 1.1.10
       fast-glob: 3.2.12
       fs-extra: 10.1.0
@@ -271,8 +271,8 @@ packages:
       tar: 6.1.13
     dev: false
 
-  /@nexssp/plugin/1.0.9:
-    resolution: {integrity: sha512-FSQfeZ9dWT2c//6Mx9vRSvB1CKEvTuloEUHy+4fI1nIVksRYxO6s4as9SCC+h8/yOGKrpCu5A8+h6WPhobPDCw==}
+  /@nexssp/plugin/1.0.10:
+    resolution: {integrity: sha512-pivIl1M8zCoAa4S8DW0ma0Q4qnZ1Sc13C+YHnAlY6Zg1/5gN1q4d+3BArQGSyGyRF1iuabP2tCtKWV3bJebC9Q==}
     dependencies:
       '@nexssp/ansi': 1.1.5
       '@nexssp/extend': 2.0.9
@@ -287,7 +287,7 @@ packages:
       '@nexssp/ansi': 1.1.5
       '@nexssp/config': 1.0.9
       '@nexssp/logdebug': 1.0.20
-      '@nexssp/plugin': 1.0.9
+      '@nexssp/plugin': 1.0.10
       '@nexssp/system': 1.1.10
       copy-dir: 1.3.0
       inquirer: 7.3.3
@@ -306,7 +306,7 @@ packages:
     resolution: {integrity: sha512-jE/62nMzniwrpo0fTGlt8Dhfl5fs4rLnhBIYShO22s9Nexyw7yyVcx/pConRKjzq2y09vjIz9cyhRDiEJZkm8g==}
     dependencies:
       '@nexssp/extend': 2.0.9
-      '@nexssp/os': 2.0.35
+      '@nexssp/os': 2.0.36
       string-argv: 0.3.2
 
   /@nexssp/test/1.1.16:
@@ -316,7 +316,7 @@ packages:
       '@nexssp/ansi': 1.1.5
       '@nexssp/extend': 2.0.9
       '@nexssp/logdebug': 1.0.20
-      '@nexssp/os': 2.0.35
+      '@nexssp/os': 2.0.36
       '@nexssp/system': 1.1.10
       fast-glob: 3.2.12
       minimist: 1.2.8
