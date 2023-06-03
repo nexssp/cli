@@ -2,9 +2,9 @@
 
 ## News
 
-### New Nexss Programmer 3.0+ in Golang
+### New Nexss Programmer 3.0+ in C (Yes C)
 
-From the versions of 3.x, main engine of the Nexss Programmer will be written in **Golang**.
+From the versions of 3.x, main engine of the Nexss Programmer will be written in **C**.
 
 ### Android
 
