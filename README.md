@@ -2,9 +2,9 @@
 
 ## News
 
-### New Nexss Programmer 3.0+ in C (Yes C)
+### New Nexss Programmer 3.0+ in C
 
-From the versions of 3.x, main engine of the Nexss Programmer will be written in **C**.
+From the version of 3.0, main engine of the Nexss Programmer will be written in **C**.
 
 ### Android
 
