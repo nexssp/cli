@@ -5,7 +5,7 @@ module.exports = {
       title: 'Check error solution define before you use it',
       params: [
         'nexss Nexss/Test/ErrorsSolutions/src/errors1.js',
-        "Define 'testNotExistVariable2' before you use it.",
+        'testNotExistVariable',
         { exitCode: 1 },
       ],
     },
