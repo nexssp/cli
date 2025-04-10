@@ -1,8 +1,10 @@
+const { binCmd } = require("./nexss-cmd")
+
 module.exports = {
   notEval: true, // params won't be evaluated before begin.
   nexsstests: [
     {
-      params: ['nexss', /"nexss":"(\d).(\d*).(\d*)"/],
+      params: [`${binCmd}`, /"nexss":"(\d).(\d*).(\d*)"/],
     },
   ],
 }

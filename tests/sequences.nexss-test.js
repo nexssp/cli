@@ -1,17 +1,19 @@
+const { binCmd } = require("./nexss-cmd")
+
 module.exports = {
   nexsstests: [
     {
       title: 'Default sequence',
-      params: ['nexss Nexss/Test/Sequences', /"sequence":"default"/, ,],
+      params: [`${binCmd} Nexss/Test/Sequences`, /"sequence":"default"/, ,],
     },
     {
       title: 'Named sequence',
-      params: ['nexss Nexss/Test/Sequences --seq=one', /"sequence":"one"/],
+      params: [`${binCmd} Nexss/Test/Sequences --seq=one`, /"sequence":"one"/],
     },
     {
       title: 'Wrong sequence',
       params: [
-        'nexss Nexss/Test/Sequences --seq=wrong',
+        `${binCmd} Nexss/Test/Sequences --seq=wrong`,
         /sequence does not exist in the _nexss.yml/,
         {
           exitCode: 1,
@@ -33,7 +35,7 @@ module.exports = {
     {
       title: 'Naming Group',
       params: [
-        'nexss Nexss/Test/Sequences --seq=2aboutxasdasd',
+        `${binCmd} Nexss/Test/Sequences --seq=2aboutxasdasd`,
         `"found1":"x","found2":"a","found3":"sdasd"`,
       ],
     },

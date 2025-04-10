@@ -23,7 +23,7 @@ module.exports = {
       title: '--nxsConcat',
       params: [
         'nexss Id --nxsConcat="start,cwd"',
-        /"nxsConcatResults":[[0-9]*.[0-9]*\,"[A-Z/].*"]/,
+        /"nxsConcatResults":[[0-9]*.[0-9]*\,"[a-zA-Z/].*"]/,
       ],
     },
     {
@@ -77,13 +77,13 @@ module.exports = {
         // For windows we remove ' from surrounded piped json
         process.platform === 'win32'
           ? [
-              'echo {"array":["x","y","z"]} | nexss Id --nxsSelect=array',
-              /"Select":"x","Select_2":"y","Select_3":"z"/,
-            ]
+            'echo {"array":["x","y","z"]} | nexss Id --nxsSelect=array',
+            /"Select":"x","Select_2":"y","Select_3":"z"/,
+          ]
           : [
-              'echo \'{"array":["x","y","z"]}\' | nexss Id --nxsSelect=array',
-              /"Select":"x","Select_2":"y","Select_3":"z"/,
-            ],
+            'echo \'{"array":["x","y","z"]}\' | nexss Id --nxsSelect=array',
+            /"Select":"x","Select_2":"y","Select_3":"z"/,
+          ],
     },
   ],
 }
