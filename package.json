@@ -54,7 +54,7 @@
     "@nexssp/command": "^1.0.18",
     "@nexssp/config": "^1.0.9",
     "@nexssp/const": "^1.0.13",
-    "@nexssp/data": "^1.0.8",
+    "@nexssp/data": "^1.1.1",
     "@nexssp/dddebug": "^1.0.7",
     "@nexssp/ensure": "^1.1.28",
     "@nexssp/expression-parser": "^1.0.5",
